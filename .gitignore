@@ -4,6 +4,7 @@
 ASK/
 **/__pycache__/
 *.pyc
+metadata.csv
 
 thesis/*.sty
 thesis/*.log
