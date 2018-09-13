@@ -9,8 +9,6 @@
 \subtitle{Using Multi-task Learning}
 \author{Stig Johan Berggren}
 
-\bibliography{mybib}
-
 \renewcommand*\rmdefault{ppl}
 
 \begin{document}
@@ -21,32 +19,26 @@
 ]
 
 \frontmatter{}
-\chapter*{Abstract}
+% \chapter*{Abstract}
 
-\tableofcontents{}
-\listoffigures{}
-\listoftables{}
+% \tableofcontents{}
+% \listoffigures{}
+% \listoftables{}
 
-\chapter*{Preface}                    %% ... or Forord
+% \chapter*{Preface}                    %% ... or Forord
 
 \mainmatter{}
-\part{Introduction}                   %% ... or Innledning or Innleiing
 
 \chapter{Background}                  %% ... or Bakgrunn
 
 \input{./tex/background}
 
-\part{The project}                    %% ... or ??
+\chapter{Creating a data split}        %% ... or ??
 
-\chapter{Planning the project}        %% ... or ??
-
-
-\part{Conclusion}                     %% ... or Konklusjon
-
-\chapter{Results}                     %% ... or ??
-
+\input{./tex/datasplit}
 
 \backmatter{}
 
 \printbibliography
+
 \end{document}

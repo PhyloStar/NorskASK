@@ -16,7 +16,7 @@ counts = df.groupby(['lang', 'cefr']).size().unstack().fillna(0)
 
 normalized = counts.div(counts.sum(axis=1), axis=0)
 
-plt.imshow(counts)
+plt.imshow(counts, cmap='viridis')
 plt.yticks(range(len(counts)), [iso639_3[l] for l in counts.index])
 plt.xticks(range(len(counts.columns)), counts.columns)
 
@@ -29,6 +29,8 @@ for i, row in enumerate(counts.itertuples()):
                  horizontalalignment='center',
                  verticalalignment='center', color=col)
 
+plt.ylabel('Native language')
+plt.xlabel('CEFR proficiency')
 plt.savefig('lang_vs_cefr.pdf')
 
 plt.show()
