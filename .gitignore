@@ -20,4 +20,6 @@ thesis/duoforside.tex
 thesis/*.lot
 thesis/*.bcf
 thesis/*.toc
+thesis/*.bbl
+thesis/*.blg
 thesis/Doc/

@@ -20,4 +20,15 @@ plt.imshow(counts)
 plt.yticks(range(len(counts)), [iso639_3[l] for l in counts.index])
 plt.xticks(range(len(counts.columns)), counts.columns)
 
+col_cutoff = counts.max().max() / 2
+
+for i, row in enumerate(counts.itertuples()):
+    for j, count in enumerate(row[1:]):
+        col = 'white' if count < col_cutoff else 'black'
+        plt.text(j, i, int(count),
+                 horizontalalignment='center',
+                 verticalalignment='center', color=col)
+
+plt.savefig('lang_vs_cefr.pdf')
+
 plt.show()

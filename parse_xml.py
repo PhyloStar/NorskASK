@@ -9,8 +9,9 @@ import pandas as pd
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', '-o', action='store_true',
-                        help='Output text files') 
+                        help='Output text files')
     return parser.parse_args()
+
 
 def main():
     args = parse_args()
@@ -51,7 +52,7 @@ def main():
         text = root.find('text')
         assert text, "Missing text in file " + str(input_file)
 
-        if not args.output: 
+        if not args.output:
             continue
 
         with open(output_file, 'w') as outfile:
