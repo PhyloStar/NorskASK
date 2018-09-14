@@ -1,5 +1,5 @@
-.vscode/
 .mypy_cache/
+.ipynb_checkpoints/
 
 ASK/
 **/__pycache__/
