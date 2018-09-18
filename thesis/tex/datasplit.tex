@@ -33,14 +33,14 @@ combinations \(L\times C\) have three or fewer occurences.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{lang_vs_cefr}
+  \includegraphics[height=0.3\textheight]{lang_vs_cefr}
   \caption{The distribution of proficiency scores for each L1}
   \label{lang-vs-cefr}
 \end{figure}
  
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{testlevel_lang_vs_cefr}
+  \includegraphics[width=\textwidth]{testlevel_lang_vs_cefr}
   \caption{L1 versus CEFR score for each test level}
   \label{testlevel-lang-vs-cefr}
 \end{figure}
@@ -60,3 +60,41 @@ test level contain exactly 100 essays. This partly explains the low average
 proficiency of Somali and Vietnamese speakers apparent in figure
 \ref{lang-vs-cefr}. The difference compared to the other language groups is
 not as salient when looking only at the B1 test level (``Språkprøven'') data.
+
+Another interesting variable is the essay topic. There is generally a strong
+correlation between topic and vocabulary, and not accounting for this may
+lead to a model picking up the wrong signal. Since the data is collected from
+two different language tests, we might expect the distribution of topics to
+differ between the test levels, and this is the case. Looking at the ten most
+common topics in the data (table \ref{texts-per-topic}), several are only
+present on one test level.
+
+There is also a difference in granularity. There are 52 topics in ``Høyere
+nivå'' and only 38 topics in ``Språkprøven'', even though there are more
+documents in the latter test level (512 vs. 700). This also means that the
+topics within each test level have different support. The median number of
+documents for a topic in ``Høyere nivå'' is 5 (mean 9.8), while it is 11 in
+``Språkprøven'' (mean 18.4). This also explains the overrepresentation of
+``Språkprøven'' in the table of top ten topics.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrr}
+    \toprule
+    Topic                    & Høyere nivå & Språkprøven & Total \\
+    \midrule
+    telefon                  &          37 &          64 &   101 \\
+    bolig                    &           0 &          83 &    83 \\
+    familie helse vekt       &          59 &           0 &    59 \\
+    tid                      &           2 &          51 &    53 \\
+    natur norge              &           0 &          48 &    48 \\
+    folk relasjoner vennskap &           0 &          45 &    45 \\
+    tradisjoner flytting     &           0 &          38 &    38 \\
+    barn                     &           3 &          32 &    35 \\
+    kultur norge             &           0 &          34 &    34 \\
+    media                    &           0 &          31 &    31 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Number of texts in each test level for top 10 topics}
+  \label{texts-per-topic}
+\end{table}
