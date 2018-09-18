@@ -6,7 +6,7 @@ ASK/
 *.pyc
 metadata.csv
 
-thesis/*.sty
+thesis/duo*.sty
 thesis/*.log
 thesis/*.aux
 thesis/*.pdf

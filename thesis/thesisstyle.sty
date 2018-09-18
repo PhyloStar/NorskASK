@@ -1,0 +1,25 @@
+\ProvidesPackage{thesisstyle}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc,url}
+\urlstyle{sf}
+\usepackage{
+  babel,
+  textcomp,
+  csquotes,
+  duomasterforside,
+  varioref,
+  booktabs,
+  graphicx
+}
+\graphicspath{ {./img/} }
+
+\usepackage[
+  backend=biber,
+  dashed=false,
+  style=authoryear,
+  citestyle=authoryear-comp,
+  sorting=nyt % name, year, title
+]{biblatex}
+
+\frenchspacing
