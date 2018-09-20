@@ -3,24 +3,33 @@
 The ASK corpus (\emph{andrespråkskorpus}) was presented in 2006
 \autocite{tenfjord06}. The corpus contains Norwegian learner essays from two
 different language tests: \emph{Språkprøven i norsk for voksne innvandrere}
-and \emph{Test i norsk – høyere nivå}, which test proficiency at the B1 and B2
-levels, respectively. Among the metadata included in the corpus
-is the learners' L1s, which
-are one of German, Dutch, English, Spanish, Russian, Polish,
-Bosnian-Croatian-Serbian, Albanian, Vietnamese and Somali. It
+and \emph{Test i norsk – høyere nivå}, which test proficiency at the B1 and
+B2 levels, respectively. Following the naming in
+\textcite{carlsen2012proficiency}, we will refer to these tests as the
+\emph{IL test} (Intermediate Level, ``Språkprøven'') and the \emph{AL test}
+(Advanced Level, ``Høyere nivå'').
+
+Among the metadata included in the corpus is the
+learners' L1s, which are one of German, Dutch, English, Spanish, Russian,
+Polish, Bosnian-Croatian-Serbian, Albanian, Vietnamese and Somali. It
 provides proficiency labels (in CEFR levels) for all essays from seven of the
 L1 backgrounds. The CEFR labels are available since work by
 \textcite{carlsen2012proficiency}, and were not included at the corpus'
-initial release. Other information included with the documents are which level
-of testing they stem from, what topic the essay is about, country of origin, age,
-gender and more.
+initial release. Other information included with the documents are which
+level of testing they stem from, what topic the essay is about, country of
+origin, age, gender and more.
 
-The ASK corpus contains 1700 texts, and 1212 of these have been assigned a
-CEFR score. In particular, all texts except those written by people with
-Dutch, Bosnian-Croatian-Serbian or Albanian as L1 have a CEFR score.
+The ASK corpus contains 1736 texts, and 1212\footnote{In
+\textcite{carlsen2012proficiency}, these numbers are given as 1700 and 1222,
+but only 1212 texts in my version of ASK have a CEFR label. In addition, my
+version contains 200 texts by native Norwegian speakers} of these have been
+assigned a CEFR score. In particular, all texts except those written by
+people with Dutch, Bosnian-Croatian-Serbian or Albanian as L1 have a CEFR
+score.
 
 The corpus contains over 1,127,000 tokens and more than 768,000 words. The
-mean word count per essay is therefore higher in ASK than in TOEFL11.
+mean word count per essay is therefore higher in ASK than in TOEFL11. TODO:
+These numbers are inconsistent with my own counts. Find out why.
 
 
 \section{Data split}
@@ -54,12 +63,12 @@ data set was split into two along the \emph{Test level} label, and then broken
 down by language and proficiency again. Figure \ref{testlevel-lang-vs-cefr}
 shows that the test levels have different distributions of proficiency. Note
 also that two language groups are underrepresented at the B2 test level
-(``Høyere nivå''), namely Somali and Vietnamese, which have seven and five
+(\emph{AL test}), namely Somali and Vietnamese, which have seven and five
 essays in the B2 test level, respectively. All other combinations of L1 and
 test level contain exactly 100 essays. This partly explains the low average
 proficiency of Somali and Vietnamese speakers apparent in figure
 \ref{lang-vs-cefr}. The difference compared to the other language groups is
-not as salient when looking only at the B1 test level (``Språkprøven'') data.
+not as salient when looking only at the B1 test level (\emph{IL test}) data.
 
 Another interesting variable is the essay topic. There is generally a strong
 correlation between topic and vocabulary, and not accounting for this may
@@ -70,31 +79,55 @@ common topics in the data (table \ref{texts-per-topic}), several are only
 present on one test level.
 
 There is also a difference in granularity. There are 52 topics in ``Høyere
-nivå'' and only 38 topics in ``Språkprøven'', even though there are more
+nivå'' and only 38 topics in \emph{IL test}, even though there are more
 documents in the latter test level (512 vs. 700). This also means that the
 topics within each test level have different support. The median number of
-documents for a topic in ``Høyere nivå'' is 5 (mean 9.8), while it is 11 in
-``Språkprøven'' (mean 18.4). This also explains the overrepresentation of
-``Språkprøven'' in the table of top ten topics.
+documents for a topic in \emph{AL test} is 5 (mean 9.8), while it is 11 in
+\emph{IL test} (mean 18.4). This also explains the overrepresentation of
+\emph{IL test} in the table of top ten topics.
 
 \begin{table}
   \centering
   \begin{tabular}{lrrr}
     \toprule
-    Topic                    & Høyere nivå & Språkprøven & Total \\
+    Topic                    & AL test & IL test & Total \\
     \midrule
-    telefon                  &          37 &          64 &   101 \\
-    bolig                    &           0 &          83 &    83 \\
-    familie helse vekt       &          59 &           0 &    59 \\
-    tid                      &           2 &          51 &    53 \\
-    natur norge              &           0 &          48 &    48 \\
-    folk relasjoner vennskap &           0 &          45 &    45 \\
-    tradisjoner flytting     &           0 &          38 &    38 \\
-    barn                     &           3 &          32 &    35 \\
-    kultur norge             &           0 &          34 &    34 \\
-    media                    &           0 &          31 &    31 \\
+    telefon                  &      37 &      64 &   101 \\
+    bolig                    &       0 &      83 &    83 \\
+    familie helse vekt       &      59 &       0 &    59 \\
+    tid                      &       2 &      51 &    53 \\
+    natur norge              &       0 &      48 &    48 \\
+    folk relasjoner vennskap &       0 &      45 &    45 \\
+    tradisjoner flytting     &       0 &      38 &    38 \\
+    barn                     &       3 &      32 &    35 \\
+    kultur norge             &       0 &      34 &    34 \\
+    media                    &       0 &      31 &    31 \\
     \bottomrule
   \end{tabular}
   \caption{Number of texts in each test level for top 10 topics}
   \label{texts-per-topic}
 \end{table}
+
+Document lengths have been seen to correlate with essay score in other
+studies such as \textcite{vajjala17}. To see the relationship between these
+variables in ASK, we again break down the data into the two test levels. One
+group, \emph{B2/C1} CEFR score within \emph{IL test}, was excluded due to
+having fewer than ten documents. Looking at figure
+\ref{testlevel-lengths-per-cefr}, two relations are apparent. Essays in the
+\emph{AL test} test level are generally longer than in \emph{IL test}, and
+within each test level the higher scoring essays are generally longer. Note
+that even for the same CEFR score, the essays from the higher test level are
+considerably longer. As an example, consider the \emph{B1/B2} score, which is
+the most evenly distributed between the two test levels (101 essays in
+\emph{IL test}, 131 in \emph{AL test}). More than 75~\% of these texts on
+the lower test level have fewer than 400 tokens, and more than 75~\% on the
+higher level are longer than 400 tokens.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{testlevel_lengths_per_cefr}
+  \caption{Distributions of essay lengths for CEFR scores on each test level}
+  \label{testlevel-lengths-per-cefr}
+\end{figure}
+ 
