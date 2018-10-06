@@ -9,27 +9,25 @@ B2 levels, respectively. Following the naming in
 \emph{IL test} (Intermediate Level, ``Språkprøven'') and the \emph{AL test}
 (Advanced Level, ``Høyere nivå'').
 
-Among the metadata included in the corpus is the
-learners' L1s, which are one of German, Dutch, English, Spanish, Russian,
-Polish, Bosnian-Croatian-Serbian, Albanian, Vietnamese and Somali. It
-provides proficiency labels (in CEFR levels) for all essays from seven of the
-L1 backgrounds. The CEFR labels are available since work by
-\textcite{carlsen2012proficiency}, and were not included at the corpus'
-initial release. Other information included with the documents are which
-level of testing they stem from, what topic the essay is about, country of
-origin, age, gender and more.
+The corpus contains 1736 texts\footnote{In
+\textcite{carlsen2012proficiency,malmasi15,malmasi17}, it's reported that it
+contains 1700 texts.}. Each document includes metadata such as the writer's
+L1: one of German, Dutch, English, Spanish, Russian, Polish,
+Bosnian-Croatian-Serbian, Albanian, Vietnamese and Somali. All texts from
+seven of these language backgrounds, 1212\footnote{Reported to be 1222 in
+\textcite{carlsen2012proficiency}.} in total, have been assigned a CEFR
+score. In particular, all texts except those written by people with Dutch,
+Bosnian-Croatian-Serbian or Albanian as L1 have a CEFR score. The CEFR labels
+are available since work by \textcite{carlsen2012proficiency}, and were not
+included at the corpus' initial release.
 
-The ASK corpus contains 1736 texts, and 1212\footnote{In
-\textcite{carlsen2012proficiency}, these numbers are given as 1700 and 1222,
-but only 1212 texts in my version of ASK have a CEFR label. In addition, my
-version contains 200 texts by native Norwegian speakers} of these have been
-assigned a CEFR score. In particular, all texts except those written by
-people with Dutch, Bosnian-Croatian-Serbian or Albanian as L1 have a CEFR
-score.
-
-The corpus contains over 1,127,000 tokens and more than 768,000 words. The
-mean word count per essay is therefore higher in ASK than in TOEFL11. TODO:
-These numbers are inconsistent with my own counts. Find out why.
+The corpus also includes 200 texts written by native Norwegian speakers as a
+control corpus. The total number of word and punctuation tokens in the full
+corpus, including the control corpus, is approximately 770,000. Restricting
+the corpus to the 1212 documents with CEFR score, the number of tokens is
+approximately 487,000 in total. Other metadata included, apart from L1 and
+CEFR score, are the test level the essays were written for, what topic the
+essay is about, the learner's country of origin, age, gender and more.
 
 
 \section{Data split}
@@ -38,7 +36,8 @@ At the start of the project, the dataset was split into a training set and a
 test set in a 90:10 proportion. Ideally, the train and test sets would have
 the same distribution of classes, but the limited amount of data made this
 more difficult. As can be seen from figure \ref{lang-vs-cefr}, 15 of the
-combinations \(L\times C\) have three or fewer occurences.
+combinations language vs. proficiency label consist of only three or fewer
+documents.
 
 \begin{figure}
   \centering
@@ -85,6 +84,12 @@ topics within each test level have different support. The median number of
 documents for a topic in \emph{AL test} is 5 (mean 9.8), while it is 11 in
 \emph{IL test} (mean 18.4). This also explains the overrepresentation of
 \emph{IL test} in the table of top ten topics.
+
+It is seen that some topics in the diagram consist of several sub-topics.
+However, the number of individual sub-topics is 62, still quite large.
+However, they seem to be more evenly distributed across essays. The median
+number of documents for a sub-topic, for both test levels, is 25 (mean 34.8).
+13 sub-topics are represented in 5 or fewer documents.
 
 \begin{table}
   \centering
