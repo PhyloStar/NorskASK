@@ -1,3 +1,5 @@
+from functools import partial
+from itertools import chain
 from typing import Tuple
 
 from scipy.stats import entropy
@@ -64,14 +66,7 @@ def main():
     print(overall_cefr)
     print(overall_lang)
 
-    best_split = None
-
-    for _ in range(10000):
-        sample_topics = np.random.choice([0, 1, 2], len(topics), p=[.8, .1, .1])
-        res = evaluate_candidate(df, sample_topics, topics, overall_cefr, overall_lang)
-        if best_split is None or best_split['penalty'] > res['penalty']:
-            best_split = res
-            print(best_split)
+    best_split = evolution(df, topics, overall_cefr, overall_lang)
 
     dev_set = topics_to_df(df, best_split['dev_topics'])
     test_set = topics_to_df(df, best_split['test_topics'])
@@ -83,6 +78,46 @@ def main():
     print('== TEST SET ==')
     print(test_set.cefr.value_counts().reindex(CEFR_LABELS, fill_value=0))
     print(test_set.lang.value_counts().reindex(LANG_LABELS, fill_value=0))
+
+
+def mutate(individual):
+    n = len(individual)
+    mask = np.random.random(n) > 0.2
+    new_individual = np.random.choice([0, 1, 2], n)
+    new_individual[mask] = individual[mask]
+    return new_individual
+
+
+def evolution(df, topics, overall_cefr, overall_lang):
+    evaluate_f = partial(evaluate_candidate, df=df, topics=topics,
+                         overall_cefr=overall_cefr, overall_lang=overall_lang)
+    pop_size = 100
+    elite_size = 20
+    mutants_per_cand = pop_size // elite_size
+    best_ever = None
+    generations = 0
+    population = [
+        np.random.choice([0, 1, 2], len(topics), p=[.8, .1, .1])
+        for _ in range(pop_size)
+    ]
+    print('Starting evolution algorithm ...')
+    try:
+        while True:
+            results = [evaluate_f(sample_topics=cand) for cand in population]
+            penalties = [r['penalty'] for r in results]
+            best = results[np.argmin(penalties)]
+            if best_ever is None or best['penalty'] < best_ever['penalty']:
+                best_ever = best
+                print(best_ever)
+            elite_indices = np.argpartition(penalties, elite_size)[:elite_size]
+            elite = [population[i] for i in elite_indices]
+            population = list(chain.from_iterable(
+                (mutate(cand) for _ in range(mutants_per_cand)) for cand in elite
+            ))
+            generations += 1
+    except KeyboardInterrupt:
+        print('Stopped after {} generations.'.format(generations))
+        return best_ever
 
 
 if __name__ == '__main__':
