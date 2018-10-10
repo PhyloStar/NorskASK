@@ -30,15 +30,6 @@ CEFR score, are the test level the essays were written for, what topic the
 essay is about, the learner's country of origin, age, gender and more.
 
 
-\section{Data split}
-
-At the start of the project, the dataset was split into a training set and a
-test set in a 90:10 proportion. Ideally, the train and test sets would have
-the same distribution of classes, but the limited amount of data made this
-more difficult. As can be seen from figure \ref{lang-vs-cefr}, 15 of the
-combinations language vs. proficiency label consist of only three or fewer
-documents.
-
 \begin{figure}
   \centering
   \includegraphics[height=0.3\textheight]{lang_vs_cefr}
@@ -53,7 +44,8 @@ documents.
   \label{testlevel-lang-vs-cefr}
 \end{figure}
  
-\subsection{Metadata}
+
+\subsection{Analyzing metadata variables}
 
 Analysis of the data set was carried out in order to find correlations
 between different metadata. Knowing that the documents stem from two
@@ -128,11 +120,67 @@ the most evenly distributed between the two test levels (101 essays in
 the lower test level have fewer than 400 tokens, and more than 75~\% on the
 higher level are longer than 400 tokens.
 
-
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{testlevel_lengths_per_cefr}
   \caption{Distributions of essay lengths for CEFR scores on each test level}
   \label{testlevel-lengths-per-cefr}
 \end{figure}
+
+
+\subsection{Data split}
+
+At the start of the project, the dataset was split into a training,
+development and test set in a 8:1:1 proportion. Ideally, the train and test
+sets would have the same distribution of classes, but the limited amount of
+data made this more difficult. As can be seen from figure \ref{lang-vs-cefr},
+15 of the combinations language vs. proficiency label consist of only three
+or fewer documents.
+
+Moreover, we wanted each split to consist of text topics not present in the
+other splits. The reason for this to prevent a model from learning a bias for
+topic. Finding a split that satisfies our constraints is an optimization
+problem for which it can be intractable to find an optimal solution. We
+therefore turned to heuristics, hoping that it would help us find a good
+local optimum.
  
+The split was chosen in order to have the right proportion of documents in
+each part of the split, and so the distribution of proficiency and native
+language is as similar as possible across the separate parts of the data
+split. Specifically, the split was found by running an evolutionary algorithm
+with fitness function favouring splits close to 8:1:1 in proportion, where
+the perplexity of the proficiency and language distributions against the
+entire corpus were low.
+
+\begin{table}
+  \centering
+  \begin{tabular}{ll}
+    \toprule
+           Topics in dev set &        Topics in test set \\
+    \midrule
+         idrett/sport kultur &       geografi norge folk \\
+                organisasjon &               innvandring \\
+                  opplevelse & innvandring politikk valg \\
+                     økonomi &              idrett/sport \\
+                    holdning &            bolig geografi \\
+           barn idrett/sport &               arbeid yrke \\
+            familie flytting &          økonomi holdning \\
+               eldre familie &              humor kultur \\
+               helse røyking &   politikk norge holdning \\
+       litteratur dikt språk &            litteratur bok \\
+    helse arbeid innvandring &  familie befolkning norge \\
+                barn familie &    litteratur dikt idrett \\
+                       helse &           folk utdannelse \\
+            utdannelse språk &         politikk holdning \\
+          arbeid innvandring &                  media tv \\
+      litteratur dikt venner &                  religion \\
+                             &               helse organ \\
+                             &             folk følelser \\
+    \bottomrule
+  \end{tabular}
+  \caption{The topics chosen to be in each of the dev and test sets}
+  \label{topics-in-split}
+\end{table}
+
+The split in terms of the topics can be seen in table \ref{topics-in-split}.
+The dev and test sets contain 123 texts each.
