@@ -149,8 +149,8 @@ each part of the split, and so the distribution of proficiency and native
 language is as similar as possible across the separate parts of the data
 split. Specifically, the split was found by running an evolutionary algorithm
 with fitness function favouring splits close to 8:1:1 in proportion, where
-the perplexity of the proficiency and language distributions against the
-entire corpus were low.
+the Kullback-Leibler divergence of the proficiency and language distributions
+against the entire corpus were low.
 
 \begin{table}
   \centering
