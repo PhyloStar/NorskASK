@@ -1,4 +1,5 @@
 import pathlib
+import subprocess
 
 
 def main():
@@ -19,6 +20,11 @@ def main():
 
         output_file = (output_dir / input_file.stem).with_suffix('.conll')
         print(str(output_file))
+        cmd = ['./rest-udpipe', str(input_file), str(output_file)]
+        try:
+            subprocess.run(cmd).check_returncode()
+        except subprocess.CalledProcessError as e:
+            print(str(e))
 
 
 if __name__ == '__main__':

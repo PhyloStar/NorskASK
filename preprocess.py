@@ -1,5 +1,6 @@
 import argparse
 import pathlib
+from collections import defaultdict
 from xml.etree import ElementTree
 
 import pandas as pd
@@ -25,16 +26,7 @@ def main():
     if not output_dir.is_dir():
         output_dir.mkdir()
 
-    metadata_dict = {
-        'lang': [],
-        'cefr': [],
-        'testlevel': [],
-        'age': [],
-        'gender': [],
-        'topic': [],
-        'num_tokens': [],
-        'title': []
-    }
+    metadata_dict = defaultdict(list)
 
     for input_file in input_dir.iterdir():
         if input_file.suffix != '.xml':
@@ -74,6 +66,7 @@ def main():
         metadata_dict['age'].append(age)
         metadata_dict['gender'].append(gender)
         metadata_dict['topic'].append(topic)
+        metadata_dict['filename'].append(input_file.stem)
 
         text = root.find('text')
         assert text, "Missing text in file " + str(input_file)
