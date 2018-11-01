@@ -89,9 +89,6 @@ def main():
             num_tokens = 0
             output_file = str(output_dir / input_file.stem) + '.txt'
             with open(output_file, 'w') as outfile:
-                outfile.write('# language: %s\n' % language)
-                outfile.write('# CEFRscore: %s\n' % cefr_score)
-
                 body = text.find('body')
 
                 head = body.find('.//head')
