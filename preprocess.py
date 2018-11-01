@@ -93,21 +93,19 @@ def main():
 
                 head = body.find('.//head')
                 if head is not None:
-                    outfile.write('\n')
                     for sentence in head.iter('s'):
                         words = [w.text for w in sentence.iter('word') if w.text]
                         num_tokens += len(words)
                         joined = ' '.join(words)
                         outfile.write(joined + '\n')
-                outfile.write('\n')
 
                 for paragraph in body.iter('p'):
+                    outfile.write('\n')
                     for sentence in paragraph.iter('s'):
                         words = [w.text for w in sentence.iter('word') if w.text]
                         num_tokens += len(words)
                         joined = ' '.join(words)
                         outfile.write(joined + '\n')
-                    outfile.write('\n')
         metadata_dict['num_tokens'].append(num_tokens)
 
     metadata_df = pd.DataFrame(metadata_dict)
