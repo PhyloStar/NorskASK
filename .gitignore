@@ -4,7 +4,6 @@
 ASK/
 **/__pycache__/
 *.pyc
-metadata.csv
 parameters.bin
 
 thesis/duo*.sty

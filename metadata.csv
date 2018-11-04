@@ -1,0 +1,1937 @@
+age,cefr,filename,gender,lang,num_tokens,testlevel,title,topic
+24,A2/B1,s0594,kvinne,polsk,199,Språkprøven,Vennskap,folk relasjoner vennskap 
+28,B1/B2,h0658,kvinne,polsk,766,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+21,C1,h0475,kvinne,tysk,626,Høyere nivå,Miljøvern,miljø klima 
+26,B2,h0544,kvinne,tysk,460,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+30,B2,h0059,mann,spansk,288,Høyere nivå,Netthandel,handel økonomi media 
+43,B1,h0115,mann,spansk,657,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
+24,B1,s0794,kvinne,polsk,489,Språkprøven,Viktige verdier i livet,verdier 
+33,B2,s0980,kvinne,polsk,367,Språkprøven,Boformer,bolig 
+46,N/A,h0055,kvinne,serbokroatisk,588,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+36,N/A,s0362,mann,nederlandsk,251,Språkprøven,Bolig og bosted,bolig 
+21,N/A,h2100,kvinne,bokmål,428,Høyere nivå,Organdonasjon,helse organ 
+25,N/A,s0402,mann,nederlandsk,321,Språkprøven,Røyking,helse røyking 
+21,N/A,h2042,mann,nynorsk,317,Høyere nivå,Organdonasjon,helse organ 
+31,B1/B2,s0949,kvinne,polsk,462,Språkprøven,Trafikk og boligområder,trafikk bolig 
+20,B1/B2,h0303,kvinne,tysk,415,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+26,B2,s0736,kvinne,engelsk,278,Språkprøven,Viktige verdier i livet,verdier 
+39,N/A,s0371,mann,nederlandsk,258,Språkprøven,Bolig og bosted,bolig 
+28,B2,h0662,kvinne,polsk,377,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+26,A2,s0546,mann,somali,176,Språkprøven,Flytting,familie flytting 
+37,N/A,h0148,kvinne,serbokroatisk,454,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
+47,B2/C1,h0711,mann,somali,457,Høyere nivå,Bilisme,bil trafikk 
+23,N/A,h2059,kvinne,bokmål,501,Høyere nivå,Organdonasjon,helse organ 
+23,N/A,s0414,kvinne,nederlandsk,239,Språkprøven,Bomiljø,bolig 
+30,B1/B2,s0038,kvinne,russisk,359,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+28,B1/B2,s0029,mann,tysk,263,Språkprøven,Mobiltelefoner,telefon 
+21,B2/C1,h0496,kvinne,spansk,453,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+29,A2/B1,s0180,kvinne,vietnamesisk,380,Språkprøven,Røyking,helse røyking 
+37,N/A,s0668,mann,serbokroatisk,286,Språkprøven,Flytting,familie flytting 
+26,B2,h0410,kvinne,russisk,374,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+19,B1,s0127,kvinne,tysk,371,Språkprøven,Vennskap,folk relasjoner vennskap 
+19,N/A,h2039,mann,bokmål,341,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+32,B1,s0764,kvinne,spansk,357,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+63,N/A,s2033,kvinne,bokmål,309,Språkprøven,Sunnhet og helse,helse 
+29,N/A,h0708,kvinne,serbokroatisk,504,Høyere nivå,Reality-TV,media tv 
+29,B1,s0521,kvinne,russisk,503,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+39,B1,s0469,mann,tysk,355,Språkprøven,Mobiltelefoner,telefon 
+40,N/A,s0752,mann,serbokroatisk,232,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+50,N/A,s0401,kvinne,nederlandsk,410,Språkprøven,Nordmenn,folk norge 
+24,B1,s0849,kvinne,vietnamesisk,203,Språkprøven,Vennskap,folk relasjoner vennskap 
+29,N/A,s0426,mann,nederlandsk,300,Språkprøven,Nyheter,media 
+21,N/A,h2097,mann,bokmål,430,Høyere nivå,Organdonasjon,helse organ 
+25,N/A,h0650,mann,serbokroatisk,453,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
+31,A2/B1,s0688,kvinne,vietnamesisk,333,Språkprøven,Den norske naturen,natur norge 
+21,N/A,h0713,kvinne,albansk,583,Høyere nivå,Den gode skolen,skole 
+23,N/A,h0700,kvinne,serbokroatisk,495,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+34,B1,s0353,mann,engelsk,231,Språkprøven,Mobiltelefoner,telefon 
+28,N/A,s0816,kvinne,serbokroatisk,260,Språkprøven,Bomiljø,bolig 
+30,B2,s0727,kvinne,polsk,669,Språkprøven,Barneoppdragelse,barn 
+21,N/A,h2092,kvinne,nynorsk,548,Høyere nivå,Organdonasjon,helse organ 
+23,A2/B1,s0092,mann,vietnamesisk,250,Språkprøven,Bolig og bosted,bolig 
+17,B1,s0017,kvinne,engelsk,240,Språkprøven,Bomiljø,bolig 
+26,B2,h0133,kvinne,spansk,560,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
+29,N/A,h0685,kvinne,nederlandsk,486,Høyere nivå,Inn- og utvandring,innvandring 
+39,N/A,s0077,kvinne,serbokroatisk,451,Språkprøven,Før og nå,tid 
+26,B2,h0143,kvinne,polsk,528,Høyere nivå,Livslang læring,utdannelse 
+29,A2/B1,s0476,kvinne,russisk,301,Språkprøven,Vennskap,folk relasjoner vennskap 
+38,B2,h0629,kvinne,polsk,615,Høyere nivå,Adopsjon,barn familie 
+36,B2,h0678,kvinne,vietnamesisk,364,Høyere nivå,Inn- og utvandring,innvandring 
+32,B2,h0338,kvinne,spansk,402,Høyere nivå,Kommunevalget i Norge,politikk valg 
+34,A2/B1,s0480,mann,russisk,238,Språkprøven,Møte med norsk kultur,kultur norge 
+38,A2/B1,s0861,mann,somali,279,Språkprøven,Framtida,tid 
+29,N/A,h0118,mann,nederlandsk,464,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
+25,B1,s0988,kvinne,tysk,306,Språkprøven,Mobiltelefoner,telefon 
+29,A2,s0642,kvinne,vietnamesisk,214,Språkprøven,Viktige verdier i livet,verdier 
+34,B2/C1,h0123,kvinne,polsk,448,Høyere nivå,Livslang læring,utdannelse 
+25,B1,h0694,mann,somali,395,Høyere nivå,Å være kjendis,folk 
+30,B2,h0526,mann,engelsk,410,Høyere nivå,Leselyst,litteratur kultur 
+31,A2/B1,s0345,kvinne,engelsk,266,Språkprøven,Mobiltelefoner,telefon 
+34,C1,h0567,kvinne,tysk,473,Høyere nivå,Integrering av innvandrere,innvandring 
+20,N/A,h2078,mann,bokmål,433,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+19,A2/B1,s0805,kvinne,somali,198,Språkprøven,En kjent person,folk biografi 
+32,A2/B1,s0013,kvinne,engelsk,214,Språkprøven,Bomiljø,bolig 
+23,N/A,s0071,mann,nederlandsk,372,Språkprøven,Gjenbruk,miljø 
+35,A2/B1,s0568,kvinne,spansk,247,Språkprøven,Nyheter,media 
+32,B1/B2,s0726,kvinne,polsk,402,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+40,N/A,s2096,mann,nynorsk,250,Språkprøven,Penger og andre verdier,økonomi holdning 
+45,B1/B2,h0261,mann,engelsk,594,Høyere nivå,Mobiltelefonen,telefon 
+23,B2/C1,h0403,kvinne,tysk,477,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+27,N/A,s0951,kvinne,serbokroatisk,280,Språkprøven,Trafikk og boligområder,trafikk bolig 
+54,N/A,s0946,mann,serbokroatisk,78,Språkprøven,Fjernsynsprogram for barn,barn tv 
+35,B1,s0478,kvinne,russisk,384,Språkprøven,Møte med norsk kultur,kultur norge 
+35,B1/B2,h0473,kvinne,polsk,429,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+32,N/A,s0267,mann,albansk,362,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+28,N/A,s0108,mann,nederlandsk,285,Språkprøven,Reise,reise geografi 
+33,N/A,s0234,mann,albansk,212,Språkprøven,En hyggelig opplevelse,opplevelse 
+25,B1,s0627,kvinne,somali,330,Språkprøven,Viktige verdier i livet,verdier 
+34,B1/B2,h0207,mann,spansk,390,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+29,B2,h0154,kvinne,spansk,469,Høyere nivå,Å leve i store byer,bolig geografi 
+38,B2,h0467,kvinne,tysk,462,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+28,B2,s0753,kvinne,polsk,425,Språkprøven,Viktige verdier i livet,verdier 
+22,N/A,s0259,mann,albansk,236,Språkprøven,Flytting,familie flytting 
+19,N/A,h0677,kvinne,serbokroatisk,316,Høyere nivå,Inn- og utvandring,innvandring 
+24,B1/B2,s0995,kvinne,tysk,300,Språkprøven,Glede,folk følelser 
+46,B2/C1,h0447,mann,spansk,503,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+51,A2/B1,s0599,mann,somali,232,Språkprøven,Møte med norsk kultur,kultur norge 
+20,B2,s0966,kvinne,tysk,633,Språkprøven,Trafikk og boligområder,trafikk bolig 
+25,A2/B1,s0088,kvinne,somali,226,Språkprøven,Framtida,tid 
+23,N/A,h2020,kvinne,bokmål,380,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+27,B1/B2,h0551,mann,tysk,687,Høyere nivå,Trafikkdøden,trafikk død 
+25,N/A,h2054,mann,bokmål,595,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+25,N/A,s0281,mann,albansk,247,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+24,B2,h0466,kvinne,russisk,557,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+18,B1,s0443,kvinne,tysk,264,Språkprøven,Viktige verdier i livet,verdier 
+26,B1/B2,h0091,kvinne,polsk,282,Høyere nivå,Å leve i store byer,bolig geografi 
+40,N/A,h0007,kvinne,nederlandsk,771,Høyere nivå,Barnelitteratur,barn litteratur kultur 
+29,B2,h0333,mann,tysk,373,Høyere nivå,Husstander i Norge,familie befolkning norge 
+44,B2,h0515,kvinne,engelsk,570,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+44,B1,s0181,kvinne,vietnamesisk,351,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+31,N/A,s0083,kvinne,serbokroatisk,329,Språkprøven,Barneoppdragelse,barn 
+29,A2/B1,s0449,mann,tysk,238,Språkprøven,Nyheter,media 
+35,A2/B1,s0511,kvinne,russisk,302,Språkprøven,Den norske naturen,natur norge 
+22,N/A,s2030,mann,nynorsk,175,Språkprøven,Penger og andre verdier,økonomi holdning 
+30,B1/B2,s0562,mann,spansk,348,Språkprøven,Nyheter,media 
+24,N/A,s0050,mann,albansk,293,Språkprøven,Barneoppdragelse,barn 
+36,B1,s0163,kvinne,polsk,346,Språkprøven,Barneoppdragelse,barn 
+24,B1,s0832,kvinne,spansk,308,Språkprøven,Bomiljø,bolig 
+21,N/A,h2026,kvinne,nynorsk,452,Høyere nivå,Organdonasjon,helse organ 
+32,B1,s0563,kvinne,spansk,239,Språkprøven,Framtida,tid 
+32,N/A,s0609,kvinne,serbokroatisk,292,Språkprøven,Vennskap,folk relasjoner vennskap 
+58,N/A,s0072,mann,nederlandsk,245,Språkprøven,Før og nå,tid 
+36,B1/B2,h0276,kvinne,spansk,465,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+27,B1/B2,h0127,kvinne,polsk,469,Høyere nivå,Borgerlønn,økonomi 
+30,B1/B2,h0239,kvinne,polsk,480,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+48,B1,s0307,mann,engelsk,245,Språkprøven,Bomiljø,bolig 
+19,N/A,h2030,mann,bokmål,587,Høyere nivå,Organdonasjon,helse organ 
+63,N/A,s2018,mann,bokmål,309,Språkprøven,Penger og andre verdier,økonomi holdning 
+33,B1,s0939,kvinne,polsk,318,Språkprøven,Trafikk og boligområder,trafikk bolig 
+25,B1/B2,h0649,kvinne,polsk,544,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+31,B1,s0192,kvinne,engelsk,235,Språkprøven,Bomiljø,bolig 
+28,B2/C1,h0472,mann,engelsk,439,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+31,N/A,h0203,mann,albansk,574,Høyere nivå,Helse og livskvalitet,helse 
+33,A2/B1,s0776,kvinne,spansk,333,Språkprøven,Bomiljø,bolig 
+18,A2/B1,s0629,mann,vietnamesisk,267,Språkprøven,En hyggelig opplevelse,opplevelse 
+23,N/A,h2058,kvinne,bokmål,426,Høyere nivå,Organdonasjon,helse organ 
+26,N/A,h0124,kvinne,albansk,660,Høyere nivå,Politisk engasjement,politikk folk 
+24,N/A,s0265,mann,albansk,313,Språkprøven,Flytting,familie flytting 
+28,B2/C1,h0215,mann,engelsk,518,Høyere nivå,Mobiltelefon,telefon 
+27,A2/B1,s0566,kvinne,spansk,271,Språkprøven,Framtida,tid 
+22,N/A,s0278,mann,albansk,191,Språkprøven,Den norske naturen,natur norge 
+24,A2/B1,s0543,mann,somali,315,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+24,N/A,h0268,mann,nederlandsk,497,Høyere nivå,Bilisme,bil trafikk 
+30,B2/C1,h0570,kvinne,russisk,469,Høyere nivå,Kommunevalget i Norge,politikk valg 
+31,B1,s1005,kvinne,polsk,295,Språkprøven,En sport du liker,idrett/sport 
+28,A2/B1,s0551,kvinne,spansk,403,Språkprøven,Å treffe andre mennesker,folk møte 
+30,B1/B2,h0459,kvinne,russisk,452,Høyere nivå,Leselyst,litteratur kultur 
+32,B1/B2,h0555,mann,engelsk,454,Høyere nivå,Trafikkdøden,trafikk død 
+23,B2,h0383,kvinne,russisk,456,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+30,B2,h0081,kvinne,polsk,480,Høyere nivå,Å leve i store byer,bolig geografi 
+25,B2,h0161,kvinne,polsk,427,Høyere nivå,Inn- og utvandring,innvandring 
+28,N/A,h0703,mann,serbokroatisk,432,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+35,B1,s0911,mann,tysk,415,Språkprøven,Trafikk og boligområder,trafikk bolig 
+45,N/A,s0820,mann,serbokroatisk,301,Språkprøven,Viktige verdier i livet,verdier 
+30,B2/C1,h0401,kvinne,tysk,622,Høyere nivå,Borgerlønn,økonomi 
+20,B1,s1006,kvinne,tysk,353,Språkprøven,Likestilling,kjønn holdning 
+32,C1,h0157,kvinne,polsk,651,Høyere nivå,Barn og fysiske aktiviteter,barn idrett/sport 
+45,N/A,s0197,kvinne,nederlandsk,373,Språkprøven,Viktige verdier i livet,verdier 
+35,B1,s0854,kvinne,vietnamesisk,234,Språkprøven,Bilbruk,bil 
+28,A2/B1,s0115,mann,somali,234,Språkprøven,Framtida,tid 
+21,N/A,s0106,kvinne,nederlandsk,283,Språkprøven,Reise,reise geografi 
+41,B1/B2,h0643,kvinne,spansk,392,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+26,B2/C1,h0627,mann,spansk,756,Høyere nivå,Eldrebølgen,eldre familie 
+27,B1/B2,h0275,kvinne,russisk,460,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+34,A2,s0335,mann,engelsk,378,Språkprøven,Mobiltelefoner,telefon 
+35,N/A,s0369,kvinne,nederlandsk,349,Språkprøven,Reise,reise geografi 
+21,N/A,s0204,mann,albansk,178,Språkprøven,Framtida,tid 
+27,B2,h0614,kvinne,engelsk,519,Høyere nivå,Tilgjengelig arbeidsstyrke og behov i ulike yrker,arbeid yrke 
+37,C1,h0638,kvinne,polsk,509,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
+32,N/A,s0247,mann,albansk,333,Språkprøven,Barneoppdragelse,barn 
+25,N/A,s2072,mann,bokmål,270,Språkprøven,Penger og andre verdier,økonomi holdning 
+28,B1/B2,s0722,kvinne,polsk,460,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+33,N/A,h2052,mann,bokmål,348,Høyere nivå,Organdonasjon,helse organ 
+49,N/A,s0407,kvinne,nederlandsk,244,Språkprøven,Bomiljø,bolig 
+53,B1,s0316,mann,engelsk,224,Språkprøven,Bomiljø,bolig 
+21,B2/C1,h0505,kvinne,tysk,488,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+30,N/A,h0661,mann,nederlandsk,419,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+35,N/A,s0200,mann,albansk,180,Språkprøven,Nyheter,media 
+39,A2/B1,s0782,mann,spansk,295,Språkprøven,Konkurranse,idrett/sport konkurranse 
+24,C1,h0212,mann,engelsk,623,Høyere nivå,Bilisme,bil trafikk 
+21,B2,h0226,kvinne,tysk,345,Høyere nivå,Diktet 'Privat huskeregel' av Kolbjørn Falkeid,litteratur dikt 
+24,B1,s0510,kvinne,russisk,321,Språkprøven,Den norske naturen,natur norge 
+31,B1,h0581,kvinne,tysk,553,Høyere nivå,Trafikkdøden,trafikk død 
+30,A2/B1,s0167,mann,spansk,338,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+27,N/A,h2069,kvinne,bokmål,541,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+31,B2,h0542,mann,russisk,704,Høyere nivå,Miljøvern,miljø klima 
+21,N/A,h2079,kvinne,bokmål,396,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+19,N/A,h2038,kvinne,nynorsk,370,Høyere nivå,Organdonasjon,helse organ 
+50,N/A,s2020,kvinne,bokmål,231,Språkprøven,Sunnhet og helse,helse 
+33,B2,h0400,kvinne,tysk,488,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+24,B2,h0458,kvinne,engelsk,463,Høyere nivå,Leselyst,litteratur kultur 
+19,B2,s0633,mann,somali,246,Språkprøven,En interesse du har,interesse 
+26,B1,s0299,kvinne,engelsk,261,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+30,B1,s0555,kvinne,spansk,273,Språkprøven,Å treffe andre mennesker,folk møte 
+44,N/A,s0374,mann,nederlandsk,261,Språkprøven,Reise,reise geografi 
+39,B2,h0228,mann,tysk,585,Høyere nivå,Bilisme,bil trafikk 
+25,N/A,s0274,kvinne,albansk,279,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+24,B2,s0067,kvinne,russisk,401,Språkprøven,Vennskap,folk relasjoner vennskap 
+32,N/A,s0604,mann,serbokroatisk,342,Språkprøven,Alkohol og alkoholvaner,rus 
+20,N/A,h0034,kvinne,nederlandsk,569,Høyere nivå,Netthandel,-
+25,N/A,s0425,mann,nederlandsk,256,Språkprøven,Mobiltelefoner,telefon 
+32,N/A,s0137,kvinne,albansk,349,Språkprøven,Viktige verdier i livet,verdier 
+38,N/A,s0120,mann,nederlandsk,448,Språkprøven,Vennskap,folk relasjoner vennskap 
+25,B1,s0779,kvinne,spansk,310,Språkprøven,Bomiljø,bolig 
+25,B2,h0340,kvinne,spansk,646,Høyere nivå,Kommunevalget i Norge,politikk valg 
+30,B1/B2,s0784,kvinne,polsk,229,Språkprøven,Viktige verdier i livet,verdier 
+40,A2/B1,s0711,kvinne,vietnamesisk,342,Språkprøven,Den norske naturen,natur norge 
+34,A2/B1,s0700,mann,somali,278,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+40,B1,s0731,kvinne,vietnamesisk,278,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+19,B1,s0452,kvinne,tysk,315,Språkprøven,Mobiltelefoner,telefon 
+28,A2/B1,s0176,kvinne,spansk,266,Språkprøven,Barneoppdragelse,barn 
+23,B2/C1,h0095,kvinne,polsk,626,Høyere nivå,Diktet 'Sannheten' av Rolf Jacobsen,litteratur dikt 
+38,C1,h0210,kvinne,engelsk,622,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+26,B2,h0295,kvinne,polsk,674,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+34,N/A,h0352,kvinne,nederlandsk,514,Høyere nivå,Kommunevalget i Norge,politikk valg 
+42,N/A,s0950,mann,serbokroatisk,298,Språkprøven,Fjernsynsprogram for barn,barn tv 
+59,N/A,s0246,mann,albansk,332,Språkprøven,En bok du har lest,litteratur bok 
+42,N/A,s0232,kvinne,albansk,278,Språkprøven,Viktige verdier i livet,verdier 
+31,B1,s0292,mann,engelsk,235,Språkprøven,Bomiljø,bolig 
+21,N/A,h2088,kvinne,bokmål,496,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+22,B1,s0567,kvinne,spansk,222,Språkprøven,Framtida,tid 
+33,N/A,h2048,kvinne,bokmål,429,Høyere nivå,Organdonasjon,helse organ 
+34,N/A,s0130,kvinne,albansk,216,Språkprøven,En hyggelig opplevelse,opplevelse 
+24,N/A,s0144,kvinne,serbokroatisk,355,Språkprøven,Barneoppdragelse,barn 
+24,N/A,h0336,kvinne,albansk,556,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+38,A2/B1,s0571,kvinne,vietnamesisk,224,Språkprøven,Framtida,tid 
+19,N/A,s0110,kvinne,nederlandsk,234,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+38,B1/B2,s0956,kvinne,polsk,529,Språkprøven,Fjernsynsprogram for barn,barn tv 
+24,B1,s0484,kvinne,russisk,198,Språkprøven,Alkohol og alkoholvaner,rus 
+21,B2,h0141,mann,polsk,451,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
+22,B2,h0232,kvinne,russisk,419,Høyere nivå,Mobiltelefonen,telefon 
+19,N/A,s2076,mann,nynorsk,287,Språkprøven,Frihet og ansvar,holdning 
+45,B2,h0599,kvinne,polsk,399,Høyere nivå,Eldrebølgen,eldre familie 
+37,B1,s0678,kvinne,vietnamesisk,329,Språkprøven,Et yrke,arbeid yrke 
+24,B2,h0448,kvinne,russisk,435,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+20,N/A,h0001,mann,serbokroatisk,428,Høyere nivå,Mobbing på arbeidsplassen,arbeid mobbing holdning 
+40,A2/B1,s0171,kvinne,polsk,256,Språkprøven,Barneoppdragelse,barn 
+44,B2,h0439,kvinne,engelsk,771,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+28,N/A,h0530,kvinne,nederlandsk,512,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+29,A2,s0987,kvinne,vietnamesisk,218,Språkprøven,Mobiltelefoner,telefon 
+29,B2,h0248,kvinne,polsk,711,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+33,B1/B2,s0027,kvinne,tysk,268,Språkprøven,Viktige verdier i livet,verdier 
+19,A2/B1,s0016,kvinne,vietnamesisk,232,Språkprøven,Bomiljø,bolig 
+31,N/A,h0591,kvinne,nederlandsk,449,Høyere nivå,Integrering av innvandrere,innvandring 
+39,N/A,h2022,kvinne,bokmål,468,Høyere nivå,Organdonasjon,helse organ 
+25,A2/B1,s0008,mann,vietnamesisk,242,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+29,N/A,h0701,kvinne,serbokroatisk,452,Høyere nivå,Studier - bare for de unge?,utdannelse 
+34,B2,h0594,mann,engelsk,679,Høyere nivå,Trafikkdøden,trafikk død 
+35,B1,s0793,kvinne,polsk,227,Språkprøven,Nyheter,media 
+31,N/A,h0150,mann,nederlandsk,447,Høyere nivå,Livslang læring,utdannelse 
+33,B1,s0003,kvinne,spansk,286,Språkprøven,Bomiljø,bolig 
+45,B1/B2,h0273,kvinne,russisk,710,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+31,N/A,h2032,kvinne,bokmål,319,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+54,N/A,s0957,mann,serbokroatisk,342,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+25,B1/B2,h0142,kvinne,spansk,498,Høyere nivå,Borgerlønn,økonomi 
+27,B1,s0116,kvinne,russisk,233,Språkprøven,Møte med norsk kultur,kultur norge 
+43,B2,s0026,kvinne,tysk,241,Språkprøven,Mobiltelefoner,telefon 
+33,B2,h0398,mann,spansk,495,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+40,B2,h0309,kvinne,tysk,483,Høyere nivå,Bilisme,bil trafikk 
+22,B1,s0526,kvinne,russisk,266,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+26,B1/B2,h0299,kvinne,russisk,397,Høyere nivå,Diktet 'Privat huskeregel' av Kolbjørn Falkeid,litteratur dikt 
+29,B2,h0197,kvinne,russisk,490,Høyere nivå,'Import' av helsepersonell,helse arbeid innvandring 
+35,A2/B1,s0705,kvinne,spansk,215,Språkprøven,Den norske naturen,natur norge 
+19,B1,s0989,kvinne,tysk,273,Språkprøven,Boformer,bolig 
+53,N/A,s0821,kvinne,serbokroatisk,419,Språkprøven,Bomiljø,bolig 
+34,B1/B2,h0499,kvinne,engelsk,718,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+37,B2,h0380,mann,tysk,526,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+39,B2/C1,h0584,kvinne,tysk,741,Høyere nivå,Integrering av innvandrere,innvandring 
+39,N/A,h0111,.,serbokroatisk,566,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
+-1,B1/B2,s0066,kvinne,russisk,427,Språkprøven,Vennskap,folk relasjoner vennskap 
+32,B1,s0639,mann,somali,234,Språkprøven,En hyggelig opplevelse,opplevelse 
+34,B2,h0327,kvinne,russisk,442,Høyere nivå,Diktet 'Privat huskeregel' av Kolbjørn Falkeid,litteratur dikt 
+20,N/A,s2086,kvinne,bokmål,367,Språkprøven,Frihet og ansvar,holdning 
+46,B2,h0334,kvinne,engelsk,678,Høyere nivå,Diktet 'Et møte' av Kolbein Falkeid,litteratur dikt 
+25,N/A,s0212,mann,albansk,284,Språkprøven,Framtida,tid 
+24,N/A,s0209,mann,albansk,268,Språkprøven,Framtida,tid 
+34,B1,s0694,kvinne,spansk,421,Språkprøven,Den norske naturen,natur norge 
+24,A2/B1,s0076,kvinne,polsk,190,Språkprøven,Barneoppdragelse,barn 
+32,B1/B2,h0361,kvinne,spansk,453,Høyere nivå,Kommunevalget i Norge,politikk valg 
+24,A2/B1,s0886,kvinne,vietnamesisk,231,Språkprøven,Frihet og ansvar,holdning 
+31,B1,s0015,kvinne,engelsk,256,Språkprøven,Bomiljø,bolig 
+40,N/A,h0630,mann,nederlandsk,426,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+41,B2,h0256,kvinne,russisk,489,Høyere nivå,Mobiltelefonen,telefon 
+44,B1,s0470,mann,tysk,284,Språkprøven,Mobiltelefoner,telefon 
+27,B1/B2,h0411,kvinne,russisk,415,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+31,B1,s0747,kvinne,polsk,293,Språkprøven,Viktige verdier i livet,verdier 
+26,B1/B2,s0331,kvinne,engelsk,262,Språkprøven,Mobiltelefoner,telefon 
+22,A2/B1,s0487,kvinne,russisk,284,Språkprøven,Møte med norsk kultur,kultur norge 
+31,N/A,s0252,kvinne,albansk,279,Språkprøven,Før og nå,tid 
+23,B1/B2,s0324,kvinne,engelsk,193,Språkprøven,Mobiltelefoner,telefon 
+27,B1,s0225,kvinne,engelsk,196,Språkprøven,Møte med norsk kultur,kultur norge 
+27,N/A,h0282,mann,serbokroatisk,484,Høyere nivå,Diktet 'Privat huskeregel' av Kolbjørn Falkeid,litteratur dikt 
+22,B1,s0928,kvinne,tysk,333,Språkprøven,Trafikk og boligområder,trafikk bolig 
+27,N/A,s0363,mann,nederlandsk,324,Språkprøven,Reise,reise geografi 
+26,B1,s0693,kvinne,vietnamesisk,389,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+33,B1,s0305,kvinne,engelsk,364,Språkprøven,Bomiljø,bolig 
+29,B1/B2,h0306,kvinne,russisk,458,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+22,B2,s0964,kvinne,tysk,363,Språkprøven,Fjernsynsprogram for barn,barn tv 
+28,B2/C1,h0049,kvinne,spansk,466,Høyere nivå,Det norske monarkiet,norge styreform 
+40,N/A,s0203,mann,albansk,113,Språkprøven,Nyheter,media 
+20,A2/B1,s0101,mann,somali,321,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+50,N/A,s0406,mann,nederlandsk,240,Språkprøven,Konkurranse,idrett/sport konkurranse 
+35,N/A,s0253,mann,albansk,191,Språkprøven,Før og nå,tid 
+34,A2/B1,s0713,kvinne,vietnamesisk,265,Språkprøven,Den norske naturen,natur norge 
+30,B1,s0047,kvinne,spansk,282,Språkprøven,Kultur og idrett,idrett/sport kultur 
+28,N/A,h0065,kvinne,serbokroatisk,672,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+39,N/A,h0066,mann,nederlandsk,540,Høyere nivå,Netthandel,handel økonomi media 
+51,N/A,s2032,kvinne,bokmål,237,Språkprøven,Sunnhet og helse,helse 
+32,B1,s0512,kvinne,russisk,239,Språkprøven,Den norske naturen,natur norge 
+17,A2/B1,s0520,mann,russisk,299,Språkprøven,En religion du kjenner,religion 
+24,B1,s0309,mann,engelsk,273,Språkprøven,Bomiljø,bolig 
+21,N/A,s2063,kvinne,bokmål,509,Språkprøven,Penger og andre verdier,økonomi holdning 
+28,A2/B1,s0618,mann,somali,252,Språkprøven,Vennskap,folk relasjoner vennskap 
+30,B1/B2,h0073,kvinne,spansk,721,Høyere nivå,Å leve i store byer,bolig geografi 
+19,B2,h0500,kvinne,engelsk,720,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+35,N/A,h2009,mann,bokmål,411,Høyere nivå,Organdonasjon,helse organ 
+49,N/A,s2039,mann,bokmål,268,Språkprøven,Penger og andre verdier,økonomi holdning 
+43,A2/B1,s0194,mann,engelsk,456,Språkprøven,Bomiljø,bolig 
+21,B1/B2,h0390,mann,spansk,746,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+21,B2,h0419,kvinne,russisk,654,Høyere nivå,Bestselgere og bokbransjen,bok litteratur kultur 
+32,A2/B1,s0737,mann,spansk,250,Språkprøven,Bomiljø,bolig 
+29,B1,s0586,mann,vietnamesisk,287,Språkprøven,Min første jobb,arbeid 
+25,B2,h0550,kvinne,engelsk,570,Høyere nivå,Humor,humor kultur 
+35,N/A,h0642,kvinne,nederlandsk,640,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+30,N/A,h0205,kvinne,serbokroatisk,498,Høyere nivå,'Import' av helsepersonell,helse arbeid innvandring 
+32,A2/B1,s0549,kvinne,spansk,348,Språkprøven,Å treffe andre mennesker,folk møte 
+22,B1,h0099,mann,spansk,464,Høyere nivå,Miljøvern,miljø klima 
+22,N/A,h2037,mann,bokmål,455,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+33,B2,h0027,kvinne,polsk,410,Høyere nivå,Ytringsfrihet,politikk holdning 
+38,B1/B2,s0300,mann,engelsk,249,Språkprøven,Bomiljø,bolig 
+38,B1/B2,h0665,mann,spansk,499,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+27,A2/B1,s0865,mann,somali,276,Språkprøven,Bilbruk,bil 
+41,N/A,s0954,kvinne,serbokroatisk,310,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+26,B1,s0901,kvinne,vietnamesisk,258,Språkprøven,En sport du liker,idrett/sport 
+42,N/A,s0272,kvinne,albansk,316,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+33,N/A,s0199,mann,albansk,214,Språkprøven,Framtida,tid 
+34,B2,h0330,kvinne,spansk,487,Høyere nivå,Kommunevalget i Norge,politikk valg 
+29,B1,s0446,kvinne,tysk,261,Språkprøven,Mobiltelefoner,telefon 
+46,N/A,s2049,kvinne,bokmål,297,Språkprøven,Sunnhet og helse,helse 
+45,N/A,h0698,mann,serbokroatisk,553,Høyere nivå,Private skoler,skole 
+29,N/A,h0386,kvinne,nederlandsk,471,Høyere nivå,Elitesport og fellesskap,idrett/sport 
+32,N/A,h0519,kvinne,serbokroatisk,545,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+27,N/A,s0591,kvinne,serbokroatisk,275,Språkprøven,Alkohol og alkoholvaner,rus 
+34,A2/B1,s0699,mann,somali,227,Språkprøven,En religion du kjenner,religion 
+32,A2,s0507,mann,russisk,183,Språkprøven,Den norske naturen,natur norge 
+38,N/A,h2004,kvinne,nynorsk,677,Høyere nivå,Organdonasjon,helse organ 
+41,B1,h0274,kvinne,russisk,297,Høyere nivå,Bilisme,bil trafikk 
+35,B2/C1,h0444,kvinne,polsk,583,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+35,B2,h0422,kvinne,russisk,527,Høyere nivå,Leselyst,litteratur kultur 
+23,N/A,s0323,kvinne,albansk,200,Språkprøven,Nyheter,media 
+31,B2/C1,h0033,mann,spansk,354,Høyere nivå,Netthandel,handel økonomi media 
+32,B1,s0499,kvinne,russisk,261,Språkprøven,En religion du kjenner,religion 
+33,N/A,h0158,kvinne,serbokroatisk,463,Høyere nivå,Inn- og utvandring,innvandring 
+32,A2/B1,s0721,kvinne,polsk,352,Språkprøven,Kultur og idrett,idrett/sport kultur 
+29,B1,s0994,kvinne,tysk,265,Språkprøven,Mobiltelefoner,telefon 
+18,B1,s0040,kvinne,russisk,350,Språkprøven,Den norske naturen,natur norge 
+23,B1,s0844,mann,spansk,355,Språkprøven,Bomiljø,bolig 
+21,B2/C1,h0262,mann,polsk,550,Høyere nivå,Bilisme,bil trafikk 
+63,B1,s0328,mann,engelsk,241,Språkprøven,Nyheter,media 
+19,B2/C1,h0216,kvinne,engelsk,480,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+34,B1,s0464,kvinne,tysk,300,Språkprøven,Nyheter,media 
+42,A2/B1,s0686,mann,somali,285,Språkprøven,En religion du kjenner,religion 
+44,B1,s0320,mann,engelsk,300,Språkprøven,Bomiljø,bolig 
+30,B1,s0774,kvinne,spansk,321,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+24,N/A,h0514,kvinne,nederlandsk,493,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+23,B2,h0305,kvinne,tysk,595,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+34,B1,s0529,kvinne,russisk,211,Språkprøven,Den norske naturen,natur norge 
+28,A2/B1,s0561,kvinne,spansk,272,Språkprøven,Framtida,tid 
+32,B1,s0093,kvinne,vietnamesisk,369,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+47,N/A,h2018,kvinne,nynorsk,646,Høyere nivå,Organdonasjon,helse organ 
+22,B1/B2,s0461,kvinne,tysk,293,Språkprøven,Mobiltelefoner,telefon 
+37,A2/B1,s0465,kvinne,tysk,250,Språkprøven,Mobiltelefoner,telefon 
+36,B2,h0485,mann,tysk,551,Høyere nivå,Leselyst,litteratur kultur 
+32,N/A,h0015,kvinne,nederlandsk,445,Høyere nivå,Barnelitteratur,barn litteratur kultur 
+41,N/A,s0415,mann,nederlandsk,371,Språkprøven,Bomiljø,bolig 
+37,A2/B1,s0474,kvinne,russisk,276,Språkprøven,Vennskap,folk relasjoner vennskap 
+37,B2,h0611,kvinne,russisk,411,Høyere nivå,Adopsjon,barn familie 
+30,A2/B1,s0590,kvinne,somali,169,Språkprøven,Min første jobb,arbeid 
+25,N/A,s0380,mann,nederlandsk,293,Språkprøven,Nyheter,media 
+42,B1/B2,s0471,kvinne,tysk,259,Språkprøven,Nyheter,media 
+34,B2,h0563,kvinne,spansk,688,Høyere nivå,Integrering av innvandrere,innvandring 
+22,N/A,s2028,mann,bokmål,262,Språkprøven,Frihet og ansvar,holdning 
+27,B1/B2,h0659,kvinne,spansk,584,Høyere nivå,Hva er en god film,film kultur holdning 
+27,N/A,h0129,kvinne,serbokroatisk,432,Høyere nivå,Uføretrygd,velferd økonomi 
+38,A2/B1,s0986,mann,vietnamesisk,328,Språkprøven,Glede,folk følelser 
+33,N/A,s0201,kvinne,albansk,360,Språkprøven,Framtida,tid 
+26,N/A,s0075,kvinne,nederlandsk,207,Språkprøven,Gjenbruk,miljø 
+33,A2/B1,s0644,mann,somali,308,Språkprøven,En interesse du har,interesse 
+28,B1,s0937,kvinne,russisk,630,Språkprøven,Fjernsynsprogram for barn,barn tv 
+44,N/A,s2046,kvinne,bokmål,326,Språkprøven,Sunnhet og helse,helse 
+20,N/A,s0926,kvinne,serbokroatisk,428,Språkprøven,Fjernsynsprogram for barn,barn tv 
+32,B1,s0301,mann,engelsk,267,Språkprøven,Bomiljø,bolig 
+40,N/A,s0273,mann,albansk,323,Språkprøven,Den norske naturen,natur norge 
+39,B1,s0018,kvinne,engelsk,326,Språkprøven,Bomiljø,bolig 
+36,B1/B2,h0112,kvinne,polsk,609,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
+30,N/A,h0063,kvinne,nederlandsk,396,Høyere nivå,Netthandel,handel økonomi media 
+30,N/A,h0266,mann,nederlandsk,474,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+46,N/A,s0236,kvinne,albansk,183,Språkprøven,Viktige verdier i livet,verdier 
+20,B2,h0241,kvinne,engelsk,699,Høyere nivå,Mobiltelefonen,telefon 
+35,B1/B2,s0334,kvinne,engelsk,226,Språkprøven,Mobiltelefoner,telefon 
+40,B1/B2,s0174,kvinne,spansk,231,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+41,N/A,s2012,kvinne,bokmål,291,Språkprøven,Penger og andre verdier,økonomi holdning 
+21,N/A,h0616,kvinne,nederlandsk,634,Høyere nivå,Adopsjon,barn familie 
+52,N/A,s2034,kvinne,bokmål,378,Språkprøven,Frihet og ansvar,holdning 
+27,A2/B1,s0576,kvinne,somali,189,Språkprøven,Min første jobb,arbeid 
+45,B2/C1,h0061,kvinne,polsk,523,Høyere nivå,Det norske monarkiet,norge styreform 
+26,B2,h0494,kvinne,polsk,445,Høyere nivå,Kvinner i topposisjoner,kjønn yrke arbeid 
+23,B2,h0223,kvinne,russisk,520,Høyere nivå,Mobiltelefonen,telefon 
+34,N/A,s0196,kvinne,nederlandsk,268,Språkprøven,Viktige verdier i livet,verdier 
+28,N/A,s0595,kvinne,serbokroatisk,241,Språkprøven,Vennskap,folk relasjoner vennskap 
+42,B2,h0402,kvinne,tysk,543,Høyere nivå,Borgerlønn,økonomi 
+19,N/A,h2043,mann,bokmål,451,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+26,N/A,h2061,mann,bokmål,337,Høyere nivå,Organdonasjon,helse organ 
+28,N/A,s0262,mann,albansk,350,Språkprøven,Et yrke,arbeid yrke 
+22,N/A,h2011,kvinne,nynorsk,629,Høyere nivå,Organdonasjon,helse organ 
+40,B1/B2,s0810,kvinne,spansk,303,Språkprøven,Bomiljø,bolig 
+21,A2/B1,s0621,kvinne,somali,284,Språkprøven,En hyggelig opplevelse,opplevelse 
+66,N/A,s2013,mann,bokmål,250,Språkprøven,Sunnhet og helse,helse 
+26,N/A,s2099,mann,bokmål,275,Språkprøven,Sunnhet og helse,helse 
+28,N/A,h0687,kvinne,albansk,447,Høyere nivå,Inn- og utvandring,innvandring 
+24,N/A,s2058,mann,bokmål,423,Språkprøven,Frihet og ansvar,holdning 
+25,B1/B2,h0381,kvinne,polsk,363,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+19,N/A,h0654,kvinne,albansk,528,Høyere nivå,Hva er en god film,film kultur holdning 
+24,B2,h0655,mann,spansk,548,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+22,N/A,s0153,kvinne,serbokroatisk,345,Språkprøven,Flytting,familie flytting 
+58,N/A,s2035,kvinne,bokmål,280,Språkprøven,Penger og andre verdier,økonomi holdning 
+34,A2/B1,s0814,kvinne,spansk,326,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+34,B1/B2,h0296,kvinne,tysk,302,Høyere nivå,Bilisme,bil trafikk 
+27,B2,h0583,kvinne,polsk,661,Høyere nivå,Integrering av innvandrere,innvandring 
+23,B1,s0766,kvinne,polsk,257,Språkprøven,Nyheter,media 
+50,B1,s0319,mann,engelsk,355,Språkprøven,Bomiljø,bolig 
+40,A2/B1,s0140,kvinne,vietnamesisk,368,Språkprøven,En hyggelig opplevelse,opplevelse 
+31,N/A,s0412,mann,nederlandsk,342,Språkprøven,Bomiljø,bolig 
+30,N/A,s0612,mann,serbokroatisk,265,Språkprøven,Alkohol og alkoholvaner,rus 
+49,A2/B1,s0862,kvinne,vietnamesisk,296,Språkprøven,Framtida,tid 
+23,B1,s0065,kvinne,tysk,390,Språkprøven,Vennskap,folk relasjoner vennskap 
+30,N/A,h0600,mann,serbokroatisk,643,Høyere nivå,Adopsjon,barn familie 
+18,B1,s0548,kvinne,spansk,342,Språkprøven,Å treffe andre mennesker,folk møte 
+25,N/A,h0024,mann,serbokroatisk,442,Høyere nivå,Det norske monarkiet,norge styreform 
+33,B2,h0446,kvinne,tysk,704,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+23,N/A,s0135,kvinne,albansk,267,Språkprøven,En hyggelig opplevelse,opplevelse 
+29,B2,h0397,mann,russisk,482,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+22,N/A,s0148,kvinne,nederlandsk,295,Språkprøven,Barneoppdragelse,barn 
+29,C1,h0731,kvinne,tysk,460,Høyere nivå,Ytringsfrihet i Norge,politikk norge holdning 
+18,N/A,s0238,kvinne,albansk,214,Språkprøven,Viktige verdier i livet,verdier 
+28,B2,h0547,kvinne,russisk,673,Høyere nivå,Integrering av innvandrere,innvandring 
+62,B1/B2,h0491,kvinne,spansk,450,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+26,B1/B2,h0372,kvinne,spansk,472,Høyere nivå,Borgerlønn,økonomi 
+23,B2/C1,h0346,kvinne,tysk,578,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+28,B2,h0258,kvinne,tysk,661,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+20,N/A,s0970,kvinne,nederlandsk,424,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+34,N/A,s0597,mann,serbokroatisk,219,Språkprøven,Vennskap,folk relasjoner vennskap 
+26,A2/B1,s0985,kvinne,vietnamesisk,293,Språkprøven,Glede,folk følelser 
+24,B2,h0319,kvinne,russisk,638,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+31,B2/C1,h0249,kvinne,tysk,811,Høyere nivå,Bilisme,bil trafikk 
+43,B2,h0190,kvinne,russisk,467,Høyere nivå,Helse og livskvalitet,helse 
+33,B2,h0270,mann,spansk,440,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+42,B2/C1,h0238,kvinne,engelsk,900,Høyere nivå,Mobiltelefonen,telefon 
+25,B1/B2,s0506,kvinne,russisk,456,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+33,B1,s0475,kvinne,russisk,334,Språkprøven,Møte med norsk kultur,kultur norge 
+51,B1/B2,s0719,kvinne,polsk,267,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+30,B1,s0352,mann,engelsk,196,Språkprøven,Nyheter,media 
+32,B2,h0510,mann,engelsk,481,Høyere nivå,Miljøvern,miljø klima 
+19,N/A,h2044,kvinne,bokmål,362,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+31,B1,s0430,kvinne,tysk,392,Språkprøven,Møte med norsk kultur,kultur norge 
+44,A2/B1,s0014,mann,engelsk,234,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+26,B1,s0302,mann,engelsk,273,Språkprøven,Bomiljø,bolig 
+27,A2/B1,s0102,kvinne,somali,280,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+25,N/A,s0035,mann,serbokroatisk,237,Språkprøven,Flytting,familie flytting 
+29,N/A,s0229,mann,albansk,305,Språkprøven,Vennskap,folk relasjoner vennskap 
+23,B1/B2,h0289,kvinne,engelsk,541,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+26,B1/B2,h0670,kvinne,spansk,608,Høyere nivå,Organdonasjon,helse organ 
+29,B2,h0456,kvinne,engelsk,576,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+26,B2/C1,h0220,kvinne,russisk,547,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+24,B2,s0934,kvinne,tysk,372,Språkprøven,Trafikk og boligområder,trafikk bolig 
+38,N/A,s0276,kvinne,albansk,248,Språkprøven,Den norske naturen,natur norge 
+41,A2/B1,s0061,kvinne,polsk,236,Språkprøven,Møte med norsk kultur,kultur norge 
+32,B2/C1,h0179,kvinne,engelsk,524,Høyere nivå,'Import' av helsepersonell,helse arbeid innvandring 
+23,B2,h0067,kvinne,polsk,733,Høyere nivå,Netthandel,handel økonomi media 
+22,N/A,s0388,mann,nederlandsk,223,Språkprøven,Framtida,tid 
+33,B2,h0631,kvinne,polsk,755,Høyere nivå,Nærmiljø og lokalsamfunn,geografi samfunn folk 
+22,B2,s0744,mann,engelsk,260,Språkprøven,Viktige verdier i livet,verdier 
+26,B1,h0691,mann,somali,472,Høyere nivå,Bruk av musikk,musikk kultur 
+32,N/A,s0210,mann,albansk,176,Språkprøven,Å treffe andre mennesker,folk møte 
+34,B1/B2,h0237,kvinne,russisk,449,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+32,N/A,s2053,kvinne,bokmål,348,Språkprøven,Frihet og ansvar,holdning 
+40,B1,s0913,kvinne,russisk,245,Språkprøven,Trafikk og boligområder,trafikk bolig 
+32,B1,s0486,kvinne,russisk,351,Språkprøven,Møte med norsk kultur,kultur norge 
+19,N/A,h2083,kvinne,bokmål,650,Høyere nivå,Organdonasjon,helse organ 
+32,A2/B1,s0537,kvinne,russisk,285,Språkprøven,Den norske naturen,natur norge 
+20,B1,s1002,kvinne,tysk,457,Språkprøven,Boformer,bolig 
+21,N/A,h2072,mann,bokmål,427,Høyere nivå,Organdonasjon,helse organ 
+46,N/A,s2057,mann,bokmål,375,Språkprøven,Penger og andre verdier,økonomi holdning 
+52,N/A,s2002,kvinne,bokmål,433,Språkprøven,Penger og andre verdier,økonomi holdning 
+20,B1/B2,h0206,kvinne,tysk,647,Høyere nivå,Mobiltelefonen,telefon 
+32,B2/C1,h0354,mann,spansk,610,Høyere nivå,Kommunevalget i Norge,politikk valg 
+32,B1/B2,s0436,kvinne,tysk,379,Språkprøven,Alkohol og alkoholvaner,rus 
+48,A2/B1,s0751,mann,engelsk,252,Språkprøven,Mobiltelefoner,telefon 
+32,N/A,s2056,mann,bokmål,338,Språkprøven,Sunnhet og helse,helse 
+41,B1/B2,h0117,mann,spansk,517,Høyere nivå,Miljøvern,miljø klima 
+24,N/A,s0398,kvinne,nederlandsk,364,Språkprøven,En sport du liker,idrett/sport 
+34,B2,h0031,kvinne,polsk,412,Høyere nivå,Ytringsfrihet,politikk holdning 
+24,B1,s1004,mann,somali,211,Språkprøven,Boformer,bolig 
+27,N/A,s0151,mann,serbokroatisk,236,Språkprøven,Flytting,familie flytting 
+49,N/A,s0904,kvinne,serbokroatisk,312,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+19,B1/B2,h0538,kvinne,russisk,589,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+29,B2,h0012,kvinne,spansk,526,Høyere nivå,Verdikommisjonen,organisasjon 
+31,A2/B1,s0890,kvinne,vietnamesisk,349,Språkprøven,Penger og andre verdier,økonomi holdning 
+22,B2,h0068,kvinne,polsk,810,Høyere nivå,Netthandel,handel økonomi media 
+23,B2/C1,h0490,kvinne,tysk,875,Høyere nivå,Leselyst,litteratur kultur 
+27,N/A,s0960,kvinne,nederlandsk,313,Språkprøven,Trafikk og boligområder,trafikk bolig 
+20,N/A,s0413,kvinne,nederlandsk,535,Språkprøven,Konkurranse,idrett/sport konkurranse 
+20,N/A,h0278,mann,albansk,537,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+38,A2,s0467,mann,tysk,251,Språkprøven,Mobiltelefoner,telefon 
+21,N/A,h2089,kvinne,bokmål,506,Høyere nivå,Organdonasjon,helse organ 
+34,B2,h0175,mann,spansk,563,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+27,B2,h0358,mann,spansk,683,Høyere nivå,Kommunevalget i Norge,politikk valg 
+45,B1/B2,h0590,kvinne,russisk,429,Høyere nivå,Integrering av innvandrere,innvandring 
+27,B2,h0546,kvinne,engelsk,604,Høyere nivå,Borgerlønn,økonomi 
+37,B2/C1,h0097,kvinne,spansk,447,Høyere nivå,Den lille forskjellen,kjønn 
+26,B2,h0236,mann,spansk,522,Høyere nivå,Mobiltelefonen,telefon 
+44,B2,h0347,kvinne,polsk,772,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+21,N/A,h2099,mann,bokmål,436,Høyere nivå,Organdonasjon,helse organ 
+34,B1,s0905,kvinne,russisk,349,Språkprøven,Trafikk og boligområder,trafikk bolig 
+17,A2/B1,s0847,mann,spansk,295,Språkprøven,Bomiljø,bolig 
+22,A2,s0708,kvinne,somali,209,Språkprøven,En religion du kjenner,religion 
+39,N/A,s0601,kvinne,serbokroatisk,291,Språkprøven,Vennskap,folk relasjoner vennskap 
+38,N/A,s0049,mann,albansk,230,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+33,B1/B2,s0036,kvinne,russisk,191,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+29,N/A,s0365,kvinne,nederlandsk,329,Språkprøven,Bolig og bosted,bolig 
+37,N/A,h0384,mann,serbokroatisk,512,Høyere nivå,Diktet 'Skøyteløperen' av Peter R Holm,litteratur dikt idrett 
+47,A2/B1,s0485,kvinne,russisk,196,Språkprøven,Vennskap,folk relasjoner vennskap 
+24,B1/B2,s0958,kvinne,russisk,267,Språkprøven,Fjernsynsprogram for barn,barn tv 
+29,B1/B2,s0468,kvinne,tysk,390,Språkprøven,Nyheter,media 
+35,B2,h0159,mann,spansk,523,Høyere nivå,Inn- og utvandring,innvandring 
+42,N/A,h0715,kvinne,serbokroatisk,454,Høyere nivå,Blogging,data kommunikasjon 
+27,B1,s0518,mann,russisk,194,Språkprøven,Den norske naturen,natur norge 
+21,N/A,h0663,kvinne,nederlandsk,555,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+22,N/A,h2067,kvinne,nynorsk,726,Høyere nivå,Organdonasjon,helse organ 
+32,A2,s0681,mann,somali,191,Språkprøven,Den norske naturen,natur norge 
+32,N/A,s0275,mann,albansk,244,Språkprøven,Den norske naturen,natur norge 
+32,N/A,s0399,mann,nederlandsk,239,Språkprøven,Røyking,helse røyking 
+25,B1,s0583,kvinne,vietnamesisk,422,Språkprøven,En sport du liker,idrett/sport 
+36,A2/B1,s0118,kvinne,russisk,247,Språkprøven,Vennskap,folk relasjoner vennskap 
+22,N/A,s0223,kvinne,albansk,256,Språkprøven,Møte med norsk kultur,kultur norge 
+38,B2/C1,h0128,mann,spansk,555,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
+28,N/A,h0043,kvinne,serbokroatisk,489,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+25,B1,s0823,mann,spansk,250,Språkprøven,Bomiljø,bolig 
+24,B1/B2,h0441,kvinne,engelsk,486,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+24,N/A,s2026,kvinne,bokmål,258,Språkprøven,Sunnhet og helse,helse 
+23,N/A,h2019,kvinne,bokmål,822,Høyere nivå,Organdonasjon,helse organ 
+31,B1/B2,h0006,kvinne,spansk,489,Høyere nivå,Tusenårsskiftet,tid 
+37,B2,h0229,kvinne,engelsk,433,Høyere nivå,Mobiltelefonen,telefon 
+27,B1/B2,s0728,kvinne,polsk,441,Språkprøven,Barneoppdragelse,barn 
+23,B2,h0445,kvinne,polsk,634,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+26,A2/B1,s0584,mann,somali,218,Språkprøven,Min første jobb,arbeid 
+21,B1,s0557,mann,vietnamesisk,382,Språkprøven,Framtida,tid 
+32,B1,s0326,mann,engelsk,261,Språkprøven,Nyheter,media 
+32,B1,h0393,mann,spansk,513,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+24,B2,h0104,kvinne,polsk,694,Høyere nivå,Den lille forskjellen,kjønn 
+35,B2,h0531,kvinne,polsk,522,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+31,B2,h0503,kvinne,engelsk,586,Høyere nivå,Leselyst,litteratur kultur 
+30,B2/C1,h0433,mann,tysk,925,Høyere nivå,Miljøvern,miljø klima 
+37,A2/B1,s0293,mann,engelsk,516,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+22,N/A,s2082,mann,bokmål,260,Språkprøven,Penger og andre verdier,økonomi holdning 
+33,B1/B2,s0981,kvinne,polsk,249,Språkprøven,Mobiltelefoner,telefon 
+23,N/A,h0035,kvinne,serbokroatisk,228,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+43,N/A,s0261,mann,albansk,281,Språkprøven,Et yrke,arbeid yrke 
+24,N/A,s0420,kvinne,nederlandsk,320,Språkprøven,Bomiljø,bolig 
+23,N/A,h0108,kvinne,serbokroatisk,511,Høyere nivå,Den lille forskjellen,kjønn 
+17,B2,h0572,kvinne,engelsk,743,Høyere nivå,Trafikkdøden,trafikk død 
+36,B1,s0043,kvinne,spansk,230,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+19,B1,s0189,kvinne,engelsk,239,Språkprøven,Bomiljø,bolig 
+18,B2,s0438,kvinne,tysk,509,Språkprøven,Vennskap,folk relasjoner vennskap 
+25,N/A,h0121,kvinne,nederlandsk,591,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
+20,N/A,h2007,mann,bokmål,381,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+26,B1,s0219,kvinne,engelsk,392,Språkprøven,Møte med norsk kultur,kultur norge 
+36,N/A,h0721,kvinne,serbokroatisk,648,Høyere nivå,Tidsklemmen,folk familie 
+22,A2/B1,s0005,kvinne,vietnamesisk,233,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+30,A2/B1,s0587,mann,somali,164,Språkprøven,Min første jobb,arbeid 
+39,B1,s0685,kvinne,spansk,159,Språkprøven,Den norske naturen,natur norge 
+27,B1,s0746,kvinne,spansk,296,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+34,N/A,s2051,kvinne,bokmål,288,Språkprøven,Frihet og ansvar,holdning 
+29,N/A,h0702,mann,serbokroatisk,608,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+20,N/A,s0962,kvinne,serbokroatisk,295,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+35,N/A,s0277,mann,albansk,388,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+49,B2,h0054,kvinne,spansk,442,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+40,A2/B1,s0706,kvinne,spansk,225,Språkprøven,Den norske naturen,natur norge 
+27,A2/B1,s0556,kvinne,vietnamesisk,361,Språkprøven,Framtida,tid 
+20,N/A,h0166,kvinne,albansk,294,Høyere nivå,Barn og fysiske aktiviteter,barn idrett/sport 
+25,B1,s0647,mann,polsk,302,Språkprøven,Gjenbruk,miljø 
+27,B1/B2,h0672,kvinne,spansk,408,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+36,A2/B1,s0858,kvinne,vietnamesisk,261,Språkprøven,En sport du liker,idrett/sport 
+30,B1,s0791,.,polsk,271,Språkprøven,Mobiltelefoner,telefon 
+41,N/A,h0707,kvinne,serbokroatisk,610,Høyere nivå,Den gode skolen,skole 
+38,B1,s0859,kvinne,somali,226,Språkprøven,Framtida,tid 
+37,B2,s0357,kvinne,engelsk,418,Språkprøven,Mobiltelefoner,telefon 
+24,N/A,s2073,kvinne,bokmål,355,Språkprøven,Sunnhet og helse,helse 
+16,N/A,h0719,mann,serbokroatisk,608,Høyere nivå,Tidsklemmen,folk familie 
+31,A2/B1,s0630,kvinne,vietnamesisk,311,Språkprøven,En bok du har lest,litteratur bok 
+42,N/A,s0022,kvinne,nederlandsk,280,Språkprøven,Bomiljø,bolig 
+35,B1,s0903,kvinne,russisk,299,Språkprøven,Trafikk og boligområder,trafikk bolig 
+26,N/A,h0198,mann,albansk,436,Høyere nivå,Sangtradisjon,musikk kultur 
+35,B2,h0684,mann,somali,722,Høyere nivå,Inn- og utvandring,innvandring 
+36,N/A,s0048,kvinne,albansk,244,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+27,B2,h0260,kvinne,tysk,554,Høyere nivå,Bilisme,bil trafikk 
+43,N/A,s0424,kvinne,nederlandsk,280,Språkprøven,Mobiltelefoner,telefon 
+35,B1/B2,s0603,kvinne,polsk,235,Språkprøven,Møte med norsk kultur,kultur norge 
+26,B1,s0533,kvinne,russisk,189,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+26,B2/C1,h0635,kvinne,polsk,666,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
+40,C1,h0009,kvinne,polsk,727,Høyere nivå,Et dikt av Einar Skjæraasen,litteratur dikt 
+29,B1,s0509,mann,russisk,235,Språkprøven,Den norske naturen,natur norge 
+38,N/A,s0286,kvinne,albansk,243,Språkprøven,Kultur og idrett,idrett/sport kultur 
+46,B1,s0523,kvinne,russisk,374,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+31,B1/B2,s0019,kvinne,engelsk,333,Språkprøven,Bomiljø,bolig 
+33,N/A,h0714,kvinne,albansk,558,Høyere nivå,Den gode skolen,skole 
+24,A2/B1,s0087,kvinne,somali,247,Språkprøven,Framtida,tid 
+35,A2/B1,s0661,mann,somali,280,Språkprøven,Barneoppdragelse,barn 
+54,N/A,s2009,kvinne,bokmål,256,Språkprøven,Frihet og ansvar,holdning 
+21,N/A,s0206,mann,albansk,215,Språkprøven,Framtida,tid 
+23,N/A,s2084,kvinne,bokmål,307,Språkprøven,Penger og andre verdier,økonomi holdning 
+38,A2/B1,s0565,kvinne,spansk,278,Språkprøven,Framtida,tid 
+22,A2/B1,s0626,mann,vietnamesisk,327,Språkprøven,En bok du har lest,litteratur bok 
+28,N/A,s0813,mann,serbokroatisk,205,Språkprøven,Bomiljø,bolig 
+20,B2,h0329,kvinne,polsk,466,Høyere nivå,Mobiltelefonen,telefon 
+25,B2/C1,h0406,kvinne,russisk,530,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+27,B1,s0593,kvinne,polsk,384,Språkprøven,Vennskap,folk relasjoner vennskap 
+40,N/A,s0133,mann,albansk,240,Språkprøven,En hyggelig opplevelse,opplevelse 
+29,N/A,s2069,kvinne,bokmål,430,Språkprøven,Sunnhet og helse,helse 
+50,N/A,h0675,kvinne,serbokroatisk,277,Høyere nivå,Organdonasjon,helse organ 
+29,A2/B1,s0754,mann,spansk,255,Språkprøven,Bomiljø,bolig 
+43,B2,h0083,kvinne,spansk,543,Høyere nivå,Å leve i store byer,bolig geografi 
+34,N/A,s0907,kvinne,serbokroatisk,315,Språkprøven,Fjernsynsprogram for barn,barn tv 
+33,B2/C1,h0598,kvinne,russisk,485,Høyere nivå,Eldrebølgen,eldre familie 
+38,B1,h0568,kvinne,tysk,423,Høyere nivå,Integrering av innvandrere,innvandring 
+34,B2,h0621,mann,engelsk,517,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+26,B1,s0185,kvinne,vietnamesisk,349,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+26,B1,s0879,mann,somali,380,Språkprøven,Framtida,tid 
+30,A2/B1,s0887,mann,vietnamesisk,302,Språkprøven,Sunnhet og helse,helse 
+20,N/A,h2029,mann,nynorsk,466,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+43,B2,h0479,kvinne,polsk,552,Høyere nivå,Leselyst,litteratur kultur 
+45,N/A,h0735,mann,nederlandsk,544,Høyere nivå,Ytringsfrihet i Norge,politikk norge holdning 
+29,B2/C1,h0468,mann,engelsk,665,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+46,B2,h0618,mann,polsk,660,Høyere nivå,Adopsjon,barn familie 
+18,B1,h0573,kvinne,engelsk,492,Høyere nivå,Barndom og voksenverden,barn 
+21,B2,h0575,kvinne,tysk,680,Høyere nivå,Integrering av innvandrere,innvandring 
+30,N/A,h0311,mann,albansk,484,Høyere nivå,Mobiltelefonen,telefon 
+23,N/A,h2008,mann,nynorsk,552,Høyere nivå,Organdonasjon,helse organ 
+43,B2/C1,h0144,kvinne,polsk,661,Høyere nivå,Borgerlønn,økonomi 
+31,N/A,h2056,mann,nynorsk,489,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+28,B2,h0425,mann,tysk,488,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+34,A2/B1,s0730,mann,somali,236,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+26,B1,s0684,mann,spansk,229,Språkprøven,Den norske naturen,natur norge 
+23,A2/B1,s0812,kvinne,spansk,360,Språkprøven,Bomiljø,bolig 
+21,N/A,s0251,kvinne,albansk,204,Språkprøven,Før og nå,tid 
+28,C1,h0549,kvinne,engelsk,518,Høyere nivå,Trafikkdøden,trafikk død 
+20,B2,s0935,kvinne,tysk,518,Språkprøven,Fjernsynsprogram for barn,barn tv 
+28,B1,s0998,mann,tysk,238,Språkprøven,Boformer,bolig 
+40,B2,h0509,mann,tysk,610,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+38,N/A,s0364,kvinne,nederlandsk,282,Språkprøven,Bolig og bosted,bolig 
+20,B2,h0508,kvinne,tysk,591,Høyere nivå,Leselyst,litteratur kultur 
+31,A2/B1,s0762,kvinne,polsk,229,Språkprøven,Nyheter,media 
+39,N/A,h0681,mann,nederlandsk,552,Høyere nivå,Den gode skolen,skole 
+37,N/A,h0090,kvinne,nederlandsk,533,Høyere nivå,Å leve i store byer,bolig geografi 
+43,N/A,s0257,kvinne,albansk,181,Språkprøven,Et yrke,arbeid yrke 
+34,B1,s0967,kvinne,polsk,316,Språkprøven,Fjernsynsprogram for barn,barn tv 
+26,B1,s0318,kvinne,engelsk,390,Språkprøven,Bomiljø,bolig 
+42,N/A,s0283,kvinne,albansk,305,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+22,B1/B2,s0298,kvinne,engelsk,380,Språkprøven,Bomiljø,bolig 
+48,B1/B2,s0646,kvinne,polsk,286,Språkprøven,Gjenbruk,miljø 
+24,B1,s0636,kvinne,somali,415,Språkprøven,En bok du har lest,litteratur bok 
+31,B2,h0607,kvinne,russisk,523,Høyere nivå,Nærmiljø og lokalsamfunn,geografi samfunn folk 
+27,B2,h0597,kvinne,engelsk,503,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+24,B2,h0389,mann,spansk,714,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+27,B1,s0652,kvinne,polsk,303,Språkprøven,Barneoppdragelse,barn 
+21,N/A,h0016,kvinne,albansk,422,Høyere nivå,Mobbing på arbeidsplassen,arbeid mobbing holdning 
+24,B1/B2,s0628,kvinne,vietnamesisk,420,Språkprøven,En hyggelig opplevelse,opplevelse 
+18,B1/B2,s0632,mann,somali,281,Språkprøven,Viktige verdier i livet,verdier 
+33,B2,s0947,kvinne,tysk,315,Språkprøven,Fjernsynsprogram for barn,barn tv 
+30,B1/B2,s0306,kvinne,engelsk,387,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+27,B1,s0534,kvinne,russisk,371,Språkprøven,Den norske naturen,natur norge 
+31,N/A,s2094,mann,nynorsk,212,Språkprøven,Penger og andre verdier,økonomi holdning 
+21,N/A,h0145,kvinne,albansk,314,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
+39,N/A,h0093,kvinne,serbokroatisk,751,Høyere nivå,Miljøvern,miljø klima 
+44,B1,s0086,mann,somali,278,Språkprøven,Å treffe andre mennesker,folk møte 
+29,N/A,s0243,mann,albansk,464,Språkprøven,En hyggelig opplevelse,opplevelse 
+20,N/A,s2098,kvinne,bokmål,347,Språkprøven,Frihet og ansvar,holdning 
+39,B1/B2,s0158,kvinne,russisk,479,Språkprøven,Den norske naturen,natur norge 
+30,N/A,h2064,kvinne,bokmål,470,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+28,N/A,h2070,kvinne,bokmål,567,Høyere nivå,Organdonasjon,helse organ 
+19,N/A,s0125,kvinne,nederlandsk,357,Språkprøven,Alkohol og alkoholvaner,rus 
+23,N/A,h0149,mann,serbokroatisk,523,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
+26,N/A,s0280,mann,albansk,311,Språkprøven,Barneoppdragelse,barn 
+37,A2/B1,s0186,kvinne,engelsk,451,Språkprøven,Bomiljø,bolig 
+39,B1,s0231,mann,engelsk,314,Språkprøven,Møte med norsk kultur,kultur norge 
+43,B1,s0041,kvinne,spansk,266,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+22,A2,s0596,mann,somali,182,Språkprøven,Alkohol og alkoholvaner,rus 
+21,B1,s0891,kvinne,vietnamesisk,276,Språkprøven,En sport du liker,idrett/sport 
+28,B2,h0660,kvinne,spansk,602,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+35,B1/B2,h0488,kvinne,polsk,534,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+30,N/A,s0256,kvinne,albansk,198,Språkprøven,Flytting,familie flytting 
+28,N/A,s0405,kvinne,nederlandsk,291,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+24,B2,h0533,kvinne,engelsk,601,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+31,N/A,s2048,kvinne,bokmål,90,Språkprøven,Sunnhet og helse,helse 
+27,B1,h0292,kvinne,russisk,528,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+26,N/A,h0424,mann,nederlandsk,446,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+29,A2/B1,s0735,kvinne,polsk,356,Språkprøven,Barneoppdragelse,barn 
+28,B1,s0611,kvinne,polsk,413,Språkprøven,Vennskap,folk relasjoner vennskap 
+22,N/A,h0094,kvinne,nederlandsk,597,Høyere nivå,Den lille forskjellen,kjønn 
+31,N/A,h2014,kvinne,bokmål,422,Høyere nivå,Organdonasjon,helse organ 
+29,B1/B2,h0628,kvinne,spansk,456,Høyere nivå,Eldrebølgen,eldre familie 
+27,N/A,s0034,kvinne,serbokroatisk,295,Språkprøven,Flytting,familie flytting 
+35,B1/B2,s0945,kvinne,russisk,319,Språkprøven,Fjernsynsprogram for barn,barn tv 
+37,A2/B1,s0948,kvinne,polsk,369,Språkprøven,Trafikk og boligområder,trafikk bolig 
+28,B1,s0459,mann,tysk,250,Språkprøven,Mobiltelefoner,telefon 
+24,B1/B2,h0396,kvinne,spansk,447,Høyere nivå,Bestselgere og bokbransjen,bok litteratur kultur 
+22,N/A,h2071,kvinne,bokmål,436,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+31,B1,h0690,mann,somali,466,Høyere nivå,Private skoler,skole 
+35,A2/B1,s0585,mann,somali,168,Språkprøven,Min første jobb,arbeid 
+25,B1/B2,h0540,kvinne,russisk,522,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+29,N/A,h2033,mann,bokmål,454,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+25,B2/C1,s0354,kvinne,engelsk,416,Språkprøven,Nyheter,media 
+25,A2/B1,s0868,kvinne,vietnamesisk,264,Språkprøven,Framtida,tid 
+37,B2,h0196,kvinne,polsk,563,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+44,B1/B2,h0263,kvinne,engelsk,696,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+26,N/A,s0046,mann,albansk,252,Språkprøven,Barneoppdragelse,barn 
+23,B2,h0552,kvinne,engelsk,428,Høyere nivå,Trafikkdøden,trafikk død 
+28,B1/B2,h0493,kvinne,russisk,587,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+29,B1/B2,s0691,kvinne,spansk,242,Språkprøven,En religion du kjenner,religion 
+28,N/A,h0040,kvinne,nederlandsk,475,Høyere nivå,Netthandel,-
+30,N/A,h0038,mann,nederlandsk,390,Høyere nivå,Netthandel,-
+23,B2/C1,h0096,kvinne,polsk,484,Høyere nivå,Den lille forskjellen,kjønn 
+39,B1/B2,s0943,kvinne,polsk,390,Språkprøven,Fjernsynsprogram for barn,barn tv 
+28,B1,s0063,kvinne,tysk,538,Språkprøven,Møte med norsk kultur,kultur norge 
+29,B1,s0351,kvinne,engelsk,264,Språkprøven,Viktige verdier i livet,verdier 
+23,A2/B1,s0786,kvinne,polsk,308,Språkprøven,Mobiltelefoner,telefon 
+31,N/A,s2003,kvinne,bokmål,319,Språkprøven,Frihet og ansvar,holdning 
+27,N/A,s2008,kvinne,bokmål,305,Språkprøven,Sunnhet og helse,helse 
+28,B1/B2,h0423,mann,engelsk,505,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+26,B1/B2,s0592,kvinne,somali,291,Språkprøven,Vennskap,folk relasjoner vennskap 
+29,B1,s0675,kvinne,vietnamesisk,257,Språkprøven,Flytting,familie flytting 
+26,A2/B1,s0843,kvinne,spansk,249,Språkprøven,Nyheter,media 
+55,A2/B1,s0494,kvinne,russisk,388,Språkprøven,Møte med norsk kultur,kultur norge 
+23,B1,s0666,kvinne,vietnamesisk,250,Språkprøven,Et yrke,arbeid yrke 
+66,N/A,s2014,kvinne,bokmål,304,Språkprøven,Penger og andre verdier,økonomi holdning 
+20,B2,h0234,kvinne,engelsk,454,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+31,N/A,s0279,kvinne,albansk,284,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+43,B1/B2,s0448,kvinne,tysk,329,Språkprøven,Mobiltelefoner,telefon 
+19,N/A,s2074,kvinne,bokmål,350,Språkprøven,Penger og andre verdier,økonomi holdning 
+24,B1,s0645,kvinne,polsk,574,Språkprøven,Før og nå,tid 
+27,N/A,s0074,mann,nederlandsk,211,Språkprøven,Barneoppdragelse,barn 
+-1,B2,s0975,kvinne,tysk,398,Språkprøven,Trafikk og boligområder,trafikk bolig 
+31,N/A,h0152,mann,albansk,609,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
+27,N/A,s0797,kvinne,serbokroatisk,264,Språkprøven,Bomiljø,bolig 
+35,B2,h0596,kvinne,russisk,461,Høyere nivå,Integrering av innvandrere,innvandring 
+40,N/A,h0739,kvinne,serbokroatisk,491,Høyere nivå,Barn og norskferdigheter,barn språk 
+20,B2,h0478,kvinne,tysk,543,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+26,B1,h0279,kvinne,russisk,281,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+44,A2/B1,s0875,mann,somali,218,Språkprøven,Framtida,tid 
+19,B1/B2,s0037,kvinne,russisk,302,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+20,N/A,h2051,kvinne,bokmål,469,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+28,B2,h0450,kvinne,russisk,467,Høyere nivå,Miljøvern,miljø klima 
+34,B1/B2,s0310,kvinne,engelsk,400,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+39,A2/B1,s0505,kvinne,russisk,173,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+19,N/A,s0931,mann,serbokroatisk,295,Språkprøven,Trafikk og boligområder,trafikk bolig 
+19,B1/B2,s0974,kvinne,tysk,356,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+27,B1,s0765,kvinne,polsk,340,Språkprøven,Mobiltelefoner,telefon 
+29,B1,s0187,kvinne,engelsk,366,Språkprøven,Bomiljø,bolig 
+39,A2,s0104,mann,somali,309,Språkprøven,Bolig og bosted,bolig 
+43,A2/B1,s0462,mann,tysk,236,Språkprøven,Nyheter,media 
+44,C1,h0461,mann,spansk,573,Høyere nivå,Miljøvern,miljø klima 
+18,B2/C1,h0502,kvinne,tysk,583,Høyere nivå,Familie og karriere,familie arbeid økonomi 
+35,B1,s0798,kvinne,polsk,116,Språkprøven,Viktige verdier i livet,verdier 
+39,B1,s0955,kvinne,polsk,346,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+35,N/A,h0307,kvinne,serbokroatisk,512,Høyere nivå,Mobiltelefonen,telefon 
+29,B2,h0195,mann,polsk,592,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+21,B2,h0291,kvinne,tysk,445,Høyere nivå,Mobiltelefonen,telefon 
+41,N/A,h0041,kvinne,nederlandsk,387,Høyere nivå,Netthandel,-
+30,B2,h0427,kvinne,russisk,452,Høyere nivå,Kvinner i topposisjoner,kjønn yrke arbeid 
+41,B2,h0267,kvinne,spansk,549,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+23,A2/B1,s0748,mann,spansk,240,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+37,N/A,h0495,mann,serbokroatisk,494,Høyere nivå,Kvinner i topposisjoner,kjønn yrke arbeid 
+32,B1,s0313,kvinne,engelsk,424,Språkprøven,Bomiljø,bolig 
+45,B2,h0561,kvinne,engelsk,545,Høyere nivå,Integrering av innvandrere,innvandring 
+35,B2,h0588,kvinne,tysk,531,Høyere nivå,Integrering av innvandrere,innvandring 
+20,N/A,h0147,kvinne,serbokroatisk,398,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
+19,N/A,s2070,mann,bokmål,454,Språkprøven,Frihet og ansvar,holdning 
+26,N/A,s0064,kvinne,albansk,315,Språkprøven,Vennskap,folk relasjoner vennskap 
+37,A2/B1,s0303,mann,engelsk,218,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+63,N/A,h2010,mann,bokmål,505,Høyere nivå,Organdonasjon,helse organ 
+24,B1,s0296,kvinne,engelsk,445,Språkprøven,Bomiljø,bolig 
+30,B1/B2,h0107,kvinne,polsk,482,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
+41,N/A,s0963,mann,nederlandsk,382,Språkprøven,Fjernsynsprogram for barn,barn tv 
+45,A2/B1,s0625,kvinne,vietnamesisk,278,Språkprøven,En bok du har lest,litteratur bok 
+29,B1/B2,s0004,mann,spansk,295,Språkprøven,Bomiljø,bolig 
+21,B1/B2,s0916,kvinne,polsk,642,Språkprøven,Fjernsynsprogram for barn,barn tv 
+34,N/A,s0824,kvinne,serbokroatisk,173,Språkprøven,Viktige verdier i livet,verdier 
+26,B1/B2,s0718,kvinne,polsk,289,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+41,B1/B2,s0500,mann,russisk,303,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+25,A2/B1,s0569,kvinne,spansk,172,Språkprøven,Framtida,tid 
+19,N/A,h2016,kvinne,bokmål,465,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+25,B1/B2,h0497,kvinne,tysk,424,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+35,B1/B2,h0369,kvinne,polsk,345,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+38,A2/B1,s0724,kvinne,polsk,325,Språkprøven,Barneoppdragelse,barn 
+41,B1,s0952,kvinne,tysk,376,Språkprøven,Fjernsynsprogram for barn,barn tv 
+21,N/A,s0263,kvinne,albansk,211,Språkprøven,Et yrke,arbeid yrke 
+35,N/A,h2002,mann,bokmål,327,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+20,N/A,s0139,mann,albansk,281,Språkprøven,En hyggelig opplevelse,opplevelse 
+35,B1,s0687,kvinne,spansk,250,Språkprøven,Den norske naturen,natur norge 
+29,A2/B1,s0871,mann,somali,315,Språkprøven,Framtida,tid 
+31,B1,s0655,kvinne,vietnamesisk,307,Språkprøven,Barneoppdragelse,barn 
+37,B1,s0867,mann,somali,282,Språkprøven,En sport du liker,idrett/sport 
+37,N/A,h0014,mann,serbokroatisk,553,Høyere nivå,Et dikt av Einar Skjæraasen,litteratur dikt 
+26,N/A,h2015,kvinne,nynorsk,398,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+37,N/A,h0039,kvinne,nederlandsk,450,Høyere nivå,Netthandel,-
+31,B1/B2,s0437,kvinne,tysk,660,Språkprøven,Møte med norsk kultur,kultur norge 
+32,A2/B1,s0581,mann,somali,196,Språkprøven,En sport du liker,idrett/sport 
+41,B1,s0042,kvinne,spansk,238,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+40,B2,h0513,mann,engelsk,476,Høyere nivå,Miljøvern,miljø klima 
+36,A2/B1,s0888,kvinne,vietnamesisk,260,Språkprøven,Sunnhet og helse,helse 
+36,N/A,s0389,kvinne,nederlandsk,327,Språkprøven,Nyheter,media 
+39,N/A,s0795,kvinne,serbokroatisk,210,Språkprøven,Nyheter,media 
+20,B1,s0852,kvinne,vietnamesisk,257,Språkprøven,Framtida,tid 
+21,N/A,s0258,mann,albansk,199,Språkprøven,Et yrke,arbeid yrke 
+25,B1/B2,h0673,kvinne,spansk,417,Høyere nivå,Organdonasjon,helse organ 
+34,B1,s0842,mann,spansk,219,Språkprøven,Bomiljø,bolig 
+24,B2,h0233,kvinne,russisk,678,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+31,N/A,h0653,mann,nederlandsk,712,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
+20,B2,s0997,kvinne,tysk,259,Språkprøven,Mobiltelefoner,telefon 
+26,C1,h0436,kvinne,engelsk,656,Høyere nivå,Leselyst,litteratur kultur 
+27,B2,h0543,kvinne,russisk,666,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+40,B2/C1,h0060,kvinne,polsk,459,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+39,A2/B1,s0165,kvinne,polsk,320,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+37,A2/B1,s0007,mann,vietnamesisk,327,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+82,B1/B2,s0483,kvinne,russisk,249,Språkprøven,Alkohol og alkoholvaner,rus 
+19,N/A,h0022,kvinne,nederlandsk,434,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+23,A2,s0710,mann,somali,194,Språkprøven,Den norske naturen,natur norge 
+26,B2,h0453,kvinne,polsk,519,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+21,B2,h0417,kvinne,russisk,467,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+34,B2,h0242,mann,spansk,490,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+33,B2,h0470,kvinne,engelsk,516,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+24,B2,h0438,kvinne,engelsk,670,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+21,N/A,s2087,kvinne,nynorsk,429,Språkprøven,Sunnhet og helse,helse 
+32,N/A,s0235,kvinne,albansk,285,Språkprøven,En hyggelig opplevelse,opplevelse 
+20,N/A,s0202,kvinne,albansk,270,Språkprøven,Framtida,tid 
+46,B2,h0213,mann,engelsk,348,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+24,N/A,h2076,kvinne,bokmål,842,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+21,B2,s0433,kvinne,tysk,370,Språkprøven,Møte med norsk kultur,kultur norge 
+35,A2,s0729,kvinne,polsk,293,Språkprøven,Barneoppdragelse,barn 
+32,B2,h0455,kvinne,russisk,509,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+39,N/A,h0106,kvinne,serbokroatisk,434,Høyere nivå,Diktet 'Sannheten' av Rolf Jacobsen,litteratur dikt 
+26,N/A,s2024,mann,bokmål,270,Språkprøven,Sunnhet og helse,helse 
+29,B2,h0342,kvinne,tysk,640,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+37,B1,s0725,kvinne,polsk,397,Språkprøven,Barneoppdragelse,barn 
+28,B1,s0535,kvinne,russisk,257,Språkprøven,Den norske naturen,natur norge 
+27,B1,s0288,kvinne,engelsk,220,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+25,N/A,s0610,kvinne,serbokroatisk,375,Språkprøven,Vennskap,folk relasjoner vennskap 
+23,N/A,h0413,kvinne,nederlandsk,491,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+20,B2,h0482,kvinne,tysk,1163,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+38,N/A,h0119,kvinne,nederlandsk,571,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+34,B2/C1,h0188,kvinne,russisk,567,Høyere nivå,Helse og livskvalitet,helse 
+26,N/A,s0226,mann,albansk,399,Språkprøven,Møte med norsk kultur,kultur norge 
+49,N/A,h0042,kvinne,nederlandsk,633,Høyere nivå,Ytringsfrihet,politikk holdning 
+39,N/A,s0607,kvinne,serbokroatisk,542,Språkprøven,Vennskap,folk relasjoner vennskap 
+25,N/A,h0586,mann,nederlandsk,539,Høyere nivå,Integrering av innvandrere,innvandring 
+33,B2/C1,h0231,kvinne,spansk,594,Høyere nivå,Mobiltelefonen,telefon 
+28,N/A,s0372,mann,nederlandsk,210,Språkprøven,Reise,reise geografi 
+46,B1/B2,s0312,kvinne,engelsk,345,Språkprøven,Bomiljø,bolig 
+26,B2,h0221,mann,engelsk,313,Høyere nivå,Bilisme,bil trafikk 
+29,B1,s0442,mann,tysk,314,Språkprøven,Vennskap,folk relasjoner vennskap 
+34,B1/B2,h0363,mann,tysk,622,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+34,N/A,s2050,mann,bokmål,264,Språkprøven,Sunnhet og helse,helse 
+47,B2,h0501,mann,engelsk,418,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+37,B2,h0435,mann,engelsk,615,Høyere nivå,Miljøvern,miljø klima 
+26,N/A,h0720,kvinne,serbokroatisk,346,Høyere nivå,Tidsklemmen,folk familie 
+20,B1/B2,s0973,kvinne,tysk,377,Språkprøven,Fjernsynsprogram for barn,barn tv 
+24,B1/B2,s0020,kvinne,engelsk,298,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+20,B2,h0504,kvinne,tysk,509,Høyere nivå,Familie og karriere,familie arbeid økonomi 
+20,N/A,h2040,kvinne,nynorsk,317,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+24,B1,s0497,kvinne,russisk,183,Språkprøven,Vennskap,folk relasjoner vennskap 
+36,N/A,s0676,mann,serbokroatisk,293,Språkprøven,Flytting,familie flytting 
+20,B1,s0870,kvinne,somali,235,Språkprøven,Framtida,tid 
+29,B1/B2,s0517,kvinne,russisk,317,Språkprøven,Den norske naturen,natur norge 
+52,B1,s0297,kvinne,engelsk,375,Språkprøven,Bomiljø,bolig 
+25,N/A,h0140,mann,albansk,486,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
+38,N/A,s0387,kvinne,nederlandsk,354,Språkprøven,Framtida,tid 
+32,B1,s0542,mann,somali,324,Språkprøven,Bolig og bosted,bolig 
+27,B1/B2,h0247,kvinne,russisk,543,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+27,N/A,s0254,mann,albansk,215,Språkprøven,Gjenbruk,miljø 
+35,N/A,h0556,mann,serbokroatisk,426,Høyere nivå,Leselyst,litteratur kultur 
+36,N/A,h0005,kvinne,albansk,395,Høyere nivå,Et dikt av Einar Skjæraasen,litteratur dikt 
+31,B1,s0441,kvinne,tysk,338,Språkprøven,Vennskap,folk relasjoner vennskap 
+18,A2/B1,s0495,kvinne,russisk,310,Språkprøven,Vennskap,folk relasjoner vennskap 
+42,N/A,s0386,mann,nederlandsk,328,Språkprøven,Framtida,tid 
+26,A2/B1,s0895,kvinne,vietnamesisk,285,Språkprøven,En sport du liker,idrett/sport 
+33,B2,h0328,kvinne,tysk,690,Høyere nivå,Mobiltelefonen,telefon 
+25,B1,s0755,kvinne,polsk,310,Språkprøven,Viktige verdier i livet,verdier 
+29,B1,s0763,kvinne,polsk,349,Språkprøven,Mobiltelefoner,telefon 
+28,B1/B2,s0513,kvinne,russisk,334,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+39,N/A,s0023,kvinne,nederlandsk,341,Språkprøven,Bomiljø,bolig 
+23,A2/B1,s0803,mann,somali,296,Språkprøven,En kjent person,folk biografi 
+37,N/A,h0116,kvinne,nederlandsk,676,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+20,N/A,h2031,mann,bokmål,324,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+28,B2,s0733,kvinne,polsk,473,Språkprøven,Kultur og idrett,idrett/sport kultur 
+26,B1,s0011,kvinne,engelsk,460,Språkprøven,Bomiljø,bolig 
+21,N/A,s0792,mann,serbokroatisk,256,Språkprøven,Bomiljø,bolig 
+27,B2,h0293,kvinne,tysk,728,Høyere nivå,Bilisme,bil trafikk 
+24,N/A,s2027,mann,bokmål,389,Språkprøven,Spillemaskiner,-
+25,N/A,h2065,kvinne,nynorsk,711,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+21,N/A,h2086,kvinne,bokmål,523,Høyere nivå,Organdonasjon,helse organ 
+22,B1,s0538,kvinne,russisk,387,Språkprøven,En religion du kjenner,religion 
+37,N/A,h0695,kvinne,serbokroatisk,725,Høyere nivå,Å være kjendis,folk 
+34,N/A,h0173,kvinne,serbokroatisk,441,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+35,N/A,h0139,kvinne,serbokroatisk,369,Høyere nivå,Uføretrygd,velferd økonomi 
+36,A2/B1,s0900,kvinne,vietnamesisk,260,Språkprøven,Likestilling,kjønn holdning 
+23,A2/B1,s0089,kvinne,somali,257,Språkprøven,Å treffe andre mennesker,folk møte 
+28,B1,s0697,kvinne,spansk,359,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+41,B2/C1,h0046,kvinne,polsk,460,Høyere nivå,Det norske monarkiet,norge styreform 
+38,B1,s0519,kvinne,russisk,267,Språkprøven,Den norske naturen,natur norge 
+35,N/A,h0356,kvinne,nederlandsk,423,Høyere nivå,Kommunevalget i Norge,politikk valg 
+31,N/A,h0045,kvinne,nederlandsk,462,Høyere nivå,Det norske monarkiet,norge styreform 
+19,N/A,s0941,kvinne,serbokroatisk,360,Språkprøven,Fjernsynsprogram for barn,barn tv 
+46,A2/B1,s0052,kvinne,polsk,383,Språkprøven,Vennskap,folk relasjoner vennskap 
+26,N/A,h2062,kvinne,bokmål,457,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+26,N/A,h0285,mann,serbokroatisk,422,Høyere nivå,Mobiltelefonen,telefon 
+48,B1,s0864,mann,somali,408,Språkprøven,Framtida,tid 
+34,N/A,h0044,kvinne,nederlandsk,383,Høyere nivå,Det norske monarkiet,norge styreform 
+23,A2/B1,s0695,mann,somali,208,Språkprøven,Den norske naturen,natur norge 
+20,A2,s0702,mann,tysk,264,Språkprøven,Den norske naturen,natur norge 
+29,N/A,s0359,kvinne,nederlandsk,239,Språkprøven,Bolig og bosted,bolig 
+30,B1,s0193,kvinne,engelsk,277,Språkprøven,Konkurranse,idrett/sport konkurranse 
+42,B1/B2,h0079,kvinne,polsk,516,Høyere nivå,Å leve i store byer,bolig geografi 
+41,C1,h0481,kvinne,engelsk,640,Høyere nivå,Leselyst,litteratur kultur 
+43,N/A,s2037,mann,bokmål,341,Språkprøven,Penger og andre verdier,økonomi holdning 
+25,B1,s0775,kvinne,spansk,404,Språkprøven,Konkurranse,idrett/sport konkurranse 
+26,N/A,s0260,mann,albansk,275,Språkprøven,Et yrke,arbeid yrke 
+34,N/A,h0385,kvinne,serbokroatisk,542,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+40,N/A,s2047,kvinne,bokmål,309,Språkprøven,Sunnhet og helse,helse 
+25,A2/B1,s0851,kvinne,somali,276,Språkprøven,Framtida,tid 
+25,N/A,s2083,mann,bokmål,280,Språkprøven,Penger og andre verdier,økonomi holdning 
+20,B2,h0477,kvinne,tysk,701,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+27,B2,h0405,kvinne,tysk,595,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+31,B1,s0663,mann,somali,266,Språkprøven,Før og nå,tid 
+38,N/A,h0138,kvinne,serbokroatisk,788,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
+44,B1/B2,s0289,mann,engelsk,310,Språkprøven,Bomiljø,bolig 
+37,N/A,s0906,kvinne,serbokroatisk,528,Språkprøven,Fjernsynsprogram for barn,barn tv 
+35,B2,h0187,kvinne,engelsk,506,Høyere nivå,Helse og livskvalitet,helse 
+38,B1,s0738,mann,engelsk,335,Språkprøven,Mobiltelefoner,telefon 
+28,B2,h0382,kvinne,tysk,622,Høyere nivå,Diktet 'Skøyteløperen' av Peter R Holm,litteratur dikt idrett 
+33,N/A,h0365,mann,nederlandsk,394,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+39,N/A,s0213,mann,albansk,321,Språkprøven,Å treffe andre mennesker,folk møte 
+38,N/A,h0440,kvinne,nederlandsk,632,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+41,A2/B1,s0156,mann,russisk,480,Språkprøven,Den norske naturen,natur norge 
+20,B2,s0991,kvinne,tysk,492,Språkprøven,Mobiltelefoner,telefon 
+33,N/A,h0076,kvinne,serbokroatisk,1105,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+19,B1,s0885,kvinne,vietnamesisk,481,Språkprøven,Sunnhet og helse,helse 
+31,B1,s0682,kvinne,spansk,236,Språkprøven,Den norske naturen,natur norge 
+20,B1/B2,s0944,kvinne,tysk,370,Språkprøven,Fjernsynsprogram for barn,barn tv 
+33,B1,s0182,kvinne,vietnamesisk,239,Språkprøven,Bomiljø,bolig 
+41,N/A,s2031,mann,bokmål,367,Språkprøven,Sunnhet og helse,helse 
+26,B2,h0574,kvinne,russisk,358,Høyere nivå,Integrering av innvandrere,innvandring 
+22,B2,h0484,kvinne,tysk,812,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+21,N/A,h0722,kvinne,albansk,419,Høyere nivå,Tidsklemmen,folk familie 
+31,A2/B1,s0178,kvinne,spansk,266,Språkprøven,Barneoppdragelse,barn 
+20,B2,h0177,kvinne,russisk,684,Høyere nivå,Sangtradisjon,musikk kultur 
+29,N/A,h0341,kvinne,serbokroatisk,426,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+36,B2,h0454,kvinne,polsk,421,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+20,B2,h0476,kvinne,tysk,399,Høyere nivå,Miljøvern,miljø klima 
+20,B1,s0439,kvinne,tysk,368,Språkprøven,Vennskap,folk relasjoner vennskap 
+35,N/A,h0689,mann,nederlandsk,421,Høyere nivå,Inn- og utvandring,innvandring 
+26,B1,s0863,mann,somali,254,Språkprøven,Bilbruk,bil 
+23,B1,h0283,mann,tysk,382,Høyere nivå,Bilisme,bil trafikk 
+26,A2/B1,s0428,kvinne,tysk,202,Språkprøven,Møte med norsk kultur,kultur norge 
+30,B2,h0018,mann,spansk,429,Høyere nivå,Netthandel,handel økonomi media 
+22,N/A,s2061,kvinne,bokmål,287,Språkprøven,Sunnhet og helse,helse 
+37,N/A,s0395,kvinne,nederlandsk,147,Språkprøven,Tanker om det å bli gammel,trafikk bolig 
+26,N/A,h0103,mann,nederlandsk,448,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
+18,N/A,s2062,kvinne,bokmål,323,Språkprøven,Frihet og ansvar,holdning 
+32,B1/B2,h0019,kvinne,polsk,801,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+36,A2/B1,s0455,mann,tysk,275,Språkprøven,Viktige verdier i livet,verdier 
+28,B1,s0656,kvinne,polsk,250,Språkprøven,Barneoppdragelse,barn 
+32,B1,s0850,kvinne,vietnamesisk,323,Språkprøven,Vennskap,folk relasjoner vennskap 
+22,N/A,h2053,mann,bokmål,398,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+35,N/A,h0214,kvinne,nederlandsk,415,Høyere nivå,Diktet 'Privat huskeregel' av Kolbjørn Falkeid,litteratur dikt 
+28,A2/B1,s0734,kvinne,polsk,372,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+32,B1/B2,s0933,kvinne,russisk,540,Språkprøven,Trafikk og boligområder,trafikk bolig 
+25,B2,h0633,kvinne,polsk,706,Høyere nivå,Hva er en god film,film kultur holdning 
+26,N/A,h0429,mann,nederlandsk,518,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+22,A2/B1,s0882,kvinne,vietnamesisk,180,Språkprøven,Sunnhet og helse,helse 
+27,B2,s0168,kvinne,polsk,393,Språkprøven,Barneoppdragelse,barn 
+25,N/A,s0239,mann,albansk,259,Språkprøven,En interesse du har,interesse 
+40,B1/B2,h0355,kvinne,tysk,436,Høyere nivå,Kommunevalget i Norge,politikk valg 
+26,B1,s0884,kvinne,vietnamesisk,420,Språkprøven,Penger og andre verdier,økonomi holdning 
+35,A2,s0097,kvinne,somali,218,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+41,N/A,h0092,mann,nederlandsk,500,Høyere nivå,Miljøvern,miljø klima 
+40,B2,h0300,kvinne,engelsk,818,Høyere nivå,Diktet 'Privat huskeregel' av Kolbjørn Falkeid,litteratur dikt 
+36,N/A,h0087,kvinne,nederlandsk,596,Høyere nivå,Enpersons-husholdninger,familie økonomi 
+19,B2,h0492,kvinne,engelsk,499,Høyere nivå,Leselyst,litteratur kultur 
+24,B2,h0613,kvinne,engelsk,624,Høyere nivå,Adopsjon,barn familie 
+24,A2/B1,s0698,kvinne,spansk,309,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+25,A2/B1,s0671,kvinne,vietnamesisk,209,Språkprøven,Et yrke,arbeid yrke 
+31,N/A,h0170,kvinne,nederlandsk,454,Høyere nivå,Diktet 'Synsvinkel' av Gunnar Øi,litteratur dikt 
+20,N/A,s0241,kvinne,albansk,346,Språkprøven,En bok du har lest,litteratur bok 
+20,B1/B2,s0920,kvinne,russisk,626,Språkprøven,Fjernsynsprogram for barn,barn tv 
+16,A2/B1,s0099,mann,somali,356,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+24,N/A,s0150,kvinne,serbokroatisk,275,Språkprøven,Et yrke,arbeid yrke 
+31,B1/B2,h0394,mann,russisk,340,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+22,N/A,s0224,kvinne,albansk,303,Språkprøven,Vennskap,folk relasjoner vennskap 
+37,B1/B2,h0364,kvinne,polsk,454,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+47,N/A,h0529,kvinne,nederlandsk,466,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+-1,B1,s0311,mann,engelsk,442,Språkprøven,Bomiljø,bolig 
+19,N/A,s0198,mann,albansk,207,Språkprøven,Framtida,tid 
+28,B1/B2,s0166,kvinne,polsk,335,Språkprøven,Barneoppdragelse,barn 
+22,A2/B1,s0665,kvinne,vietnamesisk,175,Språkprøven,Et yrke,arbeid yrke 
+35,B2,h0235,mann,engelsk,432,Høyere nivå,Mobiltelefonen,telefon 
+41,B2,h0592,kvinne,russisk,610,Høyere nivå,Integrering av innvandrere,innvandring 
+32,A2/B1,s0539,mann,somali,337,Språkprøven,Bolig og bosted,bolig 
+28,A2/B1,s0574,kvinne,vietnamesisk,215,Språkprøven,Å treffe andre mennesker,folk møte 
+26,A2/B1,s0572,kvinne,vietnamesisk,208,Språkprøven,Framtida,tid 
+32,N/A,s0673,mann,serbokroatisk,311,Språkprøven,Et yrke,arbeid yrke 
+21,B1,s0356,kvinne,engelsk,259,Språkprøven,Mobiltelefoner,telefon 
+30,A2/B1,s0096,kvinne,somali,231,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+35,N/A,s0606,kvinne,serbokroatisk,494,Språkprøven,Vennskap,folk relasjoner vennskap 
+49,B1,s0491,kvinne,russisk,251,Språkprøven,Vennskap,folk relasjoner vennskap 
+38,B1,s0463,kvinne,tysk,310,Språkprøven,Nyheter,media 
+50,A2/B1,s0458,mann,tysk,304,Språkprøven,Nyheter,media 
+44,N/A,s0361,mann,nederlandsk,314,Språkprøven,Reise,reise geografi 
+45,N/A,h0025,mann,nederlandsk,364,Høyere nivå,Det norske monarkiet,norge styreform 
+33,B1,s0848,kvinne,vietnamesisk,211,Språkprøven,Vennskap,folk relasjoner vennskap 
+25,B2,h0337,kvinne,tysk,490,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+32,B1/B2,h0185,kvinne,russisk,536,Høyere nivå,Helse og livskvalitet,helse 
+35,B2,h0604,kvinne,engelsk,410,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+27,B2,h0565,kvinne,tysk,602,Høyere nivå,Barndom og voksenverden,barn 
+24,B2/C1,h0367,kvinne,russisk,717,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+32,B1/B2,s0454,kvinne,tysk,300,Språkprøven,Mobiltelefoner,telefon 
+27,B2/C1,h0373,kvinne,russisk,495,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+19,B1,s0990,kvinne,tysk,235,Språkprøven,Mobiltelefoner,telefon 
+21,B1,s0855,kvinne,vietnamesisk,267,Språkprøven,Framtida,tid 
+31,N/A,h0086,kvinne,nederlandsk,580,Høyere nivå,Å leve i store byer,bolig geografi 
+24,N/A,s0375,mann,nederlandsk,235,Språkprøven,Reise,reise geografi 
+31,A2/B1,s0648,kvinne,vietnamesisk,365,Språkprøven,Barneoppdragelse,barn 
+31,N/A,h0114,kvinne,albansk,544,Høyere nivå,Den lille forskjellen,kjønn 
+28,B1/B2,h0377,mann,spansk,417,Høyere nivå,Borgerlønn,økonomi 
+28,B1/B2,h0554,kvinne,russisk,356,Høyere nivå,Integrering av innvandrere,innvandring 
+22,N/A,s2089,mann,bokmål,253,Språkprøven,Frihet og ansvar,holdning 
+31,A2/B1,s0619,kvinne,somali,269,Språkprøven,Vennskap,folk relasjoner vennskap 
+27,B2/C1,h0318,kvinne,russisk,581,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+40,B2,h0624,kvinne,engelsk,415,Høyere nivå,Adopsjon,barn familie 
+21,B1/B2,h0657,kvinne,polsk,341,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+44,B2,h0610,mann,engelsk,449,Høyere nivå,Nærmiljø og lokalsamfunn,geografi samfunn folk 
+28,A2/B1,s0773,kvinne,polsk,348,Språkprøven,Viktige verdier i livet,verdier 
+42,B2,s0060,kvinne,tysk,333,Språkprøven,Vennskap,folk relasjoner vennskap 
+23,A2/B1,s0889,kvinne,vietnamesisk,291,Språkprøven,Sunnhet og helse,helse 
+28,B2/C1,h0332,kvinne,engelsk,527,Høyere nivå,Kommunevalget i Norge,politikk valg 
+31,B1/B2,h0388,kvinne,spansk,453,Høyere nivå,Bestselgere og bokbransjen,bok litteratur kultur 
+24,N/A,h0717,kvinne,serbokroatisk,533,Høyere nivå,Tidsklemmen,folk familie 
+46,N/A,s2016,kvinne,bokmål,284,Språkprøven,Sunnhet og helse,helse 
+42,N/A,h0002,kvinne,nederlandsk,433,Høyere nivå,Verdikommisjonen,organisasjon 
+52,N/A,s0147,kvinne,nederlandsk,268,Språkprøven,Gjenbruk,miljø 
+29,N/A,s0829,kvinne,serbokroatisk,440,Språkprøven,Mobiltelefoner,telefon 
+25,B1,s0825,kvinne,spansk,274,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+29,B2,h0030,mann,spansk,418,Høyere nivå,Netthandel,handel økonomi media 
+27,B2/C1,h0418,kvinne,russisk,585,Høyere nivå,Bestselgere og bokbransjen,bok litteratur kultur 
+37,N/A,s0207,mann,albansk,227,Språkprøven,Framtida,tid 
+21,N/A,h2045,kvinne,bokmål,560,Høyere nivå,Organdonasjon,helse organ 
+18,N/A,s0789,mann,serbokroatisk,347,Språkprøven,Mobiltelefoner,telefon 
+26,B1/B2,s0058,kvinne,tysk,512,Språkprøven,Vennskap,folk relasjoner vennskap 
+34,B2/C1,h0366,kvinne,polsk,456,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+37,N/A,h0062,kvinne,serbokroatisk,387,Høyere nivå,Netthandel,-
+25,A2/B1,s0111,kvinne,somali,121,Språkprøven,Framtida,tid 
+24,A2,s0643,kvinne,somali,321,Språkprøven,En bok du har lest,litteratur bok 
+58,B2,s0294,mann,engelsk,302,Språkprøven,Bomiljø,bolig 
+22,B1,s0188,kvinne,engelsk,244,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+19,N/A,h2027,mann,bokmål,360,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+45,B2,h0593,kvinne,russisk,364,Høyere nivå,Integrering av innvandrere,innvandring 
+40,A2/B1,s0342,kvinne,engelsk,245,Språkprøven,Mobiltelefoner,telefon 
+32,B2,h0507,kvinne,engelsk,696,Høyere nivå,Leselyst,litteratur kultur 
+22,B1/B2,s0961,kvinne,tysk,388,Språkprøven,Fjernsynsprogram for barn,barn tv 
+39,B2,h0553,mann,engelsk,469,Høyere nivå,Kommunevalget i Norge,politikk valg 
+24,A2/B1,s0692,kvinne,spansk,227,Språkprøven,Den norske naturen,natur norge 
+40,N/A,s2044,kvinne,bokmål,250,Språkprøven,Sunnhet og helse,helse 
+35,N/A,s2007,mann,bokmål,331,Språkprøven,Frihet og ansvar,holdning 
+34,B2/C1,h0218,kvinne,engelsk,690,Høyere nivå,Bilisme,bil trafikk 
+38,N/A,s0417,kvinne,nederlandsk,254,Språkprøven,Bomiljø,bolig 
+24,N/A,s0969,mann,serbokroatisk,326,Språkprøven,Trafikk og boligområder,trafikk bolig 
+25,B2,h0204,kvinne,russisk,406,Høyere nivå,'Import' av helsepersonell,helse arbeid innvandring 
+26,B1/B2,h0176,mann,polsk,731,Høyere nivå,Diktet 'Synsvinkel' av Gunnar Øi,litteratur dikt 
+41,A2/B1,s0177,kvinne,spansk,334,Språkprøven,Barneoppdragelse,barn 
+29,B1/B2,h0602,kvinne,russisk,406,Høyere nivå,Eldrebølgen,eldre familie 
+31,B1,s0573,kvinne,spansk,324,Språkprøven,Å treffe andre mennesker,folk møte 
+26,A2/B1,s0856,kvinne,vietnamesisk,229,Språkprøven,Framtida,tid 
+32,B2,h0460,kvinne,spansk,428,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+28,B1,s0329,kvinne,engelsk,404,Språkprøven,Mobiltelefoner,telefon 
+25,B2,h0520,kvinne,polsk,591,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+29,B2,h0315,mann,tysk,569,Høyere nivå,Bilisme,bil trafikk 
+19,B1,s0191,kvinne,engelsk,250,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+24,B1/B2,h0199,kvinne,russisk,506,Høyere nivå,Helse og livskvalitet,helse 
+27,B2,s0450,kvinne,tysk,272,Språkprøven,Nyheter,media 
+38,B2/C1,h0308,kvinne,engelsk,443,Høyere nivå,Bilisme,bil trafikk 
+30,B1/B2,h0704,mann,somali,474,Høyere nivå,Lederegenskaper,personer yrke arbeid 
+31,N/A,h0696,mann,serbokroatisk,395,Høyere nivå,Bruk av musikk,musikk kultur 
+20,N/A,h2028,mann,bokmål,440,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+30,B1,s0553,kvinne,spansk,354,Språkprøven,Å treffe andre mennesker,folk møte 
+28,N/A,s0672,kvinne,serbokroatisk,287,Språkprøven,Flytting,familie flytting 
+22,B1/B2,h0290,kvinne,russisk,414,Høyere nivå,Mobiltelefonen,telefon 
+36,N/A,s0122,mann,nederlandsk,195,Språkprøven,Vennskap,folk relasjoner vennskap 
+51,B1/B2,h0617,kvinne,engelsk,643,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+35,B2,h0522,kvinne,russisk,512,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+34,B2,h0020,kvinne,spansk,366,Høyere nivå,Netthandel,handel økonomi media 
+27,B1,s0834,kvinne,spansk,237,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+22,N/A,h0008,kvinne,serbokroatisk,623,Høyere nivå,Mobbing på arbeidsplassen,arbeid mobbing holdning 
+27,B1/B2,h0078,kvinne,polsk,458,Høyere nivå,Å leve i store byer,bolig geografi 
+50,B1,s0338,kvinne,engelsk,306,Språkprøven,Mobiltelefoner,telefon 
+21,N/A,h0122,kvinne,nederlandsk,497,Høyere nivå,Politisk engasjement,politikk folk 
+32,N/A,h0620,mann,nederlandsk,433,Høyere nivå,Adopsjon,barn familie 
+24,B1/B2,h0646,kvinne,polsk,598,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+19,B1/B2,s0080,kvinne,polsk,407,Språkprøven,Barneoppdragelse,barn 
+39,N/A,s0085,mann,serbokroatisk,375,Språkprøven,Barneoppdragelse,barn 
+21,N/A,h2035,kvinne,bokmål,488,Høyere nivå,Organdonasjon,helse organ 
+20,N/A,h2090,kvinne,bokmål,446,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+31,B2,h0426,kvinne,polsk,546,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+58,N/A,s2011,kvinne,bokmål,312,Språkprøven,Sunnhet og helse,helse 
+21,B1/B2,h0463,kvinne,tysk,305,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+27,N/A,h0726,kvinne,serbokroatisk,372,Høyere nivå,Tidsklemmen,folk familie 
+39,N/A,s0397,mann,nederlandsk,491,Språkprøven,Tanker om det å bli gammel,trafikk bolig 
+28,B1/B2,h0666,kvinne,spansk,403,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+23,B2/C1,h0471,mann,tysk,537,Høyere nivå,Miljøvern,miljø klima 
+33,B2,h0443,kvinne,engelsk,474,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+32,A2/B1,s0896,kvinne,vietnamesisk,229,Språkprøven,En sport du liker,idrett/sport 
+32,B1,s0062,mann,tysk,209,Språkprøven,Vennskap,folk relasjoner vennskap 
+44,N/A,h2085,kvinne,bokmål,735,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+22,N/A,h0269,kvinne,nederlandsk,716,Høyere nivå,Mobiltelefon,telefon 
+25,B1/B2,h0071,kvinne,polsk,548,Høyere nivå,Å leve i store byer,bolig geografi 
+43,B1,s1001,mann,tysk,294,Språkprøven,Boformer,bolig 
+34,B1,s0496,kvinne,russisk,360,Språkprøven,Vennskap,folk relasjoner vennskap 
+22,B2,h0706,kvinne,vietnamesisk,961,Høyere nivå,Den gode skolen,skole 
+42,A2,s0528,kvinne,russisk,208,Språkprøven,Den norske naturen,natur norge 
+29,N/A,s2065,kvinne,bokmål,376,Språkprøven,Sunnhet og helse,helse 
+34,B2,h0331,kvinne,engelsk,778,Høyere nivå,Kommunevalget i Norge,politikk valg 
+35,N/A,s0605,kvinne,serbokroatisk,377,Språkprøven,Vennskap,folk relasjoner vennskap 
+27,A2/B1,s0883,kvinne,vietnamesisk,174,Språkprøven,Sunnhet og helse,helse 
+33,B2,h0641,kvinne,polsk,585,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+28,B1,s0291,mann,engelsk,358,Språkprøven,Bomiljø,bolig 
+18,B1,s0575,mann,spansk,163,Språkprøven,Framtida,tid 
+25,N/A,h0652,kvinne,serbokroatisk,542,Høyere nivå,Hva er en god film,film kultur holdning 
+42,A2/B1,s0817,kvinne,spansk,256,Språkprøven,Bomiljø,bolig 
+25,B1/B2,s0732,kvinne,polsk,285,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+17,N/A,s0134,kvinne,albansk,265,Språkprøven,En interesse du har,interesse 
+30,B1/B2,h0626,kvinne,polsk,479,Høyere nivå,Eldrebølgen,eldre familie 
+34,A2/B1,s0577,mann,somali,134,Språkprøven,Min første jobb,arbeid 
+26,B2,h0028,kvinne,polsk,466,Høyere nivå,Netthandel,handel økonomi media 
+37,N/A,s0390,mann,nederlandsk,266,Språkprøven,Nyheter,media 
+27,N/A,s2092,kvinne,bokmål,271,Språkprøven,Penger og andre verdier,økonomi holdning 
+36,B1,s0124,kvinne,tysk,368,Språkprøven,Møte med norsk kultur,kultur norge 
+24,N/A,s2029,mann,nynorsk,247,Språkprøven,Penger og andre verdier,økonomi holdning 
+32,B1,s0078,kvinne,polsk,329,Språkprøven,Barneoppdragelse,barn 
+35,A2/B1,s0840,mann,spansk,325,Språkprøven,Bomiljø,bolig 
+28,B2,h0557,mann,tysk,855,Høyere nivå,Humor,humor kultur 
+42,N/A,s0422,mann,nederlandsk,329,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+29,B1/B2,h0371,kvinne,russisk,363,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+35,N/A,s0616,kvinne,serbokroatisk,349,Språkprøven,Vennskap,folk relasjoner vennskap 
+30,B1/B2,s0787,kvinne,polsk,273,Språkprøven,Mobiltelefoner,telefon 
+23,B2/C1,h0181,kvinne,polsk,419,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+29,B1/B2,s0740,kvinne,engelsk,317,Språkprøven,Mobiltelefoner,telefon 
+26,B1/B2,h0072,mann,polsk,439,Høyere nivå,Å leve i store byer,bolig geografi 
+36,A2,s0493,kvinne,russisk,219,Språkprøven,Vennskap,folk relasjoner vennskap 
+37,A2/B1,s0091,kvinne,vietnamesisk,240,Språkprøven,Bolig og bosted,bolig 
+27,N/A,h0524,kvinne,nederlandsk,560,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+38,N/A,s0819,kvinne,serbokroatisk,248,Språkprøven,Nyheter,media 
+27,B2,h0075,mann,spansk,634,Høyere nivå,Å leve i store byer,bolig geografi 
+30,B1/B2,h0437,kvinne,engelsk,498,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+19,N/A,h0184,kvinne,serbokroatisk,507,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+41,A2/B1,s0559,kvinne,spansk,306,Språkprøven,Framtida,tid 
+35,B1,s0690,kvinne,spansk,259,Språkprøven,Den norske naturen,natur norge 
+35,B2/C1,h0737,kvinne,tysk,469,Høyere nivå,Ytringsfrihet i Norge,politikk norge holdning 
+30,N/A,h2068,kvinne,bokmål,657,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+23,B2,h0527,mann,spansk,792,Høyere nivå,Leselyst,litteratur kultur 
+20,N/A,h2023,kvinne,bokmål,546,Høyere nivå,Organdonasjon,helse organ 
+36,N/A,h0193,mann,serbokroatisk,388,Høyere nivå,'Import' av helsepersonell,helse arbeid innvandring 
+43,B2,h0312,kvinne,tysk,547,Høyere nivå,Diktet 'Privat huskeregel' av Kolbjørn Falkeid,litteratur dikt 
+31,N/A,h0084,kvinne,serbokroatisk,822,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+27,B1/B2,h0208,kvinne,russisk,460,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+27,B2,s0915,kvinne,tysk,379,Språkprøven,Fjernsynsprogram for barn,barn tv 
+31,B2/C1,h0069,kvinne,spansk,416,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+27,A2/B1,s0869,kvinne,vietnamesisk,257,Språkprøven,Framtida,tid 
+25,B2/C1,h0026,kvinne,polsk,575,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+22,N/A,s0393,kvinne,nederlandsk,327,Språkprøven,Nyheter,media 
+29,A2/B1,s0172,kvinne,spansk,342,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+40,B1,s0434,mann,tysk,277,Språkprøven,Vennskap,folk relasjoner vennskap 
+20,N/A,h0516,kvinne,nederlandsk,724,Høyere nivå,Kvinner i topposisjoner,kjønn yrke arbeid 
+30,B2,s0924,kvinne,polsk,510,Språkprøven,Fjernsynsprogram for barn,barn tv 
+43,B1/B2,s0914,kvinne,tysk,296,Språkprøven,Trafikk og boligområder,trafikk bolig 
+28,N/A,h0582,kvinne,nederlandsk,669,Høyere nivå,Trafikkdøden,trafikk død 
+38,N/A,h0162,kvinne,nederlandsk,521,Høyere nivå,Å leve i store byer,bolig geografi 
+20,B1,h0272,mann,russisk,247,Høyere nivå,Mobiltelefonen,telefon 
+33,B2,s0925,mann,russisk,296,Språkprøven,Trafikk og boligområder,trafikk bolig 
+26,N/A,h0736,kvinne,nederlandsk,453,Høyere nivå,Ytringsfrihet i Norge,politikk norge holdning 
+24,A2/B1,s0527,kvinne,russisk,217,Språkprøven,Den norske naturen,natur norge 
+26,B2,h0562,mann,engelsk,486,Høyere nivå,Humor,humor kultur 
+35,B1,s0872,mann,somali,313,Språkprøven,Bilbruk,bil 
+25,B1/B2,h0246,kvinne,tysk,453,Høyere nivå,Mobiltelefonen,telefon 
+28,A2/B1,s0866,kvinne,somali,240,Språkprøven,Framtida,tid 
+35,B2,h0137,kvinne,polsk,460,Høyere nivå,Livslang læring,utdannelse 
+23,N/A,s0377,kvinne,nederlandsk,373,Språkprøven,Reise,reise geografi 
+24,B2,s0522,kvinne,russisk,275,Språkprøven,En religion du kjenner,religion 
+35,N/A,s0984,mann,serbokroatisk,256,Språkprøven,Mobiltelefoner,telefon 
+24,B2,h0259,kvinne,spansk,396,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+33,B2,h0399,mann,tysk,599,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+26,B2,h0566,mann,engelsk,633,Høyere nivå,Integrering av innvandrere,innvandring 
+32,N/A,h0164,kvinne,nederlandsk,427,Høyere nivå,Barn og fysiske aktiviteter,barn idrett/sport 
+18,B1,s0683,kvinne,vietnamesisk,488,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+32,N/A,h0064,mann,nederlandsk,628,Høyere nivå,Netthandel,handel økonomi media 
+21,B2,h0317,mann,tysk,479,Høyere nivå,Bilisme,bil trafikk 
+26,A2/B1,s0490,kvinne,russisk,228,Språkprøven,Møte med norsk kultur,kultur norge 
+29,N/A,s0366,mann,nederlandsk,264,Språkprøven,Bolig og bosted,bolig 
+28,B1/B2,s0117,kvinne,russisk,370,Språkprøven,Vennskap,folk relasjoner vennskap 
+19,N/A,h0048,kvinne,nederlandsk,471,Høyere nivå,Netthandel,handel økonomi media 
+29,N/A,h0679,kvinne,serbokroatisk,485,Høyere nivå,Skjønnhet,personer 
+26,N/A,h0082,kvinne,serbokroatisk,1000,Høyere nivå,Enpersons-husholdninger,familie økonomi 
+21,N/A,h2093,kvinne,nynorsk,579,Høyere nivå,Organdonasjon,helse organ 
+30,B1,s0703,kvinne,spansk,375,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+27,B2/C1,h0194,kvinne,russisk,1064,Høyere nivå,Sangtradisjon,musikk kultur 
+29,N/A,h0057,kvinne,serbokroatisk,455,Høyere nivå,Netthandel,-
+21,N/A,h2091,kvinne,bokmål,679,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+43,A2/B1,s0330,mann,engelsk,264,Språkprøven,Mobiltelefoner,telefon 
+21,B1/B2,h0648,kvinne,polsk,610,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+31,B2,h0601,mann,spansk,528,Høyere nivå,Nærmiljø og lokalsamfunn,geografi samfunn folk 
+31,B1,s0525,kvinne,russisk,243,Språkprøven,Den norske naturen,natur norge 
+31,A2/B1,s0623,mann,somali,315,Språkprøven,En bok du har lest,litteratur bok 
+20,N/A,h2017,kvinne,nynorsk,403,Høyere nivå,Organdonasjon,helse organ 
+18,N/A,s0237,kvinne,albansk,205,Språkprøven,En bok du har lest,litteratur bok 
+34,A2,s0336,mann,engelsk,319,Språkprøven,Viktige verdier i livet,verdier 
+33,N/A,s0233,kvinne,albansk,302,Språkprøven,En hyggelig opplevelse,opplevelse 
+27,B1,s0006,kvinne,spansk,219,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+26,B1/B2,h0420,kvinne,tysk,432,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+42,N/A,h0738,mann,serbokroatisk,552,Høyere nivå,Barn og norskferdigheter,barn språk 
+33,N/A,h0688,mann,nederlandsk,402,Høyere nivå,Inn- og utvandring,innvandring 
+32,A2/B1,s0653,kvinne,polsk,390,Språkprøven,Barneoppdragelse,barn 
+31,C1,h0219,kvinne,tysk,604,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+35,A2,s0079,mann,polsk,236,Språkprøven,Barneoppdragelse,barn 
+32,B2,h0209,kvinne,russisk,599,Høyere nivå,Mobiltelefonen,telefon 
+18,B1,s0881,mann,somali,309,Språkprøven,Framtida,tid 
+24,A2,s0552,kvinne,vietnamesisk,236,Språkprøven,Framtida,tid 
+60,N/A,s2015,kvinne,bokmål,371,Språkprøven,Sunnhet og helse,helse 
+23,B1,s0602,kvinne,vietnamesisk,252,Språkprøven,Vennskap,folk relasjoner vennskap 
+33,B1/B2,s0492,kvinne,russisk,328,Språkprøven,Vennskap,folk relasjoner vennskap 
+34,B1/B2,h0548,kvinne,russisk,616,Høyere nivå,Integrering av innvandrere,innvandring 
+42,B1/B2,s0429,kvinne,tysk,354,Språkprøven,Møte med norsk kultur,kultur norge 
+19,B1/B2,h0589,mann,russisk,462,Høyere nivå,Trafikkdøden,trafikk død 
+27,B2,h0430,kvinne,spansk,389,Høyere nivå,Kvinner i topposisjoner,kjønn yrke arbeid 
+30,N/A,s0073,kvinne,nederlandsk,266,Språkprøven,Gjenbruk,miljø 
+25,N/A,h0134,kvinne,serbokroatisk,472,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
+28,B1,s0853,kvinne,vietnamesisk,294,Språkprøven,Framtida,tid 
+28,B2,h0457,kvinne,engelsk,714,Høyere nivå,Leselyst,litteratur kultur 
+36,N/A,h0725,kvinne,serbokroatisk,611,Høyere nivå,Tidsklemmen,folk familie 
+24,B1/B2,s0516,kvinne,russisk,310,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+32,B1,s0835,kvinne,spansk,252,Språkprøven,Bomiljø,bolig 
+30,B1,s0530,kvinne,russisk,427,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+32,N/A,h0712,mann,albansk,443,Høyere nivå,Den gode skolen,skole 
+38,N/A,h0693,mann,serbokroatisk,683,Høyere nivå,Å være kjendis,folk 
+31,N/A,h0339,kvinne,serbokroatisk,459,Høyere nivå,Diktet 'Et møte' av Kolbein Falkeid,litteratur dikt 
+22,N/A,s2023,mann,bokmål,350,Språkprøven,Sunnhet og helse,helse 
+31,N/A,h0518,kvinne,nederlandsk,482,Høyere nivå,Miljøvern,miljø klima 
+18,B1,s0290,kvinne,engelsk,228,Språkprøven,Bomiljø,bolig 
+20,B1/B2,h0353,kvinne,tysk,738,Høyere nivå,Kommunevalget i Norge,politikk valg 
+20,B1/B2,h0222,kvinne,spansk,313,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+34,B1/B2,h0287,mann,spansk,445,Høyere nivå,Bilisme,bil trafikk 
+25,B1,s0624,kvinne,vietnamesisk,263,Språkprøven,Viktige verdier i livet,verdier 
+32,B2,s0993,kvinne,tysk,318,Språkprøven,Boformer,bolig 
+21,N/A,h2066,kvinne,bokmål,864,Høyere nivå,Organdonasjon,helse organ 
+25,A2/B1,s0098,mann,somali,215,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+23,A2/B1,s0100,mann,somali,281,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+21,N/A,s0379,kvinne,nederlandsk,404,Språkprøven,Framtida,tid 
+36,N/A,h2005,kvinne,bokmål,511,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+24,N/A,h2050,kvinne,bokmål,569,Høyere nivå,Organdonasjon,helse organ 
+44,B1,s0524,kvinne,russisk,258,Språkprøven,Den norske naturen,natur norge 
+45,B1/B2,s0155,kvinne,russisk,362,Språkprøven,Den norske naturen,natur norge 
+26,N/A,s2025,mann,bokmål,246,Språkprøven,Penger og andre verdier,økonomi holdning 
+45,B2/C1,h0585,kvinne,engelsk,726,Høyere nivå,Trafikkdøden,trafikk død 
+23,N/A,s0396,mann,nederlandsk,232,Språkprøven,En sport du liker,idrett/sport 
+28,B1,h0558,kvinne,polsk,492,Høyere nivå,Trafikkdøden,trafikk død 
+39,B2,h0191,mann,engelsk,483,Høyere nivå,Helse og livskvalitet,helse 
+48,N/A,s0385,mann,nederlandsk,443,Språkprøven,Framtida,tid 
+29,B1/B2,h0408,mann,tysk,715,Høyere nivå,Bestselgere og bokbransjen,bok litteratur kultur 
+48,N/A,h0294,kvinne,nederlandsk,576,Høyere nivå,Bilisme,bil trafikk 
+48,N/A,s0033,kvinne,serbokroatisk,227,Språkprøven,Et yrke,arbeid yrke 
+26,N/A,s0600,mann,serbokroatisk,374,Språkprøven,Møte med norsk kultur,kultur norge 
+41,N/A,s0384,kvinne,nederlandsk,212,Språkprøven,Å treffe andre mennesker,folk møte 
+38,N/A,h0741,kvinne,serbokroatisk,697,Høyere nivå,Barn og norskferdigheter,barn språk 
+26,B2,h0245,kvinne,tysk,430,Høyere nivå,Bilisme,bil trafikk 
+19,N/A,s2075,kvinne,bokmål,355,Språkprøven,Penger og andre verdier,økonomi holdning 
+31,N/A,h2055,kvinne,bokmål,673,Høyere nivå,Organdonasjon,helse organ 
+44,B2,h0349,mann,tysk,410,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+41,B1,h0669,kvinne,spansk,572,Høyere nivå,Organdonasjon,helse organ 
+36,A2/B1,s0479,kvinne,russisk,285,Språkprøven,Vennskap,folk relasjoner vennskap 
+27,B2,h0182,kvinne,engelsk,981,Høyere nivå,Helse og livskvalitet,helse 
+27,B2,h0017,kvinne,spansk,471,Høyere nivå,Et dikt av Einar Skjæraasen,litteratur dikt 
+25,B1/B2,h0622,mann,engelsk,461,Høyere nivå,Tilgjengelig arbeidsstyrke og behov i ulike yrker,arbeid yrke 
+28,N/A,h0098,kvinne,nederlandsk,409,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
+20,N/A,s2060,mann,bokmål,345,Språkprøven,Penger og andre verdier,økonomi holdning 
+18,A2/B1,s0802,mann,somali,243,Språkprøven,Røyking,helse røyking 
+32,A2/B1,s0696,mann,spansk,256,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+45,N/A,h0004,kvinne,nederlandsk,433,Høyere nivå,Mobbing på arbeidsplassen,arbeid mobbing holdning 
+28,B1,s0119,mann,russisk,397,Språkprøven,Alkohol og alkoholvaner,rus 
+34,B2,h0664,kvinne,polsk,588,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
+34,N/A,s0669,kvinne,serbokroatisk,287,Språkprøven,Flytting,familie flytting 
+21,N/A,s0419,kvinne,nederlandsk,287,Språkprøven,Bomiljø,bolig 
+55,N/A,s2045,kvinne,bokmål,233,Språkprøven,Sunnhet og helse,helse 
+40,N/A,h0132,mann,nederlandsk,510,Høyere nivå,Livslang læring,utdannelse 
+33,N/A,h0357,kvinne,nederlandsk,413,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+39,N/A,s0056,kvinne,albansk,338,Språkprøven,Vennskap,folk relasjoner vennskap 
+24,B1/B2,h0368,mann,tysk,613,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+28,N/A,s0400,kvinne,nederlandsk,300,Språkprøven,Røyking,helse røyking 
+50,B1,s0701,mann,somali,285,Språkprøven,En religion du kjenner,religion 
+29,N/A,s0750,kvinne,serbokroatisk,265,Språkprøven,Bomiljø,bolig 
+26,B2,h0230,mann,spansk,421,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+28,B1/B2,h0131,kvinne,polsk,753,Høyere nivå,Borgerlønn,økonomi 
+22,A2,s0107,mann,somali,204,Språkprøven,Bolig og bosted,bolig 
+44,B2,s0979,kvinne,polsk,385,Språkprøven,Glede,folk følelser 
+18,N/A,s2041,kvinne,bokmål,373,Språkprøven,Sunnhet og helse,helse 
+40,N/A,s0244,mann,albansk,179,Språkprøven,En hyggelig opplevelse,opplevelse 
+24,B1,s0564,kvinne,spansk,246,Språkprøven,Å treffe andre mennesker,folk møte 
+37,A2/B1,s0689,kvinne,spansk,258,Språkprøven,Den norske naturen,natur norge 
+29,B1,h0705,mann,vietnamesisk,352,Høyere nivå,Reality-TV,media tv 
+24,B2,h0250,kvinne,tysk,502,Høyere nivå,Mobiltelefonen,telefon 
+33,A2/B1,s0190,kvinne,engelsk,327,Språkprøven,Bomiljø,bolig 
+24,B1,s0983,mann,polsk,283,Språkprøven,Mobiltelefoner,telefon 
+44,N/A,s2022,kvinne,bokmål,310,Språkprøven,Sunnhet og helse,helse 
+40,B1,s0069,kvinne,russisk,267,Språkprøven,Møte med norsk kultur,kultur norge 
+23,B2,h0316,kvinne,tysk,561,Høyere nivå,Mobiltelefonen,telefon 
+32,N/A,s2085,kvinne,bokmål,410,Språkprøven,Frihet og ansvar,holdning 
+32,B1,s0778,mann,spansk,372,Språkprøven,Bomiljø,bolig 
+45,A2/B1,s0723,kvinne,polsk,248,Språkprøven,Barneoppdragelse,barn 
+31,N/A,s0105,kvinne,nederlandsk,244,Språkprøven,Reise,reise geografi 
+33,N/A,s0142,kvinne,serbokroatisk,233,Språkprøven,Barneoppdragelse,barn 
+18,A2/B1,s0514,kvinne,russisk,347,Språkprøven,Den norske naturen,natur norge 
+25,B1,s0451,kvinne,tysk,305,Språkprøven,Nyheter,media 
+23,N/A,s2071,mann,bokmål,261,Språkprøven,Frihet og ansvar,holdning 
+23,N/A,s0677,kvinne,serbokroatisk,425,Språkprøven,Flytting,familie flytting 
+33,A2/B1,s0175,kvinne,spansk,233,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+23,A2/B1,s0044,kvinne,spansk,401,Språkprøven,Barneoppdragelse,barn 
+-1,B1,s0126,kvinne,tysk,269,Språkprøven,Vennskap,folk relasjoner vennskap 
+46,N/A,h0077,kvinne,nederlandsk,453,Høyere nivå,Å leve i store byer,bolig geografi 
+22,N/A,h2080,kvinne,bokmål,673,Høyere nivå,Organdonasjon,helse organ 
+24,B1,h0667,kvinne,spansk,442,Høyere nivå,Organdonasjon,helse organ 
+28,B1,s0445,kvinne,tysk,291,Språkprøven,Mobiltelefoner,telefon 
+28,B2/C1,h0535,kvinne,polsk,727,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+23,N/A,h0135,kvinne,serbokroatisk,426,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
+22,N/A,s0138,mann,albansk,275,Språkprøven,En bok du har lest,litteratur bok 
+40,N/A,h0101,kvinne,nederlandsk,520,Høyere nivå,Den lille forskjellen,kjønn 
+49,B1,s0333,kvinne,engelsk,313,Språkprøven,Nyheter,media 
+28,B1,s0876,kvinne,vietnamesisk,367,Språkprøven,En sport du liker,idrett/sport 
+38,B1/B2,h0343,mann,spansk,460,Høyere nivå,Kommunevalget i Norge,politikk valg 
+28,B2/C1,h0130,kvinne,spansk,564,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
+32,B1,s0355,kvinne,engelsk,287,Språkprøven,Nyheter,media 
+34,N/A,s0403,mann,nederlandsk,283,Språkprøven,Røyking,helse røyking 
+36,B2,h0434,kvinne,spansk,415,Høyere nivå,Leselyst,litteratur kultur 
+54,A2/B1,s0059,kvinne,polsk,252,Språkprøven,Møte med norsk kultur,kultur norge 
+36,B1,s0453,kvinne,tysk,263,Språkprøven,Viktige verdier i livet,verdier 
+34,N/A,s0650,kvinne,serbokroatisk,294,Språkprøven,Barneoppdragelse,barn 
+28,N/A,s0082,mann,serbokroatisk,252,Språkprøven,Barneoppdragelse,barn 
+26,B1/B2,s0796,kvinne,polsk,368,Språkprøven,Viktige verdier i livet,verdier 
+48,N/A,h0668,kvinne,nederlandsk,442,Høyere nivå,Organdonasjon,helse organ 
+33,B2,h0489,mann,engelsk,530,Høyere nivå,Leselyst,litteratur kultur 
+31,N/A,s2001,kvinne,nynorsk,209,Språkprøven,Sunnhet og helse,helse 
+48,N/A,s0408,kvinne,nederlandsk,252,Språkprøven,Konkurranse,idrett/sport konkurranse 
+49,N/A,h0728,kvinne,serbokroatisk,525,Høyere nivå,Tidsklemmen,folk familie 
+28,B2/C1,h0545,mann,tysk,490,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+40,B2,h0298,mann,spansk,616,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+30,B2,h0534,kvinne,engelsk,394,Høyere nivå,Familie og karriere,familie arbeid økonomi 
+28,B1/B2,s0057,kvinne,polsk,270,Språkprøven,Alkohol og alkoholvaner,rus 
+30,C1,h0595,kvinne,russisk,593,Høyere nivå,Trafikkdøden,trafikk død 
+21,B1,s0712,kvinne,vietnamesisk,351,Språkprøven,Den norske naturen,natur norge 
+34,B2,h0183,kvinne,spansk,525,Høyere nivå,Sangtradisjon,musikk kultur 
+27,N/A,s0807,kvinne,serbokroatisk,183,Språkprøven,Nyheter,media 
+35,N/A,h0480,mann,serbokroatisk,507,Høyere nivå,Leselyst,litteratur kultur 
+19,B1/B2,h0511,kvinne,russisk,539,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+27,N/A,h0723,kvinne,albansk,520,Høyere nivå,Tidsklemmen,folk familie 
+29,N/A,h0699,kvinne,serbokroatisk,417,Høyere nivå,Stortingsvalg 2005,politikk 
+24,B2,h0541,kvinne,russisk,610,Høyere nivå,Leselyst,litteratur kultur 
+26,B2,h0392,kvinne,russisk,580,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+30,N/A,s0031,kvinne,serbokroatisk,183,Språkprøven,Et yrke,arbeid yrke 
+22,A2/B1,s0777,kvinne,spansk,250,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+25,A2/B1,s0809,kvinne,spansk,248,Språkprøven,Bomiljø,bolig 
+21,B2,s0923,kvinne,tysk,610,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+45,B1,s0157,kvinne,russisk,274,Språkprøven,En religion du kjenner,religion 
+25,N/A,h2057,kvinne,bokmål,301,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+29,N/A,s0827,kvinne,serbokroatisk,233,Språkprøven,Viktige verdier i livet,verdier 
+34,B2,h0335,kvinne,polsk,699,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+34,B1/B2,s1000,kvinne,tysk,290,Språkprøven,Boformer,bolig 
+21,A2/B1,s0660,kvinne,vietnamesisk,150,Språkprøven,Barneoppdragelse,barn 
+31,B2,h0003,kvinne,spansk,370,Høyere nivå,Tusenårsskiftet,tid 
+27,B1,s0756,kvinne,polsk,323,Språkprøven,Nyheter,media 
+29,B1,s0745,kvinne,polsk,289,Språkprøven,Nyheter,media 
+26,B2,h0302,kvinne,russisk,521,Høyere nivå,Mobiltelefonen,telefon 
+30,A2/B1,s0709,kvinne,vietnamesisk,187,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+45,N/A,s0373,kvinne,nederlandsk,371,Språkprøven,Bolig og bosted,bolig 
+22,B1,s0317,mann,engelsk,558,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+39,N/A,s2006,kvinne,bokmål,374,Språkprøven,Sunnhet og helse,helse 
+25,N/A,s2079,mann,bokmål,263,Språkprøven,Penger og andre verdier,økonomi holdning 
+40,N/A,s2004,kvinne,bokmål,273,Språkprøven,Penger og andre verdier,økonomi holdning 
+28,A2/B1,s0589,mann,somali,229,Språkprøven,Min første jobb,arbeid 
+50,N/A,s2042,kvinne,bokmål,321,Språkprøven,Sunnhet og helse,helse 
+21,B1,s0315,kvinne,engelsk,253,Språkprøven,Bomiljø,bolig 
+30,N/A,s0391,mann,nederlandsk,277,Språkprøven,Framtida,tid 
+30,B1,s0757,mann,spansk,303,Språkprøven,Bomiljø,bolig 
+23,B2/C1,h0211,kvinne,tysk,836,Høyere nivå,Bilisme,bil trafikk 
+30,N/A,h0126,mann,nederlandsk,453,Høyere nivå,Borgerlønn,økonomi 
+30,B2/C1,h0225,kvinne,tysk,570,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+27,B1,s0716,kvinne,somali,479,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+17,B1/B2,h0462,kvinne,tysk,366,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+29,N/A,h0058,kvinne,serbokroatisk,526,Høyere nivå,Det norske monarkiet,norge styreform 
+29,B1/B2,s0431,mann,tysk,324,Språkprøven,Møte med norsk kultur,kultur norge 
+41,N/A,s0271,mann,albansk,233,Språkprøven,Den norske naturen,natur norge 
+24,B1/B2,h0379,kvinne,russisk,596,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+40,B1/B2,h0021,kvinne,spansk,489,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+37,N/A,h0088,mann,nederlandsk,455,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+21,B1/B2,h0280,kvinne,tysk,521,Høyere nivå,Mobiltelefonen,telefon 
+26,N/A,s0383,mann,nederlandsk,400,Språkprøven,Å treffe andre mennesker,folk møte 
+18,B1,h0271,kvinne,engelsk,439,Høyere nivå,Bilisme,bil trafikk 
+28,N/A,s0367,kvinne,nederlandsk,320,Språkprøven,Reise,reise geografi 
+44,B1/B2,h0202,mann,engelsk,488,Høyere nivå,'Import' av helsepersonell,helse arbeid innvandring 
+31,B1,s0347,mann,engelsk,246,Språkprøven,Mobiltelefoner,telefon 
+36,B1,s0295,kvinne,engelsk,225,Språkprøven,Bomiljø,bolig 
+45,A2/B1,s0783,kvinne,polsk,169,Språkprøven,Viktige verdier i livet,verdier 
+40,N/A,s0409,mann,nederlandsk,218,Språkprøven,Bomiljø,bolig 
+47,A2,s0554,kvinne,spansk,241,Språkprøven,Å treffe andre mennesker,folk møte 
+46,B1,s0314,kvinne,engelsk,263,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+21,N/A,h2074,mann,bokmål,345,Høyere nivå,Organdonasjon,helse organ 
+38,B1/B2,h0623,kvinne,engelsk,584,Høyere nivå,Nærmiljø og lokalsamfunn,geografi samfunn folk 
+40,B1,s0536,kvinne,russisk,204,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+40,B2,h0252,kvinne,engelsk,399,Høyere nivå,Diktet 'Privat huskeregel' av Kolbjørn Falkeid,litteratur dikt 
+26,B1,s0978,kvinne,polsk,298,Språkprøven,Mobiltelefoner,telefon 
+34,B1,s0039,kvinne,russisk,338,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+22,N/A,h2098,kvinne,bokmål,429,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+32,N/A,s0667,mann,serbokroatisk,228,Språkprøven,Flytting,familie flytting 
+39,B1,s1003,mann,somali,217,Språkprøven,Mobiltelefoner,telefon 
+34,B2/C1,h0251,kvinne,tysk,539,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+37,B2,h0415,kvinne,russisk,404,Høyere nivå,Borgerlønn,økonomi 
+19,N/A,s0909,kvinne,serbokroatisk,485,Språkprøven,Fjernsynsprogram for barn,barn tv 
+50,N/A,s2038,kvinne,bokmål,293,Språkprøven,Frihet og ansvar,holdning 
+36,B1,s0578,kvinne,somali,194,Språkprøven,Min første jobb,arbeid 
+23,N/A,h2095,mann,bokmål,463,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+34,N/A,s0411,mann,nederlandsk,327,Språkprøven,Bomiljø,bolig 
+26,B2,h0172,kvinne,polsk,639,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+22,N/A,h2087,kvinne,bokmål,488,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+19,N/A,s2077,mann,bokmål,401,Språkprøven,Frihet og ansvar,holdning 
+23,B1/B2,s0912,mann,russisk,321,Språkprøven,Trafikk og boligområder,trafikk bolig 
+25,N/A,h2041,mann,bokmål,488,Høyere nivå,Organdonasjon,helse organ 
+24,N/A,s0780,kvinne,serbokroatisk,305,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+32,B1,s0707,kvinne,vietnamesisk,236,Språkprøven,En religion du kjenner,religion 
+33,B1/B2,h0286,kvinne,russisk,477,Høyere nivå,Mobiltelefonen,telefon 
+-1,B1,s0230,kvinne,engelsk,239,Språkprøven,Møte med norsk kultur,kultur norge 
+26,N/A,h2060,mann,nynorsk,552,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+42,A2/B1,s0759,kvinne,polsk,250,Språkprøven,Nyheter,media 
+27,B2/C1,h0639,kvinne,polsk,680,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
+37,N/A,s0376,mann,nederlandsk,232,Språkprøven,Reise,reise geografi 
+33,N/A,h0727,kvinne,serbokroatisk,468,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+28,B1,s0785,kvinne,polsk,293,Språkprøven,Mobiltelefoner,telefon 
+21,B1,s0965,kvinne,tysk,319,Språkprøven,Trafikk og boligområder,trafikk bolig 
+26,N/A,s0608,mann,serbokroatisk,284,Språkprøven,Vennskap,folk relasjoner vennskap 
+29,B2,h0474,kvinne,polsk,743,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+26,B1,s0830,kvinne,spansk,313,Språkprøven,Bomiljø,bolig 
+35,N/A,h0569,kvinne,serbokroatisk,434,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+32,B1/B2,s0030,kvinne,tysk,233,Språkprøven,Mobiltelefoner,telefon 
+27,B2,h0647,kvinne,polsk,673,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+39,A2/B1,s0515,kvinne,russisk,250,Språkprøven,Den norske naturen,natur norge 
+24,A2/B1,s0322,mann,engelsk,353,Språkprøven,Bomiljø,bolig 
+56,B1/B2,h0378,kvinne,tysk,822,Høyere nivå,Diktet 'Skøyteløperen' av Peter R Holm,litteratur dikt idrett 
+24,B2,h0487,kvinne,tysk,434,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+35,N/A,s0423,mann,nederlandsk,308,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+33,N/A,h0125,kvinne,nederlandsk,290,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
+25,B1,s0179,kvinne,vietnamesisk,365,Språkprøven,En kjent person,folk biografi 
+40,B2,h0414,kvinne,polsk,431,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+37,B1,s0770,kvinne,polsk,425,Språkprøven,Mobiltelefoner,telefon 
+32,N/A,h0619,kvinne,serbokroatisk,671,Høyere nivå,Adopsjon,barn familie 
+23,B1,s0749,kvinne,polsk,306,Språkprøven,Mobiltelefoner,telefon 
+28,B1/B2,h0110,kvinne,polsk,548,Høyere nivå,Miljøvern,miljø klima 
+36,B1,s0349,kvinne,engelsk,249,Språkprøven,Mobiltelefoner,telefon 
+47,B1/B2,h0284,kvinne,russisk,513,Høyere nivå,Mobiltelefonen,telefon 
+37,N/A,s0270,mann,albansk,417,Språkprøven,Den norske naturen,natur norge 
+36,N/A,s0360,kvinne,nederlandsk,261,Språkprøven,Bolig og bosted,bolig 
+35,B2,s0502,kvinne,russisk,354,Språkprøven,En religion du kjenner,religion 
+22,N/A,h2094,kvinne,bokmål,537,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+25,B1,s0477,kvinne,russisk,274,Språkprøven,Møte med norsk kultur,kultur norge 
+28,N/A,h0074,kvinne,serbokroatisk,488,Høyere nivå,Å leve i store byer,bolig geografi 
+35,B2/C1,h0257,kvinne,russisk,823,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+40,N/A,h0052,kvinne,nederlandsk,504,Høyere nivå,Det norske monarkiet,norge styreform 
+42,A2/B1,s0637,mann,somali,363,Språkprøven,En bok du har lest,litteratur bok 
+33,N/A,s0394,mann,nederlandsk,334,Språkprøven,Framtida,tid 
+32,B1,s0680,kvinne,spansk,335,Språkprøven,Den norske naturen,natur norge 
+18,N/A,s2043,kvinne,bokmål,291,Språkprøven,Sunnhet og helse,helse 
+26,N/A,h0452,kvinne,nederlandsk,521,Høyere nivå,Kvinner i topposisjoner,kjønn yrke arbeid 
+41,N/A,s0932,kvinne,nederlandsk,362,Språkprøven,Fjernsynsprogram for barn,barn tv 
+25,B1/B2,h0560,kvinne,spansk,422,Høyere nivå,Integrering av innvandrere,innvandring 
+26,A2/B1,s0996,mann,somali,218,Språkprøven,Boformer,bolig 
+20,B1/B2,h0395,kvinne,tysk,652,Høyere nivå,Diktet 'Skøyteløperen' av Peter R Holm,litteratur dikt idrett 
+28,B2,h0469,kvinne,engelsk,570,Høyere nivå,Miljøvern,miljø klima 
+28,B1/B2,h0536,kvinne,polsk,638,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+29,N/A,h0716,kvinne,serbokroatisk,560,Høyere nivå,Tidsklemmen,folk familie 
+37,A2,s0440,kvinne,tysk,238,Språkprøven,Vennskap,folk relasjoner vennskap 
+41,N/A,h0010,kvinne,serbokroatisk,504,Høyere nivå,Hva er god barnelitteratur,litteratur kultur holdning 
+20,B1,s0930,kvinne,tysk,323,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+21,B2,h0320,kvinne,tysk,702,Høyere nivå,Mobiltelefonen,telefon 
+25,N/A,s0146,kvinne,serbokroatisk,352,Språkprøven,Barneoppdragelse,barn 
+25,B1/B2,s0822,kvinne,spansk,258,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+30,A2/B1,s0090,kvinne,somali,233,Språkprøven,Framtida,tid 
+38,B1,s0473,kvinne,russisk,281,Språkprøven,Møte med norsk kultur,kultur norge 
+29,B1,s0841,mann,spansk,249,Språkprøven,Mobiltelefoner,telefon 
+25,N/A,s0811,kvinne,serbokroatisk,201,Språkprøven,Mobiltelefoner,telefon 
+27,B2,h0517,kvinne,spansk,390,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+27,B1,s0112,kvinne,somali,283,Språkprøven,Å treffe andre mennesker,folk møte 
+27,B1/B2,h0416,kvinne,russisk,577,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+30,B1,s0940,kvinne,polsk,387,Språkprøven,Trafikk og boligområder,trafikk bolig 
+19,B2/C1,h0360,kvinne,tysk,524,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+24,N/A,h2013,kvinne,nynorsk,420,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+17,N/A,s0205,kvinne,albansk,130,Språkprøven,Å treffe andre mennesker,folk møte 
+35,B1,s0742,kvinne,polsk,308,Språkprøven,Viktige verdier i livet,verdier 
+25,N/A,s0242,kvinne,albansk,329,Språkprøven,En hyggelig opplevelse,opplevelse 
+39,N/A,h2012,kvinne,nynorsk,351,Høyere nivå,Organdonasjon,helse organ 
+31,A2/B1,s0504,kvinne,russisk,237,Språkprøven,Den norske naturen,natur norge 
+21,B1/B2,h0297,kvinne,tysk,455,Høyere nivå,Mobiltelefonen,telefon 
+56,N/A,h0605,kvinne,nederlandsk,574,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+33,B2,h0612,kvinne,polsk,781,Høyere nivå,Adopsjon,barn familie 
+30,B2,h0351,kvinne,engelsk,441,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+35,A2/B1,s0880,mann,somali,231,Språkprøven,Framtida,tid 
+35,B1,s0184,kvinne,vietnamesisk,257,Språkprøven,Konkurranse,idrett/sport konkurranse 
+25,A2/B1,s0878,mann,somali,183,Språkprøven,Framtida,tid 
+36,N/A,s0220,kvinne,albansk,202,Språkprøven,Alkohol og alkoholvaner,rus 
+26,B1/B2,s0055,kvinne,polsk,309,Språkprøven,Vennskap,folk relasjoner vennskap 
+22,N/A,h2006,mann,bokmål,351,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+24,B1,s0228,mann,engelsk,322,Språkprøven,Møte med norsk kultur,kultur norge 
+32,B1,s0218,kvinne,engelsk,218,Språkprøven,Vennskap,folk relasjoner vennskap 
+28,B1/B2,h0375,kvinne,russisk,402,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+31,B2/C1,h0227,mann,engelsk,647,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+32,N/A,s0255,kvinne,albansk,209,Språkprøven,Flytting,familie flytting 
+42,C1,h0310,kvinne,tysk,504,Høyere nivå,Mobiltelefonen,telefon 
+43,N/A,s0838,mann,serbokroatisk,373,Språkprøven,Viktige verdier i livet,verdier 
+30,N/A,s0149,kvinne,serbokroatisk,347,Språkprøven,Et yrke,arbeid yrke 
+25,A2/B1,s0114,mann,somali,179,Språkprøven,Framtida,tid 
+24,N/A,h0362,kvinne,nederlandsk,544,Høyere nivå,Kommunevalget i Norge,politikk valg 
+36,B1,s0170,mann,spansk,370,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+37,N/A,s0815,mann,serbokroatisk,283,Språkprøven,Bomiljø,bolig 
+29,N/A,h2047,kvinne,bokmål,610,Høyere nivå,Organdonasjon,helse organ 
+30,B1,s0635,kvinne,somali,246,Språkprøven,En bok du har lest,litteratur bok 
+25,B1,s0460,kvinne,tysk,363,Språkprøven,Mobiltelefoner,telefon 
+26,B1,s0910,kvinne,tysk,286,Språkprøven,Trafikk og boligområder,trafikk bolig 
+32,A2/B1,s0070,kvinne,russisk,343,Språkprøven,Møte med norsk kultur,kultur norge 
+31,B2,h0606,kvinne,polsk,527,Høyere nivå,Adopsjon,barn familie 
+40,B1,s0339,kvinne,engelsk,216,Språkprøven,Nyheter,media 
+39,N/A,s0617,mann,serbokroatisk,287,Språkprøven,Alkohol og alkoholvaner,rus 
+25,B1,s0346,mann,engelsk,220,Språkprøven,Mobiltelefoner,telefon 
+28,N/A,h0011,kvinne,serbokroatisk,556,Høyere nivå,Hva er god barnelitteratur,litteratur kultur holdning 
+29,N/A,s0614,mann,serbokroatisk,268,Språkprøven,Vennskap,folk relasjoner vennskap 
+20,N/A,s2068,mann,bokmål,373,Språkprøven,Penger og andre verdier,økonomi holdning 
+36,B1/B2,s0350,kvinne,engelsk,330,Språkprøven,Viktige verdier i livet,verdier 
+32,N/A,s0768,mann,serbokroatisk,256,Språkprøven,Bomiljø,bolig 
+23,A2/B1,s0899,kvinne,vietnamesisk,258,Språkprøven,Likestilling,kjønn holdning 
+25,B1,s0741,mann,spansk,366,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+24,N/A,s0818,mann,serbokroatisk,280,Språkprøven,Nyheter,media 
+35,A2,s0002,kvinne,spansk,293,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter - Bomiljø - Konkurranse,tradisjoner flytting 
+27,N/A,s0141,mann,nederlandsk,211,Språkprøven,Barneoppdragelse,barn 
+33,B1/B2,s0927,kvinne,russisk,319,Språkprøven,Fjernsynsprogram for barn,barn tv 
+30,N/A,s0152,mann,serbokroatisk,268,Språkprøven,Flytting,familie flytting 
+29,N/A,s0404,kvinne,nederlandsk,297,Språkprøven,Bomiljø,bolig 
+28,N/A,h0160,mann,serbokroatisk,404,Høyere nivå,Inn- og utvandring,innvandring 
+43,N/A,s0615,mann,serbokroatisk,551,Språkprøven,Vennskap,folk relasjoner vennskap 
+27,B1/B2,h0709,kvinne,vietnamesisk,535,Høyere nivå,Den gode skolen,skole 
+39,N/A,s0922,mann,nederlandsk,336,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+29,N/A,h0051,kvinne,nederlandsk,438,Høyere nivå,Netthandel,handel økonomi media 
+39,B1/B2,h0512,kvinne,russisk,485,Høyere nivå,Leselyst,litteratur kultur 
+17,N/A,s0129,kvinne,albansk,262,Språkprøven,En bok du har lest,litteratur bok 
+27,B1,s0767,mann,polsk,280,Språkprøven,Mobiltelefoner,telefon 
+41,N/A,s0032,mann,serbokroatisk,405,Språkprøven,Et yrke,arbeid yrke 
+29,A2/B1,s0902,kvinne,vietnamesisk,260,Språkprøven,En sport du liker,idrett/sport 
+26,B2,h0217,kvinne,engelsk,538,Høyere nivå,Mobiltelefon,telefon 
+30,B2,h0645,kvinne,polsk,578,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
+34,N/A,h0523,mann,nederlandsk,554,Høyere nivå,Leselyst,litteratur kultur 
+46,B1,s0498,kvinne,russisk,298,Språkprøven,Møte med norsk kultur,kultur norge 
+27,B2/C1,h0376,mann,spansk,791,Høyere nivå,Bestselgere og bokbransjen,bok litteratur kultur 
+46,B1,s0833,kvinne,spansk,229,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+21,N/A,h2084,kvinne,nynorsk,789,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+32,B1,s0894,kvinne,vietnamesisk,273,Språkprøven,Likestilling,kjønn holdning 
+49,N/A,s2040,kvinne,bokmål,217,Språkprøven,Sunnhet og helse,helse 
+52,N/A,h2021,kvinne,bokmål,551,Høyere nivå,Organdonasjon,helse organ 
+37,B2,s0929,kvinne,tysk,463,Språkprøven,Trafikk og boligområder,trafikk bolig 
+24,N/A,s0268,mann,albansk,247,Språkprøven,En religion du kjenner,religion 
+47,B1,h0651,mann,spansk,438,Høyere nivå,Realkompetanse,folk utdannelse 
+30,B1/B2,s0164,kvinne,polsk,408,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+24,N/A,h0676,mann,serbokroatisk,354,Høyere nivå,Skjønnhet,personer 
+29,B1,s0892,kvinne,vietnamesisk,303,Språkprøven,Likestilling,kjønn holdning 
+25,B1,s0009,kvinne,vietnamesisk,364,Språkprøven,Konkurranse,idrett/sport konkurranse 
+26,B1/B2,h0304,kvinne,russisk,463,Høyere nivå,Mobiltelefonen,telefon 
+66,N/A,h2001,,bokmål,257,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+39,N/A,s0416,mann,nederlandsk,291,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+27,N/A,h0070,mann,serbokroatisk,502,Høyere nivå,Å leve i store byer,bolig geografi 
+29,B1,s0641,kvinne,vietnamesisk,249,Språkprøven,En hyggelig opplevelse,opplevelse 
+48,A2/B1,s0580,mann,somali,292,Språkprøven,Tanker om det å bli gammel,trafikk bolig 
+51,N/A,h0113,kvinne,serbokroatisk,428,Høyere nivå,Diktet 'Sannheten' av Rolf Jacobsen,litteratur dikt 
+25,B1/B2,s0343,kvinne,engelsk,323,Språkprøven,Mobiltelefoner,telefon 
+32,N/A,h0724,mann,serbokroatisk,674,Høyere nivå,Tidsklemmen,folk familie 
+-1,B1,s0631,kvinne,vietnamesisk,340,Språkprøven,En bok du har lest,litteratur bok 
+34,N/A,s0208,kvinne,albansk,212,Språkprøven,Framtida,tid 
+41,N/A,h0577,kvinne,albansk,612,Høyere nivå,Trafikkdøden,trafikk død 
+22,N/A,s0053,kvinne,albansk,309,Språkprøven,Vennskap,folk relasjoner vennskap 
+27,B1,s0771,kvinne,polsk,461,Språkprøven,Nyheter,media 
+28,B1/B2,s0121,kvinne,tysk,454,Språkprøven,Vennskap,folk relasjoner vennskap 
+20,B2/C1,h0387,kvinne,russisk,838,Høyere nivå,Praktisk og teoretisk utdanning,utdannelse 
+30,N/A,h0080,mann,serbokroatisk,445,Høyere nivå,Å leve i store byer,bolig geografi 
+38,B2,s0332,mann,engelsk,264,Språkprøven,Mobiltelefoner,telefon 
+29,B1,s0800,kvinne,polsk,263,Språkprøven,Viktige verdier i livet,verdier 
+23,B1/B2,s0659,kvinne,polsk,262,Språkprøven,Barneoppdragelse,barn 
+50,B2,h0571,kvinne,engelsk,750,Høyere nivå,Barndom og voksenverden,barn 
+40,B2/C1,h0109,kvinne,spansk,485,Høyere nivå,Den lille forskjellen,kjønn 
+57,N/A,s0382,kvinne,nederlandsk,289,Språkprøven,Framtida,tid 
+29,B1,s0162,kvinne,polsk,361,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+28,N/A,h0680,mann,nederlandsk,400,Høyere nivå,Inn- og utvandring,innvandring 
+27,A2/B1,s0560,kvinne,spansk,322,Språkprøven,Framtida,tid 
+21,B1/B2,h0404,mann,tysk,422,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+30,B1,s0622,mann,somali,252,Språkprøven,En hyggelig opplevelse,opplevelse 
+20,N/A,h2077,kvinne,bokmål,439,Høyere nivå,Organdonasjon,helse organ 
+38,B1/B2,s0976,kvinne,russisk,351,Språkprøven,Trafikk og boligområder,trafikk bolig 
+25,N/A,s0025,kvinne,nederlandsk,312,Språkprøven,Bomiljø,bolig 
+29,B1/B2,h0609,kvinne,russisk,494,Høyere nivå,Adopsjon,barn familie 
+28,A2/B1,s0760,kvinne,polsk,369,Språkprøven,Nyheter,media 
+40,N/A,h0281,mann,serbokroatisk,454,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+26,N/A,s2100,mann,bokmål,708,Språkprøven,Frihet og ansvar,holdning 
+20,N/A,s2066,kvinne,bokmål,446,Språkprøven,Penger og andre verdier,økonomi holdning 
+46,N/A,s0021,mann,nederlandsk,303,Språkprøven,Bomiljø,bolig 
+37,A2/B1,s0662,kvinne,vietnamesisk,430,Språkprøven,Barneoppdragelse,barn 
+37,N/A,h0740,kvinne,serbokroatisk,478,Høyere nivå,Barn og norskferdigheter,barn språk 
+29,N/A,s0664,mann,serbokroatisk,410,Språkprøven,Flytting,familie flytting 
+38,N/A,h0359,kvinne,serbokroatisk,443,Høyere nivå,Diktet 'Et møte' av Kolbein Falkeid,litteratur dikt 
+31,B2,s0919,mann,tysk,335,Språkprøven,Trafikk og boligområder,trafikk bolig 
+26,B1/B2,s0084,kvinne,polsk,362,Språkprøven,Før og nå,tid 
+24,A2,s0582,mann,somali,141,Språkprøven,Min første jobb,arbeid 
+28,N/A,h0023,kvinne,serbokroatisk,353,Høyere nivå,Ytringsfrihet,politikk holdning 
+36,A2/B1,s0704,mann,somali,241,Språkprøven,Den norske naturen,natur norge 
+50,N/A,h0580,mann,albansk,549,Høyere nivå,Integrering av innvandrere,innvandring 
+33,N/A,h0374,mann,nederlandsk,454,Høyere nivå,Bestselgere og bokbransjen,bok litteratur kultur 
+23,N/A,s2078,mann,bokmål,241,Språkprøven,Penger og andre verdier,økonomi holdning 
+25,C1,h0559,mann,polsk,623,Høyere nivå,Integrering av innvandrere,innvandring 
+31,B1/B2,h0742,kvinne,vietnamesisk,704,Høyere nivå,Klimaendringene,miljø klima 
+28,N/A,s0670,mann,serbokroatisk,284,Språkprøven,Et yrke,arbeid yrke 
+51,C1,h0189,kvinne,engelsk,523,Høyere nivå,Helse og livskvalitet,helse 
+36,N/A,h0013,kvinne,nederlandsk,566,Høyere nivå,Et dikt av Einar Skjæraasen,litteratur dikt 
+29,A2/B1,s0094,kvinne,vietnamesisk,233,Språkprøven,Bolig og bosted,bolig 
+26,N/A,s0769,kvinne,serbokroatisk,346,Språkprøven,Bomiljø,bolig 
+30,N/A,h0036,kvinne,nederlandsk,512,Høyere nivå,Netthandel,-
+21,B2,h0521,kvinne,engelsk,511,Høyere nivå,Leselyst,litteratur kultur 
+23,B1,s0160,kvinne,spansk,241,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+32,N/A,h2046,mann,bokmål,492,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+39,N/A,s0051,kvinne,albansk,252,Språkprøven,Vennskap,folk relasjoner vennskap 
+29,B1,s0488,kvinne,russisk,180,Språkprøven,Møte med norsk kultur,kultur norge 
+34,B1,s0897,kvinne,vietnamesisk,285,Språkprøven,Likestilling,kjønn holdning 
+31,B1,s0715,mann,spansk,266,Språkprøven,Den norske naturen,natur norge 
+27,B1/B2,s0992,mann,tysk,255,Språkprøven,Glede,folk følelser 
+29,N/A,h0431,kvinne,nederlandsk,524,Høyere nivå,Leselyst,litteratur kultur 
+28,N/A,s0421,kvinne,nederlandsk,273,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+27,N/A,s0248,kvinne,albansk,408,Språkprøven,Før og nå,tid 
+31,B1,s0481,kvinne,russisk,313,Språkprøven,Vennskap,folk relasjoner vennskap 
+21,N/A,s2090,kvinne,bokmål,277,Språkprøven,Sunnhet og helse,helse 
+56,N/A,s2010,mann,bokmål,404,Språkprøven,Sunnhet og helse,helse 
+34,N/A,h0683,kvinne,serbokroatisk,686,Høyere nivå,Inn- og utvandring,innvandring 
+42,B2,h0625,kvinne,engelsk,608,Høyere nivå,Adopsjon,barn familie 
+47,N/A,s2055,mann,nynorsk,191,Språkprøven,Penger og andre verdier,økonomi holdning 
+37,N/A,h0032,mann,serbokroatisk,340,Høyere nivå,Det norske monarkiet,norge styreform 
+45,N/A,s0132,mann,albansk,265,Språkprøven,En hyggelig opplevelse,opplevelse 
+28,A2/B1,s0761,kvinne,polsk,237,Språkprøven,Viktige verdier i livet,verdier 
+37,B2/C1,h0391,kvinne,russisk,503,Høyere nivå,Elitesport og fellesskap,idrett/sport 
+24,N/A,s2005,kvinne,bokmål,276,Språkprøven,Penger og andre verdier,økonomi holdning 
+29,B2,h0168,kvinne,spansk,440,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+21,N/A,s0227,kvinne,albansk,354,Språkprøven,Møte med norsk kultur,kultur norge 
+25,A2,s0103,mann,somali,249,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+24,B2,h0253,kvinne,polsk,608,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+48,B1/B2,h0174,mann,spansk,459,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+20,A2/B1,s0113,mann,somali,252,Språkprøven,Å treffe andre mennesker,folk møte 
+48,B1,s0918,kvinne,polsk,217,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+38,A2,s0657,mann,somali,194,Språkprøven,Før og nå,tid 
+38,N/A,s2097,kvinne,bokmål,259,Språkprøven,Penger og andre verdier,økonomi holdning 
+19,N/A,s0054,kvinne,albansk,228,Språkprøven,Vennskap,folk relasjoner vennskap 
+39,N/A,h0163,mann,serbokroatisk,484,Høyere nivå,Inn- og utvandring,innvandring 
+35,A2,s0570,kvinne,spansk,150,Språkprøven,Å treffe andre mennesker,folk møte 
+21,N/A,h2075,kvinne,bokmål,595,Høyere nivå,Organdonasjon,helse organ 
+30,N/A,h0105,kvinne,serbokroatisk,405,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
+30,B2,h0428,kvinne,engelsk,518,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+23,N/A,s2067,mann,bokmål,408,Språkprøven,Frihet og ansvar,holdning 
+35,A2/B1,s0720,kvinne,vietnamesisk,230,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+26,A2/B1,s0620,kvinne,somali,235,Språkprøven,Viktige verdier i livet,verdier 
+22,N/A,h0100,kvinne,nederlandsk,509,Høyere nivå,Den lille forskjellen,kjønn 
+41,B2,h0350,kvinne,polsk,352,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+31,B1,s0545,mann,vietnamesisk,417,Språkprøven,Bolig og bosted,bolig 
+40,N/A,h0632,mann,nederlandsk,434,Høyere nivå,Adopsjon,barn familie 
+27,N/A,s0836,kvinne,serbokroatisk,264,Språkprøven,Viktige verdier i livet,verdier 
+46,N/A,s0801,kvinne,serbokroatisk,246,Språkprøven,Mobiltelefoner,telefon 
+29,A2,s0873,mann,somali,211,Språkprøven,Framtida,tid 
+44,A2/B1,s0482,kvinne,russisk,322,Språkprøven,Møte med norsk kultur,kultur norge 
+28,N/A,s0143,kvinne,serbokroatisk,225,Språkprøven,Barneoppdragelse,barn 
+29,B1/B2,h0029,mann,spansk,422,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+36,N/A,s2064,mann,bokmål,303,Språkprøven,Frihet og ansvar,holdning 
+29,B1/B2,h0442,kvinne,polsk,846,Høyere nivå,Leselyst,litteratur kultur 
+40,B1/B2,s0938,kvinne,russisk,293,Språkprøven,Trafikk og boligområder,trafikk bolig 
+31,B1,s0860,mann,somali,288,Språkprøven,Framtida,tid 
+25,A2/B1,s0877,mann,somali,260,Språkprøven,Framtida,tid 
+42,A2/B1,s0327,mann,engelsk,215,Språkprøven,Mobiltelefoner,telefon 
+24,B1,s0921,kvinne,polsk,343,Språkprøven,Trafikk og boligområder,trafikk bolig 
+35,B1,s0658,kvinne,polsk,247,Språkprøven,Før og nå,tid 
+37,N/A,s0613,mann,serbokroatisk,347,Språkprøven,Møte med norsk kultur,kultur norge 
+26,N/A,h0615,kvinne,nederlandsk,749,Høyere nivå,Nærmiljø og lokalsamfunn,geografi samfunn folk 
+28,B1/B2,s0432,mann,tysk,387,Språkprøven,Alkohol og alkoholvaner,rus 
+-1,B2,h0136,mann,spansk,429,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
+31,B1,s0321,kvinne,engelsk,258,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+29,A2/B1,s0540,kvinne,somali,225,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+29,N/A,h0151,kvinne,serbokroatisk,527,Høyere nivå,Uføretrygd,velferd økonomi 
+31,B2,h0608,kvinne,engelsk,691,Høyere nivå,Adopsjon,barn familie 
+20,N/A,s0221,kvinne,albansk,209,Språkprøven,Vennskap,folk relasjoner vennskap 
+34,N/A,s0285,mann,albansk,287,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+38,A2/B1,s0095,kvinne,vietnamesisk,222,Språkprøven,Bolig og bosted,bolig 
+45,B1,h0288,kvinne,russisk,402,Høyere nivå,Mobiltelefonen,telefon 
+25,N/A,h0656,mann,nederlandsk,904,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+25,B2,h0483,kvinne,russisk,514,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+30,N/A,s0427,mann,nederlandsk,221,Språkprøven,Mobiltelefoner,telefon 
+27,B1,s0344,kvinne,engelsk,251,Språkprøven,Nyheter,media 
+25,B1,s0541,kvinne,vietnamesisk,331,Språkprøven,Bolig og bosted,bolig 
+22,B2/C1,h0180,kvinne,polsk,507,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+20,B2,h0277,kvinne,tysk,589,Høyere nivå,Mobiltelefonen,telefon 
+31,B1,s0532,kvinne,russisk,213,Språkprøven,Den norske naturen,natur norge 
+24,N/A,h2036,mann,bokmål,247,Høyere nivå,Organdonasjon,helse organ 
+27,B2,h0636,kvinne,polsk,354,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+24,B1,s0831,mann,spansk,275,Språkprøven,Bomiljø,bolig 
+43,B2,h0407,kvinne,spansk,493,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+53,B2/C1,h0224,kvinne,tysk,506,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+22,B1/B2,s0679,mann,spansk,359,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+25,B1,s0435,kvinne,tysk,292,Språkprøven,Vennskap,folk relasjoner vennskap 
+19,N/A,s0739,kvinne,serbokroatisk,273,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+35,N/A,h0697,kvinne,serbokroatisk,435,Høyere nivå,Å være kjendis,folk 
+27,N/A,h2024,mann,nynorsk,552,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+21,B2,h0345,kvinne,polsk,671,Høyere nivå,Kommunevalget i Norge,politikk valg 
+32,N/A,s2093,kvinne,bokmål,253,Språkprøven,Sunnhet og helse,helse 
+38,N/A,s0249,kvinne,albansk,310,Språkprøven,Barneoppdragelse,barn 
+29,B1/B2,h0254,kvinne,russisk,490,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+34,B1/B2,s0348,kvinne,engelsk,224,Språkprøven,Mobiltelefoner,telefon 
+26,N/A,s0953,mann,nederlandsk,382,Språkprøven,Trafikk og boligområder,trafikk bolig 
+29,A2/B1,s0651,kvinne,polsk,210,Språkprøven,Barneoppdragelse,barn 
+27,B2,h0421,kvinne,tysk,671,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+31,N/A,s0598,kvinne,serbokroatisk,155,Språkprøven,Vennskap,folk relasjoner vennskap 
+38,B2,h0537,kvinne,russisk,644,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+36,N/A,s0392,kvinne,nederlandsk,346,Språkprøven,Nyheter,media 
+30,B1,s0472,kvinne,russisk,317,Språkprøven,Vennskap,folk relasjoner vennskap 
+22,N/A,s2059,kvinne,bokmål,352,Språkprøven,Penger og andre verdier,økonomi holdning 
+32,B1,s0772,mann,polsk,366,Språkprøven,Mobiltelefoner,telefon 
+28,B1,s0503,kvinne,russisk,512,Språkprøven,Den norske naturen,natur norge 
+36,B1,s0173,kvinne,spansk,240,Språkprøven,Kultur og idrett,idrett/sport kultur 
+28,B1,s0341,kvinne,engelsk,357,Språkprøven,Mobiltelefoner,telefon 
+37,C1,h0156,mann,spansk,505,Høyere nivå,Å leve i store byer,bolig geografi 
+41,N/A,s0269,kvinne,albansk,287,Språkprøven,Den norske naturen,natur norge 
+34,B1/B2,s0908,mann,tysk,380,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+32,B1/B2,s0456,kvinne,tysk,260,Språkprøven,Viktige verdier i livet,verdier 
+27,B2,h0155,kvinne,spansk,573,Høyere nivå,Å leve i store byer,bolig geografi 
+34,B1,s0743,mann,spansk,376,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+20,B2,h0432,kvinne,tysk,550,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+34,A2/B1,s0758,kvinne,polsk,260,Språkprøven,Viktige verdier i livet,verdier 
+25,N/A,h0053,mann,nederlandsk,414,Høyere nivå,Netthandel,handel økonomi media 
+48,N/A,s2017,mann,bokmål,313,Språkprøven,Sunnhet og helse,helse 
+17,B1,s0846,mann,somali,222,Språkprøven,Røyking,helse røyking 
+27,N/A,s2095,kvinne,bokmål,203,Språkprøven,Sunnhet og helse,helse 
+26,N/A,s0282,kvinne,albansk,478,Språkprøven,Barneoppdragelse,barn 
+34,N/A,s0045,mann,albansk,527,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+33,B1/B2,s0169,kvinne,polsk,459,Språkprøven,Barneoppdragelse,barn 
+33,B2/C1,h0244,kvinne,tysk,754,Høyere nivå,Mobiltelefonen,telefon 
+31,B2,h0409,kvinne,tysk,611,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+29,N/A,s0136,kvinne,albansk,251,Språkprøven,En hyggelig opplevelse,opplevelse 
+25,N/A,s0128,kvinne,nederlandsk,316,Språkprøven,Møte med norsk kultur,kultur norge 
+21,B2/C1,s0968,kvinne,tysk,369,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+28,B1/B2,h0637,kvinne,polsk,603,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+32,B1/B2,h0506,kvinne,engelsk,639,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+46,N/A,s0370,kvinne,nederlandsk,338,Språkprøven,Reise,reise geografi 
+30,N/A,h0718,mann,serbokroatisk,366,Høyere nivå,Tidsklemmen,folk familie 
+36,A2/B1,s0161,kvinne,polsk,267,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+19,B2,h0085,kvinne,spansk,745,Høyere nivå,Enpersons-husholdninger,familie økonomi 
+22,A2/B1,s0640,kvinne,vietnamesisk,411,Språkprøven,En hyggelig opplevelse,opplevelse 
+31,B1/B2,h0326,kvinne,russisk,481,Høyere nivå,Mobiltelefonen,telefon 
+19,N/A,h2034,kvinne,bokmål,462,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+28,B2/C1,h0321,mann,tysk,554,Høyere nivå,Mobiltelefonen,telefon 
+32,A2/B1,s0308,kvinne,engelsk,311,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+21,B1/B2,s1007,kvinne,tysk,223,Språkprøven,En sport du liker,idrett/sport 
+39,B2,h0169,kvinne,engelsk,595,Høyere nivå,Helse og livskvalitet,helse 
+40,N/A,h0050,mann,nederlandsk,436,Høyere nivå,Netthandel,handel økonomi media 
+31,C1,h0603,kvinne,russisk,487,Høyere nivå,Adopsjon,barn familie 
+32,N/A,s0959,kvinne,serbokroatisk,416,Språkprøven,Fjernsynsprogram for barn,barn tv 
+28,B2,h0102,kvinne,polsk,709,Høyere nivå,Den lille forskjellen,kjønn 
+34,N/A,s0250,kvinne,albansk,224,Språkprøven,Barneoppdragelse,barn 
+27,B2,h0200,mann,spansk,962,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+50,N/A,h2025,kvinne,bokmål,369,Høyere nivå,Olympiske leker og sportslige idealer,idrett/sport 
+62,N/A,s2019,mann,bokmål,336,Språkprøven,Sunnhet og helse,helse 
+33,B2/C1,h0412,kvinne,engelsk,488,Høyere nivå,Bestselgere og bokbransjen,bok litteratur kultur 
+29,B1,s0447,kvinne,tysk,261,Språkprøven,Viktige verdier i livet,verdier 
+38,A2/B1,s0012,mann,engelsk,204,Språkprøven,Bomiljø,bolig 
+33,B1/B2,h0265,kvinne,engelsk,435,Høyere nivå,Mobiltelefonen,telefon 
+32,N/A,h0192,kvinne,nederlandsk,709,Høyere nivå,'Import' av helsepersonell,helse arbeid innvandring 
+29,B1,s0654,kvinne,polsk,281,Språkprøven,Før og nå,tid 
+38,N/A,s0806,kvinne,serbokroatisk,328,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+20,B2,h0314,kvinne,tysk,694,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+32,N/A,s0418,kvinne,nederlandsk,479,Språkprøven,Bomiljø,bolig 
+19,N/A,s0378,kvinne,nederlandsk,251,Språkprøven,Å treffe andre mennesker,folk møte 
+24,A2/B1,s0874,mann,somali,272,Språkprøven,Framtida,tid 
+25,C1,h0165,kvinne,polsk,544,Høyere nivå,Inn- og utvandring,innvandring 
+40,N/A,s0024,kvinne,nederlandsk,285,Språkprøven,Bomiljø,bolig 
+34,A2/B1,s0131,kvinne,vietnamesisk,304,Språkprøven,En bok du har lest,litteratur bok 
+19,A2,s0714,mann,somali,199,Språkprøven,En religion du kjenner,religion 
+40,B1,s0337,mann,engelsk,324,Språkprøven,Nyheter,media 
+24,N/A,s2088,mann,nynorsk,361,Språkprøven,Penger og andre verdier,økonomi holdning 
+52,A2/B1,s0325,mann,engelsk,192,Språkprøven,Mobiltelefoner,telefon 
+27,B2,h0301,kvinne,spansk,498,Høyere nivå,Mobiltelefonen,telefon 
+35,N/A,s0788,kvinne,serbokroatisk,251,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+32,C1,h0528,kvinne,spansk,591,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+22,B1,s0649,kvinne,polsk,370,Språkprøven,Barneoppdragelse,barn 
+56,N/A,s2036,kvinne,bokmål,340,Språkprøven,Frihet og ansvar,holdning 
+49,B1,s0183,kvinne,vietnamesisk,256,Språkprøven,Bomiljø,bolig 
+30,B1,s0826,kvinne,spansk,414,Språkprøven,Bomiljø,bolig 
+39,N/A,s0368,kvinne,nederlandsk,218,Språkprøven,Bolig og bosted,bolig 
+23,B1,s0028,kvinne,tysk,218,Språkprøven,Mobiltelefoner,telefon 
+23,B2,h0634,kvinne,polsk,432,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+46,B2/C1,h0243,kvinne,russisk,536,Høyere nivå,Bilisme,bil trafikk 
+53,N/A,s2021,kvinne,bokmål,293,Språkprøven,Sunnhet og helse,helse 
+30,N/A,h0682,mann,nederlandsk,473,Høyere nivå,Skjønnhet,personer 
+44,C1,h0579,kvinne,engelsk,517,Høyere nivå,Integrering av innvandrere,innvandring 
+35,N/A,s0410,kvinne,nederlandsk,240,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+51,B2,h0498,mann,engelsk,863,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+25,N/A,h2049,mann,bokmål,381,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+47,N/A,h0120,kvinne,serbokroatisk,626,Høyere nivå,Den lille forskjellen,kjønn 
+34,B2,h0674,kvinne,spansk,454,Høyere nivå,Organdonasjon,helse organ 
+25,N/A,h0146,kvinne,nederlandsk,663,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
+45,B1,h0710,mann,somali,394,Høyere nivå,Lederegenskaper,personer yrke arbeid 
+30,N/A,s0245,mann,albansk,311,Språkprøven,En bok du har lest,litteratur bok 
+42,N/A,s2054,.,bokmål,274,Språkprøven,Sunnhet og helse,helse 
+29,B1,s0222,kvinne,engelsk,269,Språkprøven,Møte med norsk kultur,kultur norge 
+61,B1,s0466,mann,tysk,251,Språkprøven,Nyheter,media 
+26,B2,h0464,kvinne,engelsk,464,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+28,N/A,s2081,mann,nynorsk,241,Språkprøven,Penger og andre verdier,økonomi holdning 
+57,N/A,h0047,mann,serbokroatisk,520,Høyere nivå,Netthandel,-
+21,B1,s0001,kvinne,spansk,231,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+38,B1/B2,s0971,kvinne,russisk,341,Språkprøven,Trafikk og boligområder,trafikk bolig 
+31,B1,s0531,mann,russisk,249,Språkprøven,Den norske naturen,natur norge 
+35,N/A,h0640,mann,nederlandsk,354,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
+24,B2,h0486,kvinne,russisk,410,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+18,N/A,h2082,kvinne,bokmål,433,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+26,B2,s0717,kvinne,polsk,353,Språkprøven,Fremmedspråkslæring,utdannelse språk 
+33,B2,h0324,kvinne,engelsk,458,Høyere nivå,Bilisme,bil trafikk 
+25,N/A,h2081,mann,bokmål,462,Høyere nivå,Organdonasjon,helse organ 
+28,N/A,h0056,mann,albansk,720,Høyere nivå,Netthandel,handel økonomi media 
+22,B1,s0857,kvinne,vietnamesisk,239,Språkprøven,Framtida,tid 
+30,N/A,s0109,mann,nederlandsk,271,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+38,B1/B2,h0465,kvinne,polsk,441,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+27,B1,s0999,mann,somali,224,Språkprøven,Mobiltelefoner,telefon 
+51,B2,h0313,mann,spansk,500,Høyere nivå,Bilisme,bil trafikk 
+20,B1/B2,s0972,kvinne,tysk,316,Språkprøven,Fjernsynsprogram for barn,barn tv 
+34,N/A,h0089,mann,nederlandsk,540,Høyere nivå,Fotballinteresse,idrett/sport fotball 
+64,B1,s0893,kvinne,vietnamesisk,284,Språkprøven,En sport du liker,idrett/sport 
+22,N/A,h2096,kvinne,bokmål,658,Høyere nivå,Organdonasjon,helse organ 
+27,N/A,s0266,mann,albansk,266,Språkprøven,Den norske naturen,natur norge 
+30,A2/B1,s0579,kvinne,vietnamesisk,221,Språkprøven,Min første jobb,arbeid 
+33,B2/C1,h0325,kvinne,tysk,442,Høyere nivå,Bilisme,bil trafikk 
+51,B1,s0544,mann,somali,366,Språkprøven,Folk reiser så mye i våre dager,reise folk 
+30,B1,s0304,mann,engelsk,244,Språkprøven,Bomiljø,bolig 
+28,B2,h0451,kvinne,polsk,455,Høyere nivå,Kvinner i topposisjoner,kjønn yrke arbeid 
+22,N/A,s0828,kvinne,serbokroatisk,276,Språkprøven,Viktige verdier i livet,verdier 
+32,B1/B2,h0240,kvinne,russisk,439,Høyere nivå,Bilisme,bil trafikk 
+29,N/A,s2052,kvinne,bokmål,258,Språkprøven,Sunnhet og helse,helse 
+35,N/A,h0744,kvinne,serbokroatisk,622,Høyere nivå,Omsorgsordninger,arbeid folk velferd 
+43,N/A,s0936,mann,serbokroatisk,300,Språkprøven,Trafikk og boligområder,trafikk bolig 
+31,N/A,s0674,kvinne,serbokroatisk,306,Språkprøven,Kultur og idrett,idrett/sport kultur 
+42,B2/C1,h0743,mann,tysk,421,Høyere nivå,Innvandrere og valgdeltakelse,innvandring politikk valg 
+18,N/A,s0240,kvinne,albansk,427,Språkprøven,En interesse du har,interesse 
+22,N/A,s0287,kvinne,albansk,236,Språkprøven,Barneoppdragelse,barn 
+25,B2/C1,h0578,kvinne,tysk,492,Høyere nivå,Integrering av innvandrere,innvandring 
+37,A2/B1,s0010,kvinne,engelsk,262,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+26,N/A,s0081,mann,serbokroatisk,339,Språkprøven,Før og nå,tid 
+28,N/A,s0781,kvinne,serbokroatisk,247,Språkprøven,Konkurranse,idrett/sport konkurranse 
+29,B2,h0186,kvinne,russisk,551,Høyere nivå,Helse og livskvalitet,helse 
+25,B1/B2,h0576,kvinne,russisk,500,Høyere nivå,Humor,humor kultur 
+46,A2/B1,s0489,kvinne,russisk,192,Språkprøven,Møte med norsk kultur,kultur norge 
+29,A2/B1,s0898,kvinne,vietnamesisk,336,Språkprøven,Bilbruk,bil 
+24,B1/B2,s0942,kvinne,russisk,480,Språkprøven,Trafikk og boligområder,trafikk bolig 
+35,N/A,s0790,kvinne,serbokroatisk,258,Språkprøven,Viktige verdier i livet,verdier 
+44,N/A,s0917,kvinne,serbokroatisk,275,Språkprøven,Frivillig hjelp i organisasjoner,organisasjon 
+38,N/A,s0804,kvinne,serbokroatisk,400,Språkprøven,Viktige verdier i livet,verdier 
+36,N/A,h2003,kvinne,bokmål,945,Høyere nivå,Organdonasjon,helse organ 
+33,B1,s0845,mann,spansk,232,Språkprøven,Bomiljø,bolig 
+38,N/A,h0671,kvinne,serbokroatisk,499,Høyere nivå,Diktet 'Ingen ting' av Paulus Utsi om språk,litteratur dikt språk 
+26,N/A,s0358,kvinne,nederlandsk,330,Språkprøven,Reise,reise geografi 
+36,B2,h0255,kvinne,engelsk,587,Høyere nivå,Likestilling mellom kjønnene,kjønn 
+35,B1/B2,h0348,kvinne,engelsk,555,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
+41,B2,h0587,kvinne,spansk,432,Høyere nivå,Trafikkdøden,trafikk død 
+31,A2/B1,s0837,kvinne,spansk,289,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+20,A2/B1,s0068,mann,russisk,223,Språkprøven,Vennskap,folk relasjoner vennskap 
+44,A2/B1,s0159,kvinne,polsk,217,Språkprøven,Barneoppdragelse,barn 
+39,B2,h0449,kvinne,tysk,527,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+40,B2,h0344,kvinne,polsk,446,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
+25,B1,s0839,kvinne,spansk,198,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+30,N/A,s0799,kvinne,serbokroatisk,426,Språkprøven,Viktige verdier i livet,verdier 
+21,N/A,h0644,kvinne,albansk,544,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+39,B2,h0323,kvinne,russisk,581,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+31,N/A,h0686,mann,nederlandsk,385,Høyere nivå,Skjønnhet,personer 
+48,B1,s0501,kvinne,russisk,280,Språkprøven,En forfatter og om en bok han/ hun har skrevet,litteratur bok biografi 
+32,B1/B2,h0153,mann,spansk,420,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
+38,B1/B2,h0532,kvinne,spansk,412,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+33,N/A,h0564,kvinne,serbokroatisk,530,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
+20,N/A,s2080,mann,bokmål,414,Språkprøven,Penger og andre verdier,økonomi holdning 
+42,B1/B2,s0588,mann,somali,236,Språkprøven,Min første jobb,arbeid 
+32,A2/B1,s0638,kvinne,vietnamesisk,343,Språkprøven,En hyggelig opplevelse,opplevelse 
+29,B1,s0558,mann,spansk,260,Språkprøven,Nyheter,media 
+30,N/A,h0692,kvinne,serbokroatisk,531,Høyere nivå,Å være kjendis,folk 
+37,A2/B1,s0340,kvinne,engelsk,399,Språkprøven,Viktige verdier i livet,verdier 
+43,B1,s0444,kvinne,tysk,259,Språkprøven,Mobiltelefoner,telefon 
+21,B1/B2,h0525,kvinne,russisk,630,Høyere nivå,Miljøvern,miljø klima 
+19,B2,s0977,kvinne,tysk,413,Språkprøven,Fjernsynsprogram for barn,barn tv 
+31,N/A,s0145,kvinne,serbokroatisk,274,Språkprøven,Barneoppdragelse,barn 
+22,N/A,h2073,mann,bokmål,444,Høyere nivå,Organdonasjon,helse organ 
+41,N/A,s0381,mann,nederlandsk,271,Språkprøven,Nyheter,media 
+25,B2,h0264,kvinne,russisk,525,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
+39,N/A,s2091,kvinne,nynorsk,304,Språkprøven,Penger og andre verdier,økonomi holdning 
+24,N/A,h2063,kvinne,bokmål,696,Høyere nivå,Organdonasjon,helse organ 
+28,B2,h0201,mann,engelsk,479,Høyere nivå,Helse og livskvalitet,helse 
+33,B2,h0730,kvinne,tysk,446,Høyere nivå,6 timers arbeidsdag,arbeid yrke 
+23,N/A,s0284,kvinne,albansk,188,Språkprøven,Barneoppdragelse,barn 
+26,B1,s0550,mann,spansk,318,Språkprøven,Framtida,tid 
+27,A2/B1,s0123,mann,tysk,282,Språkprøven,Vennskap,folk relasjoner vennskap 
+26,A2/B1,s0457,kvinne,tysk,229,Språkprøven,Mobiltelefoner,telefon 
+28,B2/C1,h0037,kvinne,spansk,499,Høyere nivå,Lærerlønn,økonomi arbeid yrke 
+19,B1,s0808,kvinne,spansk,512,Språkprøven,Vaner og tradisjoner å ta vare på når du flytter,tradisjoner flytting 
+30,N/A,s0211,kvinne,albansk,242,Språkprøven,Å treffe andre mennesker,folk møte 
+27,C1,h0370,kvinne,russisk,509,Høyere nivå,Bolig og boutgifter,bolig økonomi 
+32,B1,s0547,mann,somali,301,Språkprøven,En person som har betydd mye for deg,folk 
+24,B1,s0508,kvinne,russisk,225,Språkprøven,Den norske naturen,natur norge 
+24,B2,h0178,kvinne,engelsk,521,Høyere nivå,Sangtradisjon,musikk kultur 
+21,B1,s0634,kvinne,vietnamesisk,245,Språkprøven,En interesse du har,interesse 
+34,N/A,s0264,mann,albansk,234,Språkprøven,Flytting,familie flytting 
