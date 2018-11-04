@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import TextIO, Iterable
 
 from gensim.models.fasttext import FastTextKeyedVectors
-from gensim.models import FastText
 from sklearn.manifold import TSNE
 import numpy as np
 import pandas as pd
@@ -32,7 +31,6 @@ def fingerprint(wv: FastTextKeyedVectors, document: Iterable[str]) -> np.ndarray
     Returns:
         A float array with the same shape as the embeddings in wv
     """
-
     cbow = np.zeros(wv.vector_size, dtype=float)
     token_count = 0
     for token in document:
@@ -40,7 +38,6 @@ def fingerprint(wv: FastTextKeyedVectors, document: Iterable[str]) -> np.ndarray
             cbow += wv.word_vec(token)
         except KeyError:
             continue
-        # cbow += np.random.randn(wv.vector_size)
         token_count += 1
     cbow /= token_count
     return cbow
@@ -81,7 +78,6 @@ def main():
             fingerprints.append(fingerprint(wv, document_iterator(f)))
     fingerprints_matrix = np.stack(fingerprints)
     label_list = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
-    ids = list(map(label_list.index, labels))
     print('Computing t-SNE embeddings ...')
     embedded = TSNE(n_components=2).fit_transform(fingerprints_matrix)
     for cefr in label_list:

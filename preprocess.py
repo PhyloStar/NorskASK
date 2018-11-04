@@ -6,6 +6,22 @@ from xml.etree import ElementTree
 import pandas as pd
 
 
+test_topics = {
+    'geografi norge folk ', 'innvandring ', 'innvandring politikk valg ', 'idrett/sport ',
+    'bolig geografi ', 'arbeid yrke ', 'økonomi holdning ', 'humor kultur ',
+    'politikk norge holdning ', 'litteratur bok ', 'familie befolkning norge ',
+    'litteratur dikt idrett ', 'folk utdannelse ', 'politikk holdning ', 'media tv ',
+    'religion ', 'helse organ ', 'folk følelser '
+}
+
+dev_topics = {
+    'helse ', 'helse arbeid innvandring ', 'litteratur dikt språk ', 'organisasjon ',
+    'helse røyking ', 'barn familie ', 'økonomi ', 'opplevelse ', 'familie flytting ',
+    'eldre familie ', 'barn idrett/sport ', 'litteratur dikt venner ', 'arbeid innvandring ',
+    'utdannelse språk ', 'idrett/sport kultur ', 'holdning '
+}
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', '-o', action='store_true',
@@ -60,12 +76,20 @@ def main():
         gender = gender_node.text if gender_node is not None else 'N/A'
         topic = topic_node.text if topic_node is not None else 'N/A'
 
+        if topic in test_topics:
+            split = 'test'
+        elif topic in dev_topics:
+            split = 'dev'
+        else:
+            split = 'train'
+
         metadata_dict['lang'].append(language)
         metadata_dict['cefr'].append(cefr_score)
         metadata_dict['testlevel'].append(testlevel)
         metadata_dict['age'].append(age)
         metadata_dict['gender'].append(gender)
         metadata_dict['topic'].append(topic)
+        metadata_dict['split'].append(split)
         metadata_dict['filename'].append(input_file.stem)
 
         text = root.find('text')
