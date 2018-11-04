@@ -1,3 +1,7 @@
+"""Script that runs every document in the .txt data folder through
+the UDPipe API.
+"""
+
 import pathlib
 import subprocess
 
