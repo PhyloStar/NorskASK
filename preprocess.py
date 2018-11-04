@@ -50,9 +50,10 @@ def main():
             continue
 
         try:
-            tree = ElementTree.parse(input_file.open())
-        except Exception:
+            tree = ElementTree.parse(input_file.open(encoding='utf8'))
+        except Exception as e:
             print('Unable to parse ' + str(input_file))
+            print(str(e))
             raise
         root = tree.getroot()
 
