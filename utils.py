@@ -3,6 +3,14 @@ from pathlib import Path
 from typing import Union
 
 from gensim.models import FastText
+import pandas as pd
+
+
+def load_train_and_dev():
+    df = pd.read_csv('metadata.csv').dropna(subset=['cefr'])
+    train = df[df.split == 'train']
+    dev = df[df.split == 'dev']
+    return train, dev
 
 
 def load_fasttext_embeddings(file: Union[Path, str]) -> FastText:
