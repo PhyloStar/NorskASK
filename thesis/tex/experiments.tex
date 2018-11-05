@@ -1,0 +1,13 @@
+
+\section{Preprocessing}
+
+The data files in the ASK corpus are in XML format, and contain information
+about tags, mistakes and corrections, paragraphs, sentences and more. These
+files were transformed into other formats during the process. First, they were
+converted to plain text files stripped of all tags or correction labels, with
+one sentence per line consisting of space-separated tokens, and an empty line
+separating paragraphs.
+
+These raw text files were then sent through the UDPipe pipeline for tagging and
+dependency parsing. The output from UDPipe is in the CONLL file format with
+a single token per line.

@@ -1,34 +1,31 @@
-import zipfile
-from pathlib import Path
-from typing import Union
+from typing import TextIO, Iterable, Tuple
 
-from gensim.models import FastText
 import pandas as pd
 
 
-def load_train_and_dev():
+def load_train_and_dev() -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Load the train and dev splits as dataframes.
+
+    Returns:
+        Frames with the metadata for the documents in the train and
+        dev splits.
+    """
     df = pd.read_csv('metadata.csv').dropna(subset=['cefr'])
     train = df[df.split == 'train']
     dev = df[df.split == 'dev']
     return train, dev
 
 
-def load_fasttext_embeddings(file: Union[Path, str]) -> FastText:
-    """Load embeddings from file and unit normalize vectors."""
-    if isinstance(file, str):
-        file = Path(file)
-    # Detect the model format by its extension:
-    if '.bin' in file.suffixes or '.vec' in file.suffixes:
-        # Binary word2vec format
-        emb_model = FastText.load_fasttext_format(str(file))
-    elif file.suffix == '.zip':
-        # ZIP archive from the NLPL vector repository
-        with zipfile.ZipFile(str(file), "r") as archive:
-            model_file = archive.extract('parameters.bin')
-            emb_model = FastText.load_fasttext_format(model_file)
-    else:
-        # Native Gensim format?
-        emb_model = FastText.load(str(file))
+def document_iterator(doc: TextIO) -> Iterable[str]:
+    """Iterate over tokens in a document.
 
-    emb_model.init_sims(replace=True)  # Unit-normalizing the vectors (if they aren't already)
-    return emb_model.wv
+    Args:
+        doc: A file object where each line is a line of tokens
+            separated by a space
+
+    Yields:
+        The tokens in the document.
+    """
+    for line in doc:
+        tokens_iter = iter(line.split(' '))
+        yield next(tokens_iter)
