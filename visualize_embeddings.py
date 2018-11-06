@@ -1,6 +1,5 @@
+import argparse
 import logging
-import sys
-from collections import namedtuple
 from pathlib import Path
 
 from sklearn.manifold import TSNE
@@ -8,10 +7,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from utils import document_iterator
+from utils import document_iterator, load_train_and_dev
 from gensim_utils import load_fasttext_embeddings, fingerprint
 
 logging.basicConfig(level=logging.INFO)
+
 
 class MockKeyedVectors:
     def __init__(self, vector_size):
@@ -21,12 +21,22 @@ class MockKeyedVectors:
         return np.random.randn(self.vector_size)
 
 
-def main():
-    txt_folder = Path('ASK/txt')
-    meta = pd.read_csv('metadata.csv').dropna(subset=['cefr'])
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('embeddings', nargs='?')
+    parser.add_argument('--debug', action='store_true')
+    return parser.parse_args()
 
-    wv = load_fasttext_embeddings(sys.argv[1])
-    # wv = MockKeyedVectors(vector_size=10)
+
+def main():
+    args = parse_args()
+    txt_folder = Path('ASK/txt')
+    meta = pd.concat(load_train_and_dev()).reset_index()
+
+    if args.debug:
+        wv = MockKeyedVectors(vector_size=10)
+    else:
+        wv = load_fasttext_embeddings(args.embeddings)
 
     fingerprints = []
     print('Computing fingerprints of all documents ...')
@@ -35,12 +45,15 @@ def main():
         with open(str(infile)) as f:
             fingerprints.append(fingerprint(wv, document_iterator(f)))
     fingerprints_matrix = np.stack(fingerprints)
-    cefr_list = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
-    testlevel_list = ['Språkprøven', 'Høyere nivå']
-    lang_list = ['tysk', 'russisk', 'polsk', 'somali', 'vietnametisk', 'spansk', 'engelsk']
+
+    cefr_list = list(sorted(meta.cefr.unique()))
+    testlevel_list = list(sorted(meta.testlevel.unique()))
+    lang_list = list(sorted(meta.lang.unique()))
     column_list = ['cefr', 'testlevel', 'lang']
+
     print('Computing t-SNE embeddings ...')
     embedded = TSNE(n_components=2).fit_transform(fingerprints_matrix)
+
     fig, axes = plt.subplots(1, 3)
     for ax, label_list, col in zip(axes, [cefr_list, testlevel_list, lang_list], column_list):
         for label in label_list:

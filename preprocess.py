@@ -77,7 +77,9 @@ def main():
         gender = gender_node.text if gender_node is not None else 'N/A'
         topic = topic_node.text if topic_node is not None else 'N/A'
 
-        if topic in test_topics:
+        if cefr_score == 'N/A':
+            split = 'N/A'
+        elif topic in test_topics:
             split = 'test'
         elif topic in dev_topics:
             split = 'dev'
