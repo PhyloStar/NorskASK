@@ -23,27 +23,30 @@ def main():
     wv = load_fasttext_embeddings(sys.argv[1])
     # wv = MockKeyedVectors(vector_size=100)
 
-    labels = []
     fingerprints = []
     print('Computing fingerprints of all documents ...')
-    for input_file in txt_folder.iterdir():
-        metadata_row = meta[meta.filename == input_file.stem].iloc[0]
+    for filename in meta.filename:
+        metadata_row = meta[meta.filename == filename].iloc[0]
         if metadata_row.cefr is np.nan:
             continue
-        label = metadata_row.cefr
-        labels.append(label)
-        with open(str(input_file)) as f:
+        infile = txt_folder / Path(filename).with_suffix('.txt')
+        with open(str(infile)) as f:
             fingerprints.append(fingerprint(wv, document_iterator(f)))
     fingerprints_matrix = np.stack(fingerprints)
-    label_list = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
+    cefr_list = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
+    testlevel_list = ['Språkprøven', 'Høyere nivå']
+    lang_list = ['tysk', 'russisk', 'polsk', 'somali', 'vietnametisk', 'spansk', 'engelsk']
+    column_list = ['cefr', 'testlevel', 'lang']
     print('Computing t-SNE embeddings ...')
     embedded = TSNE(n_components=2).fit_transform(fingerprints_matrix)
-    for cefr in label_list:
-        mask = np.array(labels) == cefr
-        xs = embedded[mask, 0]
-        ys = embedded[mask, 1]
-        plt.plot(xs, ys, 'o', label=cefr)
-    plt.legend()
+    fig, axes = plt.subplots(1, 3)
+    for ax, label_list, col in zip(axes, [cefr_list, testlevel_list, lang_list], column_list):
+        for label in label_list:
+            mask = meta.loc[:, col] == label
+            xs = embedded[mask, 0]
+            ys = embedded[mask, 1]
+            ax.plot(xs, ys, 'o', label=label)
+        ax.legend()
     plt.show()
 
 
