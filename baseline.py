@@ -35,7 +35,7 @@ def main():
         else:
             print('Unsupported classifier type %s, fallback to logistic regression')
     else:
-        clf = sklearn.linear_model.LogisticRegression(solver='lbfgs', multi_class='auto')
+        clf = sklearn.linear_model.LogisticRegression(solver='lbfgs', multi_class='multinomial')
 
     clf.fit(train_x, train.cefr)
 
