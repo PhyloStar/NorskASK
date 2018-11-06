@@ -13,22 +13,24 @@ from gensim_utils import load_fasttext_embeddings, fingerprint
 
 logging.basicConfig(level=logging.INFO)
 
-MockKeyedVectors = namedtuple('MockKeyedVectors', ['vector_size'])
+class MockKeyedVectors:
+    def __init__(self, vector_size):
+        self.vector_size = vector_size
+
+    def word_vec(self, w):
+        return np.random.randn(self.vector_size)
 
 
 def main():
     txt_folder = Path('ASK/txt')
-    meta = pd.read_csv('metadata.csv')
+    meta = pd.read_csv('metadata.csv').dropna(subset=['cefr'])
 
     wv = load_fasttext_embeddings(sys.argv[1])
-    # wv = MockKeyedVectors(vector_size=100)
+    # wv = MockKeyedVectors(vector_size=10)
 
     fingerprints = []
     print('Computing fingerprints of all documents ...')
     for filename in meta.filename:
-        metadata_row = meta[meta.filename == filename].iloc[0]
-        if metadata_row.cefr is np.nan:
-            continue
         infile = txt_folder / Path(filename).with_suffix('.txt')
         with open(str(infile)) as f:
             fingerprints.append(fingerprint(wv, document_iterator(f)))
