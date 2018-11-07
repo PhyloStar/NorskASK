@@ -1,8 +1,12 @@
 import argparse
+import os
 from itertools import chain
 from pathlib import Path
 
 import numpy as np
+import matplotlib
+if os.name == 'posix' and 'DISPLAY' not in os.environ:
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from keras.models import Model
 from keras.layers import Embedding
