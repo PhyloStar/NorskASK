@@ -2,6 +2,39 @@ from pathlib import Path
 from typing import TextIO, Iterable, Tuple, Union, List
 
 import pandas as pd
+import matplotlib.pyplot as plt
+
+
+iso639_3 = dict(
+    engelsk='eng',
+    polsk='pol',
+    russisk='rus',
+    somali='som',
+    spansk='spa',
+    tysk='deu',
+    vietnamesisk='vie'
+)
+
+
+def heatmap(values, xticks, yticks, ax=None):
+    if ax is None:
+        ax = plt.gca()
+    ax.imshow(values, cmap='viridis')
+    ax.set(
+        yticks=range(len(yticks)),
+        xticks=range(len(xticks)),
+        yticklabels=yticks,
+        xticklabels=xticks
+    )
+
+    col_cutoff = values.max().max() / 2
+
+    for i, row in enumerate(values):
+        for j, count in enumerate(row):
+            col = 'white' if count < col_cutoff else 'black'
+            ax.text(j, i, int(count),
+                    horizontalalignment='center',
+                    verticalalignment='center', color=col)
 
 
 def load_train_and_dev() -> Tuple[pd.DataFrame, pd.DataFrame]:

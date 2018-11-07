@@ -1,7 +1,9 @@
+import argparse
 from itertools import chain
 from pathlib import Path
 
 import numpy as np
+import matplotlib.pyplot as plt
 from keras.models import Model
 from keras.layers import Embedding
 from keras.layers import Input, Conv1D, Dropout, Dense, GlobalMaxPooling1D, Concatenate
@@ -10,7 +12,7 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
 from sklearn.metrics import classification_report, confusion_matrix
 
-from utils import load_train_and_dev, conll_reader
+from src.utils import load_train_and_dev, conll_reader, heatmap
 
 
 def iter_all_tokens(train):
@@ -24,6 +26,12 @@ def iter_all_docs(split):
         filepath = Path('ASK/conll') / (filename + '.conll')
         cr = conll_reader(filepath)
         yield list(chain.from_iterable(cr))
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('target_column', nargs='?', choices=['cefr', 'lang'], default='cefr')
+    return parser.parse_args()
 
 
 def build_model(vocab_size: int, sequence_length: int) -> Model:
@@ -45,10 +53,11 @@ def build_model(vocab_size: int, sequence_length: int) -> Model:
 
 
 def main():
+    args = parse_args()
     seq_length = 100
     train, dev = load_train_and_dev()
 
-    y_column = 'lang'
+    y_column = args.target_column
     labels = sorted(list(train[y_column].unique()))
     print(labels)
 
@@ -79,7 +88,10 @@ def main():
     gold = np.argmax(dev_y, axis=1)
     print(classification_report(gold, predictions, target_names=labels))
     print("== Confusion matrix ==")
-    print(confusion_matrix(gold, predictions))
+    conf_matrix = confusion_matrix(gold, predictions)
+    print(conf_matrix)
+    heatmap(conf_matrix, labels, labels)
+    plt.show()
 
 
 if __name__ == '__main__':

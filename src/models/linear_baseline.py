@@ -4,13 +4,15 @@ import sklearn
 import sklearn.svm
 import sklearn.linear_model
 import sklearn.neural_network
+import matplotlib.pyplot as plt
 
-from src.utils import load_train_and_dev
+from src.utils import load_train_and_dev, heatmap
 
 
 def main():
     print('Loading data ...')
     train, dev = load_train_and_dev()
+    labels = list(sorted(train.cefr.unique()))
 
     print('Preprocessing data ...')
     scaler = sklearn.preprocessing.StandardScaler(copy=True)
@@ -45,6 +47,8 @@ def main():
     print('Confusion matrix:')
     conf_matrix = sklearn.metrics.confusion_matrix(dev.cefr, predictions)
     print(conf_matrix)
+    heatmap(conf_matrix, labels, labels)
+    plt.show()
 
 
 if __name__ == '__main__':

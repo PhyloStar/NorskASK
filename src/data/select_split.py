@@ -100,7 +100,7 @@ def evolution(df, topics, overall_cefr, overall_lang):
         np.random.choice([0, 1, 2], len(topics), p=[.8, .1, .1])
         for _ in range(pop_size)
     ]
-    print('Starting evolution algorithm ...')
+    print('Starting evolution algorithm ... Ctrl-C to end')
     try:
         while True:
             results = [evaluate_f(sample_topics=cand) for cand in population]

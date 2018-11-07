@@ -1,0 +1,13 @@
+# This project
+-e .
+
+# External packages
+numpy
+pandas
+keras
+gensim
+scipy
+scikit-learn
+matplotlib
+tensorflow
+ipykernel
