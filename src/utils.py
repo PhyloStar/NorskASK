@@ -11,7 +11,7 @@ def load_train_and_dev() -> Tuple[pd.DataFrame, pd.DataFrame]:
         Frames with the metadata for the documents in the train and
         dev splits.
     """
-    df = pd.read_csv('metadata.csv').dropna(subset=['cefr'])
+    df = pd.read_csv('ASK/metadata.csv').dropna(subset=['cefr'])
     train = df[df.split == 'train']
     dev = df[df.split == 'dev']
     return train, dev
@@ -23,7 +23,7 @@ def load_test() -> pd.DataFrame:
     Returns:
         A frame with the metadata for the documents in the test split.
     """
-    df = pd.read_csv('metadata.csv').dropna(subset=['cefr'])
+    df = pd.read_csv('ASK/metadata.csv').dropna(subset=['cefr'])
     return df[df.split == 'test']
 
 

@@ -5,7 +5,7 @@ import sklearn.svm
 import sklearn.linear_model
 import sklearn.neural_network
 
-from utils import load_train_and_dev
+from src.utils import load_train_and_dev
 
 
 def main():

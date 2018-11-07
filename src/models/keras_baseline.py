@@ -60,28 +60,26 @@ def main():
     train_seqs = tokenizer.texts_to_sequences(iter_all_docs(train))
     dev_seqs = tokenizer.texts_to_sequences(iter_all_docs(dev))
 
-    train_matrix = pad_sequences(train_seqs, maxlen=seq_length)
-    dev_matrix = pad_sequences(dev_seqs, maxlen=seq_length)
+    train_x = pad_sequences(train_seqs, maxlen=seq_length)
+    dev_x = pad_sequences(dev_seqs, maxlen=seq_length)
 
     train_y = to_categorical([labels.index(c) for c in train[y_column]])
     dev_y = to_categorical([labels.index(c) for c in dev[y_column]])
 
-    print(train_matrix.shape)
-    print(dev_matrix.shape)
+    print(train_x.shape)
+    print(dev_x.shape)
 
     model = build_model(vocab_size, seq_length)
     model.summary()
     model.fit(
-        train_matrix, train_y, epochs=20, batch_size=8,
-        validation_data=(dev_matrix, dev_y), verbose=2)
+        train_x, train_y, epochs=20, batch_size=8,
+        validation_data=(dev_x, dev_y), verbose=2)
 
-    predictions = model.predict(dev_matrix)
-    print(classification_report(np.argmax(dev_y, axis=1),
-                                np.argmax(predictions, axis=1),
-                                target_names=labels))
+    predictions = np.argmax(model.predict(dev_x), axis=1)
+    gold = np.argmax(dev_y, axis=1)
+    print(classification_report(gold, predictions, target_names=labels))
     print("== Confusion matrix ==")
-    print(confusion_matrix(np.argmax(dev_y, axis=1),
-                           np.argmax(predictions, axis=1)))
+    print(confusion_matrix(gold, predictions))
 
 
 if __name__ == '__main__':

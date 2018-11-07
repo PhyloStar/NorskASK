@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from utils import document_iterator, load_train_and_dev
-from gensim_utils import load_fasttext_embeddings, fingerprint
+from src.utils import document_iterator, load_train_and_dev
+from src.gensim_utils import load_fasttext_embeddings, fingerprint
 
 logging.basicConfig(level=logging.INFO)
 

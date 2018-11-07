@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/uio/hume/student-u65/stigjb/.local/bin/python3",
+    "python.pythonPath": "/uio/hume/student-u65/stigjb/.local/share/virtualenvs/inf5820-sSsLayvV/bin/python",
     "latex-workshop.latex.recipes": [
         {
             "name": "pdflatex with biber",
