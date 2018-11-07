@@ -3,13 +3,26 @@
 
 The data files in the ASK corpus are in XML format, and contain information
 about tags, mistakes and corrections, paragraphs, sentences and more. These
-files were transformed into other formats during the process. First, they were
-converted to plain text files stripped of all tags or correction labels, with
-one sentence per line consisting of space-separated tokens, and an empty line
-separating paragraphs.
+files were transformed into other formats during the process. First, they
+were converted to plain text files stripped of all tags or correction labels,
+with one sentence per line consisting of space-separated tokens, and an empty
+line separating paragraphs.
 
-These raw text files were then sent through the UDPipe pipeline for tagging and
-dependency parsing. The output from UDPipe is in the CONLL file format with
-a single token per line. UDPipe tags the documents using the UD tagset, while
-the original tags in the XML documents are from the Oslo-Bergen tagger's own
-tagset.
+These raw text files were then sent through the UDPipe pipeline for tagging
+and dependency parsing. The output from UDPipe is in the CONLL file format
+with a single token per line. UDPipe tags the documents using the UD tagset,
+while the original tags in the XML documents are from the Oslo-Bergen
+tagger's own tagset.
+
+\section{Baseline}
+
+A logistic regression classifier was able to predict the CEFR score with
+43.9\% accuracy using only two features: The length of the document, in
+number of tokens, and the test level (IL test or AL test). 54 of 123
+documents in the dev set.
+
+A convolutional neural network based on the architecture in
+\textcite{zhang2017sensitivity} achieved an accuracy of only 23.6\%.
+
+Note that predicting the majority class in the dev set (B2 with 37 documents)
+yields an accuracy of 30.1\%.
