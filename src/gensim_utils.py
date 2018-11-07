@@ -1,3 +1,4 @@
+import logging
 import zipfile
 from pathlib import Path
 from typing import Union, Iterable
@@ -5,6 +6,8 @@ from typing import Union, Iterable
 import numpy as np
 from gensim.models import FastText
 from gensim.models.keyedvectors import FastTextKeyedVectors
+
+logger = logging.getLogger(__name__)
 
 
 def load_fasttext_embeddings(file: Union[Path, str]) -> FastText:
@@ -46,8 +49,9 @@ def fingerprint(wv: FastTextKeyedVectors, document: Iterable[str]) -> np.ndarray
     token_count = 0
     for token in document:
         try:
-            cbow += wv.word_vec(token)
+            cbow += wv[token]
         except KeyError:
+            logger.debug("Could not make embedding vector for %s", token)
             continue
         token_count += 1
     cbow /= token_count

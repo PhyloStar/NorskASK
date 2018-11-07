@@ -20,6 +20,9 @@ class MockKeyedVectors:
     def word_vec(self, w):
         return np.random.randn(self.vector_size)
 
+    def __getitem__(self, key):
+        return self.word_vec(key)
+
 
 def parse_args():
     parser = argparse.ArgumentParser()

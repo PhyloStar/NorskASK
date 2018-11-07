@@ -1,9 +1,12 @@
 .mypy_cache/
 .ipynb_checkpoints/
 
-ASK/
+ASK/conll/
+ASK/txt/
+ASK/xml/
 **/__pycache__/
 *.pyc
+*.gz
 parameters.bin
 
 thesis/duo*.sty

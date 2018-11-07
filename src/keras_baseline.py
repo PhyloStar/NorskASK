@@ -48,7 +48,8 @@ def main():
     seq_length = 100
     train, dev = load_train_and_dev()
 
-    labels = sorted(list(train.cefr.unique()))
+    y_column = 'lang'
+    labels = sorted(list(train[y_column].unique()))
     print(labels)
 
     tokenizer = Tokenizer(lower=False)
@@ -62,8 +63,8 @@ def main():
     train_matrix = pad_sequences(train_seqs, maxlen=seq_length)
     dev_matrix = pad_sequences(dev_seqs, maxlen=seq_length)
 
-    train_y = to_categorical([labels.index(c) for c in train.cefr])
-    dev_y = to_categorical([labels.index(c) for c in dev.cefr])
+    train_y = to_categorical([labels.index(c) for c in train[y_column]])
+    dev_y = to_categorical([labels.index(c) for c in dev[y_column]])
 
     print(train_matrix.shape)
     print(dev_matrix.shape)
