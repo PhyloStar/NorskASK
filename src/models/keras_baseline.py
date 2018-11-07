@@ -58,7 +58,7 @@ def main():
     train, dev = load_train_and_dev()
 
     y_column = args.target_column
-    labels = sorted(list(train[y_column].unique()))
+    labels = sorted(train[y_column].unique())
     print(labels)
 
     tokenizer = Tokenizer(lower=False)

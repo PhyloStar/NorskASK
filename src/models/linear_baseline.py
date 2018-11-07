@@ -12,7 +12,7 @@ from src.utils import load_train_and_dev, heatmap
 def main():
     print('Loading data ...')
     train, dev = load_train_and_dev()
-    labels = list(sorted(train.cefr.unique()))
+    labels = sorted(train.cefr.unique())
 
     print('Preprocessing data ...')
     scaler = sklearn.preprocessing.StandardScaler(copy=True)

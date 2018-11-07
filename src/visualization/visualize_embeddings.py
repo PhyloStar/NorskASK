@@ -49,9 +49,9 @@ def main():
             fingerprints.append(fingerprint(wv, document_iterator(f)))
     fingerprints_matrix = np.stack(fingerprints)
 
-    cefr_list = list(sorted(meta.cefr.unique()))
-    testlevel_list = list(sorted(meta.testlevel.unique()))
-    lang_list = list(sorted(meta.lang.unique()))
+    cefr_list = sorted(meta.cefr.unique())
+    testlevel_list = sorted(meta.testlevel.unique())
+    lang_list = sorted(meta.lang.unique())
     column_list = ['cefr', 'testlevel', 'lang']
 
     print('Computing t-SNE embeddings ...')

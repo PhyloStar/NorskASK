@@ -37,14 +37,17 @@ def heatmap(values, xticks, yticks, ax=None):
                     verticalalignment='center', color=col)
 
 
-def load_train_and_dev() -> Tuple[pd.DataFrame, pd.DataFrame]:
+def load_train_and_dev(project_root=None) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Load the train and dev splits as dataframes.
 
     Returns:
         Frames with the metadata for the documents in the train and
         dev splits.
     """
-    df = pd.read_csv('ASK/metadata.csv').dropna(subset=['cefr'])
+    filepath = 'ASK/metadata.csv'
+    if project_root is not None:
+        filepath = Path(project_root) / filepath
+    df = pd.read_csv(filepath).dropna(subset=['cefr'])
     train = df[df.split == 'train']
     dev = df[df.split == 'dev']
     return train, dev

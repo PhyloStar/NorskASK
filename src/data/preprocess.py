@@ -129,7 +129,7 @@ def main():
         metadata_dict['num_tokens'].append(num_tokens)
 
     metadata_df = pd.DataFrame(metadata_dict)
-    metadata_df.to_csv('metadata.csv', index=False)
+    metadata_df.sort_values('filename').to_csv(data_dir / 'metadata.csv', index=False)
     cefr_by_lang = metadata_df.groupby(['lang', 'cefr']).size().unstack(fill_value=0)
 
     print(cefr_by_lang.fillna(0))
