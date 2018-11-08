@@ -1,7 +1,7 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from src.utils import iso639_3
+from src.utils import safe_plt as plt
 
 df = pd.read_csv('metadata.csv')
 counts = df.groupby(['lang', 'cefr']).size().unstack().fillna(0)

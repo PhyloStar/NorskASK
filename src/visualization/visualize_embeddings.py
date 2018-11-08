@@ -5,9 +5,9 @@ from pathlib import Path
 from sklearn.manifold import TSNE
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from src.utils import document_iterator, load_train_and_dev
+from src.utils import safe_plt as plt
 from src.gensim_utils import load_fasttext_embeddings, fingerprint
 
 logging.basicConfig(level=logging.INFO)
