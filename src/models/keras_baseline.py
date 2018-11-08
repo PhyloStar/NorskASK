@@ -10,7 +10,9 @@ if os.name == 'posix' and 'DISPLAY' not in os.environ:  # noqa: E402
 import matplotlib.pyplot as plt
 from keras.models import Model
 from keras.layers import Embedding
-from keras.layers import Input, Conv1D, Dropout, Dense, GlobalMaxPooling1D, Concatenate
+from keras.layers import (
+    Input, Conv1D, Dropout, Dense, GlobalMaxPooling1D, Concatenate, GlobalAveragePooling1D
+)
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
@@ -41,13 +43,15 @@ def parse_args():
 def build_model(vocab_size: int, sequence_length: int) -> Model:
     input_shape = (sequence_length,)
     input_layer = Input(shape=input_shape)
-    embedding_layer = Embedding(vocab_size + 1, 50)(input_layer)
+    embedding_layer = Embedding(vocab_size + 1, 20)(input_layer)
     pooled_feature_maps = []
     for kernel_size in [4, 5, 6]:
         conv_layer = Conv1D(
             filters=100, kernel_size=kernel_size, activation='relu')(embedding_layer)
-        pooling = GlobalMaxPooling1D()(conv_layer)
-        pooled_feature_maps.append(pooling)
+        pooled_feature_maps.extend([
+            GlobalAveragePooling1D()(conv_layer),
+            GlobalMaxPooling1D()(conv_layer)
+        ])
     merged = Concatenate()(pooled_feature_maps)
     dropout_layer = Dropout(0.5)(merged)
     output_layer = Dense(7, activation='softmax')(dropout_layer)
@@ -58,7 +62,7 @@ def build_model(vocab_size: int, sequence_length: int) -> Model:
 
 def main():
     args = parse_args()
-    seq_length = 100
+    seq_length = 600
     train, dev = load_train_and_dev()
 
     y_column = args.target_column
@@ -85,7 +89,7 @@ def main():
     model = build_model(vocab_size, seq_length)
     model.summary()
     model.fit(
-        train_x, train_y, epochs=20, batch_size=8,
+        train_x, train_y, epochs=20, batch_size=16,
         validation_data=(dev_x, dev_y), verbose=2)
 
     predictions = np.argmax(model.predict(dev_x), axis=1)

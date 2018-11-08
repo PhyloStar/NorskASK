@@ -1,7 +1,9 @@
+import itertools
 from pathlib import Path
-from typing import TextIO, Iterable, Tuple, Union, List
+from typing import TextIO, Iterable, Tuple, Union, List, Optional
 
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -26,25 +28,29 @@ def heatmap(values, xticks, yticks, ax=None):
         yticklabels=yticks,
         xticklabels=xticks
     )
+    col_cutoff = values.max() / 2
 
-    col_cutoff = values.max().max() / 2
+    for row, col in itertools.product(range(values.shape[0]), range(values.shape[1])):
+        val = values[row, col]
+        color = 'white' if val < col_cutoff else 'black'
+        if np.issubdtype(values.dtype, np.floating):
+            label = '%.2f' % val
+        else:
+            label = str(int(val))
+        ax.text(col, row, label,
+                horizontalalignment='center',
+                verticalalignment='center', color=color)
 
-    for i, row in enumerate(values):
-        for j, count in enumerate(row):
-            col = 'white' if count < col_cutoff else 'black'
-            ax.text(j, i, int(count),
-                    horizontalalignment='center',
-                    verticalalignment='center', color=col)
 
-
-def load_train_and_dev(project_root=None) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def load_train_and_dev(
+        project_root: Optional[Union[str, Path]] = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Load the train and dev splits as dataframes.
 
     Returns:
         Frames with the metadata for the documents in the train and
         dev splits.
     """
-    filepath = 'ASK/metadata.csv'
+    filepath = Path('ASK/metadata.csv')
     if project_root is not None:
         filepath = Path(project_root) / filepath
     df = pd.read_csv(filepath).dropna(subset=['cefr'])
@@ -53,13 +59,16 @@ def load_train_and_dev(project_root=None) -> Tuple[pd.DataFrame, pd.DataFrame]:
     return train, dev
 
 
-def load_test() -> pd.DataFrame:
+def load_test(project_root: Optional[Union[str, Path]] = None) -> pd.DataFrame:
     """Load the test split as a dataframe.
 
     Returns:
         A frame with the metadata for the documents in the test split.
     """
-    df = pd.read_csv('ASK/metadata.csv').dropna(subset=['cefr'])
+    filepath = Path('ASK/metadata.csv')
+    if project_root is not None:
+        filepath = Path(project_root) / filepath
+    df = pd.read_csv(filepath).dropna(subset=['cefr'])
     return df[df.split == 'test']
 
 
