@@ -1,6 +1,7 @@
 import argparse
 from itertools import chain
 from pathlib import Path
+from typing import Iterable, List
 
 import numpy as np
 import pandas as pd
@@ -19,14 +20,14 @@ from src.utils import load_train_and_dev, conll_reader, heatmap
 from src.utils import safe_plt as plt
 
 
-def iter_all_tokens(train):
+def iter_all_tokens(train) -> Iterable[str]:
     """Yield all tokens"""
     for seq in iter_all_docs(train):
         for token in seq:
             yield token
 
 
-def iter_all_docs(split: pd.DataFrame, column='UPOS'):
+def iter_all_docs(split: pd.DataFrame, column='UPOS') -> Iterable[List[str]]:
     """Iterate over all docs in the split.
 
     yields:
@@ -34,8 +35,10 @@ def iter_all_docs(split: pd.DataFrame, column='UPOS'):
     """
     for filename in split.filename:
         filepath = Path('ASK/conll') / (filename + '.conll')
-        cr = conll_reader(filepath, column, tags=True)
-        yield list(chain.from_iterable(cr))
+        cr = conll_reader(filepath, [column], tags=True)
+        # Only using a single column, extract the value
+        tokens = (tup[0] for tup in chain.from_iterable(cr))
+        yield list(tokens)
 
 
 def parse_args():

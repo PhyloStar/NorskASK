@@ -7,7 +7,7 @@ iso639_3: A mapping of Norwegian language names (as used in the data) to
 import itertools
 import os
 from pathlib import Path
-from typing import TextIO, Iterable, Tuple, Union, Sequence, Optional
+from typing import TextIO, Iterable, Tuple, Union, Sequence, Optional, List
 
 import pandas as pd
 import numpy as np
@@ -29,6 +29,8 @@ iso639_3 = dict(
     tysk='deu',
     vietnamesisk='vie'
 )
+
+project_root = Path(__file__).resolve().parents[1]  # type: Path
 
 
 def heatmap(values: np.ndarray,
@@ -66,8 +68,7 @@ def heatmap(values: np.ndarray,
                 verticalalignment='center', color=color)
 
 
-def load_train_and_dev(
-        project_root: Optional[Union[str, Path]] = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def load_train_and_dev() -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Load the train and dev splits as dataframes.
 
     Args:
@@ -78,16 +79,14 @@ def load_train_and_dev(
         Frames with the metadata for the documents in the train and
         dev splits.
     """
-    filepath = Path('ASK/metadata.csv')
-    if project_root is not None:
-        filepath = Path(project_root) / filepath
+    filepath = project_root / 'ASK/metadata.csv'
     df = pd.read_csv(filepath).dropna(subset=['cefr'])
     train = df[df.split == 'train']
     dev = df[df.split == 'dev']
     return train, dev
 
 
-def load_test(project_root: Optional[Union[str, Path]] = None) -> pd.DataFrame:
+def load_test() -> pd.DataFrame:
     """Load the test split as a dataframe.
 
     Args:
@@ -97,9 +96,7 @@ def load_test(project_root: Optional[Union[str, Path]] = None) -> pd.DataFrame:
     Returns:
         A frame with the metadata for the documents in the test split.
     """
-    filepath = Path('ASK/metadata.csv')
-    if project_root is not None:
-        filepath = Path(project_root) / filepath
+    filepath = project_root / 'ASK/metadata.csv'
     df = pd.read_csv(filepath).dropna(subset=['cefr'])
     return df[df.split == 'test']
 
@@ -120,8 +117,8 @@ def document_iterator(doc: TextIO) -> Iterable[str]:
 
 
 def conll_reader(file: Union[str, Path],
-                 cols: Union[str, Sequence[str]],
-                 tags: bool = False) -> Iterable[Tuple[str]]:
+                 cols: Sequence[str],
+                 tags: bool = False) -> Iterable[List[Tuple[str, ...]]]:
     """Iterate over sentences in a CoNLL file.
 
     Args:
@@ -137,21 +134,15 @@ def conll_reader(file: Union[str, Path],
     """
     if isinstance(file, str):
         file = Path(file)
-    if isinstance(cols, str):
-        cols = [cols]
     try:
         col_idx = [conll_cols.index(c) for c in cols]
     except ValueError as e:
         raise ValueError('All column names must be one of %s' % set(conll_cols))
     if tags:
-        if len(cols) > 1:
-            start_tags = tuple('<s>' for __ in cols)
-            end_tags = tuple('</s>' for __ in cols)
-        else:
-            start_tags = '<s>'
-            end_tags = '</s>'
+        start_tags = tuple('<s>' for __ in cols)
+        end_tags = tuple('</s>' for __ in cols)
     with file.open(encoding='utf8') as stream:
-        tuple_sequence = []
+        tuple_sequence = []  # type: List[Tuple[str, ...]]
         for line in stream:
             line = line.strip()
             if line.startswith('#'):
@@ -164,10 +155,7 @@ def conll_reader(file: Union[str, Path],
                 tuple_sequence = []
             else:
                 fields = line.split('\t')
-                if len(cols) > 1:
-                    tup = tuple(fields[i] for i in col_idx)
-                    tuple_sequence.append(tup)
-                else:
-                    tuple_sequence.append(fields[col_idx[0]])
+                tup = tuple(fields[i] for i in col_idx)
+                tuple_sequence.append(tup)
     if tuple_sequence:  # Flush if there is no empty line at end of file
         yield tuple_sequence
