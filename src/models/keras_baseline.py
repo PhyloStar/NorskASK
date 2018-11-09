@@ -33,7 +33,7 @@ def iter_all_docs(split: pd.DataFrame, column='UPOS'):
     """
     for filename in split.filename:
         filepath = Path('ASK/conll') / (filename + '.conll')
-        cr = conll_reader(filepath, [column], tags=True)
+        cr = conll_reader(filepath, column, tags=True)
         yield list(chain.from_iterable(cr))
 
 
