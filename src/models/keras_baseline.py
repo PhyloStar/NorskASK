@@ -19,6 +19,7 @@ from keras.utils import to_categorical
 from sklearn.metrics import classification_report, confusion_matrix
 
 from src.utils import load_train_and_dev, conll_reader, heatmap
+from src.results import save_results
 
 
 def iter_all_tokens(train):
@@ -36,11 +37,14 @@ def iter_all_docs(split):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('target_column', nargs='?', choices=['cefr', 'lang'], default='cefr')
+    parser.add_argument('target_column', nargs='?', choices=['cefr', 'lang'])
+    parser.add_argument('--epochs', '-e', type=int)
+    parser.add_argument('--doc-length', '-l', type=int)
+    parser.set_defaults(target_column='cefr', epochs=10, doc_length=500)
     return parser.parse_args()
 
 
-def build_model(vocab_size: int, sequence_length: int) -> Model:
+def build_model(vocab_size: int, sequence_length: int, num_classes: int) -> Model:
     input_shape = (sequence_length,)
     input_layer = Input(shape=input_shape)
     embedding_layer = Embedding(vocab_size + 1, 20)(input_layer)
@@ -54,7 +58,7 @@ def build_model(vocab_size: int, sequence_length: int) -> Model:
         ])
     merged = Concatenate()(pooled_feature_maps)
     dropout_layer = Dropout(0.5)(merged)
-    output_layer = Dense(7, activation='softmax')(dropout_layer)
+    output_layer = Dense(num_classes, activation='softmax')(dropout_layer)
     model = Model(inputs=input_layer, outputs=output_layer)
     model.compile('adam', 'categorical_crossentropy', metrics=['accuracy'])
     return model
@@ -62,7 +66,7 @@ def build_model(vocab_size: int, sequence_length: int) -> Model:
 
 def main():
     args = parse_args()
-    seq_length = 600
+    seq_length = args.doc_length
     train, dev = load_train_and_dev()
 
     y_column = args.target_column
@@ -86,9 +90,9 @@ def main():
     print(train_x.shape)
     print(dev_x.shape)
 
-    model = build_model(vocab_size, seq_length)
+    model = build_model(vocab_size, seq_length, len(labels))
     model.summary()
-    model.fit(
+    history = model.fit(
         train_x, train_y, epochs=20, batch_size=16,
         validation_data=(dev_x, dev_y), verbose=2)
 
@@ -100,6 +104,8 @@ def main():
     print(conf_matrix)
     heatmap(conf_matrix, labels, labels)
     plt.show()
+
+    save_results('cnn_baseline', args.__dict__, history, predictions)
 
 
 if __name__ == '__main__':

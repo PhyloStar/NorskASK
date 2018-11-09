@@ -7,6 +7,7 @@ import sklearn.neural_network
 import matplotlib.pyplot as plt
 
 from src.utils import load_train_and_dev, heatmap
+from src.results import save_results
 
 
 def main():
@@ -49,6 +50,7 @@ def main():
     print(conf_matrix)
     heatmap(conf_matrix, labels, labels)
     plt.show()
+    save_results('linear_baseline', None, None, predictions)
 
 
 if __name__ == '__main__':
