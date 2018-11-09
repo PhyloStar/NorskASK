@@ -111,7 +111,7 @@ def main():
     heatmap(conf_matrix, labels, labels)
     plt.show()
 
-    save_results('cnn_baseline', args.__dict__, history, predictions)
+    save_results('cnn_baseline', args.__dict__, history.history, predictions)
 
 
 if __name__ == '__main__':

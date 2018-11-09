@@ -1,6 +1,7 @@
 .mypy_cache/
 .ipynb_checkpoints/
 venv/
+results/
 
 ASK/conll/
 ASK/txt/
