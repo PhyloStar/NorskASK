@@ -4,10 +4,10 @@ import sklearn
 import sklearn.svm
 import sklearn.linear_model
 import sklearn.neural_network
-import matplotlib.pyplot as plt
 
-from src.utils import load_train_and_dev, heatmap
 from src.results import save_results
+from src.utils import load_train_and_dev, heatmap
+from src.utils import safe_plt as plt
 
 
 def main():

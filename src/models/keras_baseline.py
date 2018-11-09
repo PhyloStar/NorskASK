@@ -1,13 +1,9 @@
 import argparse
-import os
 from itertools import chain
 from pathlib import Path
 
 import numpy as np
-import matplotlib
-if os.name == 'posix' and 'DISPLAY' not in os.environ:  # noqa: E402
-    matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+import pandas as pd
 from keras.models import Model
 from keras.layers import Embedding
 from keras.layers import (
@@ -18,20 +14,27 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
 from sklearn.metrics import classification_report, confusion_matrix
 
-from src.utils import load_train_and_dev, conll_reader, heatmap
 from src.results import save_results
+from src.utils import load_train_and_dev, conll_reader, heatmap
+from src.utils import safe_plt as plt
 
 
 def iter_all_tokens(train):
+    """Yield all tokens"""
     for seq in iter_all_docs(train):
         for token in seq:
             yield token
 
 
-def iter_all_docs(split):
+def iter_all_docs(split: pd.DataFrame, column='UPOS'):
+    """Iterate over all docs in the split.
+
+    yields:
+        Each document as a list of lists of tuples of the given column
+    """
     for filename in split.filename:
         filepath = Path('ASK/conll') / (filename + '.conll')
-        cr = conll_reader(filepath)
+        cr = conll_reader(filepath, column, tags=True)
         yield list(chain.from_iterable(cr))
 
 

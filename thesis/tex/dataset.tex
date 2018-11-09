@@ -21,6 +21,19 @@ Bosnian-Croatian-Serbian or Albanian as L1 have a CEFR score. The CEFR labels
 are available since work by \textcite{carlsen2012proficiency}, and were not
 included at the corpus' initial release.
 
+The CEFR scores in the ASK corpus range between A2 and C1, and also includes
+intermediate labels between the canonical proficiency scores, such as A2/B1
+and B1/B2. Thus, the total number of distinct CEFR scores is seven, which is
+more fine-grained than the TOEFL11 corpus \autocite{blanchard13}, which only
+uses three distinct proficiency categories, or the corpus used in
+\textcite{vajjala18universalCEFR}, the MERLIN corpus, where the CEFR scores
+range between A1 and C1, but without any intermediate levels.
+
+The fine-grained labels makes it challenging to train and evaluate models,
+and also to compare the results against work on other corpora, because the
+gravity of a misclassification may not the same on the more fine-grained
+labels.
+
 The corpus also includes 200 texts written by native Norwegian speakers as a
 control corpus. The total number of word and punctuation tokens in the full
 corpus, including the control corpus, is approximately 770,000. Restricting
