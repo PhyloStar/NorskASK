@@ -29,6 +29,6 @@ def save_results(script_name: str,
 
     results_file = RESULTS_DIR / (script_name + '-' + timestamp + '.pkl')
     print(results_file)
-    results_obj = Results(save_results, config, history, predictions, git_rev)
+    results_obj = Results(script_name, config, history, predictions, git_rev)
 
     pickle.dump(results_obj, results_file.open('wb'))
