@@ -36,3 +36,14 @@ def bag_of_words(split, **kwargs):
 def filename_iter(meta, suffix='txt'):
     for filename in meta.filename:
         yield str((data_folder / suffix / filename).with_suffix('.' + suffix))
+
+
+def round_cefr_score(cefr: str) -> str:
+    """Round intermediate CEFR levels up.
+
+    >>> round_cefr('A2')
+    'A2'
+    >>> round_cefr('B1/B2')
+    'B2'
+    """
+    return cefr[-2:] if '/' in cefr else cefr

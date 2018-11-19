@@ -82,7 +82,18 @@ def load_train_and_dev() -> Tuple[pd.DataFrame, pd.DataFrame]:
     return load_split('train'), load_split('dev')
 
 
-def load_split(split: str) -> pd.DataFrame:
+def round_cefr_score(cefr: str) -> str:
+    """Round intermediate CEFR levels up.
+
+    >>> round_cefr('A2')
+    'A2'
+    >>> round_cefr('B1/B2')
+    'B2'
+    """
+    return cefr[-2:] if '/' in cefr else cefr
+
+
+def load_split(split: str, round_cefr: bool = False) -> pd.DataFrame:
     """Load the test split as a dataframe.
 
     Args:
@@ -95,6 +106,8 @@ def load_split(split: str) -> pd.DataFrame:
         raise ValueError('Split must be train, dev or test')
     filepath = project_root / 'ASK/metadata.csv'
     df = pd.read_csv(filepath).dropna(subset=['cefr'])
+    if round_cefr:
+        df.loc[:, 'cefr'] = df.cefr.apply(round_cefr_score)
     return df[df.split == split]
 
 
