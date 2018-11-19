@@ -1,0 +1,4 @@
+Dette er første linje i dokumentet .
+
+Dette er en setning i et nytt avsnitt .
+Avsnittet har to setninger .

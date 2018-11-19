@@ -79,11 +79,23 @@ def load_train_and_dev() -> Tuple[pd.DataFrame, pd.DataFrame]:
         Frames with the metadata for the documents in the train and
         dev splits.
     """
+    return load_split('train'), load_split('dev')
+
+
+def load_split(split: str) -> pd.DataFrame:
+    """Load the test split as a dataframe.
+
+    Args:
+        split: {train, dev, test}
+
+    Returns:
+        A frame with the metadata for documents in the requested split.
+    """
+    if split not in ['train', 'dev', 'test']:
+        raise ValueError('Split must be train, dev or test')
     filepath = project_root / 'ASK/metadata.csv'
     df = pd.read_csv(filepath).dropna(subset=['cefr'])
-    train = df[df.split == 'train']
-    dev = df[df.split == 'dev']
-    return train, dev
+    return df[df.split == split]
 
 
 def load_test() -> pd.DataFrame:
@@ -96,9 +108,7 @@ def load_test() -> pd.DataFrame:
     Returns:
         A frame with the metadata for the documents in the test split.
     """
-    filepath = project_root / 'ASK/metadata.csv'
-    df = pd.read_csv(filepath).dropna(subset=['cefr'])
-    return df[df.split == 'test']
+    return load_split('test')
 
 
 def document_iterator(doc: TextIO) -> Iterable[str]:

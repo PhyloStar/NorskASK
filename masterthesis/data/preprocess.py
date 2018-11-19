@@ -5,6 +5,8 @@ from xml.etree import ElementTree
 
 import pandas as pd
 
+from masterthesis.utils import project_root
+
 
 test_topics = {
     'geografi norge folk ', 'innvandring ', 'innvandring politikk valg ', 'idrett/sport ',
@@ -32,7 +34,7 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
 
-    data_dir = pathlib.Path('ASK')
+    data_dir = project_root / 'ASK'
     assert data_dir.is_dir()
 
     input_dir = data_dir / 'xml'

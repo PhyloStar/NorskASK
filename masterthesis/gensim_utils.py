@@ -1,3 +1,9 @@
+"""Utils using Gensim.
+
+A separate module because it can take a long time to import gensim, and
+we want to avoid that when not necessary.
+"""
+
 import logging
 import zipfile
 from pathlib import Path

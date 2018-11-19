@@ -31,3 +31,4 @@ thesis/Doc/
 .vscode/settings.json
 
 *.egg-info/
+*.h5
