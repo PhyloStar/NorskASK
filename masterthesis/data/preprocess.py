@@ -1,5 +1,4 @@
 import argparse
-import pathlib
 from collections import defaultdict
 from xml.etree import ElementTree
 

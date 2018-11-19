@@ -1,4 +1,4 @@
-import sklearn.linear_model
+import tempfile
 
 import numpy as np
 from keras.models import Model
@@ -9,6 +9,7 @@ from keras.utils import to_categorical
 from masterthesis.features.build_features import bag_of_words, filename_iter
 from masterthesis.utils import load_split
 from masterthesis.models.callbacks import F1Metrics
+from masterthesis.models.report import report
 
 
 def build_model(vocab_size: int):
@@ -33,23 +34,21 @@ def main():
 
     model = build_model(len(vectorizer.vocabulary_))
     model.summary()
-    model.compile(optimizer=Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer=Adam(lr=1e-4), loss='categorical_crossentropy', metrics=['accuracy'])
 
     weights_path = 'jalla.h5'
-    callbacks = [
-        F1Metrics(dev_x, dev_y, weights_path)
-    ]
-
-    model.fit(train_x, train_y, epochs=5, callbacks=callbacks, validation_data=(dev_x, dev_y))
-
-    model.load_weights(weights_path)
+    with tempfile.NamedTemporaryFile() as weights_path:
+        callbacks = [
+            F1Metrics(dev_x, dev_y, weights_path.name)
+        ]
+        model.fit(train_x, train_y, epochs=10, callbacks=callbacks, validation_data=(dev_x, dev_y))
+        model.load_weights(weights_path.name)
 
     predictions = model.predict(dev_x)
 
     true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
-    print(sklearn.metrics.classification_report(true, pred, target_names=labels))
-    print('Accuracy: %.3f' % sklearn.metrics.accuracy_score(true, pred))
+    report(true, pred, labels)
 
 
 if __name__ == '__main__':
