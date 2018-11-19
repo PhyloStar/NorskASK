@@ -36,7 +36,6 @@ def main():
     model.summary()
     model.compile(optimizer=Adam(lr=1e-4), loss='categorical_crossentropy', metrics=['accuracy'])
 
-    weights_path = 'jalla.h5'
     with tempfile.NamedTemporaryFile() as weights_path:
         callbacks = [
             F1Metrics(dev_x, dev_y, weights_path.name)
