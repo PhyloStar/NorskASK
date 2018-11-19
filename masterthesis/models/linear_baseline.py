@@ -5,9 +5,9 @@ import sklearn.svm
 import sklearn.linear_model
 import sklearn.neural_network
 
-from src.results import save_results
-from src.utils import load_train_and_dev, heatmap
-from src.utils import safe_plt as plt
+from masterthesis.results import save_results
+from masterthesis.utils import load_train_and_dev, heatmap
+from masterthesis.utils import safe_plt as plt
 
 
 def main():

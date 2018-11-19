@@ -15,9 +15,9 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
 from sklearn.metrics import classification_report, confusion_matrix
 
-from src.results import save_results
-from src.utils import load_train_and_dev, conll_reader, heatmap
-from src.utils import safe_plt as plt
+from masterthesis.results import save_results
+from masterthesis.utils import load_train_and_dev, conll_reader, heatmap
+from masterthesis.utils import safe_plt as plt
 
 
 def iter_all_tokens(train) -> Iterable[str]:
