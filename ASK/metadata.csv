@@ -113,7 +113,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 36,B1/B2,h0112,kvinne,polsk,609,dev,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
 51,N/A,h0113,kvinne,serbokroatisk,428,N/A,Høyere nivå,Diktet 'Sannheten' av Rolf Jacobsen,litteratur dikt 
 31,N/A,h0114,kvinne,albansk,544,N/A,Høyere nivå,Den lille forskjellen,kjønn 
-43,B1,h0115,mann,spansk,657,dev,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
+43,B1,h0115,mann,spansk,605,dev,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
 37,N/A,h0116,kvinne,nederlandsk,676,N/A,Høyere nivå,Likestilling mellom kjønnene,kjønn 
 41,B1/B2,h0117,mann,spansk,517,train,Høyere nivå,Miljøvern,miljø klima 
 29,N/A,h0118,mann,nederlandsk,464,N/A,Høyere nivå,Import av utenlandsk arbeidskraft,arbeid innvandring 
@@ -132,7 +132,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 28,B1/B2,h0131,kvinne,polsk,753,dev,Høyere nivå,Borgerlønn,økonomi 
 40,N/A,h0132,mann,nederlandsk,510,N/A,Høyere nivå,Livslang læring,utdannelse 
 26,B2,h0133,kvinne,spansk,560,train,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
-25,N/A,h0134,kvinne,serbokroatisk,472,N/A,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
+25,N/A,h0134,kvinne,serbokroatisk,465,N/A,Høyere nivå,En bok fra din kultur eller ditt hjemland,bok litteratur kultur 
 23,N/A,h0135,kvinne,serbokroatisk,426,N/A,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
 -1,B2,h0136,mann,spansk,429,train,Høyere nivå,Diktet 'Toleranse',litteratur dikt 
 35,B2,h0137,kvinne,polsk,460,train,Høyere nivå,Livslang læring,utdannelse 
@@ -197,7 +197,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 26,N/A,h0198,mann,albansk,436,N/A,Høyere nivå,Sangtradisjon,musikk kultur 
 24,B1/B2,h0199,kvinne,russisk,506,dev,Høyere nivå,Helse og livskvalitet,helse 
 27,B2,h0200,mann,spansk,962,train,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
-28,B2,h0201,mann,engelsk,479,dev,Høyere nivå,Helse og livskvalitet,helse 
+28,B2,h0201,mann,engelsk,471,dev,Høyere nivå,Helse og livskvalitet,helse 
 44,B1/B2,h0202,mann,engelsk,488,dev,Høyere nivå,'Import' av helsepersonell,helse arbeid innvandring 
 31,N/A,h0203,mann,albansk,574,N/A,Høyere nivå,Helse og livskvalitet,helse 
 25,B2,h0204,kvinne,russisk,406,dev,Høyere nivå,'Import' av helsepersonell,helse arbeid innvandring 
@@ -234,7 +234,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 35,B2,h0235,mann,engelsk,432,train,Høyere nivå,Mobiltelefonen,telefon 
 26,B2,h0236,mann,spansk,522,train,Høyere nivå,Mobiltelefonen,telefon 
 34,B1/B2,h0237,kvinne,russisk,449,train,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
-42,B2/C1,h0238,kvinne,engelsk,900,train,Høyere nivå,Mobiltelefonen,telefon 
+42,B2/C1,h0238,kvinne,engelsk,859,train,Høyere nivå,Mobiltelefonen,telefon 
 30,B1/B2,h0239,kvinne,polsk,480,train,Høyere nivå,Familieliv og yrkesliv,familie arbeid yrke 
 32,B1/B2,h0240,kvinne,russisk,439,train,Høyere nivå,Bilisme,bil trafikk 
 20,B2,h0241,kvinne,engelsk,699,train,Høyere nivå,Mobiltelefonen,telefon 
@@ -327,7 +327,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 20,B2,h0329,kvinne,polsk,466,train,Høyere nivå,Mobiltelefonen,telefon 
 34,B2,h0330,kvinne,spansk,487,train,Høyere nivå,Kommunevalget i Norge,politikk valg 
 34,B2,h0331,kvinne,engelsk,778,train,Høyere nivå,Kommunevalget i Norge,politikk valg 
-28,B2/C1,h0332,kvinne,engelsk,527,train,Høyere nivå,Kommunevalget i Norge,politikk valg 
+28,B2/C1,h0332,kvinne,engelsk,518,train,Høyere nivå,Kommunevalget i Norge,politikk valg 
 29,B2,h0333,mann,tysk,373,test,Høyere nivå,Husstander i Norge,familie befolkning norge 
 46,B2,h0334,kvinne,engelsk,678,train,Høyere nivå,Diktet 'Et møte' av Kolbein Falkeid,litteratur dikt 
 34,B2,h0335,kvinne,polsk,699,test,Høyere nivå,Norge det beste sted å bo,geografi norge folk 
@@ -435,7 +435,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 30,B1/B2,h0437,kvinne,engelsk,498,train,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
 24,B2,h0438,kvinne,engelsk,670,train,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
 44,B2,h0439,kvinne,engelsk,771,train,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
-38,N/A,h0440,kvinne,nederlandsk,632,N/A,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
+38,N/A,h0440,kvinne,nederlandsk,629,N/A,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
 24,B1/B2,h0441,kvinne,engelsk,486,train,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
 29,B1/B2,h0442,kvinne,polsk,846,train,Høyere nivå,Leselyst,litteratur kultur 
 33,B2,h0443,kvinne,engelsk,474,train,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
@@ -445,7 +445,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 46,B2/C1,h0447,mann,spansk,503,dev,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
 24,B2,h0448,kvinne,russisk,435,train,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
 39,B2,h0449,kvinne,tysk,527,train,Høyere nivå,Gjennomsnittsvekten øker,familie helse vekt 
-28,B2,h0450,kvinne,russisk,467,train,Høyere nivå,Miljøvern,miljø klima 
+28,B2,h0450,kvinne,russisk,456,train,Høyere nivå,Miljøvern,miljø klima 
 28,B2,h0451,kvinne,polsk,455,train,Høyere nivå,Kvinner i topposisjoner,kjønn yrke arbeid 
 26,N/A,h0452,kvinne,nederlandsk,521,N/A,Høyere nivå,Kvinner i topposisjoner,kjønn yrke arbeid 
 26,B2,h0453,kvinne,polsk,519,dev,Høyere nivå,Diktet 'Det er langt mellom venner' av Kolbjørn Falkeid,litteratur dikt venner 
@@ -627,7 +627,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 40,N/A,h0630,mann,nederlandsk,426,N/A,Høyere nivå,Fødselstall og befolkningssammensetning,familie befolkning 
 33,B2,h0631,kvinne,polsk,755,train,Høyere nivå,Nærmiljø og lokalsamfunn,geografi samfunn folk 
 40,N/A,h0632,mann,nederlandsk,434,N/A,Høyere nivå,Adopsjon,barn familie 
-25,B2,h0633,kvinne,polsk,706,train,Høyere nivå,Hva er en god film,film kultur holdning 
+25,B2,h0633,kvinne,polsk,703,train,Høyere nivå,Hva er en god film,film kultur holdning 
 23,B2,h0634,kvinne,polsk,432,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
 26,B2/C1,h0635,kvinne,polsk,666,test,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
 27,B2,h0636,kvinne,polsk,354,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
@@ -638,7 +638,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 33,B2,h0641,kvinne,polsk,585,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
 35,N/A,h0642,kvinne,nederlandsk,640,N/A,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
 41,B1/B2,h0643,kvinne,spansk,392,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
-21,N/A,h0644,kvinne,albansk,544,N/A,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+21,N/A,h0644,kvinne,albansk,541,N/A,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
 30,B2,h0645,kvinne,polsk,578,test,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
 24,B1/B2,h0646,kvinne,polsk,598,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
 27,B2,h0647,kvinne,polsk,673,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
@@ -646,14 +646,14 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 25,B1/B2,h0649,kvinne,polsk,544,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
 25,N/A,h0650,mann,serbokroatisk,453,N/A,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
 47,B1,h0651,mann,spansk,438,test,Høyere nivå,Realkompetanse,folk utdannelse 
-25,N/A,h0652,kvinne,serbokroatisk,542,N/A,Høyere nivå,Hva er en god film,film kultur holdning 
+25,N/A,h0652,kvinne,serbokroatisk,539,N/A,Høyere nivå,Hva er en god film,film kultur holdning 
 31,N/A,h0653,mann,nederlandsk,712,N/A,Høyere nivå,Nordmenns holdning til EU,politikk norge holdning 
-19,N/A,h0654,kvinne,albansk,528,N/A,Høyere nivå,Hva er en god film,film kultur holdning 
+19,N/A,h0654,kvinne,albansk,538,N/A,Høyere nivå,Hva er en god film,film kultur holdning 
 24,B2,h0655,mann,spansk,548,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
-25,N/A,h0656,mann,nederlandsk,904,N/A,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
+25,N/A,h0656,mann,nederlandsk,884,N/A,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
 21,B1/B2,h0657,kvinne,polsk,341,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
 28,B1/B2,h0658,kvinne,polsk,766,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
-27,B1/B2,h0659,kvinne,spansk,584,train,Høyere nivå,Hva er en god film,film kultur holdning 
+27,B1/B2,h0659,kvinne,spansk,594,train,Høyere nivå,Hva er en god film,film kultur holdning 
 28,B2,h0660,kvinne,spansk,602,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
 30,N/A,h0661,mann,nederlandsk,419,N/A,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
 28,B2,h0662,kvinne,polsk,377,train,Høyere nivå,Diktet 'Mayday' av Lars Saabye Christensen,litteratur dikt 
@@ -709,7 +709,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 32,N/A,h0712,mann,albansk,443,N/A,Høyere nivå,Den gode skolen,skole 
 21,N/A,h0713,kvinne,albansk,583,N/A,Høyere nivå,Den gode skolen,skole 
 33,N/A,h0714,kvinne,albansk,558,N/A,Høyere nivå,Den gode skolen,skole 
-42,N/A,h0715,kvinne,serbokroatisk,454,N/A,Høyere nivå,Blogging,data kommunikasjon 
+42,N/A,h0715,kvinne,serbokroatisk,463,N/A,Høyere nivå,Blogging,data kommunikasjon 
 29,N/A,h0716,kvinne,serbokroatisk,560,N/A,Høyere nivå,Tidsklemmen,folk familie 
 24,N/A,h0717,kvinne,serbokroatisk,533,N/A,Høyere nivå,Tidsklemmen,folk familie 
 30,N/A,h0718,mann,serbokroatisk,366,N/A,Høyere nivå,Tidsklemmen,folk familie 
@@ -860,7 +860,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 39,N/A,s0023,kvinne,nederlandsk,341,N/A,Språkprøven,Bomiljø,bolig 
 40,N/A,s0024,kvinne,nederlandsk,285,N/A,Språkprøven,Bomiljø,bolig 
 25,N/A,s0025,kvinne,nederlandsk,312,N/A,Språkprøven,Bomiljø,bolig 
-43,B2,s0026,kvinne,tysk,241,train,Språkprøven,Mobiltelefoner,telefon 
+43,B2,s0026,kvinne,tysk,230,train,Språkprøven,Mobiltelefoner,telefon 
 33,B1/B2,s0027,kvinne,tysk,268,train,Språkprøven,Viktige verdier i livet,verdier 
 23,B1,s0028,kvinne,tysk,218,train,Språkprøven,Mobiltelefoner,telefon 
 28,B1/B2,s0029,mann,tysk,263,train,Språkprøven,Mobiltelefoner,telefon 
@@ -939,7 +939,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 27,A2/B1,s0102,kvinne,somali,280,train,Språkprøven,Folk reiser så mye i våre dager,reise folk 
 25,A2,s0103,mann,somali,249,train,Språkprøven,Folk reiser så mye i våre dager,reise folk 
 39,A2,s0104,mann,somali,309,train,Språkprøven,Bolig og bosted,bolig 
-31,N/A,s0105,kvinne,nederlandsk,244,N/A,Språkprøven,Reise,reise geografi 
+31,N/A,s0105,kvinne,nederlandsk,257,N/A,Språkprøven,Reise,reise geografi 
 21,N/A,s0106,kvinne,nederlandsk,283,N/A,Språkprøven,Reise,reise geografi 
 22,A2,s0107,mann,somali,204,train,Språkprøven,Bolig og bosted,bolig 
 28,N/A,s0108,mann,nederlandsk,285,N/A,Språkprøven,Reise,reise geografi 
@@ -1221,7 +1221,7 @@ age,cefr,filename,gender,lang,num_tokens,split,testlevel,title,topic
 37,N/A,s0390,mann,nederlandsk,266,N/A,Språkprøven,Nyheter,media 
 30,N/A,s0391,mann,nederlandsk,277,N/A,Språkprøven,Framtida,tid 
 36,N/A,s0392,kvinne,nederlandsk,346,N/A,Språkprøven,Nyheter,media 
-22,N/A,s0393,kvinne,nederlandsk,327,N/A,Språkprøven,Nyheter,media 
+22,N/A,s0393,kvinne,nederlandsk,325,N/A,Språkprøven,Nyheter,media 
 33,N/A,s0394,mann,nederlandsk,334,N/A,Språkprøven,Framtida,tid 
 37,N/A,s0395,kvinne,nederlandsk,147,N/A,Språkprøven,Tanker om det å bli gammel,trafikk bolig 
 23,N/A,s0396,mann,nederlandsk,232,N/A,Språkprøven,En sport du liker,idrett/sport 
