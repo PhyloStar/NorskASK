@@ -14,13 +14,13 @@ from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 
 
-conll_folder = project_root / 'conll'
+conll_folder = project_root / 'ASK/conll'
 
 
-def build_model(vocab_size: int):
+def build_model(vocab_size: int, num_classes: int):
     input_ = Input((vocab_size,))
     hidden = Dense(1000)(input_)
-    output = Dense(7, activation='softmax')(hidden)
+    output = Dense(num_classes, activation='softmax')(hidden)
     return Model(inputs=[input_], outputs=[output])
 
 
@@ -28,14 +28,17 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--round_cefr', action='store_true')
     parser.add_argument('--max_features', type=int, default=10000)
+    parser.add_argument('--lr', type=float, default=1e-3)
     return parser.parse_args()
 
 
 def pos_line_iter(meta) -> Iterable[str]:
     for stem in meta.filename:
         file = (conll_folder / stem).with_suffix('.conll')
-        for sent in conll_reader(file, 'UPOS', tags=False):
-            yield ' '.join(tag for (tag,) in sent)
+        sents = []
+        for sent in conll_reader(file, ['UPOS'], tags=False):
+            sents.append(' '.join(tag for (tag,) in sent))
+        yield '\n'.join(sents)
 
 
 def main():
@@ -53,9 +56,10 @@ def main():
     train_y = to_categorical([labels.index(c) for c in train_meta.cefr])
     dev_y = to_categorical([labels.index(c) for c in dev_meta.cefr])
 
-    model = build_model(len(vectorizer.vocabulary_))
+    model = build_model(len(vectorizer.vocabulary_), len(labels))
     model.summary()
-    model.compile(optimizer=Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(
+        optimizer=Adam(lr=args.lr), loss='categorical_crossentropy', metrics=['accuracy'])
 
     with tempfile.NamedTemporaryFile(suffix='.h5') as weights_path:
         callbacks = [F1Metrics(dev_x, dev_y, weights_path.name)]
