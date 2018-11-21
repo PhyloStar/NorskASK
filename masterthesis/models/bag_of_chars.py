@@ -37,7 +37,7 @@ def main():
     dev_meta = load_split('dev', round_cefr=args.round_cefr)
     dev_x = vectorizer.transform(filename_iter(dev_meta))
 
-    print(vectorizer.get_feature_names()[:20])
+    # print(vectorizer.get_feature_names()[:20])
     train_meta = load_split('train', round_cefr=args.round_cefr)
     labels = sorted(train_meta.cefr.unique())
 
