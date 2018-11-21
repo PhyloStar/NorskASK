@@ -16,20 +16,49 @@ tagger's own tagset.
 
 \section{Baseline}
 
-The majority class in the training set is B1. A majority classifier gets an
-accuracy of 18.7\% on the test set.
+Two different sets of classes are used in the experiments. The original seven
+CEFR labels, and a collapsed set where the intermediate classes such as
+"A2/B1" are rounded up to the nearest canonical class. This results in only
+four different labels.
 
-Moving to a simple bag-of-words model, a logistic regression classifier achieves
-an accuracy of ??? on the dev set. 
+The majority class in the training set is B1. A majority classifier gets an
+accuracy of 18.7\% on the test set using non-collapsed labels. With the
+collapsed labels, the majority class is still B1, and the accuracy on the
+test set is 34.1\%.
+
+Moving to a simple bag-of-words model, a logistic regression classifier
+achieves an accuracy of 28.5\% on the dev set without collapsed labels and
+58.5\% with collapsed labels. There are approximately 18,300 different word
+forms in the training set.
+
+Several neural network models were attempted as well, with input either being
+word counts, character n-grams (n in the interval [2, 4], only the 10000 most
+common features used), or part of speech n-grams (n in the interval [2, 4]).
+
+All results are seen in table \ref{baseline-accuracies}.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Model            & All labels & Collapsed labels \\
+    \midrule
+    Majority         &     18.7\% &           34.1\% \\
+    LogReg BOW       &     28.5\% &           58.5\% \\
+    LogReg TL+Length &     43.9\% &           ------ \\
+    MLP BOW          &     31.7\% &           63.4\% \\
+    MLP Char         &     44.7\% &           68.3\% \\
+    MLP POS          &     34.1\% &           65.0\% \\
+    \bottomrule
+  \end{tabular}
+  \caption{Accuracy of different classifiers}
+  \label{baseline-accuracies}
+\end{table}
 
 A logistic regression classifier was able to predict the CEFR score with
 43.9\% accuracy using only two features: The length of the document, in
-number of tokens, and the test level (IL test or AL test). 54 of 123
-documents in the dev set.
+number of tokens, and the test level (IL test or AL test).
 
 A convolutional neural network based on the architecture in
 \textcite{zhang2017sensitivity} achieved an accuracy of 42.3\% using
 sequences of POS tags as input to an initial embedding layer.
-
-Note that always predicting the majority class in the dev set (B2 with 37
-documents) yields an accuracy of 30.1\%.
