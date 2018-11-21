@@ -27,6 +27,15 @@ def iterate_docs(split: str = 'train') -> Iterable[Iterable[str]]:
 
 
 def bag_of_words(split, **kwargs):
+    """Fit a CountVectorizer on a split.
+
+    Args:
+        split: Name of the split {'train', 'test', 'dev}
+        **kwargs: Are passed to CountVectorizer's constructor
+
+    Returns:
+        The transformed documents and the trained vectorizer.
+    """
     vectorizer = CountVectorizer(input='filename', **kwargs)
     meta = load_split(split)
     x = vectorizer.fit_transform(filename_iter(meta))

@@ -1,14 +1,20 @@
-import sklearn.linear_model
+import argparse
+import tempfile
+from typing import Iterable
 
 import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
 from keras.models import Model
 from keras.layers import Input, Dense
 from keras.optimizers import Adam
 from keras.utils import to_categorical
 
-from masterthesis.features.build_features import bag_of_words, filename_iter
-from masterthesis.utils import load_split
+from masterthesis.utils import load_split, project_root, conll_reader
 from masterthesis.models.callbacks import F1Metrics
+from masterthesis.models.report import report
+
+
+conll_folder = project_root / 'conll'
 
 
 def build_model(vocab_size: int):
@@ -18,12 +24,30 @@ def build_model(vocab_size: int):
     return Model(inputs=[input_], outputs=[output])
 
 
-def main():
-    train_x, vectorizer = bag_of_words('train', max_features=5000)
-    dev_meta = load_split('dev')
-    dev_x = vectorizer.transform(filename_iter(dev_meta))
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--round_cefr', action='store_true')
+    parser.add_argument('--max_features', type=int, default=10000)
+    return parser.parse_args()
 
-    train_meta = load_split('train')
+
+def pos_line_iter(meta) -> Iterable[str]:
+    for stem in meta.filename:
+        file = (conll_folder / stem).with_suffix('.conll')
+        for sent in conll_reader(file, 'UPOS', tags=False):
+            yield ' '.join(tag for (tag,) in sent)
+
+
+def main():
+    args = parse_args()
+    train_meta = load_split('train', round_cefr=args.round_cefr)
+    dev_meta = load_split('dev', round_cefr=args.round_cefr)
+    vectorizer = CountVectorizer(
+        lowercase=False, token_pattern="[^\s]+",
+        ngram_range=(2, 4), max_features=args.max_features)
+    train_x = vectorizer.fit_transform(pos_line_iter(train_meta))
+    dev_x = vectorizer.transform(pos_line_iter(dev_meta))
+
     labels = sorted(train_meta.cefr.unique())
 
     train_y = to_categorical([labels.index(c) for c in train_meta.cefr])
@@ -33,21 +57,16 @@ def main():
     model.summary()
     model.compile(optimizer=Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
 
-    weights_path = 'jalla.h5'
-    callbacks = [
-        F1Metrics(dev_x, dev_y, weights_path)
-    ]
-
-    model.fit(train_x, train_y, epochs=20, callbacks=callbacks, validation_data=(dev_x, dev_y))
-
-    model.load_weights(weights_path)
+    with tempfile.NamedTemporaryFile(suffix='.h5') as weights_path:
+        callbacks = [F1Metrics(dev_x, dev_y, weights_path.name)]
+        model.fit(train_x, train_y, epochs=20, callbacks=callbacks, validation_data=(dev_x, dev_y))
+        model.load_weights(weights_path.name)
 
     predictions = model.predict(dev_x)
 
     true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
-    print(sklearn.metrics.classification_report(true, pred, target_names=labels))
-    print('Accuracy: %.3f' % sklearn.metrics.accuracy_score(true, pred))
+    report(true, pred, labels)
 
 
 if __name__ == '__main__':

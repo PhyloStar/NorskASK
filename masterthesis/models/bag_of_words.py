@@ -1,3 +1,4 @@
+import argparse
 import tempfile
 
 import numpy as np
@@ -22,12 +23,20 @@ def build_model(vocab_size: int, num_classes: int):
     return Model(inputs=[input_], outputs=[output])
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--round_cefr', action='store_true')
+    parser.add_argument('--vocab', type=int, default=10000)
+    return parser.parse_args()
+
+
 def main():
-    train_x, vectorizer = bag_of_words('train', max_features=10000)
-    dev_meta = load_split('dev', round_cefr=True)
+    args = parse_args()
+    train_x, vectorizer = bag_of_words('train', max_features=args.vocab)
+    dev_meta = load_split('dev', round_cefr=args.round_cefr)
     dev_x = vectorizer.transform(filename_iter(dev_meta))
 
-    train_meta = load_split('train', round_cefr=True)
+    train_meta = load_split('train', round_cefr=args.round_cefr)
     labels = sorted(train_meta.cefr.unique())
 
     train_y = to_categorical([labels.index(c) for c in train_meta.cefr])
@@ -38,9 +47,7 @@ def main():
     model.compile(optimizer=Adam(lr=1e-3), loss='categorical_crossentropy', metrics=['accuracy'])
 
     with tempfile.NamedTemporaryFile(suffix='.h5') as weights_path:
-        callbacks = [
-            F1Metrics(dev_x, dev_y, weights_path.name)
-        ]
+        callbacks = [F1Metrics(dev_x, dev_y, weights_path.name)]
         model.fit(train_x, train_y, epochs=20, callbacks=callbacks, validation_data=(dev_x, dev_y))
         model.load_weights(weights_path.name)
 
