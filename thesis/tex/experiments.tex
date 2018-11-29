@@ -14,6 +14,23 @@ with a single token per line. UDPipe tags the documents using the UD tagset,
 while the original tags in the XML documents are from the Oslo-Bergen
 tagger's own tagset.
 
+\section{Metrics}
+
+Because of the unbalanced nature of the classes in the dataset, special
+consideration has to be made as to the metrics of evaluation. Along with
+accuracy, three different F1 metrics are reported: The macro average, micro
+average and weighted average.
+
+These are reported for three different modes of training and evaluation. The
+first is training and evaluating using the full set of classes, the second to
+train on the full set of classes and reduce the predictions to the collapsed
+set of classes, and the third is to train and evaluate on the collapsed
+classes.
+
+The second mode is based on the assumption that the more fine grained labels
+in the full set of classes can provide useful training signals even though we
+evaluate on a smaller set.
+
 \section{Baseline}
 
 Two different sets of classes are used in the experiments. The original seven
