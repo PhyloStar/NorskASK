@@ -48,9 +48,10 @@ achieves an accuracy of 28.5\% on the dev set without collapsed labels and
 58.5\% with collapsed labels. There are approximately 18,300 different word
 forms in the training set.
 
-Several neural network models were attempted as well, with input either being
-word counts, character n-grams (n in the interval [2, 4], only the 10000 most
-common features used), or part of speech n-grams (n in the interval [2, 4]).
+Several neural network models were attempted as well, with input either
+being word counts, character \ngrams, or part of speech \ngrams.  For
+the \ngram features, \textit{n}s in the interval [2, 4] were used, and
+only the 10,000 most common features were kept.
 
 All results are seen in table \ref{baseline-accuracies}.
 

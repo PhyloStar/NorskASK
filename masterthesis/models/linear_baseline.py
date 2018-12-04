@@ -34,7 +34,7 @@ def main():
 
     predictions = clf.predict(dev_x)
     report(dev_y, predictions, labels)
-    save_results('linear_baseline', None, None, predictions)
+    save_results('linear_baseline', None, None, dev_y, predictions)
 
 
 if __name__ == '__main__':

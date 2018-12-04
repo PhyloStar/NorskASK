@@ -9,17 +9,19 @@ GIT_CMD = ['git', 'rev-parse', '--verify', 'HEAD']
 
 
 class Results:
-    def __init__(self, script_name, config, history, predictions, git_rev):
+    def __init__(self, script_name, config, history, true, predictions, git_rev):
         self.script_name = script_name
         self.config = config
         self.history = history
         self.predictions = predictions
+        self.true = true
         self.git_revision = git_rev
 
 
 def save_results(script_name: str,
                  config: Dict[str, Any],
                  history,
+                 true,
                  predictions):
     timestamp = dt.datetime.utcnow().strftime('%Y-%m-%d_%H-%M-%S')
     result = subprocess.run(GIT_CMD, stdout=subprocess.PIPE)
@@ -29,6 +31,6 @@ def save_results(script_name: str,
 
     results_file = RESULTS_DIR / (script_name + '-' + timestamp + '.pkl')
     print(results_file)
-    results_obj = Results(script_name, config, history, predictions, git_rev)
+    results_obj = Results(script_name, config, history, true, predictions, git_rev)
 
     pickle.dump(results_obj, results_file.open('wb'))

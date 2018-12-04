@@ -172,14 +172,14 @@ considers the form of a word. Homographs like \emph{well}, which can be both
 an adverb adn a noun, are each mapped to a single embedding vector, with no
 way to distinguish the different meanings of the word.
 
-It is also possible to embed $n$-grams of characters instead of words. A
+It is also possible to embed \ngrams of characters instead of words. A
 disadvantage of this approach is that it becomes more difficult to
 distinguish words with similar spelling, but different meaning, and it does
 not solve the problem of homographs. However, it seems that the embeddings
 may still be more robust when encountering spelling mistakes. The embeddings
 based on word forms will see ``beautiful'' and ``beutiful'' as completely
 separate words, while there still exists similarities between them on the
-level of characters: they share a good portion of their $n$-grams. Another
+level of characters: they share a good portion of their \ngrams. Another
 advantage might be the possibility of accessing semantic meaning at a
 sub-word level, including prefixes and suffixes.
 
@@ -298,13 +298,13 @@ cross-linguistically, so features like this are language-specific.
 different pronoun types, determiners and definite noun phrases, and more, in
 a reference chain, along with the average length of a reference chain.
 
-Notably, the author did not use word or POS $n$-grams as features in the
-study. The reasons given for this is that the sparse nature of $n$-gram
+Notably, the author did not use word or POS \ngrams as features in the
+study. The reasons given for this is that the sparse nature of \ngram
 features make them hard to interpret, and they can introduce topic bias to
 the model. The essays are written on different topics, making it likely that
-certain words indicate the topic of an essay. $n$-grams can model errors
+certain words indicate the topic of an essay. \ngrams can model errors
 relative to the learner's target language, but she already uses features
-designed to model this. Nor are character $n$-grams used as features here,
+designed to model this. Nor are character \ngrams used as features here,
 though they are generally widely used in a various NLP applications.
 \citeauthor{vajjala17} also experimented with using the writing prompt and
 the native language (L1) of the text's author as features.
@@ -378,7 +378,7 @@ several corpora, namely TOEFL11, the Norwegian ASK corpus and the Jinan
 Chinese Learner corpus. However, they were not able to utilize the same
 features for all the different corpora. For Norwegian, they only use the
 features \emph{function word unigrams}, \emph{function word bigrams} and
-\emph{part-of-speech $n$-grams}. For the English corpus, they were able to
+\emph{part-of-speech \ngrams}. For the English corpus, they were able to
 use other features such as dependencies and context free grammar-rules. By
 combining a selection of base classifiers using a Linear Discriminant
 Analysis (LDA) meta-classifier trained with bootstrap aggregation (bagging),
