@@ -1,6 +1,5 @@
 import argparse
 
-import numpy as np
 import sklearn.linear_model
 
 from masterthesis.results import save_results
