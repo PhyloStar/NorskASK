@@ -1,16 +1,14 @@
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, f1_score
 import numpy as np
 
-from masterthesis.utils import heatmap, round_cefr_score
+from masterthesis.utils import heatmap
 from masterthesis.utils import safe_plt as plt
 
 
 def _collapse_array(arr):
-    if not isinstance(arr, np.ndarray):
-        raise ValueError("Needs a Numpy array to collapse labels like this")
-    if not issubclass(arr.dtype.type, np.integer):
-        raise ValueError("Array must be of integer type")
-    return (arr + 1) // 2
+    if isinstance(arr, np.ndarray):
+        return (arr + 1) // 2
+    return [(s + 1) // 2 for s in arr]
 
 
 def report(true, pred, labels):
@@ -26,12 +24,8 @@ def report(true, pred, labels):
     if len(labels) == 7:
         print("=== Using collapsed labels ===")
         fig, axes = plt.subplots(1, 2)
-        try:
-            collapsed_true = _collapse_array(true)
-            collapsed_pred = _collapse_array(pred)
-        except ValueError:
-            collapsed_true = [round_cefr_score(s) for s in true]
-            collapsed_pred = [round_cefr_score(s) for s in pred]
+        collapsed_true = _collapse_array(true)
+        collapsed_pred = _collapse_array(pred)
         collapsed_labels = ['A2', 'B1', 'B2', 'C1']
         print(classification_report(collapsed_true, collapsed_pred, target_names=collapsed_labels))
         print('Accuracy: %.3f' % accuracy_score(collapsed_true, collapsed_pred))

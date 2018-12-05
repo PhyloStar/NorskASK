@@ -11,6 +11,7 @@ from masterthesis.features.build_features import bag_of_words, filename_iter
 from masterthesis.utils import load_split
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
+from masterthesis.models.bag_of_chars import build_model
 
 
 def build_model(vocab_size: int, num_classes: int):
@@ -25,7 +26,7 @@ def build_model(vocab_size: int, num_classes: int):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--round_cefr', action='store_true')
+    parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--vocab', type=int, default=10000)
     return parser.parse_args()
 

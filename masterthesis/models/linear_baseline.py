@@ -11,7 +11,7 @@ from masterthesis.models.report import report
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--round_cefr', action='store_true')
+    parser.add_argument('--round-cefr', action='store_true')
     return parser.parse_args()
 
 

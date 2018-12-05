@@ -5,28 +5,22 @@ from typing import Iterable
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from keras.models import Model
-from keras.layers import Input, Dense
+from keras.layers import Input, Dense, Dropout
 from keras.optimizers import Adam
 from keras.utils import to_categorical
 
 from masterthesis.utils import load_split, project_root, conll_reader
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
+from masterthesis.models.bag_of_chars import build_model
 
 
 conll_folder = project_root / 'ASK/conll'
 
 
-def build_model(vocab_size: int, num_classes: int):
-    input_ = Input((vocab_size,))
-    hidden = Dense(1000)(input_)
-    output = Dense(num_classes, activation='softmax')(hidden)
-    return Model(inputs=[input_], outputs=[output])
-
-
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--round_cefr', action='store_true')
+    parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--max_features', type=int, default=10000)
     parser.add_argument('--lr', type=float, default=1e-3)
     return parser.parse_args()
