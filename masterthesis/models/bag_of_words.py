@@ -2,8 +2,6 @@ import argparse
 import tempfile
 
 import numpy as np
-from keras.models import Model
-from keras.layers import Input, Dense, Dropout
 from keras.optimizers import Adam
 from keras.utils import to_categorical
 
@@ -12,16 +10,6 @@ from masterthesis.utils import load_split
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.models.bag_of_chars import build_model
-
-
-def build_model(vocab_size: int, num_classes: int):
-    input_ = Input((vocab_size,))
-    hidden_1 = Dense(256, activation='relu')(input_)
-    dropout_1 = Dropout(0.5)(hidden_1)
-    hidden_2 = Dense(256, activation='relu')(dropout_1)
-    dropout_2 = Dropout(0.5)(hidden_2)
-    output = Dense(num_classes, activation='softmax')(dropout_2)
-    return Model(inputs=[input_], outputs=[output])
 
 
 def parse_args():

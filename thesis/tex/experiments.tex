@@ -17,19 +17,25 @@ tagger's own tagset.
 \section{Metrics}
 
 Because of the unbalanced nature of the classes in the dataset, special
-consideration has to be made as to the metrics of evaluation. Along with
-accuracy, three different F1 metrics are reported: The macro average, micro
-average and weighted average.
+consideration has to be made as to the metrics of evaluation. Two metrics are
+reported for all experiments: The macro average F1 and the micro average F1.
+The latter is equivalent to the accuracy (ratio of correctly predicted
+samples), while the former gives all the classes equal weight. If a model
+correctly classifies most samples in the classes with most samples, but gives
+poor predictions for smaller classes, then the macro F1 score will be
+considerably lower than the micro F1 score.
 
-These are reported for three different modes of training and evaluation. The
-first is training and evaluating using the full set of classes, the second to
-train on the full set of classes and reduce the predictions to the collapsed
-set of classes, and the third is to train and evaluate on the collapsed
-classes.
+The metrics are reported for two different modes of training and evaluation.
+The first is training and evaluating using the full set of classes, and the
+second is to train and evaluate on the collapsed classes.
 
-The second mode is based on the assumption that the more fine grained labels
-in the full set of classes can provide useful training signals even though we
-evaluate on a smaller set.
+A third option, namely to train on the full set of classes and reduce the
+predictions to the collapsed set of classes, was also attempted, based on the
+assumption that the more fine grained labels in the full set of classes can
+provide useful training signals even though we evaluate on a smaller set.
+However, in practice the best performance on the collapsed tag set was
+empirically observed from the models that were also trained on the collapsed
+tags.
 
 \section{Baseline}
 
@@ -48,34 +54,35 @@ achieves an accuracy of 28.5\% on the dev set without collapsed labels and
 58.5\% with collapsed labels. There are approximately 18,300 different word
 forms in the training set.
 
-Several neural network models were attempted as well, with input either
-being word counts, character \ngrams, or part of speech \ngrams.  For
-the \ngram features, \textit{n}s in the interval [2, 4] were used, and
-only the 10,000 most common features were kept.
+Several neural network models were attempted as well, with input either being
+word counts, character \ngrams, or part of speech \ngrams. For the \ngram
+features, \textit{n}s in the interval [2, 4] were used, and only the 10,000
+most common features were kept.
 
 All results are seen in table \ref{baseline-accuracies}.
 
 \begin{table}
   \centering
-  \begin{tabular}{lrr}
+  \begin{tabular}{|l|rr|rr|}
     \toprule
-    Model            & All labels & Collapsed labels \\
+      & \multicolumn{2}{|l|}{All labels} & \multicolumn{2}{|c|}{Collapsed labels} \\
+    Model      & Macro F1 & Micro F1 & Macro F1 & Micro F1 \\
     \midrule
-    Majority         &     18.7\% &           34.1\% \\
-    LogReg BOW       &     28.5\% &           58.5\% \\
-    LogReg TL+Length &     43.9\% &           ------ \\
-    MLP BOW          &     31.7\% &           63.4\% \\
-    MLP Char         &     44.7\% &           68.3\% \\
-    MLP POS          &     34.1\% &           65.0\% \\
+    Majority   &    4.0\% &   16.3\% &   12.7\% &   34.1\% \\
+    LogReg BOW &   17.9\% &   28.5\% &   31.9\% &   58.5\% \\
+    MLP BOW    &   22.1\% &   35.0\% &   41.0\% &   64.2\% \\
+    MLP Char   &   20.3\% &   36.6\% &   36.8\% &   70.7\% \\
+    MLP POS    &   24.5\% &   39.0\% &   42.8\% &   65.9\% \\
     \bottomrule
   \end{tabular}
   \caption{Accuracy of different classifiers}
   \label{baseline-accuracies}
 \end{table}
 
-A logistic regression classifier was able to predict the CEFR score with
-43.9\% accuracy using only two features: The length of the document, in
-number of tokens, and the test level (IL test or AL test).
+The part of speech \ngrams performed best overall, having the highest F1 score
+for the full label set, both for macro and micro average. On the collapsed set
+of labels, the part of speech \ngrams had the highest macro F1 score, but were
+beat in micro F1 by the character \ngrams.
 
 A convolutional neural network based on the architecture in
 \textcite{zhang2017sensitivity} achieved an accuracy of 42.3\% using

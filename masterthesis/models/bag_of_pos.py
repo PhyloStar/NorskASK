@@ -4,8 +4,6 @@ from typing import Iterable
 
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
-from keras.models import Model
-from keras.layers import Input, Dense, Dropout
 from keras.optimizers import Adam
 from keras.utils import to_categorical
 
@@ -21,7 +19,7 @@ conll_folder = project_root / 'ASK/conll'
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--round-cefr', action='store_true')
-    parser.add_argument('--max_features', type=int, default=10000)
+    parser.add_argument('--max-features', type=int, default=10000)
     parser.add_argument('--lr', type=float, default=1e-3)
     return parser.parse_args()
 
