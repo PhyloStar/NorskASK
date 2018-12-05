@@ -8,6 +8,7 @@ from masterthesis.utils import safe_plt as plt
 def _collapse_array(arr):
     if not isinstance(arr, np.ndarray):
         raise ValueError("Needs a Numpy array to collapse labels like this")
+    if not issubclass(arr.dtype.type, np.integer)
     return (arr + 1) // 2
 
 
