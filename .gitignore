@@ -5,6 +5,7 @@ venv/
 results/
 
 ASK/conll/
+ASK/conll-2-0/
 ASK/txt/
 ASK/xml/
 **/__pycache__/

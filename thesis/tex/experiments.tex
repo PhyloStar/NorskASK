@@ -3,16 +3,24 @@
 
 The data files in the ASK corpus are in XML format, and contain information
 about tags, mistakes and corrections, paragraphs, sentences and more. These
-files were transformed into other formats during the process. First, they
-were converted to plain text files stripped of all tags or correction labels,
-with one sentence per line consisting of space-separated tokens, and an empty
-line separating paragraphs.
+files were transformed into several other formats during the process. First,
+they were converted to plain text files, stripped of all tags or correction
+labels. The text files have one sentence per line, consisting of
+space-separated tokens, and an empty line separating paragraphs.
 
-These raw text files were then sent through the UDPipe pipeline for tagging
-and dependency parsing. The output from UDPipe is in the CoNLL file format
-with a single token per line. UDPipe tags the documents using the UD tagset,
-while the original tags in the XML documents are from the Oslo-Bergen
-tagger's own tagset.
+These raw text files were then sent through the UDPipe pipeline
+\autocite{udpipe:2017} for tagging and dependency parsing. The UDPipe
+project maintains a REST API containing a selection of pretrained models.
+All documents were transformed by the REST API using what was at the time 
+of writing the
+newest Norwegian bokmål (nb) model, available, namely
+\texttt{norwegian-bokmaal-ud-2.3-181115}.
+
+The pipeline accepts raw text files as input, where each sentence is put on a
+separate line. The output from UDPipe is in the CoNLL file format, with a
+single token per line. UDPipe tags the documents using the UD tagset, while
+the original tags in the XML documents are from the Oslo-Bergen tagger's own
+tagset.
 
 \section{Metrics}
 
@@ -22,42 +30,56 @@ reported for all experiments: The macro average F1 and the micro average F1.
 The latter is equivalent to the accuracy (ratio of correctly predicted
 samples), while the former gives all the classes equal weight. If a model
 correctly classifies most samples in the classes with most samples, but gives
-poor predictions for smaller classes, then the macro F1 score will be
-considerably lower than the micro F1 score.
+poor predictions for smaller classes, then the macro F1 score for the model
+will be considerably lower than the micro F1 score.
 
-The metrics are reported for two different modes of training and evaluation.
-The first is training and evaluating using the full set of classes, and the
-second is to train and evaluate on the collapsed classes.
+The metrics are reported for two different modes: The first utilizing the
+full set of classes, and the second training and evaluating on the collapsed
+classes.
 
 A third option, namely to train on the full set of classes and reduce the
 predictions to the collapsed set of classes, was also attempted, based on the
 assumption that the more fine grained labels in the full set of classes can
-provide useful training signals even though we evaluate on a smaller set.
-However, in practice the best performance on the collapsed tag set was
-empirically observed from the models that were also trained on the collapsed
+provide useful supervision signals even though we evaluate on a smaller set.
+However, in practice the best perforers on the collapsed labels was
+empirically observed to be the models that were also trained on the collapsed
 tags.
 
-\section{Baseline}
+\section{Model descriptions}
+
+Two models.
+
+\subsection{Logistic regression}
+
+The logistic regression model was implemented using the Python
+library Scikit-Learn.
+
+\section{Results}
 
 Two different sets of classes are used in the experiments. The original seven
-CEFR labels, and a collapsed set where the intermediate classes such as
-``A2/B1'' are rounded up to the nearest canonical class. This results in only
-four different labels.
+CEFR labels, and a collapsed set where the intermediate classes, such as
+``A2/B1'', are rounded up to the nearest canonical class, i.e. the CEFR label
+right of the slash. This results in only four different labels: ``A2'',
+``B1'', ``B2'' and ``C1''.
 
-The majority class in the training set is B1. A majority classifier gets an
+The majority class in the training set is ``B1'', whether we consider the
+full class set or the collapsed set. A majority classifier gets an
 accuracy of 18.7\% on the test set using non-collapsed labels. With the
-collapsed labels, the majority class is still B1, and the accuracy on the
-test set is 34.1\%.
+collapsed labels, the accuracy on the test set is 34.1\%. The macro F1
+scores are much lower, as the majority class classifier predicts no
+samples for any other classes.
 
-Moving to a simple bag-of-words model, a logistic regression classifier
-achieves an accuracy of 28.5\% on the dev set without collapsed labels and
-58.5\% with collapsed labels. There are approximately 18,300 different word
-forms in the training set.
+Moving to a linear model, a logistic regression classifier using only
+bag-of-word features achieves an accuracy of 28.5\% on the dev set without
+collapsed labels and 58.5\% with collapsed labels. There are approximately
+18,300 different word forms in the training set, and therefore the same
+number of features in the bag-of-word model.
 
 Several neural network models were attempted as well, with input either being
 word counts, character \ngrams, or part of speech \ngrams. For the \ngram
-features, \textit{n}s in the interval [2, 4] were used, and only the 10,000
-most common features were kept.
+features, \textit{n}s in the interval [2, 4] were used. For all models, only
+the 10,000 most common features were kept, unlike the linear classifier which
+used the full vocabulary in the training set.
 
 All results are seen in table \ref{baseline-accuracies}.
 
@@ -65,7 +87,7 @@ All results are seen in table \ref{baseline-accuracies}.
   \centering
   \begin{tabular}{|l|rr|rr|}
     \toprule
-      & \multicolumn{2}{|l|}{All labels} & \multicolumn{2}{|c|}{Collapsed labels} \\
+      & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
     Model      & Macro F1 & Micro F1 & Macro F1 & Micro F1 \\
     \midrule
     Majority   &    4.0\% &   16.3\% &   12.7\% &   34.1\% \\
@@ -75,7 +97,7 @@ All results are seen in table \ref{baseline-accuracies}.
     MLP POS    &   24.5\% &   39.0\% &   42.8\% &   65.9\% \\
     \bottomrule
   \end{tabular}
-  \caption{Accuracy of different classifiers}
+  \caption{F1 scores of different classifiers}
   \label{baseline-accuracies}
 \end{table}
 
@@ -83,7 +105,3 @@ The part of speech \ngrams performed best overall, having the highest F1 score
 for the full label set, both for macro and micro average. On the collapsed set
 of labels, the part of speech \ngrams had the highest macro F1 score, but were
 beat in micro F1 by the character \ngrams.
-
-A convolutional neural network based on the architecture in
-\textcite{zhang2017sensitivity} achieved an accuracy of 42.3\% using
-sequences of POS tags as input to an initial embedding layer.
