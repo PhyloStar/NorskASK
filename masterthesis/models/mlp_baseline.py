@@ -13,6 +13,7 @@ from masterthesis.features.build_features import bag_of_words, filename_iter
 from masterthesis.utils import load_split, project_root, conll_reader
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
+from masterthesis.results import save_results
 
 
 conll_folder = project_root / 'ASK/conll'
@@ -90,7 +91,8 @@ def main():
 
     with tempfile.NamedTemporaryFile(suffix='.h5') as weights_path:
         callbacks = [F1Metrics(dev_x, dev_y, weights_path.name)]
-        model.fit(train_x, train_y, epochs=20, callbacks=callbacks, validation_data=(dev_x, dev_y))
+        history = model.fit(
+            train_x, train_y, epochs=20, callbacks=callbacks, validation_data=(dev_x, dev_y))
         model.load_weights(weights_path.name)
 
     predictions = model.predict(dev_x)
@@ -98,6 +100,7 @@ def main():
     true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
     report(true, pred, labels)
+    save_results('mlp_baseline', args.dict, history.history, true, pred)
 
 
 if __name__ == '__main__':

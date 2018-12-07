@@ -9,11 +9,10 @@ labels. The text files have one sentence per line, consisting of
 space-separated tokens, and an empty line separating paragraphs.
 
 These raw text files were then sent through the UDPipe pipeline
-\autocite{udpipe:2017} for tagging and dependency parsing. The UDPipe
-project maintains a REST API containing a selection of pretrained models.
-All documents were transformed by the REST API using what was at the time 
-of writing the
-newest Norwegian bokmål (nb) model, available, namely
+\autocite{udpipe:2017} for tagging and dependency parsing. The UDPipe project
+maintains a REST API containing a selection of pretrained models. All
+documents were transformed by the REST API using what was at the time of
+writing the newest Norwegian bokmål (nb) model, available, namely
 \texttt{norwegian-bokmaal-ud-2.3-181115}.
 
 The pipeline accepts raw text files as input, where each sentence is put on a
@@ -52,7 +51,12 @@ Two models.
 \subsection{Logistic regression}
 
 The logistic regression model was implemented using the Python
-library Scikit-Learn.
+library Scikit-Learn \autocite{scikit-learn}.
+
+\subsection{Multi-layer perceptron}
+
+The MLP models were implementing in Keras \autocite{keras} and run on the TensorFlow
+backend \autocite{tensorflow}.
 
 \section{Results}
 
@@ -87,14 +91,14 @@ All results are seen in table \ref{baseline-accuracies}.
   \centering
   \begin{tabular}{|l|rr|rr|}
     \toprule
-      & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
-    Model      & Macro F1 & Micro F1 & Macro F1 & Micro F1 \\
+             & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
+    Model      & Macro F1        & Micro F1        & Macro F1        & Micro F1       \\
     \midrule
-    Majority   &    4.0\% &   16.3\% &   12.7\% &   34.1\% \\
-    LogReg BOW &   17.9\% &   28.5\% &   31.9\% &   58.5\% \\
-    MLP BOW    &   22.1\% &   35.0\% &   41.0\% &   64.2\% \\
-    MLP Char   &   20.3\% &   36.6\% &   36.8\% &   70.7\% \\
-    MLP POS    &   24.5\% &   39.0\% &   42.8\% &   65.9\% \\
+    Majority   &          4.0\%  &         16.3\%  &         12.7\%  &         34.1\% \\
+    LogReg BOW &         17.9\%  &         28.5\%  &         31.9\%  &         58.5\% \\
+    MLP BOW    &         22.1\%  &         35.0\%  &         41.0\%  &         64.2\% \\
+    MLP Char   &         20.3\%  &         36.6\%  &         36.8\%  & \textbf{70.7\%} \\
+    MLP POS    & \textbf{25.4\%} & \textbf{39.0\%} & \textbf{42.5\%} &         69.1\% \\
     \bottomrule
   \end{tabular}
   \caption{F1 scores of different classifiers}
@@ -105,3 +109,40 @@ The part of speech \ngrams performed best overall, having the highest F1 score
 for the full label set, both for macro and micro average. On the collapsed set
 of labels, the part of speech \ngrams had the highest macro F1 score, but were
 beat in micro F1 by the character \ngrams.
+
+Confusion matrices from MLP POS:
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|rrrrrrr|}
+    \toprule
+          & A2 & A2/B1 & B1 & B1/B2 & B2 & B2/C1 & C1 \\
+    \midrule
+    A2    &  0 &     0 &  1 &     0 &  0 &     0 &  0 \\
+    A2/B1 &  0 &     6 & 12 &     2 &  2 &     0 &  0 \\
+    B1    &  0 &     2 & 13 &     3 &  2 &     0 &  0 \\
+    B1/B2 &  0 &     1 & 10 &    11 &  8 &     0 &  0 \\
+    B2    &  0 &     0 & 10 &     9 & 17 &     1 &  0 \\
+    B2/C1 &  0 &     0 &  2 &     2 &  5 &     1 &  0 \\
+    C1    &  0 &     0 &  0 &     1 &  1 &     1 &  0 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Confusion matrix of POS MLP on all labels}
+  \label{confusion-full}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|rrrr|}
+    \toprule
+       & A2 & B1 & B2 & C1 \\
+    \midrule
+    A2 &  0 &  1 &  0 &  0 \\
+    B1 &  0 & 36 &  6 &  0 \\
+    B2 &  0 & 19 & 47 &  1 \\
+    C1 &  0 &  1 & 10 &  2 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Confusion matrix of POS MLP on collapsed labels}
+  \label{confusion-collapsed}
+\end{table}
