@@ -2,7 +2,7 @@
 
 In this essay, I cover some of the background concerning the Native Language
 Identification and Automated assessment tasks, which are well studied in the
-field of natural language processing (NLP). I will examine how these tasks
+field of \ac{NLP}. I will examine how these tasks
 may be addressed simultaneously using multi-task learning and some approaches
 to the separate tasks that have been found useful in previous work. The topic
 of multi-task learning will also be discussed in the essay.
@@ -16,7 +16,7 @@ been used for these tasks previously.
 
 \section{Tasks and machine learning}
 
-Machine learning (ML) is a field that covers a wide range of different
+\ac{ML} is a field that covers a wide range of different
 techniques and algorithms for ``teaching'' computers to perform well at a
 range of tasks. Examples of tasks may be categorizing a document or detecting
 an object in an image. Techniques in machine learning are often categorized
@@ -68,9 +68,9 @@ It is only capable of calculating a weighted sum across a feature vector and
 applying a threshold function. This threshold function is not differentiable,
 and the perceptron is therefore not trained with backpropagation.
 Historically, one of the most used activation functions is the sigmoid
-function: \(s(x) = {(1 + e^{-x})^{-1}}\). Nowadays, one of the most common
-activations is the rectified linear unit (ReLU): \(f(x) = \max(x, 0)\). ReLU
-is, strictly speaking, not differentiable, because of its hinge at $x = 0$.
+function: \(\sigma(x) = {(1 + e^{-x})^{-1}}\). Nowadays, one of the most
+common activations is the \ac{ReLU}: \(f(x) = \max(x, 0)\). \ac{ReLU} is,
+strictly speaking, not differentiable, because of its hinge at $x = 0$.
 Regardless it works well in practice, since almost all pre-activation values
 will be different from zero. The zero case can be treated as a special case,
 to avoid undefined values.
@@ -86,9 +86,9 @@ to avoid undefined values.
 \end{figure}
 
 The ``vanilla'' neural network is the feed-forward network, also known as the
-\emph{multi-layer perceptron} (MLP). This model incorporates one or more
+\ac{MLP}. This model incorporates one or more
 hidden layer in-between the input layer (the feature vector) and the output
-layer. A diagram of an example MLP with two hidden layers can be seen in
+layer. A diagram of an example \ac{MLP} with two hidden layers can be seen in
 figure \ref{mlp-diagram}. For multi-class prediction, the output layer
 typically uses a \emph{softmax} activation. This has the property of
 restricting each output value to be in the interval $(0,1)$, and additionally
@@ -98,43 +98,42 @@ values to be interpreted as a probability distribution.
 
 \subsubsection{Convolutional neural networks}
 
-Convolutional neural networks (CNN) can exploit local patterns in the input,
-unlike the MLP, which has no way to identify elements of the input layer as
-being ``close'' to each other in any sort of measure. CNNs use convolutional
+\acp{CNN} can exploit local patterns in the input,
+unlike the \ac{MLP}, which has no way to identify elements of the input layer as
+being ``close'' to each other in any sort of measure. \acp{CNN} use convolutional
 layers to make these local relationships explicit.
 
-CNNs are widely employed in image processing models, using
+\acp{CNN} are widely employed in image processing models, using
 two-di\-men\-sional convolutional layers. These models can often get very
 deep, using a number of convolutional layers at different levels in the
 network, interspersed with pooling or downsampling layers.
 
-There are also NLP applications where CNNs can be employed. Unlike images,
-data in NLP is usually sequential or one-dimensional, but it may be converted
+There are also \ac{NLP} applications where \acp{CNN} can be employed. Unlike images,
+data in \ac{NLP} is usually sequential or one-dimensional, but it may be converted
 into two dimensions, for example by replacing each word by an embedding
 vector.
 
 
 \subsubsection{Recurrent neural networks}
 
-Recurrent networks (RNN) are suited to sequential data. They make have an
-internal \emph{state} that is passed between time steps. A benefit of RNNs is
+\acp{RNN} are suited to sequential data. They make have an
+internal \emph{state} that is passed between time steps. A benefit of \acp{RNN} is
 that they can accept input of any length and also produce sequential output
 of any length. This in contrast to feed-forward neural networks, which take a
 fixed-length vector as their input.
 
-A long standing problem in training RNNs was that when applying
+A long standing problem in training \acp{RNN} was that when applying
 backpropagation through time, the gradient values can tend toward zero or
 diverge because of multiplication across many time steps. This is known as
 the \emph{vanishing} and \emph{exploding gradients problem}, respectively.
 Mitigation techniques include replacing the units of the network with what's
 known as \emph{gated units}, that are especially designed to address these
-problems. Gated recurrent units (GRU) and Long short-term memory (LSTM) are
-widely used gated units in RNNs.
+problems. \acp{GRU} and \acp{LSTM} are widely used gated units in RNNs.
 
 
 \subsubsection{Natural language features}
 
-For applications of machine learning in NLP, we often want to use the words
+For applications of machine learning in \ac{NLP}, we often want to use the words
 in a document as features. However, the vast number of different words in a
 language can lead to inefficient use of memory and computing power if the
 words are represented naively, for instance with a one-hot vector encoding
@@ -184,10 +183,10 @@ advantage might be the possibility of accessing semantic meaning at a
 sub-word level, including prefixes and suffixes.
 
 For representing a document non-sequentially, a common approach is to use
-continuous bag-of-words (CBOW). This is the sum or average of embedding
-vectors for all active features \autocite[352]{goldberg2016primer}. CBOW thus
-disregards some information, including order and whether features occur close
-to each other in the document.
+\ac{CBOW}. This is the sum or average of embedding vectors for all active
+features \autocite[352]{goldberg2016primer}. \ac{CBOW} thus disregards some
+information, including order and whether features occur close to each other
+in the document.
 
 
 \subsection{Multi-task learning}
@@ -222,11 +221,10 @@ the models for different languages. The model they used for this was a
 hierarchical attention network.
 
 \textcite{alonso17} investigated the effect of different auxiliary tasks and
-combinations of these on a LSTM (Long Short-Term Memory) recurrent network
-for sequence labelling tasks. The main tasks they considered in the study
-were labelling semantic frames, semantic supersenses, named entity
-recognition, ontological types for senses and Multi-Perspective Question
-Answering.
+combinations of these on a \ac{LSTM} recurrent network for sequence labelling
+tasks. The main tasks they considered in the study were labelling semantic
+frames, semantic supersenses, named entity recognition, ontological types for
+senses and Multi-Perspective Question Answering.
 
 They used an auxiliary task called \textsc{FreqBin}, whose objective is to
 predict the log frequency of a word, discretized into a number of bins. This
@@ -241,16 +239,15 @@ with the same number of examples each.
 
 \section{Learner language}
 
-In the linguistic field of second language acquisition (SLA), linguists have
-described characteristics of the language of people who are learning a second
-language. It is common to refer to a person's first language(s), that is the
-language(s) they learned when they first started to speak, as L1, and any
-languages acquired later in life as L2. Since language acquisition is a
-gradual process, we can speak of an \emph{interlanguage}, which is an
-idiolect with systematic rules belonging to the learner in question, but
-which is different from their target language. Interlanguage is not stable,
-but changes as part of a learner's acquisition process
-\autocite[358]{myers-scotton}.
+In the linguistic field of \ac{SLA}, linguists have described characteristics
+of the language of people who are learning a second language. It is common to
+refer to a person's first language(s), that is the language(s) they learned
+when they first started to speak, as L1, and any languages acquired later in
+life as L2. Since language acquisition is a gradual process, we can speak of
+an \emph{interlanguage}, which is an idiolect with systematic rules belonging
+to the learner in question, but which is different from their target
+language. Interlanguage is not stable, but changes as part of a learner's
+acquisition process \autocite[358]{myers-scotton}.
 
 Interlanguage can show influences from the learner's L1 in several respects,
 for instance intonation and produced phonemes in pronunciation, syntactic
@@ -261,17 +258,20 @@ of linguistic \emph{transfer} is an attempt to understand these influences.
 
 \subsection{Automated assessment}
 
-Assessment of proficiency, or automatic essay scoring (AES), has been framed
-as a supervised learning task, using a corpus of learner texts that have each
-been labelled with a proficiency rating. Automating the assessment task can
-benefit applications in language education. People learning a new second
-language will benefit from feedback as to which proficiency level they might
-be on, for instance in relation to the Common European Framework of Reference
-for Languages (the European Framework or CEFR). This may help people who want
-to take language examination to find the appropriate timing and level of
-testing, since an examination can be both an economical and logistical
-inconvenience. Automation also allows students to receive feedback quicker
-and more frequently.
+Assessment of proficiency, or \ac{AES}, considers the task of assigning a
+grade to a free form text, often responding to a specific prompt. The task
+can apply to texts written in either a first or a second language. \ac{AES}
+can be framed as a supervised learning task, using a corpus of texts that
+have each been labelled with a score or a proficiency rating.
+
+Automating the assessment task can benefit applications in language
+education. People learning a new second language will benefit from feedback
+as to which proficiency level they might be on, for instance in relation to
+the \ac{CEFR}. This may help people who want to take language
+examination to find the appropriate timing and level of testing, since an
+examination can be both an economical and logistical inconvenience.
+Automation also allows students to receive feedback quicker and more
+frequently.
 
 Previous work by \textcite{vajjala17} uses the TOEFL11 corpus of non-native
 English \autocite{blanchard13} and the First Certificate of English (FCE)
@@ -279,7 +279,7 @@ corpus \autocite{yannakoudakis2011new}. This study examines which features
 may be most informative in relation to the task, and whether these are the
 same features for different datasets. \citeauthor{vajjala17} uses a number of
 linguistic features for the task, including several different measures for
-the lexical diversity, distribution of part-of-speech (POS) tags, and
+the lexical diversity, distribution of \ac{POS} tags, and
 syntactic complexity. The models in the study utilize up to 116 different
 features. Applied pre-processing includes syntactic parsing of sentences in
 order to extract features from the parse trees. These syntactic features
@@ -298,7 +298,7 @@ cross-linguistically, so features like this are language-specific.
 different pronoun types, determiners and definite noun phrases, and more, in
 a reference chain, along with the average length of a reference chain.
 
-Notably, the author did not use word or POS \ngrams as features in the
+Notably, the author did not use word or \ac{POS} \ngrams as features in the
 study. The reasons given for this is that the sparse nature of \ngram
 features make them hard to interpret, and they can introduce topic bias to
 the model. The essays are written on different topics, making it likely that
@@ -324,17 +324,17 @@ proficiency on TOEFL11, but negatively on the FCE corpus.
 
 \subsection{Native Language Identification}
 
-Native Language Identification (NLI) is the task of predicting the native
-language of an author based on a text written in one of the author's second
-languages (L2). The task is dependent on systematic differences between
-interlanguages for learners with the same target language, but different L1s.
-The feasibility of this task proves intrinsically that these systematic
-differences exist, as linguists studying transfer try to explain.
+\ac{NLI} is the task of predicting the native language of an author based on
+a text written in one of the author's second languages (L2). The task is
+dependent on systematic differences between interlanguages for learners with
+the same target language, but different L1s. The feasibility of this task
+proves intrinsically that these systematic differences exist, as linguists
+studying transfer try to explain.
 
 
 \subsubsection{Shared tasks in NLI}
 
-NLI has been the subject of three shared tasks, in 2013
+\ac{NLI} has been the subject of three shared tasks, in 2013
 \autocite{tetreault2013report}, 2016 \autocite{schuller2016interspeech} and
 2017 \autocite{nli17}. The 2013 shared task used only written documents,
 whereas the 2016 shared task was audio data only. Lastly, the latest shared
@@ -346,16 +346,16 @@ written data only, are considered below.
 The written documents in the task was English L2 essays, written by learners
 with 11 different L1s. The best-performing system in the track using only
 written essays had a macro-averaged F1 score of 0.8818, using stacked
-classifiers combining logistic regression on sentences with a support vector
-machine (SVM) meta-classifier \autocite{cimino17}.
+classifiers combining logistic regression on sentences with a \ac{SVM}
+meta-classifier \autocite{cimino17}.
 
 The best performing team which used neural networks was \textcite{li17}, who
-used a multi-layer perceptron meta-classifier to combine outputs from SVM
+used a multi-layer perceptron meta-classifier to combine outputs from \ac{SVM}
 base classifiers, and reported a F1 score of 0.8654. Another team
-experimented with different neural network architectures, including RNNs and
-a CNN variant known as a deep residual network \autocite{bjerva2017neural}.
+experimented with different neural network architectures, including \acp{RNN} and
+a \ac{CNN} variant known as a deep residual network \autocite{bjerva2017neural}.
 Their best result was with a stacked model, combining their different models
-with an SVM meta-classifier. Their best ensemble model achieved a F1 score of
+with an \ac{SVM} meta-classifier. Their best ensemble model achieved a F1 score of
 0.8323, and used no external resources, i.e. no pre-trained embeddings.
 
 
@@ -363,8 +363,8 @@ with an SVM meta-classifier. Their best ensemble model achieved a F1 score of
 
 While the shared tasks have been English learner language only, there exists
 studies using different corpora with other target languages, among them
-Norwegian. Norwegian NLI has been attempted by \textcite{malmasi15}, using
-the ASK corpus \autocite{tenfjord06}. In their methodology, they create
+Norwegian. Norwegian \ac{NLI} has been attempted by \textcite{malmasi15},
+using the ASK corpus \autocite{tenfjord06}. In their methodology, they create
 artificial documents to train on by segmenting the learner texts into
 sentences, then putting all the sentences from learners with the same L1 into
 a bag and sampling sentences from the bag to create the new documents. Their
@@ -373,16 +373,16 @@ similar length, and that they eliminate the variation between individual
 writers that otherwise might present a stronger signal than the writer's L1
 alone.
 
-In a later study \autocite{malmasi17}, they perform an NLI experiment on
+In a later study \autocite{malmasi17}, they perform an \ac{NLI} experiment on
 several corpora, namely TOEFL11, the Norwegian ASK corpus and the Jinan
 Chinese Learner corpus. However, they were not able to utilize the same
 features for all the different corpora. For Norwegian, they only use the
 features \emph{function word unigrams}, \emph{function word bigrams} and
-\emph{part-of-speech \ngrams}. For the English corpus, they were able to
-use other features such as dependencies and context free grammar-rules. By
-combining a selection of base classifiers using a Linear Discriminant
-Analysis (LDA) meta-classifier trained with bootstrap aggregation (bagging),
-they achieve an accuracy of $0.818$ on the Norwegian corpus.
+\emph{part-of-speech \ngrams}. For the English corpus, they were able to use
+other features such as dependencies and context free grammar-rules. By
+combining a selection of base classifiers using a \ac{LDA} meta-classifier
+trained with bootstrap aggregation (bagging), they achieve an accuracy of
+$0.818$ on the Norwegian corpus.
 
 They reapply the above methodology of generating artificial essays for the
 Norwegian and Chinese corpora. In particular, they mention that this removes
@@ -412,16 +412,16 @@ other target languages as well, including Chinese and Czech.
 \subsubsection{TOEFL11}
 
 The TOEFL11 corpus was presented in 2013 and was specifically designed to be
-suitable for the NLI task \autocite{blanchard13}. The documents are essays
-from the English proficiency test TOEFL, which many take as preparation for
-admission to higher education in English-speaking countries. The corpus
-contains metadata for the writers' L1s and the proficiency level their essay
-was assessed to. The proficiency levels are specific for the corpus and
-correspond to low, medium and high proficiency, without reference to external
-frameworks such as CEFR. The represented language backgrounds are Arabic,
-Chinese, French, German, Hindi, Italian, Japanese, Korean, Spanish, Telugu,
-and Turkish. The datasets for the NLI shared tasks in 2013 and 2017 (the
-written essays) were extracted from TOEFL11.
+suitable for the \ac{NLI} task \autocite{blanchard13}. The documents are
+essays from the English proficiency test TOEFL, which many take as
+preparation for admission to higher education in English-speaking countries.
+The corpus contains metadata for the writers' L1s and the proficiency level
+their essay was assessed to. The proficiency levels are specific for the
+corpus and correspond to low, medium and high proficiency, without reference
+to external frameworks such as \ac{CEFR}. The represented language
+backgrounds are Arabic, Chinese, French, German, Hindi, Italian, Japanese,
+Korean, Spanish, Telugu, and Turkish. The datasets for the \ac{NLI} shared tasks
+in 2013 and 2017 (the written essays) were extracted from TOEFL11.
 
 The corpus contains 1100 essays per L1, in total 12,100 essays. The average
 word count for the essays is 348, so in total the corpus contains more than

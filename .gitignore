@@ -25,6 +25,7 @@ thesis/*.xml
 thesis/*.lof
 thesis/duoforside.tex
 thesis/*.lot
+thesis/*.out
 thesis/*.bcf
 thesis/*.toc
 thesis/*.bbl
