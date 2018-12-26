@@ -46,17 +46,39 @@ tags.
 
 \section{Model descriptions}
 
-Two models.
+Initial experiments were run using logistic regression, which is a linear
+classification method, and \acp{MLP}, which are simple neural networks.
 
 \subsection{Logistic regression}
 
-The logistic regression model was implemented using the Python
-library Scikit-Learn \autocite{scikit-learn}.
+The logistic regression model was implemented using the Python library
+Scikit-Learn \autocite{scikit-learn}. The model was instantiated with the
+`lgbfs' solver and with multinomial as the multiclass method, and otherwise
+used the default values for parameters.
+
+This model used word count vectors as features. All tokens in the training set
+were included.
 
 \subsection{Multi-layer perceptron}
 
-The MLP models were implementing in Keras \autocite{keras} and run on the TensorFlow
-backend \autocite{tensorflow}.
+The MLP models were implementing in Keras \autocite{keras} and run on the
+TensorFlow backend \autocite{tensorflow}. The models all have an input layer
+with 10,000 dimensions, then two fully connected layers of size 256. The
+fully connected layers use \ac{ReLU} activation and dropout regularization
+with a dropout rate of 50\%. At the end, there is an output layer with
+softmax activation and 7 or 4 dimensions, depending on whether we run with
+collapsed labels or not.
+
+The model was trained using the Adam optimization algorithm to minimize the
+categorical cross-entropy loss. The learning rate was set to $2\cdot
+10^{-4}$.
+
+The neural network models were used with three different input features. For
+word count vectors, the input is identical as for the logistic regression,
+except that the number of features is limited to the 10,000 most common. 
+The model was only used with \ac{POS} and character \ngrams. Here, all 
+\textit{n}s in the interval [2, 4] were extracted, and only the 10,000 most
+common of them kept.
 
 \section{Results}
 
@@ -66,24 +88,18 @@ CEFR labels, and a collapsed set where the intermediate classes, such as
 right of the slash. This results in only four different labels: ``A2'',
 ``B1'', ``B2'' and ``C1''.
 
-The majority class in the training set is ``B1'', whether we consider the
-full class set or the collapsed set. A majority classifier gets an
-accuracy of 18.7\% on the test set using non-collapsed labels. With the
-collapsed labels, the accuracy on the test set is 34.1\%. The macro F1
-scores are much lower, as the majority class classifier predicts no
-samples for any other classes.
+As a dumb baseline, we consider the majority class classifier. The majority
+class in the training set is ``B1'', whether we consider the full class set
+or the collapsed set. A majority classifier gets an accuracy of 18.7\% on the
+test set using non-collapsed labels. With the collapsed labels, the accuracy
+on the test set is 34.1\%. The macro F1 scores are much lower, as the
+majority class classifier predicts no samples for any other classes.
 
 Moving to a linear model, a logistic regression classifier using only
 bag-of-word features achieves an accuracy of 28.5\% on the dev set without
 collapsed labels and 58.5\% with collapsed labels. There are approximately
 18,300 different word forms in the training set, and therefore the same
 number of features in the bag-of-word model.
-
-Several neural network models were attempted as well, with input either being
-word counts, character \ngrams, or part of speech \ngrams. For the \ngram
-features, \textit{n}s in the interval [2, 4] were used. For all models, only
-the 10,000 most common features were kept, unlike the linear classifier which
-used the full vocabulary in the training set.
 
 All results are seen in table \ref{baseline-accuracies}.
 
