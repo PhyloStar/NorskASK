@@ -109,7 +109,7 @@ def main():
         else:
             num_tokens = 0
             output_file = str(output_dir / input_file.stem) + '.txt'
-            with open(output_file, 'w') as outfile:
+            with open(output_file, 'w', encoding='utf-8') as outfile:
                 body = text.find('body')
 
                 head = body.find('.//head')

@@ -22,7 +22,7 @@ def iterate_docs(split: str = 'train') -> Iterable[Iterable[str]]:
     meta = load_split(split)
     for filename in meta.filename:
         path = (data_folder / 'txt' / filename).with_suffix('.txt')
-        with path.open() as stream:
+        with path.open(encoding='utf-8') as stream:
             yield _inner_iter(stream)
 
 

@@ -45,7 +45,7 @@ def main():
     print('Computing fingerprints of all documents ...')
     for filename in meta.filename:
         infile = txt_folder / Path(filename).with_suffix('.txt')
-        with open(str(infile)) as f:
+        with open(str(infile), encoding='utf-8') as f:
             fingerprints.append(fingerprint(wv, document_iterator(f)))
     fingerprints_matrix = np.stack(fingerprints)
 
