@@ -1,0 +1,34 @@
+\section{Sequence based models}
+
+Models that take the ordering of tokens into account.
+This includes \acp{CNN} and \acp{RNN}.
+
+\subsection{LSTM}
+
+Based on \textcite{taghipour16}.
+
+Differences:
+
+\begin{enumerate}
+    \item \citeauthor{taghipour16} modelled the task as a regression problem,
+        and their output layer consisted of a single node with a value constrained
+        to (0, 1) by the sigmoid function. This layer was replaced with a softmax
+        layer similar to the \acp{MLP} in section \ref{subsec:mlp}.
+    \item Loss function is now categorical cross-entropy
+    \item Evaluation is done like wow
+\end{enumerate}
+
+Results are ok.
+
+Collapsed:
+Macro F1: 0.424
+Micro F1: 0.797
+
+The accuracy is higher than any of the bag-of-word-based methods. However, the
+Macro F1 shows no significant improvement. An examination of the predictons
+reveals that the model focuses on fewer classes, and more classes are left
+without any predicted documents. The Macro F1 metric gives the same weight to
+all classes, and therefore the classes without predictions has a clear
+negative effect on the score.
+
+
