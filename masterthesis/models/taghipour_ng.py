@@ -1,4 +1,5 @@
 import argparse
+import os
 import tempfile
 from collections import Counter
 
@@ -86,11 +87,14 @@ def main():
         loss='categorical_crossentropy',
         metrics=['accuracy'])
 
-    with tempfile.NamedTemporaryFile(suffix='.h5') as weights_path:
-        callbacks = [F1Metrics(dev_x, dev_y, weights_path.name)]
-        history = model.fit(
-            train_x, train_y, epochs=20, callbacks=callbacks, validation_data=(dev_x, dev_y))
-        model.load_weights(weights_path.name)
+    # Context manager fails on Windows (can't open an open file again)
+    temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
+    callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
+    history = model.fit(
+        train_x, train_y, epochs=20, callbacks=callbacks, validation_data=(dev_x, dev_y))
+    model.load_weights(weights_path)
+    os.close(temp_handle)
+    os.remove(weights_path)
 
     predictions = model.predict(dev_x)
 
