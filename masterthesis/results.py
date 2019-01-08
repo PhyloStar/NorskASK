@@ -24,8 +24,13 @@ def save_results(script_name: str,
                  true,
                  predictions):
     timestamp = dt.datetime.utcnow().strftime('%Y-%m-%d_%H-%M-%S')
-    result = subprocess.run(GIT_CMD, stdout=subprocess.PIPE)
-    git_rev = result.stdout.decode().strip()
+    try:
+        result = subprocess.run(GIT_CMD, stdout=subprocess.PIPE)
+        git_rev = result.stdout.decode().strip()
+    except FileNotFoundError:
+        print('ERROR: Could not execute Git')
+        git_rev = 'unknown'
+
     if not RESULTS_DIR.is_dir():
         RESULTS_DIR.mkdir()
 

@@ -11,7 +11,7 @@ def _collapse_array(arr):
     return [(s + 1) // 2 for s in arr]
 
 
-def report(true, pred, labels):
+def report(true, pred, labels, ax=None):
     print(classification_report(true, pred, target_names=labels))
     print('Macro F1: %.3f' % f1_score(true, pred, average='macro'))
     print('Micro F1: %.3f' % f1_score(true, pred, average='micro'))
@@ -20,5 +20,5 @@ def report(true, pred, labels):
     conf_matrix = confusion_matrix(true, pred)
     print(conf_matrix)
 
-    heatmap(conf_matrix, labels, labels)
+    heatmap(conf_matrix, labels, labels, ax=ax)
     plt.show()
