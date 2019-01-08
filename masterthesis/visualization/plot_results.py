@@ -6,6 +6,13 @@ from masterthesis.models.report import report
 from masterthesis.results import Results  # noqa: F401
 
 
+def print_config(config):
+    col_width = max(len(k) for k in config.keys())
+    fmt = '{:%d} {}' % col_width
+    for key, val in config.items():
+        print(fmt.format(key, val))
+
+
 def main():
     results_path = sys.argv[1]
 
@@ -14,6 +21,8 @@ def main():
     history = results.history
     true = results.true
     pred = results.predictions
+
+    print_config(results.config)
 
     fig, (ax1, ax2) = plt.subplots(1, 2)
 

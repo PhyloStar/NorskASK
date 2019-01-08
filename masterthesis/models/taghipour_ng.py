@@ -101,7 +101,7 @@ def main():
     true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
     report(true, pred, labels)
-    save_results('mlp_baseline', args.__dict__, history.history, true, pred)
+    save_results('taghipour_ng', args.__dict__, history.history, true, pred)
 
 
 if __name__ == '__main__':
