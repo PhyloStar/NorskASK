@@ -89,7 +89,8 @@ def main():
     train_y = to_categorical([labels.index(c) for c in train_meta.cefr])
     dev_y = to_categorical([labels.index(c) for c in dev_meta.cefr])
 
-    model = build_model(vocab_size, SEQ_LEN, len(labels))
+    model = build_model(
+        vocab_size, SEQ_LEN, len(labels), args.embed_dim, args.rnn_dim, args.dropout_rate)
     model.summary()
     model.compile(
         optimizer=RMSprop(lr=args.lr, rho=args.decay_rate),
