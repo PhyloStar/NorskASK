@@ -6,7 +6,7 @@ from collections import Counter
 import numpy as np
 from keras.layers import Input, Dense, Embedding, LSTM, GlobalAveragePooling1D, Dropout
 from keras.models import Model
-from keras.optimizers import RMSProp
+from keras.optimizers import RMSprop
 from keras.utils import to_categorical
 
 from masterthesis.features.build_features import iterate_tokens, iterate_docs
@@ -92,7 +92,7 @@ def main():
     model = build_model(vocab_size, SEQ_LEN, len(labels))
     model.summary()
     model.compile(
-        optimizer=RMSProp(lr=args.lr, rho=args.decay_rate),
+        optimizer=RMSprop(lr=args.lr, rho=args.decay_rate),
         loss='categorical_crossentropy',
         metrics=['accuracy'])
 
