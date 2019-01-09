@@ -4,9 +4,9 @@ import tempfile
 from collections import Counter
 
 import numpy as np
-from keras.layers import Input, Dense, Embedding, LSTM, GlobalAveragePooling1D
+from keras.layers import Input, Dense, Embedding, LSTM, GlobalAveragePooling1D, Dropout
 from keras.models import Model
-from keras.optimizers import Adam
+from keras.optimizers import RMSProp
 from keras.utils import to_categorical
 
 from masterthesis.features.build_features import iterate_tokens, iterate_docs
@@ -24,16 +24,25 @@ SEQ_LEN = 700  # 95th percentile of documents
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--round-cefr', action='store_true')
-    parser.add_argument('--lr', type=float, default=2e-4)
+    parser.add_argument('--vocab-size', type=int, default=4000)
+    parser.add_argument('--batch-size', type=int, default=32)
+    parser.add_argument('--embed-dim', type=int, default=50)
+    parser.add_argument('--rnn-dim', type=int, default=300)
+    parser.add_argument('--epochs', type=int, default=50)
+    parser.add_argument('--decay-rate', type=float, default=0.9)
+    parser.add_argument('--lr', type=float, default=1e-3)
+    parser.add_argument('--dropout-rate', type=float, default=0.5)
     return parser.parse_args()
 
 
-def build_model(vocab_size: int, sequence_len: int, num_classes: int):
+def build_model(vocab_size: int, sequence_len: int, num_classes: int,
+                embed_dim: int, rnn_dim: int, dropout_rate: float):
     input_ = Input((sequence_len,))
-    lookup = Embedding(vocab_size, 50)(input_)
-    lstm = LSTM(200, return_sequences=True)(lookup)
+    lookup = Embedding(vocab_size, embed_dim)(input_)
+    lstm = LSTM(rnn_dim, return_sequences=True)(lookup)
     mean_over_time = GlobalAveragePooling1D()(lstm)
-    output = Dense(num_classes, activation='softmax')(mean_over_time)
+    dropout = Dropout(dropout_rate)(mean_over_time)
+    output = Dense(num_classes, activation='softmax')(dropout)
     return Model(inputs=[input_], outputs=[output])
 
 
@@ -71,7 +80,7 @@ def main():
     train_meta = load_split('train', round_cefr=args.round_cefr)
     dev_meta = load_split('dev', round_cefr=args.round_cefr)
 
-    vocab_size = 1000
+    vocab_size = args.vocab_size
     w2i = make_w2i(vocab_size)
     train_x, dev_x = preprocess(SEQ_LEN, train_meta, dev_meta, w2i)
 
@@ -83,7 +92,7 @@ def main():
     model = build_model(vocab_size, SEQ_LEN, len(labels))
     model.summary()
     model.compile(
-        optimizer=Adam(lr=args.lr),
+        optimizer=RMSProp(lr=args.lr, rho=args.decay_rate),
         loss='categorical_crossentropy',
         metrics=['accuracy'])
 
@@ -91,7 +100,8 @@ def main():
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
     callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
     history = model.fit(
-        train_x, train_y, epochs=20, callbacks=callbacks, validation_data=(dev_x, dev_y))
+        train_x, train_y, epochs=args.epochs, batch_size=args.batch_size,
+        callbacks=callbacks, validation_data=(dev_x, dev_y))
     model.load_weights(weights_path)
     os.close(temp_handle)
     os.remove(weights_path)

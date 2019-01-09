@@ -24,22 +24,22 @@ def main():
 
     print_config(results.config)
 
-    fig, (ax1, ax2) = plt.subplots(1, 2)
+    fig, axes = plt.subplots(2, 2)
 
-    ax1b = ax1.twinx()
-    lines = [
-        ax1.plot(history['loss'], 'b-', label='training loss'),
-        ax1.plot(history['val_loss'], 'r-', label='validation loss'),
-        ax1b.plot(history['acc'], 'c--', label='training accuracy'),
-        ax1b.plot(history['val_acc'], 'm--', label='validation accuracy')
-    ]
-    lines = [line for l in lines for line in l]  # Flatten
-    labels = [l.get_label() for l in lines]
-    ax1.legend(lines, labels)
+    ax1 = plt.subplot(223)
+    ax1.plot(history['loss'], label='training loss'),
+    ax1.plot(history['val_loss'], label='validation loss'),
+    ax1.legend()
     ax1.set(xlabel='Epoch', ylabel='Loss')
-    ax1b.set(ylabel='Accuracy')
 
-    report(true, pred, list('1234567'), ax=ax2)
+    ax2 = plt.subplot(221, sharex=ax1)
+    ax2.plot(history['acc'], label='training accuracy'),
+    ax2.plot(history['val_acc'], label='validation accuracy')
+    ax2.legend()
+    ax2.set(ylabel='Accuracy')
+
+    ax3 = plt.subplot(122)
+    report(true, pred, list('1234567'), ax=ax3)
 
 
 if __name__ == '__main__':
