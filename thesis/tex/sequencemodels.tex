@@ -1,3 +1,5 @@
+\chapter{Further experiments}
+
 \section{Sequence based models}
 
 Models that take the ordering of tokens into account.
@@ -14,8 +16,11 @@ Differences:
         and their output layer consisted of a single node with a value constrained
         to (0, 1) by the sigmoid function. This layer was replaced with a softmax
         layer similar to the \acp{MLP} in section \ref{subsec:mlp}.
-    \item Loss function is now categorical cross-entropy
-    \item Evaluation is done like wow
+    \item The loss function needed to be compatible with a multi-class softmax
+        output. We used categorical cross-entropy.
+    \item A different evaluation metric was needed because we are treating the task
+        as multi-class evaluation. The \ac{QWK} metric is not applicable to
+        the predictions of our classifier.
 \end{enumerate}
 
 Results are ok.
@@ -24,9 +29,9 @@ Full:
 Macro F1: 0.267
 Micro F1: 0.463
 
-Collapsed: (pre-hyperparameters)
-Macro F1: 0.424
-Micro F1: 0.797
+Collapsed:
+Macro F1: 0.496
+Micro F1: 0.724
 
 The accuracy is higher than any of the bag-of-word-based methods. However, the
 Macro F1 shows no significant improvement. An examination of the predictons

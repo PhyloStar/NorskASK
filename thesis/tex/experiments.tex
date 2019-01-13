@@ -1,7 +1,14 @@
+\chapter{Preliminary experiments}
+
+We will first perform some experiments using some simple models. These will
+both serve as demonstrations that learning is feasible, and as baselines
+to which we will compare results using more complex models. In addition,
+we are comparing the performance of different kinds of input. We use both
+tokens, character \ngrams and \ac{POS} \ngrams as inputs.
 
 \section{Preprocessing}
 
-The data files in the ASK corpus are in XML format, and contain information
+The data files in the ASK corpus are in \ac{XML} format, and contain information
 about tags, mistakes and corrections, paragraphs, sentences and more. These
 files were transformed into several other formats during the process. First,
 they were converted to plain text files, stripped of all tags or correction
@@ -10,15 +17,15 @@ space-separated tokens, and an empty line separating paragraphs.
 
 These raw text files were then sent through the UDPipe pipeline
 \autocite{udpipe:2017} for tagging and dependency parsing. The UDPipe project
-maintains a REST API containing a selection of pretrained models. All
-documents were transformed by the REST API using what was at the time of
+maintains a \ac{REST} \ac{API} containing a selection of pretrained models. All
+documents were transformed by the \ac{REST} \ac{API} using what was at the time of
 writing the newest Norwegian bokmål (nb) model, available, namely
 \texttt{norwegian-bokmaal-ud-2.3-181115}.
 
 The pipeline accepts raw text files as input, where each sentence is put on a
 separate line. The output from UDPipe is in the CoNLL file format, with a
 single token per line. UDPipe tags the documents using the UD tagset, while
-the original tags in the XML documents are from the Oslo-Bergen tagger's own
+the original tags in the \ac{XML} documents are from the Oslo-Bergen tagger's own
 tagset.
 
 \section{Metrics}
