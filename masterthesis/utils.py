@@ -12,7 +12,8 @@ from typing import TextIO, Iterable, Tuple, Union, Sequence, Optional, List
 import pandas as pd
 import numpy as np
 import matplotlib
-if os.name == 'posix' and 'DISPLAY' not in os.environ:  # noqa: E402
+if 'SLURM_JOB_NODELIST' in os.environ or \
+        (os.name == 'posix' and 'DISPLAY' not in os.environ):  # noqa: E402
     matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
