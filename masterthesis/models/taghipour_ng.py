@@ -4,7 +4,7 @@ import tempfile
 from collections import Counter
 
 import numpy as np
-from keras.layers import Input, Dense, Embedding, LSTM, GlobalAveragePooling1D, Dropout
+from keras.layers import Input, Dense, Embedding, LSTM, Dropout
 from keras.models import Model
 from keras.optimizers import RMSprop
 from keras.utils import to_categorical
@@ -13,6 +13,7 @@ from masterthesis.features.build_features import iterate_tokens, iterate_docs
 from masterthesis.utils import load_split, project_root
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
+from masterthesis.models.layers import GlobalAveragePooling1D
 from masterthesis.results import save_results
 
 
@@ -38,7 +39,7 @@ def parse_args():
 def build_model(vocab_size: int, sequence_len: int, num_classes: int,
                 embed_dim: int, rnn_dim: int, dropout_rate: float):
     input_ = Input((sequence_len,))
-    lookup = Embedding(vocab_size, embed_dim)(input_)
+    lookup = Embedding(vocab_size, embed_dim, mask_zero=True)(input_)
     lstm = LSTM(rnn_dim, return_sequences=True)(lookup)
     mean_over_time = GlobalAveragePooling1D()(lstm)
     dropout = Dropout(dropout_rate)(mean_over_time)
