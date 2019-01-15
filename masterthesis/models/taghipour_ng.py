@@ -106,7 +106,8 @@ def main():
     callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
     history = model.fit(
         train_x, train_y, epochs=args.epochs, batch_size=args.batch_size,
-        callbacks=callbacks, validation_data=(dev_x, dev_y))
+        callbacks=callbacks, validation_data=(dev_x, dev_y),
+        verbose=2)
     model.load_weights(weights_path)
     os.close(temp_handle)
     os.remove(weights_path)
