@@ -2,14 +2,15 @@
 
 \section{Sequence based models}
 
-Models that take the ordering of tokens into account.
-This includes \acp{CNN} and \acp{RNN}.
+Next, we will implement models which take the ordering of tokens into account.
+This includes \acp{CNN} and \acp{RNN}. 
 
 \subsection{LSTM}
 
-Based on \textcite{taghipour16}.
+A \ac{LSTM} \ac{RNN} was implemented based on the architecture described
+by \textcite{taghipour16}.
 
-Differences:
+Differences between the task set ups include the following:
 
 \begin{enumerate}
     \item \citeauthor{taghipour16} modelled the task as a regression problem,
@@ -18,26 +19,28 @@ Differences:
         layer similar to the \acp{MLP} in section \ref{subsec:mlp}.
     \item The loss function needed to be compatible with a multi-class softmax
         output. We used categorical cross-entropy.
+    \item Unlike our corpus, ASK, \citeauthor{taghipour16} used essays that were
+        not necessarily written in a second language.
+    \item Our data is not split into different parts based on the prompt. There
+        are two different test levels in ASK, though.
     \item A different evaluation metric was needed because we are treating the task
         as multi-class evaluation. The \ac{QWK} metric is not applicable to
         the predictions of our classifier.
 \end{enumerate}
 
-Results are ok.
+Results using the same hyperparameters as \citeauthor{taghipour16} are shown
+in table \ref{lstm-results}.
 
-Full:
-Macro F1: 0.267
-Micro F1: 0.463
-
-Collapsed:
-Macro F1: 0.496
-Micro F1: 0.724
-
-The accuracy is higher than any of the bag-of-word-based methods. However, the
-Macro F1 shows no significant improvement. An examination of the predictons
-reveals that the model focuses on fewer classes, and more classes are left
-without any predicted documents. The Macro F1 metric gives the same weight to
-all classes, and therefore the classes without predictions has a clear
-negative effect on the score.
-
-
+\begin{table}
+  \centering
+  \begin{tabular}{|l|rr|rr|}
+    \toprule
+             & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
+    Model      & Macro F1        & Micro F1        & Macro F1        & Micro F1       \\
+    \midrule
+    Majority   &         26.7\%  &         46.3\%  &         49.6\%  &         72.4\% \\
+    \bottomrule
+  \end{tabular}
+  \caption{F1 scores of LSTM classifiers}
+  \label{lstm-results}
+\end{table}

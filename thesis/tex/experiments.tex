@@ -6,6 +6,7 @@ to which we will compare results using more complex models. In addition,
 we are comparing the performance of different kinds of input. We use both
 tokens, character \ngrams and \ac{POS} \ngrams as inputs.
 
+
 \section{Preprocessing}
 
 The data files in the ASK corpus are in \ac{XML} format, and contain information
@@ -27,6 +28,7 @@ separate line. The output from UDPipe is in the CoNLL file format, with a
 single token per line. UDPipe tags the documents using the UD tagset, while
 the original tags in the \ac{XML} documents are from the Oslo-Bergen tagger's own
 tagset.
+
 
 \section{Metrics}
 
@@ -51,10 +53,12 @@ However, in practice the best perforers on the collapsed labels was
 empirically observed to be the models that were also trained on the collapsed
 tags.
 
+
 \section{Model descriptions}
 
 Initial experiments were run using logistic regression, which is a linear
 classification method, and \acp{MLP}, which are simple neural networks.
+
 
 \subsection{Logistic regression}
 
@@ -65,6 +69,7 @@ used the default values for parameters.
 
 This model used word count vectors as features. All tokens in the training set
 were included.
+
 
 \subsection{Multi-layer perceptron}
 \label{subsec:mlp}
@@ -87,6 +92,15 @@ except that the number of features is limited to the 10,000 most common.
 The model was only used with \ac{POS} and character \ngrams. Here, all 
 \textit{n}s in the interval [2, 4] were extracted, and only the 10,000 most
 common of them kept.
+
+The new \ngram features add a certain sensitivity to local order of features.
+Many character \ngrams will represent entities smaller than a word, but may
+indicate common spelling errors. \ac{POS} \ngrams, on the other hand, might
+be able to represent syntactic features. Spelling and syntax should be
+correlated with L2 proficiency, and traditional \ac{ML} methods that rely on
+manual feature engineering have included domain specific features designed to
+capture spelling and syntax, as for instance in \textcite{vajjala17}.
+
 
 \section{Results}
 
@@ -171,10 +185,7 @@ Confusion matrices from MLP POS:
   \label{confusion-collapsed}
 \end{table}
 
-begrepet AES: L1 vs L2
-
 Taghipour and Ng:
 brukte de CNN foran LSTM eller ikke?
 ulike numeriske karakterskalaer
 evalueringer separert basert på prompt
-regresjon
