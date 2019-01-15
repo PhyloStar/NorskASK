@@ -20,6 +20,8 @@ from masterthesis.results import save_results
 conll_folder = project_root / 'ASK/conll'
 
 SEQ_LEN = 700  # 95th percentile of documents
+INPUT_DROPOUT = 0.5
+RECURRENT_DROPOUT = 0.1
 
 
 def parse_args():
@@ -40,10 +42,11 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: int,
                 embed_dim: int, rnn_dim: int, dropout_rate: float):
     input_ = Input((sequence_len,))
     lookup = Embedding(vocab_size, embed_dim, mask_zero=True)(input_)
-    lstm = LSTM(rnn_dim, return_sequences=True)(lookup)
-    mean_over_time = GlobalAveragePooling1D()(lstm)
-    dropout = Dropout(dropout_rate)(mean_over_time)
-    output = Dense(num_classes, activation='softmax')(dropout)
+    lstm = LSTM(rnn_dim, return_sequences=True, dropout=INPUT_DROPOUT,
+                recurrent_dropout=RECURRENT_DROPOUT)(lookup)
+    dropout = Dropout(dropout_rate)(lstm)
+    mean_over_time = GlobalAveragePooling1D()(dropout)
+    output = Dense(num_classes, activation='softmax')(mean_over_time)
     return Model(inputs=[input_], outputs=[output])
 
 
