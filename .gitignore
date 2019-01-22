@@ -1,14 +1,15 @@
 .mypy_cache/
 .pytest_cache/
 .ipynb_checkpoints/
-venv/
-results/
+/venv/
+/results/
+/slurm_logs/
 
-ASK/conll/
-ASK/conll-2-0/
-ASK/txt/
-ASK/xml/
-**/__pycache__/
+/ASK/conll/
+/ASK/conll-2-0/
+/ASK/txt/
+/ASK/xml/
+__pycache__/
 *.pyc
 *.gz
 parameters.bin
