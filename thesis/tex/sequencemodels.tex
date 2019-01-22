@@ -28,20 +28,44 @@ Differences between the task set ups include the following:
         the predictions of our classifier.
 \end{enumerate}
 
-Results using the same hyperparameters as \citeauthor{taghipour16} are shown
-in table \ref{lstm-results}.
+\subsection{Variants}
+
+We attempt two different methods of combining the sequence of hidden states
+from the \ac{LSTM} into a feature vector. The simplest approach is \emph{mean
+over time}, where we use the elementwise average of elements in hidden states
+as our feature vector.
+
+The attention model uses an attention layer, which instead computes a
+weighted sum of the states. In order to find the weight to apply to each
+state, a single-layer neural network computes a value between -1 and 1 for
+each timestep. These values are normalized by a softmax layer and then used
+to compute the weighted average. The neural network is trained along with the
+rest of the network.
+
+\subsection{Results}
+
+Results for four different models are shown in table \ref{lstm-results}. All
+but \emph{Modified} are using the same hyperparameters as
+\citeauthor{taghipour16}. The \emph{Attention} model does not use masking,
+while \emph{Mean/Time} and \emph{BiLSTM} do.
 
 \begin{table}
   \centering
   \begin{tabular}{|l|rr|rr|}
     \toprule
-             & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
-    Model      & Macro F1        & Micro F1        & Macro F1        & Micro F1        \\
+            & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
+    Model     & Macro F1        & Micro F1        & Macro F1        & Micro F1        \\
     \midrule
-    Simple TM  &         26.7\%  & \textbf{46.3\%} & \textbf{49.6\%} & \textbf{72.4\%} \\
-    Hyper TM   & \textbf{28.0\%} &         38.2\%  &         46.1\%  &         69.9\%  \\
+    Modified  &         26.7\%  & \textbf{46.3\%} &         49.6\%  &         72.4\%  \\
+    Mean/Time &         28.0\%  &         38.2\%  &         46.1\%  &         69.9\%  \\
+    BiLSTM    &         28.6\%  &         39.8\%  &         48.5\%  &         68.3\%  \\
+    Attention & \textbf{29.2\%} &         40.7\%  & \textbf{54.7\%} & \textbf{75.6\%} \\
     \bottomrule
   \end{tabular}
   \caption{F1 scores of LSTM classifiers}
   \label{lstm-results}
 \end{table}
+
+The attention model performs best. While the modified model has the highest
+micro F1, the stopping criterion is based on the Macro F1, and the micro
+F1 scores are not necessarily comparable.

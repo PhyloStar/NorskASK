@@ -21,6 +21,9 @@ safe_plt = plt
 
 conll_cols = ['ID', 'FORM', 'LEMMA', 'UPOS', 'XPOS', 'FEATS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']
 
+CEFR_LABELS = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
+ROUND_CEFR_LABELS = CEFR_LABELS[::2]
+
 iso639_3 = dict(
     engelsk='eng',
     polsk='pol',
