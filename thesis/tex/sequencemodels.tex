@@ -36,9 +36,10 @@ in table \ref{lstm-results}.
   \begin{tabular}{|l|rr|rr|}
     \toprule
              & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
-    Model      & Macro F1        & Micro F1        & Macro F1        & Micro F1       \\
+    Model      & Macro F1        & Micro F1        & Macro F1        & Micro F1        \\
     \midrule
-    Majority   &         26.7\%  &         46.3\%  &         49.6\%  &         72.4\% \\
+    Simple TM  &         26.7\%  & \textbf{46.3\%} & \textbf{49.6\%} & \textbf{72.4\%} \\
+    Hyper TM   & \textbf{28.0\%} &         38.2\%  &         46.1\%  &         69.9\%  \\
     \bottomrule
   \end{tabular}
   \caption{F1 scores of LSTM classifiers}
