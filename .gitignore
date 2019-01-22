@@ -13,6 +13,8 @@ __pycache__/
 *.pyc
 *.gz
 parameters.bin
+/*.pkl
+/*.out
 
 thesis/duo*.sty
 thesis/*.log
