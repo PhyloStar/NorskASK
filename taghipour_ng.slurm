@@ -14,12 +14,11 @@
 if [ -n "${SLURM_JOB_NODELIST}" ]; then
     source /cluster/bin/jobsetup
 
-    cp -vr $SUBMITDIR/masterthesis $SCRATCH
+    cp -r $SUBMITDIR/masterthesis $SCRATCH
     mkdir $SCRATCH/ASK
-    cp -v $SUBMITDIR/ASK/metadata.csv $SCRATCH/ASK/metadata.csv
-    cp -vr $SUBMITDIR/ASK/txt $SCRATCH/ASK
+    cp $SUBMITDIR/ASK/metadata.csv $SCRATCH/ASK/metadata.csv
+    cp -r $SUBMITDIR/ASK/txt $SCRATCH/ASK
 
-    echo $SUBMITDIR
     cd $SCRATCH
 fi
 set +o errexit
