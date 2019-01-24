@@ -1,46 +1,62 @@
-\chapter{Further experiments}
-
-\section{Sequence based models}
+\chapter{Sequence based models}
 
 Next, we will implement models which take the ordering of tokens into account.
 This includes \acp{CNN} and \acp{RNN}. 
 
-\subsection{LSTM}
+\section{Convolutional neural networks}
 
-A \ac{LSTM} \ac{RNN} was implemented based on the architecture described
-by \textcite{taghipour16}.
+To be written.
 
-Differences between the task set ups include the following:
+\section{Recurrent neural networks}
 
-\begin{enumerate}
-    \item \citeauthor{taghipour16} modelled the task as a regression problem,
-        and their output layer consisted of a single node with a value constrained
-        to (0, 1) by the sigmoid function. This layer was replaced with a softmax
-        layer similar to the \acp{MLP} in section \ref{subsec:mlp}.
-    \item The loss function needed to be compatible with a multi-class softmax
-        output. We used categorical cross-entropy.
-    \item Unlike our corpus, ASK, \citeauthor{taghipour16} used essays that were
-        not necessarily written in a second language.
-    \item Our data is not split into different parts based on the prompt. There
-        are two different test levels in ASK, though.
-    \item A different evaluation metric was needed because we are treating the task
-        as multi-class evaluation. The \ac{QWK} metric is not applicable to
-        the predictions of our classifier.
-\end{enumerate}
+A \ac{LSTM} \ac{RNN} was implemented based on the architecture described by
+\textcite{taghipour16}. Several changes to their architecture were made in
+order to accomodate our data. For instance, \citeauthor{taghipour16} modelled
+the task as a regression problem, their output layer consisting of a single
+node with a value constrained to (0, 1) by the sigmoid function. This layer
+was replaced with a softmax layer similar to the \acp{MLP} in section
+\ref{subsec:mlp}. The loss function needed to be compatible with a
+multi-class softmax output. We used categorical cross-entropy. A different
+evaluation metric was also needed because we are treating the task as
+multi-class prediction. We are reporting macro and micro F1 as before. The
+\ac{QWK} metric used by \citeauthor{taghipour16} is not applicable to the
+predictions of our classifier.
+
+The embedding layer in \textcite{taghipour16} was initialized with
+pre-trained embeddings of size 50. Our embedding layer was initialized to
+random vectors and trained as part of the network.
+
+Unlike our corpus, ASK, the dataset used by \citeauthor{taghipour16}
+contained essays that were not necessarily written in a second language. Our
+data is not split into different parts based on the prompt. There are two
+different test levels in ASK, but these are not distinguished in training.
+
 
 \subsection{Variants}
 
 We attempt two different methods of combining the sequence of hidden states
 from the \ac{LSTM} into a feature vector. The simplest approach is \emph{mean
 over time}, where we use the elementwise average of elements in hidden states
-as our feature vector.
+across the time dimension as our feature vector. The mean over time layer is
+used in two of the experiments. Once with a \ac{LSTM} processing the essay
+from top to bottom, and once on top of a bidirectional LSTM (BiLSTM). In the
+BiLSTM, the output from the \ac{RNN} on each timestep is the concatenation of
+the states of two \acp{LSTM}, one processing the document from the top and
+the other one from the bottom up.
 
 The attention model uses an attention layer, which instead computes a
-weighted sum of the states. In order to find the weight to apply to each
-state, a single-layer neural network computes a value between -1 and 1 for
-each timestep. These values are normalized by a softmax layer and then used
-to compute the weighted average. The neural network is trained along with the
-rest of the network.
+weighted sum of the states, and therefore should be able in theory to
+disregard uninformative timesteps and improve performance. In order to find
+the weight to apply to each state, a single-layer neural network computes a
+value between -1 and 1 for each timestep. These values are normalized by a
+softmax layer and then used to compute the weighted average. The attention
+mechanism is trained along with the rest of the network. The attention model
+uses a unidirectional \ac{LSTM}.
+
+The modified model differs in which parts of the network uses dropout, as
+well as in certain hyperparameters. All the models use word embedding vectors
+of size 50 and a hidden state vector of size 300 in the \ac{LSTM}. The
+vocabulary was limited to the 4,000 most common words.
 
 \subsection{Results}
 
@@ -67,5 +83,6 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
 \end{table}
 
 The attention model performs best. While the modified model has the highest
-micro F1, the stopping criterion is based on the Macro F1, and the micro
-F1 scores are not necessarily comparable.
+micro F1, the stopping criterion is based on the macro F1, and the micro
+F1 scores are not necessarily comparable\textemdash the ranking of models might be
+different if the stopping criterion was mased on micro F1 instead of macro.

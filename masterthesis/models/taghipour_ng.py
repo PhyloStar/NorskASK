@@ -2,6 +2,7 @@ import argparse
 import os
 import tempfile
 from collections import Counter
+from pathlib import Path
 
 import numpy as np
 from keras.layers import (
@@ -12,6 +13,7 @@ from keras.models import Model
 from keras.optimizers import RMSprop
 from keras.utils import to_categorical
 from keras import backend as K
+from tqdm import tqdm
 
 from masterthesis.features.build_features import iterate_tokens, iterate_docs
 from masterthesis.utils import load_split, project_root
@@ -19,13 +21,16 @@ from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.models.layers import GlobalAveragePooling1D
 from masterthesis.results import save_results
+from masterthesis.gensim_utils import load_fasttext_embeddings
 
 
 conll_folder = project_root / 'ASK/conll'
+vectors_path = Path('/projects/nlpl/data/vectors/11/128.zip')  # 50-D FastText embeddings
 
 SEQ_LEN = 700  # 95th percentile of documents
 INPUT_DROPOUT = 0.5
 RECURRENT_DROPOUT = 0.1
+EMB_LAYER_NAME = 'embedding_layer'
 
 
 def parse_args():
@@ -41,6 +46,7 @@ def parse_args():
     parser.add_argument('--dropout-rate', type=float, default=0.5)
     parser.add_argument('--attention', action="store_true")
     parser.add_argument('--bidirectional', action="store_true")
+    parser.add_argument('--fasttext', action="store_true", help='Initialize embeddings')
     return parser.parse_args()
 
 
@@ -49,7 +55,7 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: int,
                 bidirectional: bool, attention: bool):
     mask_zero = not attention  # The attention mechanism does not support masked inputs
     input_ = Input((sequence_len,))
-    lookup = Embedding(vocab_size, embed_dim, mask_zero=mask_zero)(input_)
+    lookup = Embedding(vocab_size, embed_dim, mask_zero=mask_zero, name=EMB_LAYER_NAME)(input_)
 
     lstm_factory = LSTM(rnn_dim, return_sequences=True, dropout=INPUT_DROPOUT,
                         recurrent_dropout=RECURRENT_DROPOUT)
@@ -125,6 +131,19 @@ def main():
         embed_dim=args.embed_dim, rnn_dim=args.rnn_dim, dropout_rate=args.dropout_rate,
         bidirectional=args.bidirectional, attention=args.attention)
     model.summary()
+
+    if args.fasttext:
+        if not vectors_path.is_file():
+            print('Embeddings path not available')
+        else:
+            kv = load_fasttext_embeddings(vectors_path)
+            embeddings_matrix = np.zeros((vocab_size, 50))
+            print('Making embeddings:')
+            for word, idx in tqdm(w2i.items()):
+                vec = kv.word_vec(word)
+                embeddings_matrix[idx, :] = vec
+            model.get_layer(EMB_LAYER_NAME).set_weights(embeddings_matrix)
+
     model.compile(
         optimizer=RMSprop(lr=args.lr, rho=args.decay_rate),
         loss='categorical_crossentropy',
