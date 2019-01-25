@@ -51,7 +51,7 @@ def pos_line_iter(meta) -> Iterable[str]:
 def preprocess(kind: str, max_features: int, train_meta, dev_meta):
     if kind == 'pos':
         vectorizer = CountVectorizer(
-            lowercase=False, token_pattern="[^\s]+",
+            lowercase=False, token_pattern=r"[^\s]+",
             ngram_range=(2, 4), max_features=max_features)
         train_x = vectorizer.fit_transform(pos_line_iter(train_meta))
         dev_x = vectorizer.transform(pos_line_iter(dev_meta))
