@@ -18,7 +18,7 @@ def main():
     emb_path = sys.argv[1]
     kv = load_fasttext_embeddings(emb_path)
     vector_size = kv.vector_size
-    words = [set(iterate_tokens('train'))]
+    words = list(set(iterate_tokens('train')))
     embeddings = np.zeros((len(words), vector_size))
     for row, word in tqdm.tqdm(enumerate(words)):
         embeddings[row, :] = kv.word_vec(word)

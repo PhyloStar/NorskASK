@@ -3,8 +3,10 @@ import logging
 from pathlib import Path
 
 from sklearn.manifold import TSNE
+from gensim.models import KeyedVectors
 import numpy as np
 import pandas as pd
+import tqdm
 
 from masterthesis.utils import document_iterator, load_train_and_dev
 from masterthesis.utils import safe_plt as plt
@@ -39,11 +41,14 @@ def main():
     if args.debug:
         wv = MockKeyedVectors(vector_size=10)
     else:
-        wv = load_fasttext_embeddings(args.embeddings)
+        try:
+            wv = load_fasttext_embeddings(args.embeddings)
+        except:
+            wv = KeyedVectors.load(args.embeddings)
 
     fingerprints = []
     print('Computing fingerprints of all documents ...')
-    for filename in meta.filename:
+    for filename in tqdm.tqdm(meta.filename):
         infile = txt_folder / Path(filename).with_suffix('.txt')
         with open(str(infile), encoding='utf-8') as f:
             fingerprints.append(fingerprint(wv, document_iterator(f)))

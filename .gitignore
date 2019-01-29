@@ -15,6 +15,7 @@ __pycache__/
 parameters.bin
 /*.pkl
 /*.out
+/*.vec
 
 thesis/duo*.sty
 thesis/*.log
