@@ -17,23 +17,15 @@ parameters.bin
 /*.out
 /*.vec
 
-thesis/duo*.sty
-thesis/*.log
-thesis/*.aux
-thesis/*.pdf
+/thesis/duo*.sty
+/thesis/duoforside.tex
+/thesis/build/
+/thesis/DUO_UiO_segl.png
+thesis/thesis.pdf
 thesis/*.cls
-thesis/*.png
 thesis/*.gz
 thesis/*.bb
 thesis/*.xml
-thesis/*.lof
-thesis/duoforside.tex
-thesis/*.lot
-thesis/*.out
-thesis/*.bcf
-thesis/*.toc
-thesis/*.bbl
-thesis/*.blg
 thesis/Doc/
 .vscode/settings.json
 
