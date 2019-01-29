@@ -21,8 +21,6 @@ safe_plt = plt
 
 conll_cols = ['ID', 'FORM', 'LEMMA', 'UPOS', 'XPOS', 'FEATS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']
 
-CEFR_LABELS = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
-ROUND_CEFR_LABELS = CEFR_LABELS[::2]
 
 iso639_3 = dict(
     engelsk='eng',
@@ -34,7 +32,14 @@ iso639_3 = dict(
     vietnamesisk='vie'
 )
 
-project_root = Path(__file__).resolve().parents[1]  # type: Path
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # type: Path
+DATA_DIR = PROJECT_ROOT / 'ASK'
+RESULTS_DIR = PROJECT_ROOT / 'results'
+MODEL_DIR = PROJECT_ROOT / 'models'
+VECTOR_DIR = MODEL_DIR / 'vectors'
+
+CEFR_LABELS = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
+ROUND_CEFR_LABELS = CEFR_LABELS[::2]
 
 
 def heatmap(values: np.ndarray,
@@ -108,7 +113,7 @@ def load_split(split: str, round_cefr: bool = False) -> pd.DataFrame:
     """
     if split not in ['train', 'dev', 'test']:
         raise ValueError('Split must be train, dev or test')
-    filepath = project_root / 'ASK/metadata.csv'
+    filepath = PROJECT_ROOT / 'ASK/metadata.csv'
     df = pd.read_csv(filepath).dropna(subset=['cefr'])
     if round_cefr:
         df.loc[:, 'cefr'] = df.cefr.apply(round_cefr_score)

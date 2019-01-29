@@ -31,6 +31,8 @@ contained essays that were not necessarily written in a second language. Our
 data is not split into different parts based on the prompt. There are two
 different test levels in ASK, but these are not distinguished in training.
 
+\todo{Should the equations be in background}
+\todo{Should vectors/matrices use bold font}
 \begin{equation}
   \begin{aligned}
   s_j = R_{LSTM}(s_{j-1}, x_j) &= [c_j;h_j] \\
@@ -113,3 +115,9 @@ The attention model performs best. While the modified model has the highest
 micro F1, the stopping criterion is based on the macro F1, and the micro
 F1 scores are not necessarily comparable\textemdash the ranking of models might be
 different if the stopping criterion was mased on micro F1 instead of macro.
+
+\section{Native language identification}
+
+We train the same models to classify the documents by native language.
+
+

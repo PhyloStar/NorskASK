@@ -16,7 +16,7 @@ from keras import backend as K
 from tqdm import tqdm
 
 from masterthesis.features.build_features import iterate_tokens, iterate_docs
-from masterthesis.utils import load_split, project_root
+from masterthesis.utils import load_split, DATA_DIR
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.models.layers import GlobalAveragePooling1D
@@ -24,7 +24,7 @@ from masterthesis.results import save_results
 from masterthesis.gensim_utils import load_fasttext_embeddings
 
 
-conll_folder = project_root / 'ASK/conll'
+conll_folder = DATA_DIR / 'conll'
 vectors_path = Path('/projects/nlpl/data/vectors/11/128.zip')  # 50-D FastText embeddings
 
 SEQ_LEN = 700  # 95th percentile of documents
@@ -47,6 +47,7 @@ def parse_args():
     parser.add_argument('--attention', action="store_true")
     parser.add_argument('--bidirectional', action="store_true")
     parser.add_argument('--fasttext', action="store_true", help='Initialize embeddings')
+    parser.add_argument('--nli', action="store_true", help='Classify NLI')
     return parser.parse_args()
 
 
@@ -121,7 +122,10 @@ def main():
     w2i = make_w2i(vocab_size)
     train_x, dev_x = preprocess(SEQ_LEN, train_meta, dev_meta, w2i)
 
-    labels = sorted(train_meta.cefr.unique())
+    if args.nli:
+        labels = sorted(train_meta.lang.unique())
+    else:
+        labels = sorted(train_meta.cefr.unique())
 
     train_y = to_categorical([labels.index(c) for c in train_meta.cefr])
     dev_y = to_categorical([labels.index(c) for c in dev_meta.cefr])
@@ -165,7 +169,10 @@ def main():
     true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
     report(true, pred, labels)
-    save_results('taghipour_ng', args.__dict__, history.history, true, pred)
+    result_prefix = 'taghipour_ng'
+    if args.nli:
+        result_prefix += '_nli'
+    save_results(result_prefix, args.__dict__, history.history, true, pred)
 
 
 if __name__ == '__main__':

@@ -4,7 +4,8 @@ import subprocess
 from pathlib import Path
 from typing import Dict, Any
 
-RESULTS_DIR = Path(__file__).resolve().parents[1] / 'results'
+from masterthesis.utils import RESULTS_DIR
+
 GIT_CMD = ['git', 'rev-parse', '--verify', 'HEAD']
 
 

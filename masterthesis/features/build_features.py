@@ -3,10 +3,10 @@ from typing import Iterable
 
 from sklearn.feature_extraction.text import CountVectorizer
 
-from masterthesis.utils import load_split, project_root
+from masterthesis.utils import load_split, PROJECT_ROOT
 
 
-data_folder = project_root / 'ASK'
+data_folder = PROJECT_ROOT / 'ASK'
 
 
 def iterate_tokens(split: str = 'train') -> Iterable[str]:
@@ -42,6 +42,6 @@ def bag_of_words(split, **kwargs):
     return x, vectorizer
 
 
-def filename_iter(meta, suffix='txt'):
+def filename_iter(meta, suffix='txt') -> Iterable[str]:
     for filename in meta.filename:
         yield str((data_folder / suffix / filename).with_suffix('.' + suffix))

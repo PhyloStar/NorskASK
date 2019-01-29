@@ -11,13 +11,13 @@ from keras.optimizers import Adam
 from keras.utils import to_categorical
 
 from masterthesis.features.build_features import bag_of_words, filename_iter
-from masterthesis.utils import load_split, project_root, conll_reader
+from masterthesis.utils import load_split, DATA_DIR, conll_reader
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.results import save_results
 
 
-conll_folder = project_root / 'ASK/conll'
+conll_folder = DATA_DIR / 'conll'
 
 
 def parse_args():

@@ -4,7 +4,7 @@ from xml.etree import ElementTree
 
 import pandas as pd
 
-from masterthesis.utils import project_root
+from masterthesis.utils import PROJECT_ROOT, DATA_DIR
 
 
 test_topics = {
@@ -33,12 +33,11 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
 
-    data_dir = project_root / 'ASK'
-    assert data_dir.is_dir()
+    assert DATA_DIR.is_dir()
 
-    input_dir = data_dir / 'xml'
+    input_dir = DATA_DIR / 'xml'
     assert input_dir.is_dir()
-    output_dir = data_dir / 'txt'
+    output_dir = DATA_DIR / 'txt'
 
     if not output_dir.is_dir():
         output_dir.mkdir()
@@ -130,7 +129,7 @@ def main():
         metadata_dict['num_tokens'].append(num_tokens)
 
     metadata_df = pd.DataFrame(metadata_dict)
-    metadata_df.sort_values('filename').to_csv(data_dir / 'metadata.csv', index=False)
+    metadata_df.sort_values('filename').to_csv(DATA_DIR / 'metadata.csv', index=False)
     cefr_by_lang = metadata_df.groupby(['lang', 'cefr']).size().unstack(fill_value=0)
 
     print(cefr_by_lang.fillna(0))
