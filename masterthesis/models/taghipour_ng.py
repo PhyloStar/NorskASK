@@ -21,11 +21,10 @@ from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.models.layers import GlobalAveragePooling1D
 from masterthesis.results import save_results
-from masterthesis.gensim_utils import load_fasttext_embeddings
+from masterthesis.gensim_utils import load_embeddings
 
 
 conll_folder = DATA_DIR / 'conll'
-vectors_path = Path('/projects/nlpl/data/vectors/11/128.zip')  # 50-D FastText embeddings
 
 SEQ_LEN = 700  # 95th percentile of documents
 INPUT_DROPOUT = 0.5
@@ -48,6 +47,7 @@ def parse_args():
     parser.add_argument('--bidirectional', action="store_true")
     parser.add_argument('--fasttext', action="store_true", help='Initialize embeddings')
     parser.add_argument('--nli', action="store_true", help='Classify NLI')
+    parser.add_argument('--vectors', type=Path, help='Embedding vectors')
     return parser.parse_args()
 
 
@@ -136,11 +136,11 @@ def main():
         bidirectional=args.bidirectional, attention=args.attention)
     model.summary()
 
-    if args.fasttext:
+    if args.vectors:
         if not vectors_path.is_file():
             print('Embeddings path not available')
         else:
-            kv = load_fasttext_embeddings(vectors_path)
+            kv = load_embeddings(args.vectors, fasttext=args.fasttext)
             embeddings_matrix = np.zeros((vocab_size, 50))
             print('Making embeddings:')
             for word, idx in tqdm(w2i.items()):
