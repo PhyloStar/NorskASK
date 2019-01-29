@@ -11,12 +11,27 @@ from typing import Union, Iterable
 
 import numpy as np
 from gensim.models import FastText
-from gensim.models.keyedvectors import FastTextKeyedVectors
+from gensim.models.keyedvectors import KeyedVectors, FastTextKeyedVectors
 
 logger = logging.getLogger(__name__)
 
 
-def load_fasttext_embeddings(file: Union[Path, str]) -> FastText:
+def load_embeddings(file: Union[Path, str], fasttext: bool = False) -> KeyedVectors:
+    """Load embeddings from file and unit normalize vectors."""
+    if fasttext:
+        return load_fasttext_embeddings(file)
+
+    if isinstance(file, str):
+        file = Path(file)
+
+    # Native Gensim format?
+    emb_model = KeyedVectors.load(str(file))
+
+    emb_model.init_sims(replace=True)  # Unit-normalizing the vectors (if they aren't already)
+    return emb_model.wv
+
+
+def load_fasttext_embeddings(file: Union[Path, str]) -> FastTextKeyedVectors:
     """Load embeddings from file and unit normalize vectors."""
     if isinstance(file, str):
         file = Path(file)
@@ -37,7 +52,7 @@ def load_fasttext_embeddings(file: Union[Path, str]) -> FastText:
     return emb_model.wv
 
 
-def fingerprint(wv: FastTextKeyedVectors, document: Iterable[str]) -> np.ndarray:
+def fingerprint(wv: KeyedVectors, document: Iterable[str]) -> np.ndarray:
     """Calculate the ``semantic fingerprint'' of a document.
 
     This algorithm is also known as ``continuous bag of words'' (CBOW).
@@ -45,7 +60,7 @@ def fingerprint(wv: FastTextKeyedVectors, document: Iterable[str]) -> np.ndarray
     in the document.
 
     Args:
-        wv: A fastText keyed vectors object.
+        wv: A keyed vectors object.
         document: The document represented as an iterable of tokens
 
     Returns:

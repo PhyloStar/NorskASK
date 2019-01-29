@@ -31,6 +31,32 @@ contained essays that were not necessarily written in a second language. Our
 data is not split into different parts based on the prompt. There are two
 different test levels in ASK, but these are not distinguished in training.
 
+\begin{equation}
+  \begin{aligned}
+  s_j = R_{LSTM}(s_{j-1}, x_j) &= [c_j;h_j] \\
+                           c_j &= f \odot c_{j-1} + i \odot z \\
+                           h_j &= o \odot \tanh(c_j) \\
+                             i &= \sigma(x_j W^{xi} + b_i + h_{j-1} W^{hi}) \\
+                             f &= \sigma(x_j W^{xf} + b_f + h_{j-1} W^{hf}) \\
+                             o &= \sigma(x_j W^{xo} + b_o + h_{j-1} W^{ho}) \\
+                             z &= \tanh(x_j W^{xz} + b_z + h_{j-1} W^{hz}) \\
+                             \\[1\jot]
+                 O_{LSTM}(s_j) &= h_j
+  \end{aligned}
+\end{equation}
+
+where $\sigma$ by default in Keras is the \emph{Hard sigmoid} activation
+function, chosen because it is computationally more efficient than the proper
+sigmoid function:
+
+\begin{equation}
+  \sigma(x) = \begin{cases}
+    0                 & : x < -2.5 \\
+    0.2 \cdot x + 0.5 & : -2.5 \leq x \leq 2.5 \\
+    1                 & : x > 2.5
+  \end{cases}
+\end{equation}
+
 
 \subsection{Variants}
 

@@ -1,5 +1,9 @@
 \chapter{Creating a data split}
 
+In this chapter we will describe the data set used throughout the thesis. The
+process used to select the split between training, testing and validation
+data is also described.
+
 \section{Data set}
 
 The ASK corpus (\emph{andrespråkskorpus}) was presented in 2006
@@ -60,7 +64,7 @@ essay is about, the learner's country of origin, age, gender and more.
 \end{figure}
  
 
-\subsection{Analyzing metadata variables}
+\subsection{Analyzing non-linguistic variables}
 
 Analysis of the data set was carried out in order to find correlations
 between different metadata. Knowing that the documents stem from two
@@ -92,11 +96,11 @@ documents for a topic in \emph{AL test} is 5 (mean 9.8), while it is 11 in
 \emph{IL test} (mean 18.4). This also explains the overrepresentation of
 \emph{IL test} in the table of top ten topics.
 
-It is seen that some topics in the diagram consist of several sub-topics.
-However, the number of individual sub-topics is 62, still quite large.
-However, they seem to be more evenly distributed across essays. The median
-number of documents for a sub-topic, for both test levels, is 25 (mean 34.8).
-13 sub-topics are represented in 5 or fewer documents.
+It has been observed that some topics in the diagram consist of several
+sub-topics. However, the number of individual sub-topics is 62, still quite
+large. However, they seem to be more evenly distributed across essays. The
+median number of documents for a sub-topic, for both test levels, is 25 (mean
+34.8). 13 sub-topics are represented in 5 or fewer documents.
 
 \begin{table}
   \centering
@@ -171,7 +175,7 @@ against the entire corpus were low.
   \centering
   \begin{tabular}{ll}
     \toprule
-           Topics in dev set &        Topics in test set \\
+    Topics in development set &       Topics in test set \\
     \midrule
          idrett/sport kultur &       geografi norge folk \\
                 organisasjon &               innvandring \\
