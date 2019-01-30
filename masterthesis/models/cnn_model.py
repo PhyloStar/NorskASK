@@ -14,7 +14,7 @@ from keras.layers import (
 )
 from keras.utils import to_categorical
 
-from masterthesis.features.build_features import to_sequences, make_w2i
+from masterthesis.features.build_features import words_to_sequences, make_w2i
 from masterthesis.results import save_results
 from masterthesis.models.report import report
 from masterthesis.utils import load_train_and_dev, conll_reader
@@ -83,7 +83,7 @@ def main():
     labels = sorted(train[y_column].unique())
 
     w2i = make_w2i(args.vocab_size)
-    train_x, dev_x = to_sequences(seq_length, ['train', 'dev'], w2i)
+    train_x, dev_x = words_to_sequences(seq_length, ['train', 'dev'], w2i)
 
     train_y = to_categorical([labels.index(c) for c in train[y_column]])
     dev_y = to_categorical([labels.index(c) for c in dev[y_column]])

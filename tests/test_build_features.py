@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from numpy.testing import assert_equal
 
-from masterthesis.features.build_features import iterate_docs, iterate_tokens, to_sequences
+from masterthesis.features.build_features import iterate_docs, iterate_tokens, words_to_sequences
 
 test_data_dir = Path(__file__).parent / 'test_data'
 test_doc_len = 21
@@ -33,7 +33,7 @@ def test_iterate_tokens(mock_load_split):
 
 @patch('masterthesis.features.build_features.load_split')
 @patch('masterthesis.features.build_features.data_folder', new=test_data_dir)
-def test_to_sequences(mock_load_split):
+def test_words_to_sequences(mock_load_split):
     seq_len = test_doc_len + 1
     w2i = {
         "__PAD__": 0,
@@ -44,7 +44,7 @@ def test_to_sequences(mock_load_split):
         "linje": 5,
     }
     mock_load_split.return_value = MockMeta()
-    t, d = to_sequences(seq_len, 1, 1, w2i)
+    (t,) = words_to_sequences(seq_len, ['train'], w2i)
     assert_equal(t[0, :4], [2, 3, 4, 5])  # Dette er første linje
     assert_equal(t[0, 4:7], [1, 1, 1])  # i dokumentet .
     assert t[0, -1] == 0  # __PAD__

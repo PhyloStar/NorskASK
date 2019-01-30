@@ -165,8 +165,7 @@ def conll_reader(file: Union[str, Path],
 
     Yields:
         Each sentence in file as a list of tuples corresponding to the
-        specified cols. If only a single column is specified, the list
-        will contain simple values instead of tuples.
+        specified cols.
     """
     if isinstance(file, str):
         file = Path(file)

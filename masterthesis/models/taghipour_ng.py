@@ -14,7 +14,7 @@ from keras.utils import to_categorical
 from keras import backend as K
 from tqdm import tqdm
 
-from masterthesis.features.build_features import make_w2i, to_sequences
+from masterthesis.features.build_features import make_w2i, words_to_sequences
 from masterthesis.utils import load_split, DATA_DIR
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
@@ -90,7 +90,7 @@ def main():
 
     vocab_size = args.vocab_size
     w2i = make_w2i(vocab_size)
-    train_x, dev_x = to_sequences(SEQ_LEN, ['train', 'dev'], w2i)
+    train_x, dev_x = words_to_sequences(SEQ_LEN, ['train', 'dev'], w2i)
 
     target_col = 'lang' if args.nli else 'cefr'
     labels = sorted(train_meta[target_col].unique())
