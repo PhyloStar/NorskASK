@@ -14,7 +14,9 @@ from keras.layers import (
 )
 from keras.utils import to_categorical
 
-from masterthesis.features.build_features import words_to_sequences, make_w2i
+from masterthesis.features.build_features import (
+    words_to_sequences, make_w2i, make_pos2i, pos_to_sequences
+)
 from masterthesis.results import save_results
 from masterthesis.models.report import report
 from masterthesis.utils import load_train_and_dev, conll_reader
@@ -45,6 +47,7 @@ def iter_all_docs(split: pd.DataFrame, column='UPOS') -> Iterable[List[str]]:
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--nli', action='store_true')
+    parser.add_argument('--include-pos', action='store_true')
     parser.add_argument('--epochs', '-e', type=int)
     parser.add_argument('--batch-size', '-b', type=int)
     parser.add_argument('--doc-length', '-l', type=int)
@@ -54,10 +57,18 @@ def parse_args():
     return parser.parse_args()
 
 
-def build_model(vocab_size: int, sequence_length: int, num_classes: int) -> Model:
-    input_shape = (sequence_length,)
-    input_layer = Input(shape=input_shape)
-    embedding_layer = Embedding(vocab_size, 50)(input_layer)
+def build_model(vocab_size: int, sequence_length: int, num_classes: int, num_pos: int = 0) -> Model:
+    word_input_layer = Input((sequence_length,))
+    word_embedding_layer = Embedding(vocab_size, 50)(word_input_layer)
+    if num_pos > 0:
+        pos_input_layer = Input((sequence_length,))
+        pos_embedding_layer = Embedding(num_pos, 50)(pos_input_layer)
+        embedding_layer = Concatenate()([word_embedding_layer, pos_embedding_layer])
+        inputs = [word_input_layer, pos_input_layer]
+    else:
+        embedding_layer = word_embedding_layer
+        inputs = [word_input_layer]
+
     pooled_feature_maps = []
     for kernel_size in [4, 5, 6]:
         conv_layer = Conv1D(
@@ -69,7 +80,7 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: int) -> Mode
     merged = Concatenate()(pooled_feature_maps)
     dropout_layer = Dropout(0.5)(merged)
     output_layer = Dense(num_classes, activation='softmax')(dropout_layer)
-    model = Model(inputs=input_layer, outputs=output_layer)
+    model = Model(inputs=inputs, outputs=output_layer)
     model.compile('adam', 'categorical_crossentropy', metrics=['accuracy'])
     return model
 
@@ -84,11 +95,20 @@ def main():
 
     w2i = make_w2i(args.vocab_size)
     train_x, dev_x = words_to_sequences(seq_length, ['train', 'dev'], w2i)
+    if args.include_pos:
+        pos2i = make_pos2i()
+        num_pos = len(pos2i)
+        train_pos, dev_pos = pos_to_sequences(seq_length, ['train', 'dev'], pos2i)
+        train_x = [train_x, train_pos]
+        dev_x = [dev_x, dev_pos]
+    else:
+        num_pos = 0
 
     train_y = to_categorical([labels.index(c) for c in train[y_column]])
     dev_y = to_categorical([labels.index(c) for c in dev[y_column]])
 
-    model = build_model(args.vocab_size, seq_length, len(labels))
+    model = build_model(args.vocab_size, num_pos, seq_length,
+                        len(labels), num_pos=num_pos)
     model.summary()
 
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')

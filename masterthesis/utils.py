@@ -196,7 +196,8 @@ def conll_reader(file: Union[str, Path],
         yield tuple_sequence
 
 
-def get_split_len(split):
+def get_split_len(split: str) -> int:
+    """Return the number of documents in the split."""
     if split == 'train':
         return 966
     elif split in ('dev', 'test'):
