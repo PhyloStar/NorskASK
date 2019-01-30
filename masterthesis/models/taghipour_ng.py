@@ -122,13 +122,11 @@ def main():
     w2i = make_w2i(vocab_size)
     train_x, dev_x = preprocess(SEQ_LEN, train_meta, dev_meta, w2i)
 
-    if args.nli:
-        labels = sorted(train_meta.lang.unique())
-    else:
-        labels = sorted(train_meta.cefr.unique())
+    target_col = 'lang' if args.nli else 'cefr'
 
-    train_y = to_categorical([labels.index(c) for c in train_meta.cefr])
-    dev_y = to_categorical([labels.index(c) for c in dev_meta.cefr])
+    labels = sorted(train_meta[target_col].unique())
+    train_y = to_categorical([labels.index(c) for c in train_meta[target_col]])
+    dev_y = to_categorical([labels.index(c) for c in dev_meta[target_col]])
 
     model = build_model(
         vocab_size=vocab_size, sequence_len=SEQ_LEN, num_classes=len(labels),
@@ -137,7 +135,7 @@ def main():
     model.summary()
 
     if args.vectors:
-        if not vectors_path.is_file():
+        if not args.vectors.is_file():
             print('Embeddings path not available')
         else:
             kv = load_embeddings(args.vectors, fasttext=args.fasttext)
@@ -146,7 +144,7 @@ def main():
             for word, idx in tqdm(w2i.items()):
                 vec = kv.word_vec(word)
                 embeddings_matrix[idx, :] = vec
-            model.get_layer(EMB_LAYER_NAME).set_weights(embeddings_matrix)
+            model.get_layer(EMB_LAYER_NAME).set_weights([embeddings_matrix])
 
     model.compile(
         optimizer=RMSprop(lr=args.lr, rho=args.decay_rate),

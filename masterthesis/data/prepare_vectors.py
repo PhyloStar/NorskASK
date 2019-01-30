@@ -36,14 +36,14 @@ def main():
     kv = load_fasttext_embeddings(args.input)
 
     vector_size = kv.vector_size
-    words = list(set(iterate_tokens('train')))
+    words = list(set(iterate_tokens('train'))) + ['__UNK__', '__PAD__']
     embeddings = np.zeros((len(words), vector_size))
     for row, word in tqdm.tqdm(enumerate(words)):
         embeddings[row, :] = kv.word_vec(word)
 
     new_kv = WordEmbeddingsKeyedVectors(vector_size)
     new_kv.add(words, embeddings)
-    new_kv.save(outfile)
+    new_kv.save(str(outfile))
 
 
 if __name__ == '__main__':
