@@ -40,11 +40,13 @@ VECTOR_DIR = MODEL_DIR / 'vectors'
 
 CEFR_LABELS = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
 ROUND_CEFR_LABELS = CEFR_LABELS[::2]
+LANG_LABELS = ['eng', 'pol', 'rus', 'som', 'spa', 'deu', 'vie']
 
 
 def heatmap(values: np.ndarray,
             xticks: Sequence[str],
             yticks: Sequence[str],
+            normalize: bool = False,
             ax: Optional[plt.Axes] = None) -> None:
     """Plot a 2D array as a heatmap with overlayed values.
 
@@ -56,6 +58,8 @@ def heatmap(values: np.ndarray,
     """
     if ax is None:
         ax = plt.gca()
+    if normalize:
+        values = values / np.sum(values, axis=1, keepdims=True)
     ax.imshow(values, cmap='viridis')
     ax.set(
         yticks=range(len(yticks)),

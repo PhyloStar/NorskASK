@@ -1,10 +1,20 @@
+import argparse
 import pickle
-import sys
+from pathlib import Path
 
-from masterthesis.utils import CEFR_LABELS, ROUND_CEFR_LABELS
+from masterthesis.utils import CEFR_LABELS, ROUND_CEFR_LABELS, LANG_LABELS
 from masterthesis.utils import safe_plt as plt
 from masterthesis.models.report import report
 from masterthesis.results import Results  # noqa: F401
+
+
+def parse_args() -> argparse.Namespace:
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('results', type=Path)
+    parser.add_argument('--nli', action='store_true')
+    parser.add_argument('--normalize', action='store_true')
+    return parser.parse_args()
 
 
 def print_config(config):
@@ -27,9 +37,9 @@ def plot_history(history, ax1, ax2):
 
 
 def main():
-    results_path = sys.argv[1]
+    args = parse_args()
 
-    results = pickle.load(open(results_path, 'rb'))  # type: Results
+    results = pickle.load(args.results.open('rb'))  # type: Results
 
     history = results.history
     true = results.true
@@ -42,13 +52,15 @@ def main():
     ax2 = plt.subplot(221, sharex=ax1)
     plot_history(history, ax1, ax2)
 
-    if max(true) > 4:
+    if args.nli:
+        labels = LANG_LABELS
+    elif max(true) > 4:
         labels = CEFR_LABELS
     else:
         labels = ROUND_CEFR_LABELS
 
     ax3 = plt.subplot(122)
-    report(true, pred, labels, ax=ax3)
+    report(true, pred, labels, normalize=args.normalize, ax=ax3)
 
 
 if __name__ == '__main__':
