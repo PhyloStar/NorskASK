@@ -114,7 +114,7 @@ def main():
             for word, idx in tqdm(w2i.items(), total=len(w2i)):
                 vec = kv.word_vec(word)
                 embeddings_matrix[idx, :] = vec
-            model.get_layer(EMB_LAYER_NAME).set_weights(embeddings_matrix)
+            model.get_layer(EMB_LAYER_NAME).set_weights([embeddings_matrix])
 
     model.compile(
         optimizer=RMSprop(lr=args.lr, rho=args.decay_rate),
