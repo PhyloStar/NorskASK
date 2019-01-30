@@ -195,3 +195,11 @@ def conll_reader(file: Union[str, Path],
                 tuple_sequence.append(tup)
     if tuple_sequence:  # Flush if there is no empty line at end of file
         yield tuple_sequence
+
+
+def get_split_len(split):
+    if split == 'train':
+        return 966
+    elif split in ('dev', 'test'):
+        return 123
+    raise ValueError("Unrecognized split '%s', should be 'train', 'dev' or 'test'" % split)

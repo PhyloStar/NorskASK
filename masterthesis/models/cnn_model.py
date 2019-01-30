@@ -1,4 +1,6 @@
 import argparse
+import os
+import tempfile
 from itertools import chain
 from pathlib import Path
 from typing import Iterable, List
@@ -10,14 +12,13 @@ from keras.layers import Embedding
 from keras.layers import (
     Input, Conv1D, Dropout, Dense, GlobalMaxPooling1D, Concatenate, GlobalAveragePooling1D
 )
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
-from sklearn.metrics import classification_report, confusion_matrix
 
+from masterthesis.features.build_features import to_sequences, make_w2i
 from masterthesis.results import save_results
-from masterthesis.utils import load_train_and_dev, conll_reader, heatmap
-from masterthesis.utils import safe_plt as plt
+from masterthesis.models.report import report
+from masterthesis.utils import load_train_and_dev, conll_reader
+from masterthesis.models.callbacks import F1Metrics
 
 
 def iter_all_tokens(train) -> Iterable[str]:
@@ -43,17 +44,20 @@ def iter_all_docs(split: pd.DataFrame, column='UPOS') -> Iterable[List[str]]:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('target_column', nargs='?', choices=['cefr', 'lang'])
+    parser.add_argument('--nli', action='store_true')
     parser.add_argument('--epochs', '-e', type=int)
+    parser.add_argument('--batch-size', '-b', type=int)
     parser.add_argument('--doc-length', '-l', type=int)
-    parser.set_defaults(target_column='cefr', epochs=10, doc_length=500)
+    parser.add_argument('--vocab-size', '-s', type=int)
+    parser.add_argument('--vectors', '-V', type=Path)
+    parser.set_defaults(epochs=30, doc_length=700, vocab_size=4000, batch_size=32)
     return parser.parse_args()
 
 
 def build_model(vocab_size: int, sequence_length: int, num_classes: int) -> Model:
     input_shape = (sequence_length,)
     input_layer = Input(shape=input_shape)
-    embedding_layer = Embedding(vocab_size + 1, 20)(input_layer)
+    embedding_layer = Embedding(vocab_size, 50)(input_layer)
     pooled_feature_maps = []
     for kernel_size in [4, 5, 6]:
         conv_layer = Conv1D(
@@ -75,43 +79,37 @@ def main():
     seq_length = args.doc_length
     train, dev = load_train_and_dev()
 
-    y_column = args.target_column
+    y_column = 'lang' if args.nli else 'cefr'
     labels = sorted(train[y_column].unique())
-    print(labels)
 
-    tokenizer = Tokenizer(lower=False)
-    tokenizer.fit_on_texts(iter_all_tokens(train))
-    vocab_size = len(tokenizer.index_word)
-    print('vocab size = %d' % vocab_size)
-
-    train_seqs = tokenizer.texts_to_sequences(iter_all_docs(train))
-    dev_seqs = tokenizer.texts_to_sequences(iter_all_docs(dev))
-
-    train_x = pad_sequences(train_seqs, maxlen=seq_length)
-    dev_x = pad_sequences(dev_seqs, maxlen=seq_length)
+    w2i = make_w2i(args.vocab_size)
+    train_x, dev_x = to_sequences(seq_length, ['train', 'dev'], w2i)
 
     train_y = to_categorical([labels.index(c) for c in train[y_column]])
     dev_y = to_categorical([labels.index(c) for c in dev[y_column]])
 
-    print(train_x.shape)
-    print(dev_x.shape)
-
-    model = build_model(vocab_size, seq_length, len(labels))
+    model = build_model(args.vocab_size, seq_length, len(labels))
     model.summary()
+
+    temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
+    callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
     history = model.fit(
-        train_x, train_y, epochs=20, batch_size=16,
-        validation_data=(dev_x, dev_y), verbose=2)
+        train_x, train_y, epochs=args.epochs, batch_size=args.batch_size,
+        callbacks=callbacks, validation_data=(dev_x, dev_y),
+        verbose=2)
+    model.load_weights(weights_path)
+    os.close(temp_handle)
+    os.remove(weights_path)
 
-    predictions = np.argmax(model.predict(dev_x), axis=1)
-    gold = np.argmax(dev_y, axis=1)
-    print(classification_report(gold, predictions, target_names=labels))
-    print("== Confusion matrix ==")
-    conf_matrix = confusion_matrix(gold, predictions)
-    print(conf_matrix)
-    heatmap(conf_matrix, labels, labels)
-    plt.show()
+    predictions = model.predict(dev_x)
+    true = np.argmax(dev_y, axis=1)
+    pred = np.argmax(predictions, axis=1)
+    report(true, pred, labels)
 
-    save_results('cnn_baseline', args.__dict__, history.history, predictions)
+    name = 'cnn'
+    if args.nli:
+        name = 'cnn-nli'
+    save_results(name, args.__dict__, history.history, true, pred)
 
 
 if __name__ == '__main__':

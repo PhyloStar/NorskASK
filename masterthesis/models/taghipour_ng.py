@@ -1,7 +1,6 @@
 import argparse
 import os
 import tempfile
-from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -15,7 +14,7 @@ from keras.utils import to_categorical
 from keras import backend as K
 from tqdm import tqdm
 
-from masterthesis.features.build_features import iterate_tokens, iterate_docs
+from masterthesis.features.build_features import make_w2i, to_sequences
 from masterthesis.utils import load_split, DATA_DIR
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
@@ -84,35 +83,6 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: int,
     return Model(inputs=[input_], outputs=[output])
 
 
-def preprocess(seq_len, train_meta, dev_meta, w2i):
-    train_x = np.zeros((len(train_meta), seq_len), int)
-    dev_x = np.zeros((len(dev_meta), seq_len), int)
-
-    for row, doc in enumerate(iterate_docs('train')):
-        for col, token in zip(range(seq_len), doc):
-            if token not in w2i:
-                token = '__UNK__'
-            train_x[row, col] = w2i[token]
-
-    for row, doc in enumerate(iterate_docs('dev')):
-        for col, token in zip(range(seq_len), doc):
-            if token not in w2i:
-                token = '__UNK__'
-            dev_x[row, col] = w2i[token]
-
-    return train_x, dev_x
-
-
-def make_w2i(vocab_size):
-    tokens = Counter(iterate_tokens('train'))
-    most_common = (token for (token, __) in tokens.most_common())
-
-    w2i = {'__PAD__': 0, '__UNK__': 1}
-    for rank, token in zip(range(2, vocab_size), most_common):
-        w2i[token] = rank
-    return w2i
-
-
 def main():
     args = parse_args()
     train_meta = load_split('train', round_cefr=args.round_cefr)
@@ -120,15 +90,13 @@ def main():
 
     vocab_size = args.vocab_size
     w2i = make_w2i(vocab_size)
-    train_x, dev_x = preprocess(SEQ_LEN, train_meta, dev_meta, w2i)
+    train_x, dev_x = to_sequences(SEQ_LEN, ['train', 'dev'], w2i)
 
-    if args.nli:
-        labels = sorted(train_meta.lang.unique())
-    else:
-        labels = sorted(train_meta.cefr.unique())
+    target_col = 'lang' if args.nli else 'cefr'
+    labels = sorted(train_meta[target_col].unique())
 
-    train_y = to_categorical([labels.index(c) for c in train_meta.cefr])
-    dev_y = to_categorical([labels.index(c) for c in dev_meta.cefr])
+    train_y = to_categorical([labels.index(c) for c in train_meta[target_col]])
+    dev_y = to_categorical([labels.index(c) for c in dev_meta[target_col]])
 
     model = build_model(
         vocab_size=vocab_size, sequence_len=SEQ_LEN, num_classes=len(labels),
@@ -137,13 +105,13 @@ def main():
     model.summary()
 
     if args.vectors:
-        if not vectors_path.is_file():
+        if not args.vectors.is_file():
             print('Embeddings path not available')
         else:
             kv = load_embeddings(args.vectors, fasttext=args.fasttext)
             embeddings_matrix = np.zeros((vocab_size, 50))
             print('Making embeddings:')
-            for word, idx in tqdm(w2i.items()):
+            for word, idx in tqdm(w2i.items(), total=len(w2i)):
                 vec = kv.word_vec(word)
                 embeddings_matrix[idx, :] = vec
             model.get_layer(EMB_LAYER_NAME).set_weights(embeddings_matrix)

@@ -3,14 +3,13 @@ import logging
 from pathlib import Path
 
 from sklearn.manifold import TSNE
-from gensim.models import KeyedVectors
 import numpy as np
 import pandas as pd
 import tqdm
 
 from masterthesis.utils import document_iterator, load_train_and_dev
 from masterthesis.utils import safe_plt as plt
-from masterthesis.gensim_utils import load_fasttext_embeddings, fingerprint
+from masterthesis.gensim_utils import load_embeddings, fingerprint
 
 logging.basicConfig(level=logging.INFO)
 
@@ -38,13 +37,7 @@ def main():
     txt_folder = Path('ASK/txt')
     meta = pd.concat(load_train_and_dev()).reset_index()
 
-    if args.debug:
-        wv = MockKeyedVectors(vector_size=10)
-    else:
-        try:
-            wv = load_fasttext_embeddings(args.embeddings)
-        except:
-            wv = KeyedVectors.load(args.embeddings)
+    wv = load_embeddings(args.embeddings)
 
     fingerprints = []
     print('Computing fingerprints of all documents ...')
@@ -60,7 +53,7 @@ def main():
     column_list = ['cefr', 'testlevel', 'lang']
 
     print('Computing t-SNE embeddings ...')
-    embedded = TSNE(n_components=2).fit_transform(fingerprints_matrix)
+    embedded = TSNE(n_components=2, verbose=True).fit_transform(fingerprints_matrix)
 
     fig, axes = plt.subplots(1, 3)
     for ax, label_list, col in zip(axes, [cefr_list, testlevel_list, lang_list], column_list):

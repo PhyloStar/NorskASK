@@ -1,9 +1,11 @@
 from itertools import chain
-from typing import Iterable
+from typing import Iterable, Counter, Mapping, List
 
 from sklearn.feature_extraction.text import CountVectorizer
+import numpy as np
+import tqdm
 
-from masterthesis.utils import load_split, PROJECT_ROOT
+from masterthesis.utils import load_split, PROJECT_ROOT, get_split_len
 
 
 data_folder = PROJECT_ROOT / 'ASK'
@@ -45,3 +47,29 @@ def bag_of_words(split, **kwargs):
 def filename_iter(meta, suffix='txt') -> Iterable[str]:
     for filename in meta.filename:
         yield str((data_folder / suffix / filename).with_suffix('.' + suffix))
+
+
+def make_w2i(vocab_size):
+    print('Counting tokens ...')
+    tokens = Counter(tqdm.tqdm(iterate_tokens('train')))
+    most_common = (token for (token, __) in tokens.most_common())
+
+    w2i = {'__PAD__': 0, '__UNK__': 1}
+    for rank, token in zip(range(2, vocab_size), most_common):
+        w2i[token] = rank
+    return w2i
+
+
+def to_sequences(seq_len: int, splits: Iterable[str], w2i: Mapping[str, int]) -> List[np.ndarray]:
+    out = []
+    for split in splits:
+        split_len = get_split_len(split)
+        print("Preprocessing split '%s' ..." % split)
+        x = np.zeros((split_len, seq_len), int)
+        for row, doc in tqdm.tqdm(enumerate(iterate_docs(split)), total=split_len):
+            for col, token in zip(range(seq_len), doc):
+                if token not in w2i:
+                    token = '__UNK__'
+                x[row, col] = w2i[token]
+        out.append(x)
+    return out

@@ -4,6 +4,7 @@
 /venv/
 /results/
 /slurm_logs/
+/models/
 
 /ASK/conll/
 /ASK/conll-2-0/

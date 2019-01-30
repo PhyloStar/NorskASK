@@ -31,8 +31,6 @@ contained essays that were not necessarily written in a second language. Our
 data is not split into different parts based on the prompt. There are two
 different test levels in ASK, but these are not distinguished in training.
 
-\todo{Should the equations be in background}
-\todo{Should vectors/matrices use bold font}
 \begin{equation}
   \begin{aligned}
   s_j = R_{LSTM}(s_{j-1}, x_j) &= [c_j;h_j] \\
@@ -46,6 +44,8 @@ different test levels in ASK, but these are not distinguished in training.
                  O_{LSTM}(s_j) &= h_j
   \end{aligned}
 \end{equation}
+\todo{Should the equations be in Background chapter?}
+\todo{Should vectors/matrices use bold font?}
 
 where $\sigma$ by default in Keras is the \emph{Hard sigmoid} activation
 function, chosen because it is computationally more efficient than the proper
@@ -119,5 +119,3 @@ different if the stopping criterion was mased on micro F1 instead of macro.
 \section{Native language identification}
 
 We train the same models to classify the documents by native language.
-
-
