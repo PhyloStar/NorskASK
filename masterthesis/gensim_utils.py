@@ -5,13 +5,13 @@ we want to avoid that when not necessary.
 """
 
 import logging
-import zipfile
 from pathlib import Path
-from typing import Union, Iterable
+from typing import Iterable, Union
+import zipfile
 
-import numpy as np
 from gensim.models import FastText
-from gensim.models.keyedvectors import KeyedVectors, FastTextKeyedVectors
+from gensim.models.keyedvectors import FastTextKeyedVectors, KeyedVectors
+import numpy as np
 
 logger = logging.getLogger(__name__)
 

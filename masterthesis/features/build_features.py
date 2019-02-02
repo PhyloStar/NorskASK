@@ -1,11 +1,11 @@
 from itertools import chain
-from typing import Iterable, Counter, Mapping, List, Callable
+from typing import Callable, Counter, Iterable, List, Mapping
 
-from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
 import tqdm
 
-from masterthesis.utils import load_split, PROJECT_ROOT, get_split_len, conll_reader
+from masterthesis.utils import conll_reader, get_split_len, load_split, PROJECT_ROOT
 
 
 data_folder = PROJECT_ROOT / 'ASK'

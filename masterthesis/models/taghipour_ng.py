@@ -1,26 +1,26 @@
 import argparse
 import os
-import tempfile
 from pathlib import Path
+import tempfile
 
-import numpy as np
+from keras import backend as K
 from keras.layers import (
-    Input, Dense, Embedding, LSTM, Dropout, Bidirectional, Activation,
-    TimeDistributed, Lambda, RepeatVector, Multiply, Permute, Flatten
+    Activation, Bidirectional, Dense, Dropout, Embedding, Flatten, Input, Lambda, LSTM,
+    Multiply, Permute, RepeatVector, TimeDistributed
 )
 from keras.models import Model
 from keras.optimizers import RMSprop
 from keras.utils import to_categorical
-from keras import backend as K
+import numpy as np
 from tqdm import tqdm
 
 from masterthesis.features.build_features import make_w2i, words_to_sequences
-from masterthesis.utils import load_split, DATA_DIR
-from masterthesis.models.callbacks import F1Metrics
-from masterthesis.models.report import report
-from masterthesis.models.layers import GlobalAveragePooling1D
-from masterthesis.results import save_results
 from masterthesis.gensim_utils import load_embeddings
+from masterthesis.models.callbacks import F1Metrics
+from masterthesis.models.layers import GlobalAveragePooling1D
+from masterthesis.models.report import report
+from masterthesis.results import save_results
+from masterthesis.utils import DATA_DIR, load_split
 
 
 conll_folder = DATA_DIR / 'conll'

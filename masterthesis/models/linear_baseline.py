@@ -2,10 +2,10 @@ import argparse
 
 import sklearn.linear_model
 
-from masterthesis.results import save_results
-from masterthesis.utils import load_split
 from masterthesis.features.build_features import bag_of_words, filename_iter
 from masterthesis.models.report import report
+from masterthesis.results import save_results
+from masterthesis.utils import load_split
 
 
 def parse_args():

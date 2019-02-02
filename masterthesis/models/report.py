@@ -1,5 +1,5 @@
-from sklearn.metrics import classification_report, confusion_matrix, f1_score
 import numpy as np
+from sklearn.metrics import classification_report, confusion_matrix, f1_score
 
 from masterthesis.utils import heatmap
 from masterthesis.utils import safe_plt as plt

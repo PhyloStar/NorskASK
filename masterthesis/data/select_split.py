@@ -2,9 +2,9 @@ from functools import partial
 from itertools import chain
 from typing import Tuple
 
-from scipy.stats import entropy
 import numpy as np
 import pandas as pd
+from scipy.stats import entropy
 
 CEFR_LABELS = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
 LANG_LABELS = ['russisk', 'polsk', 'tysk', 'vietnamesisk', 'engelsk', 'spansk', 'somali']

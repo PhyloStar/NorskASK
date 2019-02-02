@@ -1,26 +1,26 @@
 import argparse
-import os
-import tempfile
 from itertools import chain
+import os
 from pathlib import Path
+import tempfile
 from typing import Iterable, List
 
+from keras.layers import (
+    Concatenate, Conv1D, Dense, Dropout, Embedding,
+    GlobalAveragePooling1D, GlobalMaxPooling1D, Input
+)
+from keras.models import Model
+from keras.utils import to_categorical
 import numpy as np
 import pandas as pd
-from keras.models import Model
-from keras.layers import Embedding
-from keras.layers import (
-    Input, Conv1D, Dropout, Dense, GlobalMaxPooling1D, Concatenate, GlobalAveragePooling1D
-)
-from keras.utils import to_categorical
 
 from masterthesis.features.build_features import (
-    words_to_sequences, make_w2i, make_pos2i, pos_to_sequences
+    make_pos2i, make_w2i, pos_to_sequences, words_to_sequences
 )
-from masterthesis.results import save_results
-from masterthesis.models.report import report
-from masterthesis.utils import load_train_and_dev, conll_reader
 from masterthesis.models.callbacks import F1Metrics
+from masterthesis.models.report import report
+from masterthesis.results import save_results
+from masterthesis.utils import conll_reader, load_train_and_dev
 
 
 def iter_all_tokens(train) -> Iterable[str]:

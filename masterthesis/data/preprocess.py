@@ -4,7 +4,7 @@ from xml.etree import ElementTree
 
 import pandas as pd
 
-from masterthesis.utils import PROJECT_ROOT, DATA_DIR
+from masterthesis.utils import DATA_DIR
 
 
 test_topics = {

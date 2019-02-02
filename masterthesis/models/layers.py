@@ -1,5 +1,5 @@
-from keras.layers.pooling import _GlobalPooling1D
 from keras import backend as K
+from keras.layers.pooling import _GlobalPooling1D
 
 
 class GlobalAveragePooling1D(_GlobalPooling1D):

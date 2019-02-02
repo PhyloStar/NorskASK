@@ -3,12 +3,12 @@ import argparse
 import logging
 from pathlib import Path
 
+from gensim.models.keyedvectors import WordEmbeddingsKeyedVectors
 import numpy as np
 import tqdm
-from gensim.models.keyedvectors import WordEmbeddingsKeyedVectors
 
-from masterthesis.gensim_utils import load_fasttext_embeddings
 from masterthesis.features.build_features import iterate_tokens
+from masterthesis.gensim_utils import load_fasttext_embeddings
 
 logging.basicConfig(level=logging.INFO)
 

@@ -1,8 +1,7 @@
 import datetime as dt
 import pickle
 import subprocess
-from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 
 from masterthesis.utils import RESULTS_DIR
 

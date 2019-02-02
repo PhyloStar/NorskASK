@@ -1,6 +1,6 @@
 from keras.callbacks import Callback
-from sklearn.metrics import f1_score
 import numpy as np
+from sklearn.metrics import f1_score
 
 
 class F1Metrics(Callback):

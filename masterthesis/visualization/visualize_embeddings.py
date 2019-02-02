@@ -2,14 +2,14 @@ import argparse
 import logging
 from pathlib import Path
 
-from sklearn.manifold import TSNE
 import numpy as np
 import pandas as pd
+from sklearn.manifold import TSNE
 import tqdm
 
+from masterthesis.gensim_utils import fingerprint, load_embeddings
 from masterthesis.utils import document_iterator, load_train_and_dev
 from masterthesis.utils import safe_plt as plt
-from masterthesis.gensim_utils import load_embeddings, fingerprint
 
 logging.basicConfig(level=logging.INFO)
 

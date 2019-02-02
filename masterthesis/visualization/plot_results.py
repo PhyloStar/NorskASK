@@ -1,11 +1,11 @@
 import argparse
-import pickle
 from pathlib import Path
+import pickle
 
-from masterthesis.utils import CEFR_LABELS, ROUND_CEFR_LABELS, LANG_LABELS
-from masterthesis.utils import safe_plt as plt
 from masterthesis.models.report import report
 from masterthesis.results import Results  # noqa: F401
+from masterthesis.utils import CEFR_LABELS, LANG_LABELS, ROUND_CEFR_LABELS
+from masterthesis.utils import safe_plt as plt
 
 
 def parse_args() -> argparse.Namespace:

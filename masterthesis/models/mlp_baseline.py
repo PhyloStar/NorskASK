@@ -3,18 +3,18 @@ import os
 import tempfile
 from typing import Iterable
 
-import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer
-from keras.layers import Input, Dense, Dropout
+from keras.layers import Dense, Dropout, Input
 from keras.models import Model
 from keras.optimizers import Adam
 from keras.utils import to_categorical
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
 
 from masterthesis.features.build_features import bag_of_words, filename_iter
-from masterthesis.utils import load_split, DATA_DIR, conll_reader
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.results import save_results
+from masterthesis.utils import conll_reader, DATA_DIR, load_split
 
 
 conll_folder = DATA_DIR / 'conll'

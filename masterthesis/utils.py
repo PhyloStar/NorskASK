@@ -7,15 +7,15 @@ iso639_3: A mapping of Norwegian language names (as used in the data) to
 import itertools
 import os
 from pathlib import Path
-from typing import TextIO, Iterable, Tuple, Union, Sequence, Optional, List
+from typing import Iterable, List, Optional, Sequence, TextIO, Tuple, Union
 
-import pandas as pd
-import numpy as np
 import matplotlib
 if 'SLURM_JOB_NODELIST' in os.environ or \
         (os.name == 'posix' and 'DISPLAY' not in os.environ):  # noqa: E402
     matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 safe_plt = plt
 
