@@ -107,8 +107,8 @@ as \ac{LSTM}. The equations defining a \ac{GRU} layer are defined below:
 \begin{equation}
   \begin{aligned}
   s_j = R_{GRU}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot \tilde{s_{j}} \\
-                            r &= \sigma(x_j W^{xi} + b_i + h_{j-1} W^{hi}) \\
-                            z &= \sigma(x_j W^{xf} + b_f + h_{j-1} W^{hf}) \\
+                            z &= \sigma(x_j W^{xz} + b_f + h_{j-1} W^{sz}) \\
+                            r &= \sigma(x_j W^{xr} + b_i + h_{j-1} W^{sr}) \\
                  \tilde{s{j}} &= \tanh(x_j W^{xs} + b_z + (r \odot s{j-1}) W^{sg}) \\
   \\[1\jot]
                  O_{GRU}(s_j) &= s_j
