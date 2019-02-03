@@ -1,11 +1,50 @@
-\chapter{Sequence based models}
+\chapter{Sequence models}
 
 Next, we will implement models which take the ordering of tokens into account.
 This includes \acp{CNN} and \acp{RNN}. 
 
+
 \section{Convolutional neural networks}
 
-To be written.
+We create a model with convolutional architecture based on the model
+described in \textcite{zhang2017sensitivity}. The basis of this architecture is
+a set of filter banks with varying window size. After applying the convolutions,
+the output is pooled along the time axis, leaving a vector with as many elements
+as there are filters in the filter banks. The vectors for each of the filter
+banks are concatenated into a single vector.
+
+
+\subsection{Results}
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|rr|rr|}
+    \toprule
+            & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
+    Model     & Macro F1        & Micro F1        & Macro F1        & Micro F1        \\
+    \midrule
+    Tokens    &         0000\%  &         0000\%  &         0000\%  &         0000\%  \\
+    +POS      & \textbf{28.3\%} & \textbf{43.1\%} &         0000\%  &         0000\%  \\
+    \bottomrule
+  \end{tabular}
+  \caption{F1 scores of CNN classifiers on AES}
+  \label{cnn-results}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|rr|}
+    \toprule
+    Model     & Macro F1        & Micro F1        \\
+    \midrule
+    Tokens    &         0000\%  &         0000\%  \\
+    +POS      & \textbf{46.7\%} & \textbf{46.3\%} \\
+    \bottomrule
+  \end{tabular}
+  \caption{F1 scores of CNN classifiers on NLI}
+  \label{cnn-nli-results}
+\end{table}
+
 
 \section{Recurrent neural networks}
 
@@ -59,6 +98,23 @@ sigmoid function:
   \end{cases}
 \end{equation}
 
+We also experimented with a different type of \ac{RNN} cell, the \ac{GRU}. This
+variant of \ac{CNN} is a little simpler than the \ac{LSTM}, featuring only two
+gates. However, it is still designed to be able to propagate the error gradient
+over a larger number of timesteps and is supposed to solve the same problems
+as \ac{LSTM}. The equations defining a \ac{GRU} layer are defined below:
+
+\begin{equation}
+  \begin{aligned}
+  s_j = R_{GRU}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot \tilde{s_{j}} \\
+                            r &= \sigma(x_j W^{xi} + b_i + h_{j-1} W^{hi}) \\
+                            z &= \sigma(x_j W^{xf} + b_f + h_{j-1} W^{hf}) \\
+                 \tilde{s{j}} &= \tanh(x_j W^{xs} + b_z + (r \odot s{j-1}) W^{sg}) \\
+  \\[1\jot]
+                 O_{GRU}(s_j) &= s_j
+  \end{aligned}
+\end{equation}
+
 
 \subsection{Variants}
 
@@ -71,6 +127,8 @@ from top to bottom, and once on top of a bidirectional LSTM (BiLSTM). In the
 BiLSTM, the output from the \ac{RNN} on each timestep is the concatenation of
 the states of two \acp{LSTM}, one processing the document from the top and
 the other one from the bottom up.
+
+\todo{A paragraph on BiLSTM}
 
 The attention model uses an attention layer, which instead computes a
 weighted sum of the states, and therefore should be able in theory to
@@ -115,6 +173,8 @@ The attention model performs best. While the modified model has the highest
 micro F1, the stopping criterion is based on the macro F1, and the micro
 F1 scores are not necessarily comparable\textemdash the ranking of models might be
 different if the stopping criterion was mased on micro F1 instead of macro.
+
+\todo{Analysis of attention model}
 
 \section{Native language identification}
 

@@ -2,6 +2,9 @@
 
 \usepackage{thesisstyle}
 
+\DeclareBibliographyCategory{software}
+\addtocategory{software}{matplotlib,keras,scikit-learn,tensorflow,gensim}
+
 \addbibresource{references.bib}
 \addbibresource{proceedings.bib}
 
@@ -15,7 +18,7 @@
 
 \duoforside[
   dept={Department of Informatics},
-  program={Language and Communication},
+  program={Informatics: Language and Communication},
   long
 ]
 
@@ -68,6 +71,7 @@
 
 \backmatter{}
 
-\printbibliography
+\printbibliography[notcategory=software]
+\printbibliography[title={Software}, category=software]
 
 \end{document}

@@ -22,6 +22,7 @@ parameters.bin
 /thesis/duoforside.tex
 /thesis/build/
 /thesis/DUO_UiO_segl.png
+*.synctex(busy)
 thesis/thesis.pdf
 thesis/*.cls
 thesis/*.gz
