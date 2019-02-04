@@ -6,8 +6,8 @@ import tempfile
 from typing import Iterable, List
 
 from keras.layers import (
-    Concatenate, Conv1D, Dense, Dropout, Embedding,
-    GlobalAveragePooling1D, GlobalMaxPooling1D, Input
+    Concatenate, Conv1D, Dense, Dropout, Embedding, GlobalAveragePooling1D, GlobalMaxPooling1D,
+    Input
 )
 from keras.models import Model
 from keras.utils import to_categorical
@@ -20,7 +20,7 @@ from masterthesis.features.build_features import (
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.results import save_results
-from masterthesis.utils import conll_reader, load_train_and_dev
+from masterthesis.utils import conll_reader, load_split
 
 
 def iter_all_tokens(train) -> Iterable[str]:
@@ -47,6 +47,7 @@ def iter_all_docs(split: pd.DataFrame, column='UPOS') -> Iterable[List[str]]:
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--nli', action='store_true')
+    parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--include-pos', action='store_true')
     parser.add_argument('--epochs', '-e', type=int)
     parser.add_argument('--batch-size', '-b', type=int)
@@ -88,7 +89,8 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: int, num_pos
 def main():
     args = parse_args()
     seq_length = args.doc_length
-    train, dev = load_train_and_dev()
+    train = load_split('train', round_cefr=args.round_cefr)
+    dev = load_split('dev', round_cefr=args.round_cefr)
 
     y_column = 'lang' if args.nli else 'cefr'
     labels = sorted(train[y_column].unique())
@@ -107,8 +109,7 @@ def main():
     train_y = to_categorical([labels.index(c) for c in train[y_column]])
     dev_y = to_categorical([labels.index(c) for c in dev[y_column]])
 
-    model = build_model(args.vocab_size, num_pos, seq_length,
-                        len(labels), num_pos=num_pos)
+    model = build_model(args.vocab_size, seq_length, len(labels), num_pos=num_pos)
     model.summary()
 
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
