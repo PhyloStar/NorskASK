@@ -54,6 +54,7 @@ def parse_args():
     parser.add_argument('--doc-length', '-l', type=int)
     parser.add_argument('--vocab-size', '-s', type=int)
     parser.add_argument('--vectors', '-V', type=Path)
+    parser.add_argument('--save-model', action='store_true')
     parser.set_defaults(epochs=30, doc_length=700, vocab_size=4000, batch_size=32)
     return parser.parse_args()
 
@@ -78,7 +79,7 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: int, num_pos
             GlobalAveragePooling1D()(conv_layer),
             GlobalMaxPooling1D()(conv_layer)
         ])
-    merged = Concatenate()(pooled_feature_maps)
+    merged = Concatenate(name='vector_representation')(pooled_feature_maps)
     dropout_layer = Dropout(0.5)(merged)
     output_layer = Dense(num_classes, activation='softmax')(dropout_layer)
     model = Model(inputs=inputs, outputs=output_layer)
@@ -121,6 +122,9 @@ def main():
     model.load_weights(weights_path)
     os.close(temp_handle)
     os.remove(weights_path)
+
+    if args.save_model:
+        model.save('cnn_model.h5')
 
     predictions = model.predict(dev_x)
     true = np.argmax(dev_y, axis=1)

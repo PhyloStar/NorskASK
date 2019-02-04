@@ -171,7 +171,7 @@ def conll_reader(file: Union[str, Path],
         file = Path(file)
     try:
         col_idx = [conll_cols.index(c) for c in cols]
-    except ValueError as e:
+    except ValueError:
         raise ValueError('All column names must be one of %s' % set(conll_cols))
     if tags:
         start_tags = tuple('<s>' for __ in cols)

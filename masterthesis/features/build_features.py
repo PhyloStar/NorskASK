@@ -1,5 +1,9 @@
 from itertools import chain
-from typing import Callable, Counter, Iterable, List, Mapping
+from typing import Callable, Iterable, List, Mapping
+try:
+    from typing import Counter
+except ImportError:
+    from collections import Counter
 
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
