@@ -25,7 +25,10 @@ set +o errexit
 
 module purge
 module use -a /projects/nlpl/software/modulefiles/
-module add nlpl-inf5820
+module load \
+	nlpl-python-candy/201902/3.5 \
+	nlpl-gensim/3.7.0/3.5 \
+	nlpl-tensorflow/1.11
 
 chkfile "results" "models"
 
