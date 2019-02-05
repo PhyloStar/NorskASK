@@ -210,5 +210,8 @@ def get_split_len(split: str) -> int:
 
 
 def get_file_name(name: str) -> str:
+    slurm_job_id = os.environ.get('SLURM_JOB_ID', None)
+    if slurm_job_id is not None:
+        return name + '-' + slurm_job_id
     timestamp = dt.datetime.utcnow().strftime('%m-%d_%H-%M-%S')
     return name + '-' + timestamp

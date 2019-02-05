@@ -1,20 +1,37 @@
 \chapter{Sequence models}
 
-Next, we will implement models which take the ordering of tokens into account.
-This includes \acp{CNN} and \acp{RNN}. 
+Next, we will implement models which take the ordering of tokens into
+account. This includes \acp{CNN} and \acp{RNN}.
+
+For the models in this chapter, we needed to set a fixed number of tokens
+such that shorter documents were padded to this length, and longer documents
+truncated. In order to decide this, we examined the distribution of document
+lengths in the training set. All subsequent values are rounded to the nearest
+integer. First, we found the 95th percentile of document lengths, which
+turned out to be 701 tokens. Then, we computed the value $Q_2 + 1.5 \cdot
+(Q_3 - Q_1)$, or the median plus the interquartile range, which gives 693
+tokens. Finally, we computed the mean value plus two standard deviations,
+giving 707 tokens. These values are all close to each other, and we decided
+to settle on 700 tokens since it is a round number close to all values we
+examined.
 
 
 \section{Convolutional neural networks}
 
 We create a model with convolutional architecture based on the model
-described in \textcite{zhang2017sensitivity}. The basis of this architecture is
-a set of filter banks with varying window size. After applying the convolutions,
-the output is pooled along the time axis, leaving a vector with as many elements
-as there are filters in the filter banks. The vectors for each of the filter
-banks are concatenated into a single vector.
+described in \textcite{zhang2017sensitivity}. The basis of this architecture
+is a set of filter banks with varying window size. After applying the
+convolutions, the output is pooled along the time axis, leaving a vector with
+as many elements as there are filters in the filter banks. The vectors for
+each of the filter banks are concatenated into a single vector.
 
 
 \subsection{Results}
+
+The \ac{CNN} classifier that used both tokens and POS tags as input performed
+better than the one which only used tokens as input, as seen in table
+\ref{cnn-results}. However, on the collapsed label set, the model which only
+used tokens had a higher accuracy.
 
 \begin{table}
   \centering
@@ -30,6 +47,7 @@ banks are concatenated into a single vector.
   \caption{F1 scores of CNN classifiers on AES}
   \label{cnn-results}
 \end{table}
+
 
 \section{Recurrent neural networks}
 
@@ -83,11 +101,12 @@ sigmoid function:
   \end{cases}
 \end{equation}
 
-We also experimented with a different type of \ac{RNN} cell, the \ac{GRU}. This
-variant of \ac{CNN} is a little simpler than the \ac{LSTM}, featuring only two
-gates. However, it is still designed to be able to propagate the error gradient
-over a larger number of timesteps and is supposed to solve the same problems
-as \ac{LSTM}. The equations defining a \ac{GRU} layer are defined below:
+We also experimented with a different type of \ac{RNN} cell, the \ac{GRU}.
+This variant of \ac{CNN} is a little simpler than the \ac{LSTM}, featuring
+only two gates. However, it is still designed to be able to propagate the
+error gradient over a larger number of timesteps and is supposed to solve the
+same problems as \ac{LSTM}. The equations defining a \ac{GRU} layer are
+defined below:
 
 \begin{equation}
   \begin{aligned}
@@ -124,6 +143,8 @@ should therefore be able to extract context on both sides of a input
 timestep.
 
 \todo{Mean of the final state}
+\todo{Add POS inputs to RNN}
+\todo{GRU cells}
 
 The attention model uses an attention layer, which instead computes a
 weighted sum of the states, and therefore should be able in theory to
@@ -138,6 +159,7 @@ The modified model differs in which parts of the network uses dropout, as
 well as in certain hyperparameters. All the models use word embedding vectors
 of size 50 and a hidden state vector of size 300 in the \ac{LSTM}. The
 vocabulary was limited to the 4,000 most common words.
+
 
 \subsection{Results}
 
@@ -165,15 +187,20 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
 \end{table}
 
 The attention model performs best. While the modified model has the highest
-micro F1, the stopping criterion is based on the macro F1, and the micro
-F1 scores are not necessarily comparable\textemdash the ranking of models might be
-different if the stopping criterion was mased on micro F1 instead of macro.
+micro F1, the stopping criterion is based on the macro F1, and the micro F1
+scores are not necessarily comparable\textemdash the ranking of models might
+be different if the stopping criterion was mased on micro F1 instead of
+macro.
 
 \todo{Analysis of attention model}
+\todo{Per-class results}
+
 
 \section{Native language identification}
 
-We train the same models to classify the documents by native language.
+We train the same models to classify the documents by native language. The
+performance of a \ac{CNN} model improved drastically when including \ac{POS}
+tags as input, as evident in table \ref{cnn-nli-results}.
 
 \begin{table}
   \centering
