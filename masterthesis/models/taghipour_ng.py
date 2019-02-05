@@ -1,7 +1,6 @@
 import argparse
 import os
 from pathlib import Path
-import pickle
 import tempfile
 
 from keras import backend as K
@@ -22,7 +21,7 @@ from masterthesis.models.layers import GlobalAveragePooling1D
 from masterthesis.models.report import report
 from masterthesis.results import save_results
 from masterthesis.utils import (
-    ATTENTION_LAYER, DATA_DIR, get_file_name, load_split, MODEL_DIR, REPRESENTATION_LAYER
+    ATTENTION_LAYER, DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER, save_model
 )
 
 
@@ -143,9 +142,7 @@ def main():
     name = get_file_name(name)
 
     if args.save_model:
-        model.save(str(MODEL_DIR / (name + '_model.h5')))
-        w2i_file = MODEL_DIR / (name + '_model_w2i.pkl')
-        pickle.dump(w2i, w2i_file.open('wb'))
+        save_model(name, model, w2i)
 
     predictions = model.predict(dev_x)
 

@@ -1,7 +1,6 @@
 import argparse
 import os
 from pathlib import Path
-import pickle
 import tempfile
 
 from keras.layers import (
@@ -18,7 +17,7 @@ from masterthesis.features.build_features import (
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.results import save_results
-from masterthesis.utils import get_file_name, load_split, MODEL_DIR, REPRESENTATION_LAYER
+from masterthesis.utils import get_file_name, load_split, REPRESENTATION_LAYER, save_model
 
 
 def parse_args():
@@ -106,9 +105,7 @@ def main():
     name = get_file_name(name)
 
     if args.save_model:
-        model.save(str(MODEL_DIR / (name + '_model.h5')))
-        w2i_file = MODEL_DIR / (name + '_model_w2i.pkl')
-        pickle.dump(w2i, w2i_file.open('wb'))
+        save_model(name, model, w2i)
 
     predictions = model.predict(dev_x)
     true = np.argmax(dev_y, axis=1)

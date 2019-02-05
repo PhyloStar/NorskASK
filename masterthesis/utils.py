@@ -8,6 +8,7 @@ import datetime as dt
 import itertools
 import os
 from pathlib import Path
+import pickle
 from typing import Iterable, List, Optional, Sequence, TextIO, Tuple, Union
 
 import matplotlib
@@ -215,3 +216,11 @@ def get_file_name(name: str) -> str:
         return name + '-' + slurm_job_id
     timestamp = dt.datetime.utcnow().strftime('%m-%d_%H-%M-%S')
     return name + '-' + timestamp
+
+
+def save_model(name: str, model, w2i):
+    if not MODEL_DIR.is_dir():
+        MODEL_DIR.mkdir()
+    model.save(str(MODEL_DIR / (name + '_model.h5')))
+    w2i_file = MODEL_DIR / (name + '_model_w2i.pkl')
+    pickle.dump(w2i, w2i_file.open('wb'))
