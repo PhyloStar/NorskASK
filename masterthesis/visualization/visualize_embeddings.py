@@ -1,32 +1,36 @@
 import argparse
 import logging
 from pathlib import Path
+import pickle
+from typing import Iterable
 
 from keras.models import Model, load_model
 import numpy as np
 from sklearn.manifold import TSNE
 import tqdm
 
-from masterthesis.features.build_features import words_to_sequences, make_w2i
+from masterthesis.features.build_features import words_to_sequences
 from masterthesis.gensim_utils import fingerprint, load_embeddings
-from masterthesis.utils import document_iterator, iso639_3, load_split
-from masterthesis.utils import CEFR_LABELS, DATA_DIR, LANG_LABELS, safe_plt as plt
+from masterthesis.utils import (
+    CEFR_LABELS, DATA_DIR, document_iterator, iso639_3, LANG_LABELS, load_split,
+    REPRESENTATION_LAYER, safe_plt as plt
+)
 
 logging.basicConfig(level=logging.INFO)
 
 
 class MockKeyedVectors:
-    def __init__(self, vector_size):
+    def __init__(self, vector_size: int) -> None:
         self.vector_size = vector_size
 
-    def word_vec(self, w):
+    def word_vec(self, w: str) -> np.ndarray:
         return np.random.randn(self.vector_size)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> np.ndarray:
         return self.word_vec(key)
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--embeddings', type=Path)
     parser.add_argument('--model', type=Path)
@@ -35,7 +39,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def get_fingerprints(embeddings, filenames):
+def get_fingerprints(embeddings: Path, filenames: Iterable[str]) -> np.ndarray:
     wv = load_embeddings(embeddings)
     txt_folder = DATA_DIR / 'txt'
     fingerprints = []
@@ -47,10 +51,12 @@ def get_fingerprints(embeddings, filenames):
     return np.stack(fingerprints)
 
 
-def get_model_representations(model, split):
+def get_model_representations(model_path: Path, split: str) -> np.ndarray:
+    model = load_model(str(model_path))
     representation_model = Model(inputs=model.input,
-                                 outputs=model.get_layer('vector_representation').output)
-    w2i = make_w2i(4000)
+                                 outputs=model.get_layer(REPRESENTATION_LAYER).output)
+    w2i_path = model_path.parent / (model_path.stem + '_w2i.pkl')
+    w2i = pickle.load(w2i_path.open('rb'))
     (x,) = words_to_sequences(700, [split], w2i)
     return representation_model.predict(x)
 
@@ -63,8 +69,7 @@ def main():
     if args.embeddings:
         representations = get_fingerprints(args.embeddings, meta.filename)
     elif args.model:
-        model = load_model(str(args.model))
-        representations = get_model_representations(model, args.split)
+        representations = get_model_representations(args.model, args.split)
 
     cefr_list = CEFR_LABELS
     testlevel_list = sorted(meta.testlevel.unique())

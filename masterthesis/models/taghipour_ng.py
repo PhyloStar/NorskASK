@@ -1,6 +1,7 @@
 import argparse
 import os
 from pathlib import Path
+import pickle
 import tempfile
 
 from keras import backend as K
@@ -20,7 +21,7 @@ from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.layers import GlobalAveragePooling1D
 from masterthesis.models.report import report
 from masterthesis.results import save_results
-from masterthesis.utils import DATA_DIR, load_split
+from masterthesis.utils import ATTENTION_LAYER, DATA_DIR, load_split, REPRESENTATION_LAYER
 
 
 conll_folder = DATA_DIR / 'conll'
@@ -34,6 +35,7 @@ EMB_LAYER_NAME = 'embedding_layer'
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--round-cefr', action='store_true')
+    parser.add_argument('--save-model', action='store_true')
     parser.add_argument('--vocab-size', type=int, default=4000)
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--embed-dim', type=int, default=50)
@@ -69,7 +71,7 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: int,
         # compute importance for each step
         attention = TimeDistributed(Dense(1, activation='tanh'))(dropout)
         attention = Flatten()(attention)
-        attention = Activation('softmax')(attention)
+        attention = Activation('softmax', name=ATTENTION_LAYER)(attention)
         attention = RepeatVector(units)(attention)
         attention = Permute([2, 1])(attention)
 
@@ -77,7 +79,7 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: int,
         sent_representation = Multiply()([dropout, attention])
         pooled = Lambda(lambda xin: K.sum(xin, axis=1))(sent_representation)
     else:
-        pooled = GlobalAveragePooling1D()(dropout)
+        pooled = GlobalAveragePooling1D(name=REPRESENTATION_LAYER)(dropout)
 
     output = Dense(num_classes, activation='softmax')(pooled)
     return Model(inputs=[input_], outputs=[output])
@@ -131,6 +133,10 @@ def main():
     model.load_weights(weights_path)
     os.close(temp_handle)
     os.remove(weights_path)
+
+    if args.save_model:
+        model.save('rnn_model.h5')
+        pickle.dump(w2i, open('rnn_model_w2i.pkl', 'wb'))
 
     predictions = model.predict(dev_x)
 

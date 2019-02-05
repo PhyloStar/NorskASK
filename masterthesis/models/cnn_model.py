@@ -1,9 +1,8 @@
 import argparse
-from itertools import chain
 import os
 from pathlib import Path
+import pickle
 import tempfile
-from typing import Iterable, List
 
 from keras.layers import (
     Concatenate, Conv1D, Dense, Dropout, Embedding, GlobalAveragePooling1D, GlobalMaxPooling1D,
@@ -12,7 +11,6 @@ from keras.layers import (
 from keras.models import Model
 from keras.utils import to_categorical
 import numpy as np
-import pandas as pd
 
 from masterthesis.features.build_features import (
     make_pos2i, make_w2i, pos_to_sequences, words_to_sequences
@@ -20,28 +18,7 @@ from masterthesis.features.build_features import (
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.results import save_results
-from masterthesis.utils import conll_reader, load_split
-
-
-def iter_all_tokens(train) -> Iterable[str]:
-    """Yield all tokens"""
-    for seq in iter_all_docs(train):
-        for token in seq:
-            yield token
-
-
-def iter_all_docs(split: pd.DataFrame, column='UPOS') -> Iterable[List[str]]:
-    """Iterate over all docs in the split.
-
-    yields:
-        Each document as a list of lists of tuples of the given column
-    """
-    for filename in split.filename:
-        filepath = Path('ASK/conll') / (filename + '.conll')
-        cr = conll_reader(filepath, [column], tags=True)
-        # Only using a single column, extract the value
-        tokens = (tup[0] for tup in chain.from_iterable(cr))
-        yield list(tokens)
+from masterthesis.utils import load_split, REPRESENTATION_LAYER
 
 
 def parse_args():
@@ -79,7 +56,7 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: int, num_pos
             GlobalAveragePooling1D()(conv_layer),
             GlobalMaxPooling1D()(conv_layer)
         ])
-    merged = Concatenate(name='vector_representation')(pooled_feature_maps)
+    merged = Concatenate(name=REPRESENTATION_LAYER)(pooled_feature_maps)
     dropout_layer = Dropout(0.5)(merged)
     output_layer = Dense(num_classes, activation='softmax')(dropout_layer)
     model = Model(inputs=inputs, outputs=output_layer)
@@ -125,6 +102,7 @@ def main():
 
     if args.save_model:
         model.save('cnn_model.h5')
+        pickle.save('cnn_model_w2i.pkl')
 
     predictions = model.predict(dev_x)
     true = np.argmax(dev_y, axis=1)

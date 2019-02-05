@@ -37,7 +37,7 @@ banks are concatenated into a single vector.
     \toprule
     Model     & Macro F1        & Micro F1        \\
     \midrule
-    Tokens    &         0000\%  &         0000\%  \\
+    Tokens    &         36.7\%  &         36.6\%  \\
     +POS      & \textbf{46.7\%} & \textbf{46.3\%} \\
     \bottomrule
   \end{tabular}
@@ -137,6 +137,8 @@ output from tha backwards \ac{LSTM} after processing the inputs $(x_m,
 x_{m-1}, \ldots, x_j)$, $m$ being the total number of timesteps. The BiLSTM
 should therefore be able to extract context on both sides of a input
 timestep.
+
+\todo{Mean of the final state}
 
 The attention model uses an attention layer, which instead computes a
 weighted sum of the states, and therefore should be able in theory to

@@ -42,6 +42,9 @@ CEFR_LABELS = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
 ROUND_CEFR_LABELS = CEFR_LABELS[::2]
 LANG_LABELS = ['eng', 'pol', 'rus', 'som', 'spa', 'deu', 'vie']
 
+REPRESENTATION_LAYER = 'vector_representation'
+ATTENTION_LAYER = 'attention_layer'
+
 
 def heatmap(values: np.ndarray,
             xticks: Sequence[str],
