@@ -4,7 +4,7 @@ from pathlib import Path
 import pickle
 from typing import Iterable
 
-from keras.models import Model, load_model
+from keras.models import load_model, Model
 import numpy as np
 from sklearn.manifold import TSNE
 import tqdm

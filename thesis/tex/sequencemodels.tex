@@ -31,21 +31,6 @@ banks are concatenated into a single vector.
   \label{cnn-results}
 \end{table}
 
-\begin{table}
-  \centering
-  \begin{tabular}{|l|rr|}
-    \toprule
-    Model     & Macro F1        & Micro F1        \\
-    \midrule
-    Tokens    &         36.7\%  &         36.6\%  \\
-    +POS      & \textbf{46.7\%} & \textbf{46.3\%} \\
-    \bottomrule
-  \end{tabular}
-  \caption{F1 scores of CNN classifiers on NLI}
-  \label{cnn-nli-results}
-\end{table}
-
-
 \section{Recurrent neural networks}
 
 A \ac{LSTM} \ac{RNN} was implemented based on the architecture described by
@@ -189,3 +174,17 @@ different if the stopping criterion was mased on micro F1 instead of macro.
 \section{Native language identification}
 
 We train the same models to classify the documents by native language.
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|rr|}
+    \toprule
+    Model     & Macro F1        & Micro F1        \\
+    \midrule
+    Tokens    &         36.7\%  &         36.6\%  \\
+    +POS      & \textbf{46.7\%} & \textbf{46.3\%} \\
+    \bottomrule
+  \end{tabular}
+  \caption{F1 scores of CNN classifiers on NLI}
+  \label{cnn-nli-results}
+\end{table}

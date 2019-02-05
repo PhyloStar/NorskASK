@@ -27,6 +27,6 @@ module purge
 module use -a /projects/nlpl/software/modulefiles/
 module add nlpl-inf5820
 
-chkfile "results/"
+chkfile "results" "models"
 
 python -m masterthesis.models.taghipour_ng "$@"

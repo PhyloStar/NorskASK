@@ -4,6 +4,7 @@ safe_plt: A Pyplot that won't attempt to open a display if not available
 iso639_3: A mapping of Norwegian language names (as used in the data) to
     ISO639_3 codes.
 """
+import datetime as dt
 import itertools
 import os
 from pathlib import Path
@@ -206,3 +207,8 @@ def get_split_len(split: str) -> int:
     elif split in ('dev', 'test'):
         return 123
     raise ValueError("Unrecognized split '%s', should be 'train', 'dev' or 'test'" % split)
+
+
+def get_file_name(name: str) -> str:
+    timestamp = dt.datetime.utcnow().strftime('%m-%d_%H-%M-%S')
+    return name + '-' + timestamp

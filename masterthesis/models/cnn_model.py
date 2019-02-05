@@ -18,7 +18,7 @@ from masterthesis.features.build_features import (
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.results import save_results
-from masterthesis.utils import load_split, REPRESENTATION_LAYER
+from masterthesis.utils import get_file_name, load_split, MODEL_DIR, REPRESENTATION_LAYER
 
 
 def parse_args():
@@ -100,18 +100,21 @@ def main():
     os.close(temp_handle)
     os.remove(weights_path)
 
+    name = 'cnn'
+    if args.nli:
+        name = 'cnn-nli'
+    name = get_file_name(name)
+
     if args.save_model:
-        model.save('cnn_model.h5')
-        pickle.save('cnn_model_w2i.pkl')
+        model.save(str(MODEL_DIR / (name + '_model.h5')))
+        w2i_file = MODEL_DIR / (name + '_model_w2i.pkl')
+        pickle.dump(w2i, w2i_file.open('wb'))
 
     predictions = model.predict(dev_x)
     true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
     report(true, pred, labels)
 
-    name = 'cnn'
-    if args.nli:
-        name = 'cnn-nli'
     save_results(name, args.__dict__, history.history, true, pred)
 
 

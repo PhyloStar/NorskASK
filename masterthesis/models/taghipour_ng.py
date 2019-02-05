@@ -21,7 +21,9 @@ from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.layers import GlobalAveragePooling1D
 from masterthesis.models.report import report
 from masterthesis.results import save_results
-from masterthesis.utils import ATTENTION_LAYER, DATA_DIR, load_split, REPRESENTATION_LAYER
+from masterthesis.utils import (
+    ATTENTION_LAYER, DATA_DIR, get_file_name, load_split, MODEL_DIR, REPRESENTATION_LAYER
+)
 
 
 conll_folder = DATA_DIR / 'conll'
@@ -77,7 +79,8 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: int,
 
         # apply the attention
         sent_representation = Multiply()([dropout, attention])
-        pooled = Lambda(lambda xin: K.sum(xin, axis=1))(sent_representation)
+        pooled = Lambda(lambda xin: K.sum(xin, axis=1),
+                        name=REPRESENTATION_LAYER)(sent_representation)
     else:
         pooled = GlobalAveragePooling1D(name=REPRESENTATION_LAYER)(dropout)
 
@@ -134,19 +137,22 @@ def main():
     os.close(temp_handle)
     os.remove(weights_path)
 
+    name = 'rnn'
+    if args.nli:
+        name += '_nli'
+    name = get_file_name(name)
+
     if args.save_model:
-        model.save('rnn_model.h5')
-        pickle.dump(w2i, open('rnn_model_w2i.pkl', 'wb'))
+        model.save(str(MODEL_DIR / (name + '_model.h5')))
+        w2i_file = MODEL_DIR / (name + '_model_w2i.pkl')
+        pickle.dump(w2i, w2i_file.open('wb'))
 
     predictions = model.predict(dev_x)
 
     true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
     report(true, pred, labels)
-    result_prefix = 'taghipour_ng'
-    if args.nli:
-        result_prefix += '_nli'
-    save_results(result_prefix, args.__dict__, history.history, true, pred)
+    save_results(name, args.__dict__, history.history, true, pred)
 
 
 if __name__ == '__main__':

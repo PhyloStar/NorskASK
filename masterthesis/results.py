@@ -1,4 +1,3 @@
-import datetime as dt
 import pickle
 import subprocess
 from typing import Any, Dict
@@ -23,7 +22,6 @@ def save_results(script_name: str,
                  history,
                  true,
                  predictions):
-    timestamp = dt.datetime.utcnow().strftime('%Y-%m-%d_%H-%M-%S')
     try:
         result = subprocess.run(GIT_CMD, stdout=subprocess.PIPE)
         git_rev = result.stdout.decode().strip()
@@ -34,7 +32,7 @@ def save_results(script_name: str,
     if not RESULTS_DIR.is_dir():
         RESULTS_DIR.mkdir()
 
-    results_file = RESULTS_DIR / (script_name + '-' + timestamp + '.pkl')
+    results_file = RESULTS_DIR / (script_name + '.pkl')
     print(results_file)
     results_obj = Results(script_name, config, history, true, predictions, git_rev)
 

@@ -1,4 +1,5 @@
 from itertools import chain
+from pathlib import Path
 from typing import Callable, Iterable, List, Mapping
 try:
     from typing import Counter
@@ -120,3 +121,18 @@ def words_to_sequences(seq_len: int,
                        splits: Iterable[str],
                        w2i: Mapping[str, int]) -> List[np.ndarray]:
     return _x_to_sequences(seq_len, splits, w2i, iterate_docs)
+
+
+def file_to_sequence(seq_len: int, filepath: Path, w2i: Mapping[str, int]) -> np.ndarray:
+    x = np.zeros(seq_len, int)
+    with filepath.open() as f:
+        idx = 0
+        for line in f:
+            for token in line.strip().split():
+                if token not in w2i:
+                    token = '__UNK__'
+                x[idx] = w2i[token]
+                idx += 1
+                if idx >= seq_len:
+                    return x
+    return x
