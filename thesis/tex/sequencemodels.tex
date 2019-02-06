@@ -35,16 +35,18 @@ used tokens had a higher accuracy.
 
 \begin{table}
   \centering
-  \begin{tabular}{|l|rr|rr|}
+  \begin{tabular}{lrrrr}
     \toprule
-            & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
-    Model     & Macro F1        & Micro F1        & Macro F1        & Micro F1        \\
+            & \multicolumn{2}{c}{All labels} & \multicolumn{2}{c}{Collapsed labels} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
     \midrule
-    Tokens    &         23.4\%  &         41.5\%  &         42.3\%  & \textbf{79.7\%} \\
-    +POS      & \textbf{28.3\%} & \textbf{43.1\%} & \textbf{44.4\%} &         77.2\%  \\
+    Tokens    &         $0.234$  &         $0.415$  &         $0.423$  & $\mathbf{0.797}$ \\
+    +POS      & $\mathbf{0.283}$ & $\mathbf{0.431}$ & $\mathbf{0.444}$ &         $0.772$  \\
     \bottomrule
   \end{tabular}
-  \caption{F1 scores of CNN classifiers on AES}
+  \caption{\FI scores of CNN classifiers on AES}
   \label{cnn-results}
 \end{table}
 
@@ -60,7 +62,7 @@ was replaced with a softmax layer similar to the \acp{MLP} in section
 \ref{subsec:mlp}. The loss function needed to be compatible with a
 multi-class softmax output. We used categorical cross-entropy. A different
 evaluation metric was also needed because we are treating the task as
-multi-class prediction. We are reporting macro and micro F1 as before. The
+multi-class prediction. We are reporting macro and micro \FI as before. The
 \ac{QWK} metric used by \citeauthor{taghipour16} is not applicable to the
 predictions of our classifier.
 
@@ -75,7 +77,7 @@ different test levels in ASK, but these are not distinguished in training.
 
 \begin{equation}
   \begin{aligned}
-  s_j = R_{LSTM}(s_{j-1}, x_j) &= [c_j;h_j] \\
+  s_j = R_{\text{LSTM}}(s_{j-1}, x_j) &= [c_j;h_j] \\
                            c_j &= f \odot c_{j-1} + i \odot z \\
                            h_j &= o \odot \tanh(c_j) \\
                              i &= \sigma(x_j W^{xi} + b_i + h_{j-1} W^{hi}) \\
@@ -83,7 +85,7 @@ different test levels in ASK, but these are not distinguished in training.
                              o &= \sigma(x_j W^{xo} + b_o + h_{j-1} W^{ho}) \\
                              z &= \tanh(x_j W^{xz} + b_z + h_{j-1} W^{hz}) \\
                              \\[1\jot]
-                 O_{LSTM}(s_j) &= h_j
+                 O_{\text{LSTM}}(s_j) &= h_j
   \end{aligned}
 \end{equation}
 \todo{Should the equations be in Background chapter?}
@@ -110,12 +112,12 @@ defined below:
 
 \begin{equation}
   \begin{aligned}
-  s_j = R_{GRU}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot \tilde{s_{j}} \\
+  s_j = R_{\text{GRU}}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot \tilde{s_{j}} \\
                             z &= \sigma(x_j W^{xz} + b_f + h_{j-1} W^{sz}) \\
                             r &= \sigma(x_j W^{xr} + b_i + h_{j-1} W^{sr}) \\
                  \tilde{s{j}} &= \tanh(x_j W^{xs} + b_z + (r \odot s{j-1}) W^{sg}) \\
   \\[1\jot]
-                 O_{GRU}(s_j) &= s_j
+                 O_{\text{GRU}}(s_j) &= s_j
   \end{aligned}
 \end{equation}
 
@@ -171,26 +173,28 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
 
 \begin{table}
   \centering
-  \begin{tabular}{|l|rr|rr|}
+  \begin{tabular}{lrrrr}
     \toprule
-            & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
-    Model     & Macro F1        & Micro F1        & Macro F1        & Micro F1        \\
+            & \multicolumn{2}{c}{All labels} & \multicolumn{2}{c}{Collapsed labels} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
     \midrule
-    Modified  &         26.7\%  & \textbf{46.3\%} &         49.6\%  &         72.4\%  \\
-    Mean/Time &         28.0\%  &         38.2\%  &         46.1\%  &         69.9\%  \\
-    BiLSTM    &         28.6\%  &         39.8\%  &         48.5\%  &         68.3\%  \\
-    Attention &         29.2\%  &         40.7\%  &         54.7\%  &         75.6\%  \\
-    PreTrain  & \textbf{30.3\%} &         42.3\%  & \textbf{55.8\%} & \textbf{80.5\%} \\
+    Modified  &         $0.267$  & $\mathbf{0.463}$ &         $0.496$  &         $0.724$  \\
+    Mean/Time &         $0.280$  &         $0.382$  &         $0.461$  &         $0.699$  \\
+    BiLSTM    &         $0.286$  &         $0.398$  &         $0.485$  &         $0.683$  \\
+    Attention &         $0.292$  &         $0.407$  &         $0.547$  &         $0.756$  \\
+    PreTrain  & $\mathbf{0.303}$ &         $0.423$  & $\mathbf{0.558}$ & $\mathbf{0.805}$ \\
     \bottomrule
   \end{tabular}
-  \caption{F1 scores of LSTM classifiers}
+  \caption{\FI scores of LSTM classifiers}
   \label{lstm-results}
 \end{table}
 
 The attention model performs best. While the modified model has the highest
-micro F1, the stopping criterion is based on the macro F1, and the micro F1
+micro \FI, the stopping criterion is based on the macro \FI, and the micro \FI
 scores are not necessarily comparable\textemdash the ranking of models might
-be different if the stopping criterion was mased on micro F1 instead of
+be different if the stopping criterion was mased on micro \FI instead of
 macro.
 
 \todo{Analysis of attention model}
@@ -208,30 +212,30 @@ see that the attention model outperforms the rest.
 
 \begin{table}
   \centering
-  \begin{tabular}{|l|rr|}
+  \begin{tabular}{lrr}
     \toprule
-    Model     & Macro F1        & Micro F1        \\
+    Model     & Macro \FI      & Micro \FI \\
     \midrule
-    Tokens    &         36.7\%  &         36.6\%  \\
-    +POS      & \textbf{46.7\%} & \textbf{46.3\%} \\
+    Tokens    &         $0.367$  &         $0.366$  \\
+    +POS      & $\mathbf{0.467}$ & $\mathbf{0.463}$ \\
     \bottomrule
   \end{tabular}
-  \caption{F1 scores of CNN classifiers on NLI}
+  \caption{\FI scores of CNN classifiers on NLI}
   \label{cnn-nli-results}
 \end{table}
 
 \begin{table}
   \centering
-  \begin{tabular}{|l|rr|}
+  \begin{tabular}{lrr}
     \toprule
-    Model     & Macro F1        & Micro F1        \\
+    Model     & Macro \FI      & Micro \FI \\
     \midrule
-    Mean/Time &         41.0\%  &         43.1\%  \\
-    BiLSTM    &         47.0\%  &         47.2\%  \\
-    Attention & \textbf{47.8\%} & \textbf{48.0\%} \\
+    Mean/Time &         $0.410$  &         $0.431$  \\
+    BiLSTM    &         $0.470$  &         $0.472$  \\
+    Attention & $\mathbf{0.478}$ & $\mathbf{0.480}$ \\
     \bottomrule
   \end{tabular}
-  \caption{F1 scores of RNN classifiers on NLI}
+  \caption{\FI scores of RNN classifiers on NLI}
   \label{rnn-nli-results}
 \end{table}
 \todo{Include POS in RNN models}
@@ -248,6 +252,6 @@ the blue sections.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{nli-attention}
-  \caption{Distributions of essay lengths for CEFR scores on each test level}
+  \caption{Attention values of NLI classifier on excerpt from ASK text h0131}
   \label{fig:nli-attention}
 \end{figure}

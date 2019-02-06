@@ -34,12 +34,12 @@ tagset.
 
 Because of the unbalanced nature of the classes in the dataset, special
 consideration has to be made as to the metrics of evaluation. Two metrics are
-reported for all experiments: The macro average F1 and the micro average F1.
+reported for all experiments: The macro average \FI and the micro average \FI.
 The latter is equivalent to the accuracy (ratio of correctly predicted
 samples), while the former gives all the classes equal weight. If a model
 correctly classifies most samples in the classes with most samples, but gives
-poor predictions for smaller classes, then the macro F1 score for the model
-will be considerably lower than the micro F1 score.
+poor predictions for smaller classes, then the macro \FI score for the model
+will be considerably lower than the micro \FI score.
 
 The metrics are reported for two different modes: The first utilizing the
 full set of classes, and the second training and evaluating on the collapsed
@@ -64,11 +64,12 @@ classification method, and \acp{MLP}, which are simple neural networks.
 
 The logistic regression model was implemented using the Python library
 Scikit-Learn \autocite{scikit-learn}. The model was instantiated with the
-`lgbfs' solver and with multinomial as the multiclass method, and otherwise
-used the default values for parameters.
+`lgbfs' solver to minimize multinomial loss. No regularization was used, and
+the optimizer was set to run for a maximum of 100 iterations.
 
 This model used word count vectors as features. All tokens in the training set
-were included.
+were included, totalling 18,305 different forms. This is then the dimensionality
+of the input vectors.
 
 
 \subsection{Multi-layer perceptron}
@@ -114,46 +115,45 @@ As a dumb baseline, we consider the majority class classifier. The majority
 class in the training set is ``B1'', whether we consider the full class set
 or the collapsed set. A majority classifier gets an accuracy of 18.7\% on the
 test set using non-collapsed labels. With the collapsed labels, the accuracy
-on the test set is 34.1\%. The macro F1 scores are much lower, as the
+on the test set is 34.1\%. The macro \FI scores are much lower, as the
 majority class classifier predicts no samples for any other classes.
 
 Moving to a linear model, a logistic regression classifier using only
 bag-of-word features achieves an accuracy of 28.5\% on the dev set without
-collapsed labels and 58.5\% with collapsed labels. There are approximately
-18,300 different word forms in the training set, and therefore the same
-number of features in the bag-of-word model.
-
-All results are seen in table \ref{baseline-accuracies}.
+collapsed labels and 58.5\% with collapsed labels. 
 
 \begin{table}
   \centering
-  \begin{tabular}{|l|rr|rr|}
+  \begin{tabular}{lrrrr}
     \toprule
-             & \multicolumn{2}{c|}{All labels} & \multicolumn{2}{c|}{Collapsed labels} \\
-    Model      & Macro F1        & Micro F1        & Macro F1        & Micro F1       \\
+             & \multicolumn{2}{c}{All labels} & \multicolumn{2}{c}{Collapsed labels} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    Model      & Macro \FI       & Micro \FI       & Macro \FI       & Micro \FI      \\
     \midrule
-    Majority   &          4.0\%  &         16.3\%  &         12.7\%  &         34.1\% \\
-    LogReg BOW &         17.9\%  &         28.5\%  &         31.9\%  &         58.5\% \\
-    MLP BOW    &         22.1\%  &         35.0\%  &         41.0\%  &         64.2\% \\
-    MLP Char   &         20.3\%  &         36.6\%  &         36.8\%  & \textbf{70.7\%} \\
-    MLP POS    & \textbf{25.4\%} & \textbf{39.0\%} & \textbf{42.5\%} &         69.1\% \\
+    Majority   &         $0.040$  &         $0.163$  &         $0.127$  &         $0.341$ \\
+    LogReg BOW &         $0.179$  &         $0.285$  &         $0.319$  &         $0.585$ \\
+    MLP BOW    &         $0.221$  &         $0.350$  &         $0.410$  &         $0.642$ \\
+    MLP Char   &         $0.203$  &         $0.366$  &         $0.368$  & $\mathbf{0.707}$ \\
+    MLP POS    & $\mathbf{0.254}$ & $\mathbf{0.390}$ & $\mathbf{0.425}$ &         $0.691$ \\
     \bottomrule
   \end{tabular}
-  \caption{F1 scores of different classifiers}
+  \caption{\FI scores of different classifiers}
   \label{baseline-accuracies}
 \end{table}
 
-The part of speech \ngrams performed best overall, having the highest F1 score
+All results are seen in table \ref{baseline-accuracies}.
+The part of speech \ngrams performed best overall, having the highest \FI score
 for the full label set, both for macro and micro average. On the collapsed set
-of labels, the part of speech \ngrams had the highest macro F1 score, but were
-beat in micro F1 by the character \ngrams.
+of labels, the part of speech \ngrams had the highest macro \FI score, but were
+beat in micro \FI by the character \ngrams.
 
 Confusion matrices from MLP POS:
 \todo{Replace tables with heatmaps}
 
 \begin{table}
   \centering
-  \begin{tabular}{|l|rrrrrrr|}
+  \begin{tabular}{lrrrrrrr}
     \toprule
           & A2 & A2/B1 & B1 & B1/B2 & B2 & B2/C1 & C1 \\
     \midrule
@@ -172,7 +172,7 @@ Confusion matrices from MLP POS:
 
 \begin{table}
   \centering
-  \begin{tabular}{|l|rrrr|}
+  \begin{tabular}{lrrrr}
     \toprule
        & A2 & B1 & B2 & C1 \\
     \midrule

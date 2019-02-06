@@ -319,9 +319,9 @@ The author trained a number of different models using different subsets of
 the features. All models are linear classifiers trained with the Sequential
 Minimal Optimization algorithm, a variant of support vector machines. The
 model that achieved highest accuracy in the study was one that incorporated
-all the features, yielding an accuracy of 73.2~\% on TOEFL11. Removing the
+all the features, yielding an accuracy of 73.2\% on TOEFL11. Removing the
 prompt and L1 as features resulted in a tiny drop in accuracy down to
-73.0~\%.
+73.0\%.
 
 The length of the text turned out to be one of the most informative features
 in both the datasets used. However, text length correlated positively with
@@ -351,18 +351,19 @@ written data only, are considered below.
 
 The written documents in the task was English L2 essays, written by learners
 with 11 different L1s. The best-performing system in the track using only
-written essays had a macro-averaged F1 score of 0.8818, using stacked
+written essays had a macro-averaged \FI score of $0.8818$, using stacked
 classifiers combining logistic regression on sentences with a \ac{SVM}
 meta-classifier \autocite{cimino17}.
 
 The best performing team which used neural networks was \textcite{li17}, who
-used a multi-layer perceptron meta-classifier to combine outputs from \ac{SVM}
-base classifiers, and reported a F1 score of 0.8654. Another team
-experimented with different neural network architectures, including \acp{RNN} and
-a \ac{CNN} variant known as a deep residual network \autocite{bjerva2017neural}.
-Their best result was with a stacked model, combining their different models
-with an \ac{SVM} meta-classifier. Their best ensemble model achieved a F1 score of
-0.8323, and used no external resources, i.e. no pre-trained embeddings.
+used a multi-layer perceptron meta-classifier to combine outputs from
+\ac{SVM} base classifiers, and reported a \FI score of $0.8654$. Another team
+experimented with different neural network architectures, including \acp{RNN}
+and a \ac{CNN} variant known as a deep residual network
+\autocite{bjerva2017neural}. Their best result was with a stacked model,
+combining their different models with an \ac{SVM} meta-classifier. Their best
+ensemble model achieved a \FI score of $0.8323$, and used no external
+resources, i.e. no pre-trained embeddings.
 
 
 \subsubsection{NLI for Norwegian}
