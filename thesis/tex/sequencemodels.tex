@@ -182,8 +182,10 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     \midrule
     Modified  &         $0.267$  & $\mathbf{0.463}$ &         $0.496$  &         $0.724$  \\
     Mean/Time &         $0.280$  &         $0.382$  &         $0.461$  &         $0.699$  \\
+    %           taghipour_ng-2019-01-22_12-58-00      taghipour_ng-2019-01-22_13-01-44
     BiLSTM    &         $0.286$  &         $0.398$  &         $0.485$  &         $0.683$  \\
     Attention &         $0.292$  &         $0.407$  &         $0.547$  &         $0.756$  \\
+    %           taghipour_ng-2019-01-24_19-16-41      taghipour_ng-2019-01-24_21-23-34
     PreTrain  & $\mathbf{0.303}$ &         $0.423$  & $\mathbf{0.558}$ & $\mathbf{0.805}$ \\
     \bottomrule
   \end{tabular}
@@ -216,8 +218,8 @@ see that the attention model outperforms the rest.
     \toprule
     Model     & Macro \FI      & Micro \FI \\
     \midrule
-    Tokens    &         $0.367$  &         $0.366$  \\
-    +POS      & $\mathbf{0.467}$ & $\mathbf{0.463}$ \\
+    Tokens    &         $0.367$  &         $0.366$  \\ % cnn-nli-2019-02-05_12-54-51
+    +POS      & $\mathbf{0.467}$ & $\mathbf{0.463}$ \\ % cnn-nli-2019-01-30_15-32-28
     \bottomrule
   \end{tabular}
   \caption{\FI scores of CNN classifiers on NLI}
@@ -230,9 +232,9 @@ see that the attention model outperforms the rest.
     \toprule
     Model     & Macro \FI      & Micro \FI \\
     \midrule
-    Mean/Time &         $0.410$  &         $0.431$  \\
-    BiLSTM    &         $0.470$  &         $0.472$  \\
-    Attention & $\mathbf{0.478}$ & $\mathbf{0.480}$ \\
+    Mean/Time &         $0.410$  &         $0.431$  \\ % rnn_nli-25717034
+    BiLSTM    &         $0.470$  &         $0.472$  \\ % rnn_nli-25717033
+    Attention & $\mathbf{0.478}$ & $\mathbf{0.480}$ \\ % rnn_nli-25717032
     \bottomrule
   \end{tabular}
   \caption{\FI scores of RNN classifiers on NLI}

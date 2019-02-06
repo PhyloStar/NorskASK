@@ -110,7 +110,10 @@ def main():
 
     if args.vectors:
         if not args.vectors.is_file():
-            print('Embeddings path not available')
+            print('Embeddings path not available, searching for submitdir')
+            if 'SUBMITDIR' in os.environ:
+                args.vectors = Path(os.environ['SUBMITDIR'] / args.vectors)
+            print('New path: %r' % args.vectors)
         else:
             kv = load_embeddings(args.vectors, fasttext=args.fasttext)
             embeddings_matrix = np.zeros((vocab_size, 50))
