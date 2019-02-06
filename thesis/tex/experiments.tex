@@ -75,16 +75,16 @@ were included.
 \label{subsec:mlp}
 
 The MLP models were implementing in Keras \autocite{keras} and run on the
-TensorFlow backend \autocite{tensorflow}. The models all have an input layer
-with 10,000 dimensions, then two fully connected layers of size 256. The
-fully connected layers use \ac{ReLU} activation and dropout regularization
-with a dropout rate of 50\%. At the end, there is an output layer with
-softmax activation and 7 or 4 dimensions, depending on whether we run with
-collapsed labels or not.
+TensorFlow backend \autocite{tensorflow}. All the models the have an input
+layer with 10,000 dimensions, then two fully connected layers of size 256.
+The fully connected layers use \ac{ReLU} activation and dropout
+regularization with a dropout rate of 50\%. At the end, there is an output
+layer with softmax activation and 7 or 4 dimensions, depending on whether we
+run with collapsed labels or not.
 
-The model was trained using the Adam optimization algorithm to minimize the
-categorical cross-entropy loss. The learning rate was set to $2\cdot
-10^{-4}$.
+The model was trained using the Adam optimization algorithm
+\autocite{kingma2014adam} to minimize the categorical cross-entropy loss. The
+learning rate was set to $2\cdot 10^{-4}$.
 
 The neural network models were used with three different input features. For
 word count vectors, the input is identical as for the logistic regression,
@@ -149,6 +149,7 @@ of labels, the part of speech \ngrams had the highest macro F1 score, but were
 beat in micro F1 by the character \ngrams.
 
 Confusion matrices from MLP POS:
+\todo{Replace tables with heatmaps}
 
 \begin{table}
   \centering

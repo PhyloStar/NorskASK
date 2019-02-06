@@ -9,11 +9,11 @@ truncated. In order to decide this, we examined the distribution of document
 lengths in the training set. All subsequent values are rounded to the nearest
 integer. First, we found the 95th percentile of document lengths, which
 turned out to be 701 tokens. Then, we computed the value $Q_2 + 1.5 \cdot
-(Q_3 - Q_1)$, or the median plus the interquartile range, which gives 693
-tokens. Finally, we computed the mean value plus two standard deviations,
-giving 707 tokens. These values are all close to each other, and we decided
-to settle on 700 tokens since it is a round number close to all values we
-examined.
+(Q_3 - Q_1)$, or the median plus 1.5 times the interquartile range, which
+gives 693 tokens. Finally, we computed the mean value plus two standard
+deviations, giving 707 tokens. These values are all close to each other, and
+we decided to settle on 700 tokens since it is a round number close to all
+values we examined.
 
 
 \section{Convolutional neural networks}

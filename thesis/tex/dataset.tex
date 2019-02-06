@@ -135,8 +135,8 @@ within each test level the higher scoring essays are generally longer. Note
 that even for the same CEFR score, the essays from the higher test level are
 considerably longer. As an example, consider the \emph{B1/B2} score, which is
 the most evenly distributed between the two test levels (101 essays in
-\emph{IL test}, 131 in \emph{AL test}). More than 75~\% of these texts on
-the lower test level have fewer than 400 tokens, and more than 75~\% on the
+\emph{IL test}, 131 in \emph{AL test}). More than 75\% of these texts on
+the lower test level have fewer than 400 tokens, and more than 75\% on the
 higher level are longer than 400 tokens.
 
 \begin{figure}
@@ -167,9 +167,9 @@ The split was chosen in order to have the right proportion of documents in
 each part of the split, and so the distribution of proficiency and native
 language is as similar as possible across the separate parts of the data
 split. Specifically, the split was found by running an evolutionary algorithm
-with fitness function favouring splits close to 8:1:1 in proportion, where
-the Kullback-Leibler divergence of the proficiency and language distributions
-against the entire corpus were low.
+with a fitness function favouring splits that were as close as possible to
+8:1:1 in proportion, while maintaining a low Kullback-Leibler divergence of
+the proficiency and language distributions against the entire corpus.
 
 \begin{table}
   \centering
@@ -197,9 +197,14 @@ against the entire corpus were low.
                              &             folk følelser \\
     \bottomrule
   \end{tabular}
-  \caption{The topics chosen to be in each of the dev and test sets}
+  \caption{The topics chosen to be in each of the development and test sets}
   \label{topics-in-split}
 \end{table}
 
 The split in terms of the topics can be seen in table \ref{topics-in-split}.
-The dev and test sets contain 123 texts each.
+The dev and test sets contain 123 texts each. The topic variable has values
+which are sets of keywords, and therefore there is still topical overlap
+between splits. For example, ``økonomi'' (economy) and ``økonomi holdning''
+(economy attitude) are considered separate values and assigned to different
+splits, even though both topics include the economy keyword.
+
