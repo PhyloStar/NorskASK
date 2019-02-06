@@ -167,6 +167,7 @@ Results for four different models are shown in table \ref{lstm-results}. All
 but \emph{Modified} are using the same hyperparameters as
 \citeauthor{taghipour16}. The \emph{Attention} model does not use masking,
 while \emph{Mean/Time} and \emph{BiLSTM} do.
+\todo{Always use pre-trained embeddings when repeating the experiments?}
 
 \begin{table}
   \centering
@@ -202,6 +203,9 @@ We train the same models to classify the documents by native language. The
 performance of a \ac{CNN} model improved drastically when including \ac{POS}
 tags as input, as evident in table \ref{cnn-nli-results}.
 
+The \ac{RNN} model was able to achieve even better performance, and we still
+see that the attention model outperforms the rest.
+
 \begin{table}
   \centering
   \begin{tabular}{|l|rr|}
@@ -215,3 +219,35 @@ tags as input, as evident in table \ref{cnn-nli-results}.
   \caption{F1 scores of CNN classifiers on NLI}
   \label{cnn-nli-results}
 \end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|rr|}
+    \toprule
+    Model     & Macro F1        & Micro F1        \\
+    \midrule
+    Mean/Time &         41.0\%  &         43.1\%  \\
+    BiLSTM    &         47.0\%  &         47.2\%  \\
+    Attention & \textbf{47.8\%} & \textbf{48.0\%} \\
+    \bottomrule
+  \end{tabular}
+  \caption{F1 scores of RNN classifiers on NLI}
+  \label{rnn-nli-results}
+\end{table}
+\todo{Include POS in RNN models}
+
+The attention model allows us to visualize the weights the network gives to
+each token in a document. Figure \ref{fig:nli-attention} shows the first 300
+tokens of a text which was correctly predicted to be written by a native Polish
+speaker. Red tokens indicate timesteps that were given higher weight by the attention
+model, and blue tokens ones that were given low weights. Out of vocabulary tokens
+are replaced by question mark emoji. The attention values do not seem easily
+interpretable, as there are lexical and grammatical errors both in the red and
+the blue sections.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{nli-attention}
+  \caption{Distributions of essay lengths for CEFR scores on each test level}
+  \label{fig:nli-attention}
+\end{figure}
