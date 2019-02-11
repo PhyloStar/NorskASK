@@ -55,7 +55,7 @@ design and hand-crafting features. On the other hand, feature representations
 such as word embeddings are important.
 
 
-\subsection{Neural networks}
+\section{Neural networks}
 
 Neural networks is a family of machine learning models. These models are
 based upon units often referred to as ``neurons'', which are capable of
@@ -71,35 +71,39 @@ It is only capable of calculating a weighted sum across a feature vector and
 applying a threshold function. This threshold function is not differentiable,
 and the perceptron is therefore not trained with backpropagation.
 Historically, one of the most used activation functions is the sigmoid
-function: \(\sigma(x) = {(1 + e^{-x})^{-1}}\). Nowadays, one of the most
+function (Eq. \ref{eq:sigmoid}). Nowadays, one of the most
 common activations is the \ac{ReLU}: \(f(x) = \max(x, 0)\). \ac{ReLU} is,
 strictly speaking, not differentiable, because of its hinge at $x = 0$.
 Regardless it works well in practice, since almost all pre-activation values
 will be different from zero. The zero case can be treated as a special case,
 to avoid undefined values.
 
-\subsubsection{Multi-layer perceptron}
+\begin{equation} \label{eq:sigmoid}
+  \sigma(x) = {1\over{1 + e^{-x}}}
+\end{equation}
+
+\subsection{Multi-layer perceptron}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{graph}
   \caption{A fully connected feed-forward neural network with four input
   nodes, two hidden layers, and three output nodes.}
-  \label{mlp-diagram}
+  \label{fig:mlp-diagram}
 \end{figure}
 
 The ``vanilla'' neural network is the feed-forward network, also known as the
 \ac{MLP}. This model incorporates one or more
 hidden layer in-between the input layer (the feature vector) and the output
 layer. A diagram of an example \ac{MLP} with two hidden layers can be seen in
-figure \ref{mlp-diagram}. For multi-class prediction, the output layer
+figure \ref{fig:mlp-diagram}. For multi-class prediction, the output layer
 typically uses a \emph{softmax} activation. This has the property of
 restricting each output value to be in the interval $(0,1)$, and additionally
 makes sure all output values sum to $1$. These properties allow the outputted
 values to be interpreted as a probability distribution.
 
 
-\subsubsection{Convolutional neural networks}
+\subsection{Convolutional neural networks}
 
 \acp{CNN} can exploit local patterns in the input,
 unlike the \ac{MLP}, which has no way to identify elements of the input layer as
@@ -117,7 +121,7 @@ into two dimensions, for example by replacing each word by an embedding
 vector.
 
 
-\subsubsection{Recurrent neural networks}
+\subsection{Recurrent neural networks}
 
 \acp{RNN} are suited to sequential data. They make have an
 internal \emph{state} that is passed between time steps. A benefit of \acp{RNN} is
@@ -133,8 +137,50 @@ Mitigation techniques include replacing the units of the network with what's
 known as \emph{gated units}, that are especially designed to address these
 problems. \acp{GRU} and \acp{LSTM} are widely used gated units in RNNs.
 
+The equations in \ref{eq:lstm} define the LSTM cell. It computes three gates
+named $i$, $f$ and $o$, which are vectors with values between 0 and 1. The
+GRU cell, defined by the equations in \ref{eq:gru}, is slightly simpler. It
+computes only two gates, named $z$ and $r$. The $\sigma$ activation function
+can be a number of functions $\sigma : \mathbb{R} \rightarrow [0, 1]$, and is
+commonly the sigmoid (Eq. \ref{eq:sigmoid}) or hard sigmoid (Eq.
+\ref{eq:hardsigmoid}) function.
 
-\subsubsection{Natural language features}
+\begin{equation} \label{eq:hardsigmoid}
+  \sigma(x) = \begin{cases}
+    0                 & : x < -2.5 \\
+    0.2 \cdot x + 0.5 & : -2.5 \leq x \leq 2.5 \\
+    1                 & : x > 2.5
+  \end{cases}
+\end{equation}
+
+\begin{equation} \label{eq:lstm}
+  \begin{aligned}
+  s_j = R_{\text{LSTM}}(s_{j-1}, x_j) &= [c_j;h_j] \\
+                           c_j &= f \odot c_{j-1} + i \odot z \\
+                           h_j &= o \odot \tanh(c_j) \\
+                             i &= \sigma(x_j W^{xi} + b_i + h_{j-1} W^{hi}) \\
+                             f &= \sigma(x_j W^{xf} + b_f + h_{j-1} W^{hf}) \\
+                             o &= \sigma(x_j W^{xo} + b_o + h_{j-1} W^{ho}) \\
+                             z &= \tanh(x_j W^{xz} + b_z + h_{j-1} W^{hz}) \\
+                             \\[1\jot]
+                 O_{\text{LSTM}}(s_j) &= h_j
+  \end{aligned}
+\end{equation}
+\todo{Should vectors/matrices use bold font?}
+
+\begin{equation} \label{eq:gru}
+  \begin{aligned}
+  s_j = R_{\text{GRU}}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot \tilde{s_{j}} \\
+                            z &= \sigma(x_j W^{xz} + b_f + h_{j-1} W^{sz}) \\
+                            r &= \sigma(x_j W^{xr} + b_i + h_{j-1} W^{sr}) \\
+                 \tilde{s{j}} &= \tanh(x_j W^{xs} + b_z + (r \odot s{j-1}) W^{sg}) \\
+  \\[1\jot]
+                 O_{\text{GRU}}(s_j) &= s_j
+  \end{aligned}
+\end{equation}
+
+
+\subsection{Natural language features}
 
 For applications of machine learning in \ac{NLP}, we often want to use the words
 in a document as features. However, the vast number of different words in a

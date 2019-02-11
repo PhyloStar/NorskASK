@@ -117,7 +117,7 @@ def main():
             print('Embeddings path not available, searching for submitdir')
         else:
             kv = load_embeddings(args.vectors, fasttext=args.fasttext)
-            embeddings_matrix = np.zeros((vocab_size, 50))
+            embeddings_matrix = np.zeros((vocab_size, args.embed_dim))
             print('Making embeddings:')
             for word, idx in tqdm(w2i.items(), total=len(w2i)):
                 vec = kv.word_vec(word)

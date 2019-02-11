@@ -30,7 +30,7 @@ each of the filter banks are concatenated into a single vector.
 
 The \ac{CNN} classifier that used both tokens and POS tags as input performed
 better than the one which only used tokens as input, as seen in table
-\ref{cnn-results}. However, on the collapsed label set, the model which only
+\ref{tab:cnn-results}. However, on the collapsed label set, the model which only
 used tokens had a higher accuracy.
 
 \begin{table}
@@ -47,7 +47,7 @@ used tokens had a higher accuracy.
     \bottomrule
   \end{tabular}
   \caption{\FI scores of CNN classifiers on AES}
-  \label{cnn-results}
+  \label{tab:cnn-results}
 \end{table}
 
 
@@ -75,51 +75,17 @@ contained essays that were not necessarily written in a second language. Our
 data is not split into different parts based on the prompt. There are two
 different test levels in ASK, but these are not distinguished in training.
 
-\begin{equation}
-  \begin{aligned}
-  s_j = R_{\text{LSTM}}(s_{j-1}, x_j) &= [c_j;h_j] \\
-                           c_j &= f \odot c_{j-1} + i \odot z \\
-                           h_j &= o \odot \tanh(c_j) \\
-                             i &= \sigma(x_j W^{xi} + b_i + h_{j-1} W^{hi}) \\
-                             f &= \sigma(x_j W^{xf} + b_f + h_{j-1} W^{hf}) \\
-                             o &= \sigma(x_j W^{xo} + b_o + h_{j-1} W^{ho}) \\
-                             z &= \tanh(x_j W^{xz} + b_z + h_{j-1} W^{hz}) \\
-                             \\[1\jot]
-                 O_{\text{LSTM}}(s_j) &= h_j
-  \end{aligned}
-\end{equation}
-\todo{Should the equations be in Background chapter?}
-\todo{Should vectors/matrices use bold font?}
-
 where $\sigma$ by default in Keras is the \emph{Hard sigmoid} activation
-function, chosen because it is computationally more efficient than the proper
-sigmoid function:
-
-\begin{equation}
-  \sigma(x) = \begin{cases}
-    0                 & : x < -2.5 \\
-    0.2 \cdot x + 0.5 & : -2.5 \leq x \leq 2.5 \\
-    1                 & : x > 2.5
-  \end{cases}
-\end{equation}
+function, chosen because it is computationally more efficient than the
+sigmoid function, and defined in equation \ref{eq:hardsigmoid}.
 
 We also experimented with a different type of \ac{RNN} cell, the \ac{GRU}.
-This variant of \ac{CNN} is a little simpler than the \ac{LSTM}, featuring
+This variant of \ac{RNN} is slightly simpler than the \ac{LSTM}, featuring
 only two gates. However, it is still designed to be able to propagate the
 error gradient over a larger number of timesteps and is supposed to solve the
 same problems as \ac{LSTM}. The equations defining a \ac{GRU} layer are
-defined below:
+defined in equation \ref{eq:gru}:
 
-\begin{equation}
-  \begin{aligned}
-  s_j = R_{\text{GRU}}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot \tilde{s_{j}} \\
-                            z &= \sigma(x_j W^{xz} + b_f + h_{j-1} W^{sz}) \\
-                            r &= \sigma(x_j W^{xr} + b_i + h_{j-1} W^{sr}) \\
-                 \tilde{s{j}} &= \tanh(x_j W^{xs} + b_z + (r \odot s{j-1}) W^{sg}) \\
-  \\[1\jot]
-                 O_{\text{GRU}}(s_j) &= s_j
-  \end{aligned}
-\end{equation}
 
 
 \subsection{Variants}
@@ -165,7 +131,7 @@ vocabulary was limited to the 4,000 most common words.
 
 \subsection{Results}
 
-Results for four different models are shown in table \ref{lstm-results}. All
+Results for four different models are shown in table \ref{tab:lstm-results}. All
 but \emph{Modified} are using the same hyperparameters as
 \citeauthor{taghipour16}. The \emph{Attention} model does not use masking,
 while \emph{Mean/Time} and \emph{BiLSTM} do.
@@ -180,17 +146,25 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     \cmidrule(lr){4-5}
     Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
     \midrule
-    Modified  &         $0.267$  & $\mathbf{0.463}$ &         $0.496$  &         $0.724$  \\
+    % 50 dim, pretrained, fine tune
+    %
     Mean/Time &         $0.280$  &         $0.382$  &         $0.461$  &         $0.699$  \\
     %           taghipour_ng-2019-01-22_12-58-00      taghipour_ng-2019-01-22_13-01-44
     BiLSTM    &         $0.286$  &         $0.398$  &         $0.485$  &         $0.683$  \\
-    Attention &         $0.292$  &         $0.407$  &         $0.547$  &         $0.756$  \\
     %           taghipour_ng-2019-01-24_19-16-41      taghipour_ng-2019-01-24_21-23-34
-    PreTrain  & $\mathbf{0.303}$ &         $0.423$  & $\mathbf{0.558}$ & $\mathbf{0.805}$ \\
+    Attention & $\mathbf{0.303}$ &         $0.423$  & $\mathbf{0.558}$ & $\mathbf{0.805}$ \\
+    \midrule
+    % 100 dim, pretrained, fine tune
+    %
+    Mean/Time &         $0.280$  &         $0.382$  &         $0.461$  &         $0.699$  \\
+    %
+    BiLSTM    &         $0.286$  &         $0.398$  &         $0.485$  &         $0.683$  \\
+    %
+    Attention & $\mathbf{0.303}$ &         $0.423$  & $\mathbf{0.558}$ & $\mathbf{0.805}$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of LSTM classifiers}
-  \label{lstm-results}
+  \label{tab:lstm-results}
 \end{table}
 
 The attention model performs best. While the modified model has the highest
@@ -207,7 +181,7 @@ macro.
 
 We train the same models to classify the documents by native language. The
 performance of a \ac{CNN} model improved drastically when including \ac{POS}
-tags as input, as evident in table \ref{cnn-nli-results}.
+tags as input, as evident in table \ref{tab:cnn-nli-results}.
 
 The \ac{RNN} model was able to achieve even better performance, and we still
 see that the attention model outperforms the rest.
@@ -223,7 +197,7 @@ see that the attention model outperforms the rest.
     \bottomrule
   \end{tabular}
   \caption{\FI scores of CNN classifiers on NLI}
-  \label{cnn-nli-results}
+  \label{tab:cnn-nli-results}
 \end{table}
 
 \begin{table}
@@ -232,13 +206,13 @@ see that the attention model outperforms the rest.
     \toprule
     Model     & Macro \FI      & Micro \FI \\
     \midrule
-    Mean/Time &         $0.410$  &         $0.431$  \\ % rnn_nli-25717034
-    BiLSTM    &         $0.470$  &         $0.472$  \\ % rnn_nli-25717033
-    Attention & $\mathbf{0.478}$ & $\mathbf{0.480}$ \\ % rnn_nli-25717032
+    Mean/Time &         $0.379$  &         $0.390$  \\ % rnn_nli-25740792
+    BiLSTM    &         $0.468$  &         $0.480$  \\ % rnn_nli-25740786
+    Attention & $\mathbf{0.423}$ & $\mathbf{0.407}$ \\ % rnn_nli-25740789
     \bottomrule
   \end{tabular}
   \caption{\FI scores of RNN classifiers on NLI}
-  \label{rnn-nli-results}
+  \label{tab:rnn-nli-results}
 \end{table}
 \todo{Include POS in RNN models}
 
