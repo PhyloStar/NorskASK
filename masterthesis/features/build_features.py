@@ -10,7 +10,7 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 import tqdm
 
-from masterthesis.utils import conll_reader, get_split_len, load_split, PROJECT_ROOT
+from masterthesis.utils import conll_reader, get_split_len, get_stopwords, load_split, PROJECT_ROOT
 
 
 data_folder = PROJECT_ROOT / 'ASK'
@@ -18,6 +18,10 @@ data_folder = PROJECT_ROOT / 'ASK'
 
 def iterate_tokens(split: str = 'train') -> Iterable[str]:
     return chain.from_iterable(iterate_docs(split))
+
+
+def iterate_mixed_pos_tags(split: str = 'train') -> Iterable[str]:
+    return chain.from_iterable(iterate_mixed_pos_docs(split))
 
 
 def iterate_pos_tags(split: str = 'train') -> Iterable[str]:
@@ -48,6 +52,28 @@ def iterate_docs(split: str = 'train') -> Iterable[Iterable[str]]:
         path = (data_folder / 'txt' / filename).with_suffix('.txt')
         with path.open(encoding='utf-8') as stream:
             yield _inner_iter(stream)
+
+
+def iterate_mixed_pos_docs(split: str = 'train'):
+    """Mixed POS-Function Word n-grams.
+
+    E.g. NOUN kan også VERB NOUN til å VERB dem
+    """
+    sw = get_stopwords()
+
+    def _inner_iter(stream):
+        for sent in sents:
+            for (form, pos) in sent:
+                if form.lower() in sw:
+                    yield form
+                else:
+                    yield pos
+
+    meta = load_split(split)
+    filenames = filename_iter(meta, suffix='conll')
+    for filename in filenames:
+        sents = conll_reader(filename, cols=['FORM', 'UPOS'], tags=False)
+        yield _inner_iter(sents)
 
 
 def bag_of_words(split, **kwargs):
@@ -93,6 +119,17 @@ def make_pos2i():
     return w2i
 
 
+def make_mixed_pos2i():
+    print('Counting mixed POS tags ...')
+    tokens = Counter(tqdm.tqdm(iterate_mixed_pos_tags('train')))
+    most_common = (token for (token, __) in tokens.most_common())
+
+    w2i = {'__PAD__': 0, '__UNK__': 1}
+    for rank, token in zip(range(2, len(tokens) + 2), most_common):
+        w2i[token] = rank
+    return w2i
+
+
 def _x_to_sequences(seq_len: int,
                     splits: Iterable[str],
                     mapping: Mapping[str, int],
@@ -121,6 +158,12 @@ def words_to_sequences(seq_len: int,
                        splits: Iterable[str],
                        w2i: Mapping[str, int]) -> List[np.ndarray]:
     return _x_to_sequences(seq_len, splits, w2i, iterate_docs)
+
+
+def mixed_pos_to_sequences(seq_len: int,
+                           splits: Iterable[str],
+                           w2i: Mapping[str, int]) -> List[np.ndarray]:
+    return _x_to_sequences(seq_len, splits, w2i, iterate_mixed_pos_docs)
 
 
 def file_to_sequence(seq_len: int, filepath: Path, w2i: Mapping[str, int]) -> np.ndarray:

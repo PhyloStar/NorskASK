@@ -2,6 +2,7 @@ import argparse
 import os
 from pathlib import Path
 import tempfile
+from typing import Iterable, List
 
 from keras.layers import (
     Concatenate, Conv1D, Dense, Dropout, Embedding, GlobalAveragePooling1D, GlobalMaxPooling1D,
@@ -12,7 +13,8 @@ from keras.utils import to_categorical
 import numpy as np
 
 from masterthesis.features.build_features import (
-    make_pos2i, make_w2i, pos_to_sequences, words_to_sequences
+    make_mixed_pos2i, make_pos2i, make_w2i, mixed_pos_to_sequences, pos_to_sequences,
+    words_to_sequences
 )
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
@@ -20,12 +22,27 @@ from masterthesis.results import save_results
 from masterthesis.utils import get_file_name, load_split, REPRESENTATION_LAYER, save_model
 
 
+def int_list(strlist: str) -> List[int]:
+    """Turn a string of comma separated values into a list of integers.
+
+    >>> int_list('2,3,6')
+    [2, 3, 6]
+    """
+    ints = []
+    for strint in strlist.split(','):
+        intval = int(strint)
+        ints.append(intval)
+    return ints
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--nli', action='store_true')
     parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--include-pos', action='store_true')
+    parser.add_argument('--mixed-pos', action='store_true')
     parser.add_argument('--epochs', '-e', type=int)
+    parser.add_argument('--windows', '-w', type=int_list)
     parser.add_argument('--batch-size', '-b', type=int)
     parser.add_argument('--doc-length', '-l', type=int)
     parser.add_argument('--vocab-size', '-s', type=int)
@@ -35,7 +52,8 @@ def parse_args():
     return parser.parse_args()
 
 
-def build_model(vocab_size: int, sequence_length: int, num_classes: int, num_pos: int = 0) -> Model:
+def build_model(vocab_size: int, sequence_length: int, num_classes: int,
+                windows: Iterable[int], num_pos: int = 0) -> Model:
     word_input_layer = Input((sequence_length,))
     word_embedding_layer = Embedding(vocab_size, 50)(word_input_layer)
     if num_pos > 0:
@@ -48,7 +66,7 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: int, num_pos
         inputs = [word_input_layer]
 
     pooled_feature_maps = []
-    for kernel_size in [4, 5, 6]:
+    for kernel_size in windows:
         conv_layer = Conv1D(
             filters=100, kernel_size=kernel_size, activation='relu')(embedding_layer)
         pooled_feature_maps.extend([
@@ -72,21 +90,28 @@ def main():
     y_column = 'lang' if args.nli else 'cefr'
     labels = sorted(train[y_column].unique())
 
-    w2i = make_w2i(args.vocab_size)
-    train_x, dev_x = words_to_sequences(seq_length, ['train', 'dev'], w2i)
-    if args.include_pos:
-        pos2i = make_pos2i()
-        num_pos = len(pos2i)
-        train_pos, dev_pos = pos_to_sequences(seq_length, ['train', 'dev'], pos2i)
-        train_x = [train_x, train_pos]
-        dev_x = [dev_x, dev_pos]
-    else:
+    if args.mixed_pos:
+        t2i = make_mixed_pos2i()
+        train_x, dev_x = mixed_pos_to_sequences(seq_length, ['train', 'dev'], t2i)
+        args.vocab_size = len(t2i)
         num_pos = 0
+    else:
+        w2i = make_w2i(args.vocab_size)
+        train_x, dev_x = words_to_sequences(seq_length, ['train', 'dev'], w2i)
+        if args.include_pos:
+            pos2i = make_pos2i()
+            num_pos = len(pos2i)
+            train_pos, dev_pos = pos_to_sequences(seq_length, ['train', 'dev'], pos2i)
+            train_x = [train_x, train_pos]
+            dev_x = [dev_x, dev_pos]
+        else:
+            num_pos = 0
 
     train_y = to_categorical([labels.index(c) for c in train[y_column]])
     dev_y = to_categorical([labels.index(c) for c in dev[y_column]])
 
-    model = build_model(args.vocab_size, seq_length, len(labels), num_pos=num_pos)
+    model = build_model(args.vocab_size, seq_length, len(labels),
+                        windows=args.windows, num_pos=num_pos)
     model.summary()
 
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')

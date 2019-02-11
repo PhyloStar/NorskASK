@@ -9,7 +9,7 @@ import itertools
 import os
 from pathlib import Path
 import pickle
-from typing import Iterable, List, Optional, Sequence, TextIO, Tuple, Union
+from typing import Iterable, List, Optional, Sequence, Set, TextIO, Tuple, Union
 
 import matplotlib
 if 'SLURM_JOB_NODELIST' in os.environ or \
@@ -224,3 +224,10 @@ def save_model(name: str, model, w2i):
     model.save(str(MODEL_DIR / (name + '_model.h5')))
     w2i_file = MODEL_DIR / (name + '_model_w2i.pkl')
     pickle.dump(w2i, w2i_file.open('wb'))
+
+
+def get_stopwords() -> Set[str]:
+    """Read and return stop words from a text file."""
+    with (MODEL_DIR / 'stopwords' / 'norwegian-funcwords.txt').open() as f:
+        res = set(line.strip() for line in f)
+    return res

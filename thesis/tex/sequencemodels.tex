@@ -31,7 +31,7 @@ each of the filter banks are concatenated into a single vector.
 The \ac{CNN} classifier that used both tokens and POS tags as input performed
 better than the one which only used tokens as input, as seen in table
 \ref{tab:cnn-results}. However, on the collapsed label set, the model which only
-used tokens had a higher accuracy.
+used tokens had a higher accuracy. Filters of size 4, 5, and 6 were used.
 
 \begin{table}
   \centering
@@ -43,7 +43,12 @@ used tokens had a higher accuracy.
     Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
     \midrule
     Tokens    &         $0.234$  &         $0.415$  &         $0.423$  & $\mathbf{0.797}$ \\
-    +POS      & $\mathbf{0.283}$ & $\mathbf{0.431}$ & $\mathbf{0.444}$ &         $0.772$  \\
+    +POS      & $\mathbf{0.283}$ &         $0.431$  & $\mathbf{0.444}$ &         $0.772$  \\
+    %           cnn-02-11_14-52-21                    cnn-02-11_15-00-41
+    Mixed POS &         $0.276$  & $\mathbf{0.472}$ &         $0.423$  & $\mathbf{0.797}$ \\
+    % Windows 2, 3, 4
+    %           cnn-02-11_15-15-08
+    Mixed POS &         $0.265$  & $\mathbf{0.455}$ &         $00000$  &         $00000$  \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of CNN classifiers on AES}
@@ -152,24 +157,24 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     Mean/Time &         $0.280$  &         $0.382$  &         $0.461$  &         $0.699$  \\
     %           taghipour_ng-2019-01-22_12-58-00      taghipour_ng-2019-01-22_13-01-44
     BiLSTM    &         $0.286$  &         $0.398$  &         $0.485$  &         $0.683$  \\
-    %           rnn_25832764                          rnn_25832764
-    Attention &         $00000$  &         $00000$  &         $00000$ &          $00000$  \\
+    %           rnn_25832764                          rnn_25832765
+    Attention &         $0.244$  & $\mathbf{0.423}$ & $\mathbf{0.559}$ &         $0.780$  \\
     \midrule
     % 50 dim, pretrained, fine tune
     %           rnn_25832746                          rnn_25832747
-    Mean/Time &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    Mean/Time &         $0.285$  &         $0.415$  &         $0.466$  &         $0.659$  \\
     %           rnn_25832748                          rnn_25832749
     BiLSTM    &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
     %           taghipour_ng-2019-01-24_19-16-41      taghipour_ng-2019-01-24_21-23-34
-    Attention & $\mathbf{0.303}$ & $\mathbf{0.423}$ & $\mathbf{0.558}$ & $\mathbf{0.805}$ \\
+    Attention & $\mathbf{0.303}$ & $\mathbf{0.423}$ &         $0.558$  & $\mathbf{0.805}$ \\
     \midrule
     % 100 dim, pretrained, fine tune
     %           rnn_25832716                          rnn_25832717
-    Mean/Time &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    Mean/Time &         $0.271$  &         $0.390$  &         $0.496$  &         $0.724$  \\
     %           rnn_25831870                          rnn_25831871
     BiLSTM    &         $0.301$  &         $0.350$  &         $0.456$  &         $0.683$  \\
-    %           rnn_25832718                          rnn_25832718
-    Attention &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    %           rnn_25832718                          rnn_25832719
+    Attention &         $0.288$  &         $0.398$  &         $0.538$  &         $0.797$  \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of LSTM classifiers}
