@@ -5,7 +5,7 @@ import tempfile
 
 from keras import backend as K
 from keras.layers import (
-    Activation, Bidirectional, Dense, Dropout, Embedding, Flatten, Input, Lambda, LSTM,
+    Activation, Bidirectional, Dense, Dropout, Embedding, Flatten, GRU, Input, Lambda, LSTM,
     Multiply, Permute, RepeatVector, TimeDistributed
 )
 from keras.models import Model
@@ -37,6 +37,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--save-model', action='store_true')
+    parser.add_argument('--freeze-embeddings', action='store_true')
+    parser.add_argument('--rnn-cell', choices={'gru', 'lstm'}, default='lstm')
     parser.add_argument('--vocab-size', type=int, default=4000)
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--embed-dim', type=int, default=50)
@@ -55,17 +57,23 @@ def parse_args():
 
 def build_model(vocab_size: int, sequence_len: int, num_classes: int,
                 embed_dim: int, rnn_dim: int, dropout_rate: float,
-                bidirectional: bool, attention: bool):
+                bidirectional: bool, attention: bool, freeze_embeddings: bool, rnn_cell: str):
     mask_zero = not attention  # The attention mechanism does not support masked inputs
     input_ = Input((sequence_len,))
-    lookup = Embedding(vocab_size, embed_dim, mask_zero=mask_zero, name=EMB_LAYER_NAME)(input_)
+    trainable_embeddings = not freeze_embeddings
+    lookup = Embedding(vocab_size, embed_dim, mask_zero=mask_zero,
+                       name=EMB_LAYER_NAME, trainable=trainable_embeddings)(input_)
 
-    lstm_factory = LSTM(rnn_dim, return_sequences=True, dropout=INPUT_DROPOUT,
-                        recurrent_dropout=RECURRENT_DROPOUT)
+    if rnn_cell == 'lstm':
+        cell_factory = LSTM
+    elif rnn_cell == 'gru':
+        cell_factory = GRU
+    rnn_factory = cell_factory(rnn_dim, return_sequences=True, dropout=INPUT_DROPOUT,
+                               recurrent_dropout=RECURRENT_DROPOUT)
     if bidirectional:
-        lstm_factory = Bidirectional(lstm_factory)
-    lstm = lstm_factory(lookup)
-    dropout = Dropout(dropout_rate)(lstm)
+        rnn_factory = Bidirectional(rnn_factory)
+    rnn = rnn_factory(lookup)
+    dropout = Dropout(dropout_rate)(rnn)
 
     if attention:
         units = 2 * rnn_dim if bidirectional else rnn_dim

@@ -75,17 +75,18 @@ contained essays that were not necessarily written in a second language. Our
 data is not split into different parts based on the prompt. There are two
 different test levels in ASK, but these are not distinguished in training.
 
-where $\sigma$ by default in Keras is the \emph{Hard sigmoid} activation
-function, chosen because it is computationally more efficient than the
-sigmoid function, and defined in equation \ref{eq:hardsigmoid}.
+Note that the activation function for the gates in gated RNNs in Keras by
+default is the \emph{Hard sigmoid} activation function (ref. eq.
+\ref{eq:hardsigmoid}), chosen because it is computationally more efficient
+than the sigmoid function.
 
-We also experimented with a different type of \ac{RNN} cell, the \ac{GRU}.
-This variant of \ac{RNN} is slightly simpler than the \ac{LSTM}, featuring
-only two gates. However, it is still designed to be able to propagate the
-error gradient over a larger number of timesteps and is supposed to solve the
-same problems as \ac{LSTM}. The equations defining a \ac{GRU} layer are
-defined in equation \ref{eq:gru}:
-
+We also experimented with a different type of gated \ac{RNN} cell, the
+\ac{GRU}. This variant of \ac{RNN} is slightly simpler than the \ac{LSTM},
+featuring only two gates. However, it is still designed to be able to
+propagate the error gradient over a larger number of timesteps and is
+supposed to solve the same problems as \ac{LSTM}. The equations defining
+\ac{LSTM} \ac{GRU} cells are listed in chapter \ref{ch:background}, equations
+\ref{eq:lstm} and \ref{eq:gru}.
 
 
 \subsection{Variants}
@@ -105,7 +106,7 @@ running two \acp{LSTM} over the same input, but in the opposite order. The
 output from the BiLSTM layer is a sequence of vectors where, for each
 timestep $j$, the vector is the concatenation of the output from the forwards
 \ac{LSTM} after processing the inputs $(x_1, x_2, \ldots, x_j)$ and the
-output from tha backwards \ac{LSTM} after processing the inputs $(x_m,
+output from the backwards \ac{LSTM} after processing the inputs $(x_m,
 x_{m-1}, \ldots, x_j)$, $m$ being the total number of timesteps. The BiLSTM
 should therefore be able to extract context on both sides of a input
 timestep.
@@ -146,21 +147,29 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     \cmidrule(lr){4-5}
     Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
     \midrule
-    % 50 dim, pretrained, fine tune
-    %
+    % 50 dim, random init
+    %           taghipour_ng-2019-01-15_20-50-06      taghipour_ng-2019-01-15_20-46-42
     Mean/Time &         $0.280$  &         $0.382$  &         $0.461$  &         $0.699$  \\
     %           taghipour_ng-2019-01-22_12-58-00      taghipour_ng-2019-01-22_13-01-44
     BiLSTM    &         $0.286$  &         $0.398$  &         $0.485$  &         $0.683$  \\
+    %           rnn_25832764                          rnn_25832764
+    Attention &         $00000$  &         $00000$  &         $00000$ &          $00000$  \\
+    \midrule
+    % 50 dim, pretrained, fine tune
+    %           rnn_25832746                          rnn_25832747
+    Mean/Time &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    %           rnn_25832748                          rnn_25832749
+    BiLSTM    &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
     %           taghipour_ng-2019-01-24_19-16-41      taghipour_ng-2019-01-24_21-23-34
-    Attention & $\mathbf{0.303}$ &         $0.423$  & $\mathbf{0.558}$ & $\mathbf{0.805}$ \\
+    Attention & $\mathbf{0.303}$ & $\mathbf{0.423}$ & $\mathbf{0.558}$ & $\mathbf{0.805}$ \\
     \midrule
     % 100 dim, pretrained, fine tune
-    %
-    Mean/Time &         $0.280$  &         $0.382$  &         $0.461$  &         $0.699$  \\
-    %
-    BiLSTM    &         $0.286$  &         $0.398$  &         $0.485$  &         $0.683$  \\
-    %
-    Attention & $\mathbf{0.303}$ &         $0.423$  & $\mathbf{0.558}$ & $\mathbf{0.805}$ \\
+    %           rnn_25832716                          rnn_25832717
+    Mean/Time &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    %           rnn_25831870                          rnn_25831871
+    BiLSTM    &         $0.301$  &         $0.350$  &         $0.456$  &         $0.683$  \\
+    %           rnn_25832718                          rnn_25832718
+    Attention &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of LSTM classifiers}
