@@ -48,7 +48,8 @@ def parse_args():
     parser.add_argument('--vocab-size', '-s', type=int)
     parser.add_argument('--vectors', '-V', type=Path)
     parser.add_argument('--save-model', action='store_true')
-    parser.set_defaults(epochs=30, doc_length=700, vocab_size=4000, batch_size=32)
+    parser.set_defaults(epochs=30, doc_length=700, vocab_size=4000, batch_size=32,
+                        windows=[4, 5, 6])
     return parser.parse_args()
 
 
