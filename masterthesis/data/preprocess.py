@@ -1,5 +1,6 @@
 import argparse
 from collections import defaultdict
+from pathlib import Path
 from xml.etree import ElementTree
 
 import pandas as pd
@@ -30,9 +31,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main():
-    args = parse_args()
-
+def ensure_dirs():
     assert DATA_DIR.is_dir()
 
     input_dir = DATA_DIR / 'xml'
@@ -41,21 +40,44 @@ def main():
 
     if not output_dir.is_dir():
         output_dir.mkdir()
+    return input_dir, output_dir
+
+
+def parse_file_and_return_root(input_file: Path):
+    if input_file.suffix != '.xml':
+        print('Skipping ' + str(input_file))
+        return None
+    try:
+        tree = ElementTree.parse(input_file.open(encoding='utf8'))
+    except Exception as e:
+        print('Unable to parse ' + str(input_file))
+        print(str(e))
+        raise
+    return tree.getroot()
+
+
+def assign_split(cefr_score, topic, test_topics, dev_topics):
+    if cefr_score == 'N/A':
+        return 'N/A'
+    elif topic in test_topics:
+        return 'test'
+    elif topic in dev_topics:
+        return 'dev'
+    else:
+        return 'train'
+
+
+def main():
+    args = parse_args()
+
+    input_dir, output_dir = ensure_dirs()
 
     metadata_dict = defaultdict(list)
 
     for input_file in input_dir.iterdir():
-        if input_file.suffix != '.xml':
-            print('Skipping ' + str(input_file))
+        root = parse_file_and_return_root()
+        if root is None:
             continue
-
-        try:
-            tree = ElementTree.parse(input_file.open(encoding='utf8'))
-        except Exception as e:
-            print('Unable to parse ' + str(input_file))
-            print(str(e))
-            raise
-        root = tree.getroot()
 
         metadata_node = root.find('./teiHeader/profileDesc/particDesc/person')
         assert metadata_node, "Could not find metadata in file " + str(input_file)
@@ -77,14 +99,7 @@ def main():
         gender = gender_node.text if gender_node is not None else 'N/A'
         topic = topic_node.text if topic_node is not None else 'N/A'
 
-        if cefr_score == 'N/A':
-            split = 'N/A'
-        elif topic in test_topics:
-            split = 'test'
-        elif topic in dev_topics:
-            split = 'dev'
-        else:
-            split = 'train'
+        split = assign_split(cefr_score, topic, test_topics, dev_topics)
 
         metadata_dict['lang'].append(language)
         metadata_dict['cefr'].append(cefr_score)

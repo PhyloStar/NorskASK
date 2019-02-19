@@ -38,19 +38,19 @@ def int_list(strlist: str) -> List[int]:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--nli', action='store_true')
-    parser.add_argument('--round-cefr', action='store_true')
-    parser.add_argument('--include-pos', action='store_true')
-    parser.add_argument('--mixed-pos', action='store_true')
-    parser.add_argument('--epochs', '-e', type=int)
-    parser.add_argument('--windows', '-w', type=int_list)
     parser.add_argument('--batch-size', '-b', type=int)
     parser.add_argument('--doc-length', '-l', type=int)
-    parser.add_argument('--vocab-size', '-s', type=int)
     parser.add_argument('--embed-dim', type=int)
-    parser.add_argument('--vectors', '-V', type=Path)
+    parser.add_argument('--epochs', '-e', type=int)
+    parser.add_argument('--include-pos', action='store_true')
+    parser.add_argument('--mixed-pos', action='store_true')
+    parser.add_argument('--nli', action='store_true')
+    parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--save-model', action='store_true')
-    parser.set_defaults(epochs=50, doc_length=700, vocab_size=4000, batch_size=32, embed_dim=50,
+    parser.add_argument('--vectors', '-V', type=Path)
+    parser.add_argument('--vocab-size', '-s', type=int)
+    parser.add_argument('--windows', '-w', type=int_list)
+    parser.set_defaults(batch_size=32, doc_length=700, embed_dim=50, epochs=50, vocab_size=4000,
                         windows=[4, 5, 6])
     return parser.parse_args()
 
