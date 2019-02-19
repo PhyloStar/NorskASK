@@ -26,6 +26,27 @@ as many elements as there are filters in the filter banks. The vectors for
 each of the filter banks are concatenated into a single vector.
 
 
+\subsection{Pre-trained embeddings}
+
+We experimented with randomly initialized word embedding vectors trained from
+scratch as well as initializing the vectors with pre-trained embeddings. In
+this case, the embeddings came from different models trained on a large
+Norwegian corpus, the combination of Norsk aviskorpus and NoWaC (Norwegian
+Web As Corpus). The FastText algorithm lets us use these models to compute
+vectors for words that do not have entries in the model, by instead basing
+the vector on the word's character \ngrams.
+
+These vector models are very large, containing vectors for more than
+2,500,000 words. Our training data only contains 18,305 unique tokens, and
+loading the full pre-trained model takes a long time and uses huge amounts of
+memory for word vectors we will never use. For that reason, we created models
+of smaller size by loading the full models once and iterating through all of
+the word forms in our corpus, storing the resulting vectors in a new vector
+model containing 18,305 words. In this way, we are also able to benefit from
+the FastText models' ability to compute vectors for unknown words, since the
+\ngram algorithm is being used when computing the reduced models.
+
+
 \subsection{Results}
 
 The \ac{CNN} classifier that used both tokens and POS tags as input performed
@@ -88,9 +109,10 @@ than the sigmoid function.
 We also experimented with a different type of gated \ac{RNN} cell, the
 \ac{GRU}. This variant of \ac{RNN} is slightly simpler than the \ac{LSTM},
 featuring only two gates. However, it is still designed to be able to
-propagate the error gradient over a larger number of timesteps and is
-supposed to solve the same problems as \ac{LSTM}. The equations defining
-\ac{LSTM} \ac{GRU} cells are listed in chapter \ref{ch:background}, equations
+propagate the error gradient over a larger number of timesteps, like
+\ac{LSTM}. In this way the architecture is supposed to mitigate the problem
+of vanishing or exploding gradients. The equations defining \ac{LSTM}
+\ac{GRU} cells are listed in chapter \ref{ch:background}, equations
 \ref{eq:lstm} and \ref{eq:gru}.
 
 
@@ -164,7 +186,7 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     %           rnn_25832746                          rnn_25832747
     Mean/Time &         $0.285$  &         $0.415$  &         $0.466$  &         $0.659$  \\
     %           rnn_25832748                          rnn_25832749
-    BiLSTM    &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    BiLSTM    &         $0.257$  &         $0.354$  &         $0.447$  &         $0.691$  \\
     %           taghipour_ng-2019-01-24_19-16-41      taghipour_ng-2019-01-24_21-23-34
     Attention & $\mathbf{0.303}$ & $\mathbf{0.423}$ &         $0.558$  & $\mathbf{0.805}$ \\
     \midrule
@@ -208,6 +230,7 @@ see that the attention model outperforms the rest.
     \midrule
     Tokens    &         $0.367$  &         $0.366$  \\ % cnn-nli-2019-02-05_12-54-51
     +POS      & $\mathbf{0.467}$ & $\mathbf{0.463}$ \\ % cnn-nli-2019-01-30_15-32-28
+    Mixed POS &         $0.336$  &         $0.333$  \\ % cnn-nli-02-11_16-15-54
     \bottomrule
   \end{tabular}
   \caption{\FI scores of CNN classifiers on NLI}
