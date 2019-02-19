@@ -1,19 +1,30 @@
 \chapter{Sequence models}
 
 Next, we will implement models which take the ordering of tokens into
-account. This includes \acp{CNN} and \acp{RNN}.
+account. This includes \acp{CNN} and \acp{RNN}. In \ac{NLP}, \acp{CNN} can be
+considered as a ``\ngram extractor'', which looks at a window of tokens.
+However, unlike the count vector approach used above, the CNN extracts
+``soft'' \ngrams, utilizing the ability of word embeddings to share
+statistical strength between words, and outputting a real-valued number
+instead of a boolean yes/no value or an integer count.
 
-For the models in this chapter, we needed to set a fixed number of tokens
-such that shorter documents were padded to this length, and longer documents
-truncated. In order to decide this, we examined the distribution of document
-lengths in the training set. All subsequent values are rounded to the nearest
-integer. First, we found the 95th percentile of document lengths, which
-turned out to be 701 tokens. Then, we computed the value $Q_2 + 1.5 \cdot
-(Q_3 - Q_1)$, or the median plus 1.5 times the interquartile range, which
-gives 693 tokens. Finally, we computed the mean value plus two standard
-deviations, giving 707 tokens. These values are all close to each other, and
-we decided to settle on 700 tokens since it is a round number close to all
-values we examined.
+\acp{RNN} are theoretically able to detect long range patterns, which seems
+like it would be useful for the tasks at hand. For instance, the ability to
+connect different sections of a text and refer back to things that have been
+mentioned before can be considered a part of language proficiency.
+
+\todo{This goes in a subsection somewhere}
+The models in this chapter take as input a document of a predetermined
+length. We therefore needed to set a fixed number of tokens such that shorter
+documents were padded to this length, and longer documents truncated. In
+order to decide this, we examined the distribution of document lengths in the
+training set. All subsequent values are rounded to the nearest integer.
+First, we found the 95th percentile of document lengths, which turned out to
+be 701 tokens. Then, we computed the value $Q_2 + 1.5 \cdot (Q_3 - Q_1)$, or
+the median plus 1.5 times the interquartile range, which gives 693 tokens.
+Finally, we computed the mean value plus two standard deviations, giving 707
+tokens. These values are all close to each other, and we decided to settle on
+700 tokens since it is a round number close to all values we examined.
 
 
 \section{Convolutional neural networks}
@@ -29,7 +40,7 @@ each of the filter banks are concatenated into a single vector.
 \subsection{Pre-trained embeddings}
 
 We experimented with randomly initialized word embedding vectors trained from
-scratch as well as initializing the vectors with pre-trained embeddings. In
+scratch, as well as initializing the vectors with pre-trained embeddings. In
 this case, the embeddings came from different models trained on a large
 Norwegian corpus, the combination of Norsk aviskorpus and NoWaC (Norwegian
 Web As Corpus). The FastText algorithm lets us use these models to compute
@@ -42,9 +53,12 @@ loading the full pre-trained model takes a long time and uses huge amounts of
 memory for word vectors we will never use. For that reason, we created models
 of smaller size by loading the full models once and iterating through all of
 the word forms in our corpus, storing the resulting vectors in a new vector
-model containing 18,305 words. In this way, we are also able to benefit from
-the FastText models' ability to compute vectors for unknown words, since the
-\ngram algorithm is being used when computing the reduced models.
+model containing only 18,305 words. In this way, we are also able to benefit
+from the FastText models' ability to compute vectors for unknown words, since
+the \ngram algorithm is being used when computing the reduced models.
+However, the fine-tuning of vectors happens no different from if we had used
+embeddings from simpler models such as Word2vec, since the FastText
+architecture is not part of our own network.
 
 
 \subsection{Results}
@@ -53,6 +67,19 @@ The \ac{CNN} classifier that used both tokens and POS tags as input performed
 better than the one which only used tokens as input, as seen in table
 \ref{tab:cnn-results}. However, on the collapsed label set, the model which only
 used tokens had a higher accuracy. Filters of size 4, 5, and 6 were used.
+
+\todo{find the right reference}
+The Mixed POS mode was inspired by \textcite{malmasi15}. They tried using as
+input a mix of word forms and POS tags, so that common function words appeared
+in their written form, while content words were substituted for their POS tag.
+As an example, the sequence 
+\begin{displayquote}
+generasjoner kan også få anledning til å utnytte dem
+\end{displayquote}
+is transformed into
+\begin{displayquote}
+NOUN kan også VERB NOUN til å VERB dem
+\end{displayquote}
 
 \begin{table}
   \centering
@@ -232,6 +259,13 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     50 dim    &         $0.261$  & $\mathbf{0.488}$ &         $0.511$  &         $0.772$  \\
     %           rnn-25858483                          rnn-25858494
     100 dim   &         $0.271$  &         $0.472$  &         $0.491$  &         $0.707$  \\
+    % LSTM cells, POS as additional input, attention
+              \multicolumn{5}{c}{POS included with input} \\
+    \midrule
+    %           rnn-25983018                          rnn-25983019
+    Rnd. init &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    %           rnn-25983020                          rnn-25983021
+    Pre train &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of RNN classifiers}
