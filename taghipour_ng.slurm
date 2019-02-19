@@ -17,7 +17,8 @@ if [ -n "${SLURM_JOB_NODELIST}" ]; then
     cp -r $SUBMITDIR/masterthesis $SCRATCH
     mkdir $SCRATCH/ASK
     cp $SUBMITDIR/ASK/metadata.csv $SCRATCH/ASK/metadata.csv
-    cp -r $SUBMITDIR/ASK/txt $SCRATCH/ASK
+    ln -s $SUBMITDIR/ASK/txt $SCRATCH/ASK
+    ln -s $SUBMITDIR/ASK/conll $SCRATCH/ASK/conll
 
     cd $SCRATCH
 fi
