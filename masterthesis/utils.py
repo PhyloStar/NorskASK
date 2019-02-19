@@ -228,6 +228,6 @@ def save_model(name: str, model, w2i):
 
 def get_stopwords() -> Set[str]:
     """Read and return stop words from a text file."""
-    with (MODEL_DIR / 'stopwords' / 'norwegian-funcwords.txt').open() as f:
+    with (MODEL_DIR / 'stopwords' / 'norwegian-funcwords.txt').open(encoding='utf8') as f:
         res = set(line.strip() for line in f)
     return res

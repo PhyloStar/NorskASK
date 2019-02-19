@@ -4,10 +4,7 @@ from pathlib import Path
 import tempfile
 from typing import Iterable, List
 
-from keras.layers import (
-    Concatenate, Conv1D, Dense, Dropout, Embedding, GlobalAveragePooling1D, GlobalMaxPooling1D,
-    Input
-)
+from keras.layers import Concatenate, Conv1D, Dense, Dropout, Embedding, GlobalMaxPooling1D, Input
 from keras.models import Model
 from keras.utils import to_categorical
 import numpy as np
@@ -53,7 +50,8 @@ def parse_args():
     parser.add_argument('--embed-dim', type=int)
     parser.add_argument('--vectors', '-V', type=Path)
     parser.add_argument('--save-model', action='store_true')
-    parser.set_defaults(epochs=50, doc_length=700, vocab_size=4000, batch_size=32, embed_dim=50)
+    parser.set_defaults(epochs=50, doc_length=700, vocab_size=4000, batch_size=32, embed_dim=50,
+                        windows=[4, 5, 6])
     return parser.parse_args()
 
 
