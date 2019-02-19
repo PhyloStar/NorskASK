@@ -222,7 +222,7 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     %           taghipour_ng-2019-01-22_12-58-00      taghipour_ng-2019-01-22_13-01-44
     BiLSTM    &         $0.286$  &         $0.398$  &         $0.485$  &         $0.683$  \\
     %           rnn-25832764                          rnn-25832765
-    Attention &         $0.244$  & $\mathbf{0.423}$ & $\mathbf{0.559}$ &         $0.780$  \\
+    Attention &         $0.244$  & $\mathbf{0.423}$ &         $0.559$  &         $0.780$  \\
     \midrule
     % 50 dim, pretrained, fine tune
               \multicolumn{5}{c}{50 dimensional, pre-trained embeddings, w/ fine tuning} \\
@@ -263,9 +263,14 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
               \multicolumn{5}{c}{POS included with input} \\
     \midrule
     %           rnn-25983018                          rnn-25983019
-    Rnd. init &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    Rnd. init &         $0.273$  &         $0.415$  &         $0.521$  &         $0.740$  \\
     %           rnn-25983020                          rnn-25983021
-    Pre train &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    Pre train &         $0.270$  &         $0.390$  &         $0.542$  &         $0.780$  \\
+    % So I fixed issues with POS tags not being the same length
+    %           rnn-25985449                          rnn-25985450
+    Rnd. init &         $0.261$  &         $0.366$  &         $0.552$  &         $0.780$  \\
+    %           rnn-25985451                          rnn-25985452
+    Pre train &         $0.277$  &         $0.407$  & $\mathbf{0.624}$ &         $0.756$  \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of RNN classifiers}
