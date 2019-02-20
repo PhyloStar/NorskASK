@@ -16,7 +16,7 @@ from masterthesis.features.build_features import (
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.results import save_results
-from masterthesis.utils import DATA_DIR, load_split, REPRESENTATION_LAYER
+from masterthesis.utils import DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER
 
 
 conll_folder = DATA_DIR / 'conll'
@@ -104,7 +104,7 @@ def main():
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
     callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
     history = model.fit(
-        train_x, train_y, epochs=20, callbacks=callbacks, validation_data=(dev_x, dev_y),
+        train_x, train_y, epochs=50, callbacks=callbacks, validation_data=(dev_x, dev_y),
         verbose=2)
     model.load_weights(weights_path)
     os.close(temp_handle)
@@ -115,7 +115,9 @@ def main():
     true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
     report(true, pred, labels)
-    save_results('mlp_baseline', args.__dict__, history.history, true, pred)
+    prefix = 'mlp_baseline_%s' % args.featuretype
+    fname = get_file_name(prefix)
+    save_results(fname, args.__dict__, history.history, true, pred)
 
 
 if __name__ == '__main__':

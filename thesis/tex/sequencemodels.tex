@@ -13,7 +13,14 @@ like it would be useful for the tasks at hand. For instance, the ability to
 connect different sections of a text and refer back to things that have been
 mentioned before can be considered a part of language proficiency.
 
-\todo{This goes in a subsection somewhere}
+
+\section{Experimental setup}
+
+Certain aspects of setup are shared between experiments using \ac{CNN} and
+\ac{RNN} models.
+
+\subsection{Input length}
+
 The models in this chapter take as input a document of a predetermined
 length. We therefore needed to set a fixed number of tokens such that shorter
 documents were padded to this length, and longer documents truncated. In
@@ -27,20 +34,10 @@ tokens. These values are all close to each other, and we decided to settle on
 700 tokens since it is a round number close to all values we examined.
 
 
-\section{Convolutional neural networks}
-
-We create a model with convolutional architecture based on the model
-described in \textcite{zhang2017sensitivity}. The basis of this architecture
-is a set of filter banks with varying window size. After applying the
-convolutions, the output is pooled along the time axis, leaving a vector with
-as many elements as there are filters in the filter banks. The vectors for
-each of the filter banks are concatenated into a single vector.
-
-
 \subsection{Pre-trained embeddings}
 
 We experimented with randomly initialized word embedding vectors trained from
-scratch, as well as initializing the vectors with pre-trained embeddings. In
+scratch, as well as initializing the vectors with pre-trained embeddings.In
 this case, the embeddings came from different models trained on a large
 Norwegian corpus, the combination of Norsk aviskorpus and NoWaC (Norwegian
 Web As Corpus). The FastText algorithm lets us use these models to compute
@@ -59,6 +56,39 @@ the \ngram algorithm is being used when computing the reduced models.
 However, the fine-tuning of vectors happens no different from if we had used
 embeddings from simpler models such as Word2vec, since the FastText
 architecture is not part of our own network.
+
+When using pre-trained embeddings, we ran some experiments keeping the
+embeddings static, and some where we further fine-tuned the embeddings using
+training signals from the task.
+
+
+\section{Convolutional neural networks}
+
+We create a model with convolutional architecture based on the model
+described in \textcite{kim2014convolutional}. Documents are represented as
+sequences of token IDs, and fed into an embedding lookup layer. A separate
+token ID is used for padding if the document is shorter than 700 tokens.
+Another unique token ID is used for unknown tokens, i.e. tokens that either
+are not present in training data, or are not among the $n$ most frequent
+tokens, if we select a frequency cutoff.
+
+The central part of the architecture is a set of convolutional filter banks
+that are applied to sequences of embeddings. We may use several different
+window sizes for the filters. The default architecture from
+\textcite{kim2014convolutional} uses 300 convolutional filters: 100 each of
+window size 3, 4 and 5. After applying the convolutions, the output is max
+pooled along the time axis. This selects the highest output each filter
+computed across all windows in the document. In practice, three pooling
+operations are included in the computational graph, one for each filter bank.
+This is a technical consideration, necessary because of the different window
+sizes. The pooled vectors for each of the filter banks are concatenated into
+a single vector. This vector has as many elements as there are filters in all
+the filter banks combined.
+
+The vector post-pooling is a vector representation of the entire document,
+and is fed to a final softmax layer to produce a classification output.
+During training, we apply dropout to this final weight layer as a
+regularization method.
 
 
 \subsection{Results}

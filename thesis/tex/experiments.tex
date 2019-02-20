@@ -18,10 +18,10 @@ space-separated tokens, and an empty line separating paragraphs.
 
 These raw text files were then sent through the UDPipe pipeline
 \autocite{udpipe:2017} for tagging and dependency parsing. The UDPipe project
-maintains a \ac{REST} \ac{API} containing a selection of pretrained models. All
-documents were transformed by the \ac{REST} \ac{API} using what was at the time of
-writing the newest Norwegian bokmål (nb) model, available, namely
-\texttt{norwegian-bokmaal-ud-2.3-181115}.
+maintains an online REST \ac{API} containing a selection of pretrained models.
+All documents were transformed by the REST \ac{API} using what was at
+the time of writing the newest Norwegian bokmål (nb) model
+available\footnote{\texttt{norwegian-bokmaal-ud-2.3-181115}}.
 
 The pipeline accepts raw text files as input, where each sentence is put on a
 separate line. The output from UDPipe is in the CoNLL file format, with a
@@ -56,20 +56,22 @@ tags.
 
 \section{Model descriptions}
 
-Initial experiments were run using logistic regression, which is a linear
-classification method, and \acp{MLP}, which are simple neural networks.
+Initial experiments were run using logistic regression, and \acp{MLP}, which
+are simple neural networks.
 
 \subsection{Input representations}
 
 Input representations are shared between the linear and neural models, except
-for the total number of features. The neural models restrict the number of
-features to the 10,000 most common.
+for the total number of features. The neural models may restrict the number
+of features by cutting off less frequently occuring features, and this is
+noted below.
 
 \subsubsection*{Word counts}
 
 This representation is a vector with a entry for each unique word form in the
 training data, 18,305 in total. The value of each entry is the number of
-times the word form occurs in the document.
+times the word form occurs in the document. The neural models limits the
+count vectors to the 10,000 most common tokens.
 
 \subsubsection*{Character \ngrams}
 
@@ -135,19 +137,20 @@ learning rate was set to $2\cdot 10^{-4}$.
 
 The new \ngram features add a certain sensitivity to local order of features.
 Many character \ngrams will represent entities smaller than a word, but may
-indicate common spelling errors. \ac{POS} \ngrams, on the other hand, might
-be able to represent syntactic features. Spelling and syntax should be
-correlated with L2 proficiency, and traditional \ac{ML} methods that rely on
-manual feature engineering have included domain specific features designed to
-capture spelling and syntax, as for instance in \textcite{vajjala17}.
+indicate common spelling mistakes. \ac{POS} and Mixed POS \ngrams, on the
+other hand, might be able to represent syntactic features. Spelling and
+syntax should be correlated with L2 proficiency, and traditional \ac{ML}
+methods that rely on manual feature engineering have included domain specific
+features designed to capture spelling and syntax, as for instance in
+\textcite{vajjala17}.
 
 
 \section{Results}
 
-Two different sets of classes are used in the experiments. The original seven
-CEFR labels, and a collapsed set where the intermediate classes, such as
-``A2/B1'', are rounded up to the nearest canonical class, i.e. the CEFR label
-right of the slash. This results in only four different labels: ``A2'',
+Two different sets of output labels are used in the experiments: The original
+seven CEFR labels, and a collapsed set where the intermediate classes, such
+as ``A2/B1'', are rounded up to the nearest canonical class, i.e. the CEFR
+label after the slash. This results in only four different labels: ``A2'',
 ``B1'', ``B2'' and ``C1''.
 
 As a dumb baseline, we consider the majority class classifier. The majority
@@ -159,7 +162,8 @@ majority class classifier predicts no samples for any other classes.
 
 Moving to a linear model, a logistic regression classifier using only
 bag-of-word features achieves an accuracy of 28.5\% on the dev set without
-collapsed labels and 58.5\% with collapsed labels. 
+collapsed labels and 58.5\% with collapsed labels. However, the linear model
+that performs the best is the one using character \ngrams.
 
 \begin{table}
   \centering
