@@ -68,19 +68,6 @@ better than the one which only used tokens as input, as seen in table
 \ref{tab:cnn-results}. However, on the collapsed label set, the model which only
 used tokens had a higher accuracy. Filters of size 4, 5, and 6 were used.
 
-\todo{find the right reference}
-The Mixed POS mode was inspired by \textcite{malmasi15}. They tried using as
-input a mix of word forms and POS tags, so that common function words appeared
-in their written form, while content words were substituted for their POS tag.
-As an example, the sequence 
-\begin{displayquote}
-generasjoner kan også få anledning til å utnytte dem
-\end{displayquote}
-is transformed into
-\begin{displayquote}
-NOUN kan også VERB NOUN til å VERB dem
-\end{displayquote}
-
 \begin{table}
   \centering
   \begin{tabular}{lrrrr}
@@ -259,6 +246,7 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     50 dim    &         $0.261$  & $\mathbf{0.488}$ &         $0.511$  &         $0.772$  \\
     %           rnn-25858483                          rnn-25858494
     100 dim   &         $0.271$  &         $0.472$  &         $0.491$  &         $0.707$  \\
+    \midrule
     % LSTM cells, POS as additional input, attention
               \multicolumn{5}{c}{POS included with input} \\
     \midrule

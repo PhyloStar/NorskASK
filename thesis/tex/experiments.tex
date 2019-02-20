@@ -59,6 +59,56 @@ tags.
 Initial experiments were run using logistic regression, which is a linear
 classification method, and \acp{MLP}, which are simple neural networks.
 
+\subsection{Input representations}
+
+Input representations are shared between the linear and neural models, except
+for the total number of features. The neural models restrict the number of
+features to the 10,000 most common.
+
+\subsubsection*{Word counts}
+
+This representation is a vector with a entry for each unique word form in the
+training data, 18,305 in total. The value of each entry is the number of
+times the word form occurs in the document.
+
+\subsubsection*{Character \ngrams}
+
+Documents are represented by count vectors where each entry represents a
+\ngram of characters. Some examples of character \ngrams are \textlangle
+eg␣\textrangle, \textlangle␣i␣\textrangle\xspace or \textlangle si\textrangle. For
+the linear model, all \ngrams with $n\in \{1,2,3\}$ were used, and for the
+neural models the 10,000 most commonly occuring \ngrams with $n\in \{2,3,4\}$
+were used.
+
+\subsubsection*{POS \ngrams}
+
+Documents are represented by count vectors where each entry represents a
+\ngram of POS tags. Some examples of POS \ngrams are \textlangle NOUN
+NOUN\textrangle, \textlangle PRON AUX PRON\textrangle or \textlangle SCONJ
+ADJ\textrangle. For the linear model, all \ngrams with $n\in \{1,2,3\}$ were
+used, and for the neural models the 10,000 most commonly occuring \ngrams
+with $n\in \{2,3,4\}$ were used.
+
+\subsubsection*{Mixed POS}
+
+The Mixed POS mode was taken from \textcite{malmasi15}. Their best performing
+single feature was a mix of word forms and POS tags, so that common function
+words appeared in their written form, while content words were substituted
+with their POS tag.
+
+As an example, the sequence 
+\begin{displayquote}
+generasjoner kan også få anledning til å utnytte dem
+\end{displayquote}
+is transformed into
+\begin{displayquote}
+NOUN kan også VERB NOUN til å VERB dem
+\end{displayquote}
+
+We used the same set of stop words as \citeauthor{malmasi15}. From these
+transformed sequences, we extracted \ngrams in the interval $[1,3]$. The
+10,000 most commonly occuring of these were used for the neural models.
+
 
 \subsection{Logistic regression}
 
@@ -66,10 +116,6 @@ The logistic regression model was implemented using the Python library
 Scikit-Learn \autocite{scikit-learn}. The model was instantiated with the
 `lgbfs' solver to minimize multinomial loss. No regularization was used, and
 the optimizer was set to run for a maximum of 100 iterations.
-
-This model used word count vectors as features. All tokens in the training set
-were included, totalling 18,305 different forms. This is then the dimensionality
-of the input vectors.
 
 
 \subsection{Multi-layer perceptron}
@@ -86,13 +132,6 @@ run with collapsed labels or not.
 The model was trained using the Adam optimization algorithm
 \autocite{kingma2014adam} to minimize the categorical cross-entropy loss. The
 learning rate was set to $2\cdot 10^{-4}$.
-
-The neural network models were used with three different input features. For
-word count vectors, the input is identical as for the logistic regression,
-except that the number of features is limited to the 10,000 most common. 
-The model was only used with \ac{POS} and character \ngrams. Here, all 
-\textit{n}s in the interval [2, 4] were extracted, and only the 10,000 most
-common of them kept.
 
 The new \ngram features add a certain sensitivity to local order of features.
 Many character \ngrams will represent entities smaller than a word, but may
@@ -132,10 +171,16 @@ collapsed labels and 58.5\% with collapsed labels.
     Model      & Macro \FI       & Micro \FI       & Macro \FI       & Micro \FI      \\
     \midrule
     Majority   &         $0.040$  &         $0.163$  &         $0.127$  &         $0.341$ \\
+    \midrule
     LogReg BOW &         $0.179$  &         $0.285$  &         $0.319$  &         $0.585$ \\
+    LogReg Char&         $0.221$  &         $0.317$  &         $0.399$  &         $0.602$ \\
+    LogReg POS &         $0.188$  &         $0.276$  &         $0.344$  &         $0.585$ \\
+    LogReg Mix &         $0.213$  &         $0.341$  &         $0.342$  &         $0.585$ \\
+    \midrule
     MLP BOW    &         $0.221$  &         $0.350$  &         $0.410$  &         $0.642$ \\
     MLP Char   &         $0.203$  &         $0.366$  &         $0.368$  & $\mathbf{0.707}$ \\
-    MLP POS    & $\mathbf{0.254}$ & $\mathbf{0.390}$ & $\mathbf{0.425}$ &         $0.691$ \\
+    MLP POS    &         $0.254$  &         $0.390$  & $\mathbf{0.425}$ &         $0.691$ \\
+    MLP Mix    & $\mathbf{0.256}$ & $\mathbf{0.447}$ &         $0.401$  &         $0.699$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of different classifiers}
