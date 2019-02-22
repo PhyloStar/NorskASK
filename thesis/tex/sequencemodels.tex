@@ -142,18 +142,20 @@ are reporting macro and micro \FI as before. The \ac{QWK} metric used by
 \citeauthor{taghipour16} is not applicable to the predictions of our
 classifier.
 
-The formulation of the \ac{AES} task as a regression problem by \citeauthor{taghipour16}
-was partly a constraint stemming from the Kaggle competition that supplied
-the data and problem formulation, and partly motivated by the nature of the
-data. The ASAP data consists of essays from eight different prompts, and the
-scoring methods differs across prompts. Since the scores are numeric values over
-different ranges, modelling the task as a regression problem made it sufficient
-to normalize the numeric scores to a common interval before training.
+The formulation of the \ac{AES} task as a regression problem by
+\citeauthor{taghipour16} was partly a constraint stemming from the Kaggle
+competition that supplied the data and problem formulation, and partly
+motivated by the nature of the data. The ASAP data consists of essays from
+eight different prompts, and the scoring methods differs across prompts.
+Since the scores are numeric values over different ranges, modelling the task
+as a regression problem made it sufficient to normalize the numeric scores to
+a common interval before training.
 
-Generally for \ac{AES}, modelling the task as multi-class prediction is common,
-and is used in \autocite{vajjala18universalCEFR}. In \autocite{vajjala17}, two
-different datasets with different properties were used, and the author utilized
-both multi-class prediction and regression at different points.
+Generally for \ac{AES}, modelling the task as multi-class prediction is
+common, and is used in \autocite{vajjala18universalCEFR}. In
+\autocite{vajjala17}, two different datasets with different properties were
+used, and the author utilized both multi-class prediction and regression at
+different points.
 
 The embedding layer in \textcite{taghipour16} was initialized with
 pre-trained embeddings of size 50. Our embedding layer was initialized to
@@ -291,7 +293,7 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     Pre train &         $0.277$  &         $0.407$  & $\mathbf{0.624}$ &         $0.756$  \\
     \bottomrule
   \end{tabular}
-  \caption{\FI scores of RNN classifiers}
+  \caption{\FI scores of RNN classifiers on AES}
   \label{tab:rnn-results}
 \end{table}
 
@@ -346,17 +348,42 @@ attention model that was best, but a bidirectional LSTM.
 \todo{Include POS in RNN models}
 
 The attention model allows us to visualize the weights the network gives to
-each token in a document. Figure \ref{fig:nli-attention} shows the first 300
-tokens of a text which was correctly predicted to be written by a native Polish
-speaker. Red tokens indicate timesteps that were given higher weight by the attention
-model, and blue tokens ones that were given low weights. Out of vocabulary tokens
-are replaced by question mark emoji. The attention values do not seem easily
-interpretable, as there are lexical and grammatical errors both in the red and
-the blue sections.
+each token in a document. Figure \ref{fig:h0186-nli-attention} shows the
+first 300 tokens of a text which was correctly predicted to be written by a
+native Russian speaker. Red tokens indicate timesteps that were given higher
+weight by the attention model, and blue tokens ones that were given low
+weights. Out of vocabulary tokens are replaced by question mark emoji. The
+attention values do not seem easily interpretable, as there are lexical and
+grammatical errors both in the red and the blue sections.
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{nli-attention}
-  \caption{Attention values of NLI classifier on excerpt from ASK text h0131}
-  \label{fig:nli-attention}
+  \includegraphics[width=\textwidth]{h0186-nli-attention}
+  \caption{Attention values of NLI classifier on excerpt from ASK text h0186.
+           L1 is Russian, CEFR score B2}
+  \label{fig:h0186-nli-attention}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{h0189-nli-attention}
+  \caption{Attention values of NLI classifier on excerpt from ASK text h0189.
+           L1 is English, CEFR score C1}
+  \label{fig:h0189-nli-attention}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{s0180-nli-attention}
+  \caption{Attention values of NLI classifier on excerpt from ASK text s0180.
+           L1 is Vietnamese, CEFR score A2/B1}
+  \label{fig:s0180-nli-attention}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{s0621-nli-attention}
+  \caption{Attention values of NLI classifier on full ASK text s0621.
+           L1 is Somali, CEFR score A2/B1}
+  \label{fig:s0621-nli-attention}
 \end{figure}

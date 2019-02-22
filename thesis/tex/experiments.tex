@@ -183,8 +183,9 @@ that performs the best is the one using character \ngrams.
     \midrule
     MLP BOW    &         $0.221$  &         $0.350$  &         $0.410$  &         $0.642$ \\
     MLP Char   &         $0.203$  &         $0.366$  &         $0.368$  & $\mathbf{0.707}$ \\
-    MLP POS    &         $0.254$  &         $0.390$  & $\mathbf{0.425}$ &         $0.691$ \\
-    MLP Mix    & $\mathbf{0.256}$ & $\mathbf{0.447}$ &         $0.401$  &         $0.699$ \\
+    MLP POS    & $\mathbf{0.254}$ &         $0.390$  & $\mathbf{0.425}$ &         $0.691$ \\
+    %            mlp_mixed-02-20_14-45-16.pkl          mlp_mixed-02-22_13-43-37.pkl
+    MLP Mix    &         $0.239$  & $\mathbf{0.398}$ &         $0.384$  &         $0.667$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of different classifiers}
@@ -197,45 +198,19 @@ for the full label set, both for macro and micro average. On the collapsed set
 of labels, the part of speech \ngrams had the highest macro \FI score, but were
 beat in micro \FI by the character \ngrams.
 
-Confusion matrices from MLP POS:
+Confusion matrices from MLP Mix:
 \todo{Replace tables with heatmaps}
 
-\begin{table}
+\begin{figure}
   \centering
-  \begin{tabular}{lrrrrrrr}
-    \toprule
-          & A2 & A2/B1 & B1 & B1/B2 & B2 & B2/C1 & C1 \\
-    \midrule
-    A2    &  0 &     0 &  1 &     0 &  0 &     0 &  0 \\
-    A2/B1 &  0 &     6 & 12 &     2 &  2 &     0 &  0 \\
-    B1    &  0 &     2 & 13 &     3 &  2 &     0 &  0 \\
-    B1/B2 &  0 &     1 & 10 &    11 &  8 &     0 &  0 \\
-    B2    &  0 &     0 & 10 &     9 & 17 &     1 &  0 \\
-    B2/C1 &  0 &     0 &  2 &     2 &  5 &     1 &  0 \\
-    C1    &  0 &     0 &  0 &     1 &  1 &     1 &  0 \\
-    \bottomrule
-  \end{tabular}
-  \caption{Confusion matrix of POS MLP on all labels}
-  \label{tab:confusion-full}
-\end{table}
+  \includegraphics[width=\textwidth]{mlp-mixed-conf}
+  \caption{Confusion matrix for MLP Mix}
+  \label{fig:mlp-mixed-conf}
+\end{figure}
 
-\begin{table}
+\begin{figure}
   \centering
-  \begin{tabular}{lrrrr}
-    \toprule
-       & A2 & B1 & B2 & C1 \\
-    \midrule
-    A2 &  0 &  1 &  0 &  0 \\
-    B1 &  0 & 36 &  6 &  0 \\
-    B2 &  0 & 19 & 47 &  1 \\
-    C1 &  0 &  1 & 10 &  2 \\
-    \bottomrule
-  \end{tabular}
-  \caption{Confusion matrix of POS MLP on collapsed labels}
-  \label{tab:confusion-collapsed}
-\end{table}
-
-Taghipour and Ng:
-brukte de CNN foran LSTM eller ikke?
-ulike numeriske karakterskalaer
-evalueringer separert basert på prompt
+  \includegraphics[width=\textwidth]{mlp-mixed-conf-round}
+  \caption{Confusion matrix for MLP Mix on collapsed labels}
+  \label{fig:mlp-mixed-conf-round}
+\end{figure}
