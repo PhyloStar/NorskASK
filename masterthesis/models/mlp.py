@@ -115,17 +115,11 @@ def main():
 
     # Context manager fails on Windows (can't open an open file again)
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
-    if not args.multi:
-        callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
-    else:
-        callbacks = []
+    callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
     history = model.fit(
         train_x, train_y, epochs=args.epochs, callbacks=callbacks, validation_data=(dev_x, dev_y),
         verbose=2)
-    try:
-        model.load_weights(weights_path)
-    except OSError:
-        pass
+    model.load_weights(weights_path)
     os.close(temp_handle)
     os.remove(weights_path)
 

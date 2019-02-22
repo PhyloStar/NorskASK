@@ -5,8 +5,14 @@ from sklearn.metrics import f1_score
 
 class F1Metrics(Callback):
     def __init__(self, dev_x, dev_y, weights_path, average='macro'):
+        if isinstance(dev_y, list):
+            self.dev_y = dev_y[0]
+            self.multi = True
+        else:
+            self.dev_y = dev_y
+            self.multi = False
         self.dev_x = dev_x
-        self.dev_y = dev_y
+        assert self.dev_x.shape[0] == self.dev_y.shape[0]
         self.weights_path = weights_path
         self.average = average
 
@@ -20,6 +26,8 @@ class F1Metrics(Callback):
         if logs is None:
             logs = {}
         val_predict = self.model.predict(self.dev_x)
+        if self.multi:
+            val_predict = val_predict[0]
         _val_f1 = f1_metric(self.dev_y, val_predict, self.average)
         self.val_f1s.append(_val_f1)
         if _val_f1 > self.best_f1:
