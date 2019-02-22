@@ -32,4 +32,4 @@ module load \
 
 chkfile "results" "models"
 
-python -m masterthesis.models.taghipour_ng "$@"
+python -m masterthesis.models.rnn "$@"

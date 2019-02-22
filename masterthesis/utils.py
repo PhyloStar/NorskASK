@@ -40,6 +40,8 @@ RESULTS_DIR = PROJECT_ROOT / 'results'
 MODEL_DIR = PROJECT_ROOT / 'models'
 VECTOR_DIR = MODEL_DIR / 'vectors'
 
+IMG_DIR = PROJECT_ROOT / 'thesis' / 'img'
+
 CEFR_LABELS = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
 ROUND_CEFR_LABELS = CEFR_LABELS[::2]
 LANG_LABELS = ['eng', 'pol', 'rus', 'som', 'spa', 'deu', 'vie']

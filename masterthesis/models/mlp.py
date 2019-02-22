@@ -115,7 +115,7 @@ def main():
     true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
     report(true, pred, labels)
-    prefix = 'mlp_baseline_%s' % args.featuretype
+    prefix = 'mlp_%s' % args.featuretype
     fname = get_file_name(prefix)
     save_results(fname, args.__dict__, history.history, true, pred)
 
