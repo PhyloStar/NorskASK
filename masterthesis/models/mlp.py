@@ -1,7 +1,7 @@
 import argparse
 import os
 import tempfile
-from typing import Iterable
+from typing import Iterable, Sequence
 
 from keras.layers import Dense, Dropout, Input
 from keras.models import Model
@@ -16,7 +16,9 @@ from masterthesis.features.build_features import (
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.results import save_results
-from masterthesis.utils import DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER
+from masterthesis.utils import (
+    DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER, safe_plt as plt
+)
 
 
 conll_folder = DATA_DIR / 'conll'
@@ -25,20 +27,23 @@ conll_folder = DATA_DIR / 'conll'
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('featuretype', choices={'pos', 'word', 'char', 'mixed'})
-    parser.add_argument('--round-cefr', action='store_true')
-    parser.add_argument('--max-features', type=int, default=10000)
+    parser.add_argument('--epochs', type=int, default=50)
     parser.add_argument('--lr', type=float, default=2e-4)
+    parser.add_argument('--max-features', type=int, default=10000)
+    parser.add_argument('--multi', action='store_true')
+    parser.add_argument('--nosave', action='store_true')
+    parser.add_argument('--round-cefr', action='store_true')
     return parser.parse_args()
 
 
-def build_model(vocab_size: int, num_classes: int):
+def build_model(vocab_size: int, num_classes: Sequence[int]):
     input_ = Input((vocab_size,))
     hidden_1 = Dense(256, activation='relu')(input_)
     dropout_1 = Dropout(0.5)(hidden_1)
     hidden_2 = Dense(256, activation='relu', name=REPRESENTATION_LAYER)(dropout_1)
     dropout_2 = Dropout(0.5)(hidden_2)
-    output = Dense(num_classes, activation='softmax')(dropout_2)
-    return Model(inputs=[input_], outputs=[output])
+    outputs = [Dense(n_c, activation='softmax')(dropout_2) for n_c in num_classes]
+    return Model(inputs=[input_], outputs=outputs)
 
 
 def pos_line_iter(split) -> Iterable[str]:
@@ -88,12 +93,20 @@ def main():
     kind = args.featuretype
     train_x, dev_x, num_features = preprocess(kind, args.max_features, train_meta, dev_meta)
 
-    labels = sorted(train_meta.cefr.unique())
+    cefr_labels = sorted(train_meta.cefr.unique())
+    train_y = [to_categorical([cefr_labels.index(c) for c in train_meta.cefr])]
+    dev_y = [to_categorical([cefr_labels.index(c) for c in dev_meta.cefr])]
+    num_classes = [len(cefr_labels)]
 
-    train_y = to_categorical([labels.index(c) for c in train_meta.cefr])
-    dev_y = to_categorical([labels.index(c) for c in dev_meta.cefr])
+    if args.multi:
+        lang_labels = sorted(train_meta.lang.unique())
+        train_y.append(to_categorical([lang_labels.index(l) for l in train_meta.lang]))
+        dev_y.append(to_categorical([lang_labels.index(l) for l in dev_meta.lang]))
+        num_classes.append(len(lang_labels))
 
-    model = build_model(num_features, len(labels))
+    print(num_classes)
+
+    model = build_model(num_features, num_classes)
     model.summary()
     model.compile(
         optimizer=Adam(lr=args.lr),
@@ -102,22 +115,52 @@ def main():
 
     # Context manager fails on Windows (can't open an open file again)
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
-    callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
+    if not args.multi:
+        callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
+    else:
+        callbacks = []
     history = model.fit(
-        train_x, train_y, epochs=50, callbacks=callbacks, validation_data=(dev_x, dev_y),
+        train_x, train_y, epochs=args.epochs, callbacks=callbacks, validation_data=(dev_x, dev_y),
         verbose=2)
-    model.load_weights(weights_path)
+    try:
+        model.load_weights(weights_path)
+    except OSError:
+        pass
     os.close(temp_handle)
     os.remove(weights_path)
 
-    predictions = model.predict(dev_x)
+    if args.multi:
+        predictions = model.predict(dev_x)[0]
+        true = np.argmax(dev_y[0], axis=1)
+    else:
+        predictions = model.predict(dev_x)
+        true = np.argmax(dev_y, axis=1)
 
-    true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
-    report(true, pred, labels)
-    prefix = 'mlp_%s' % args.featuretype
-    fname = get_file_name(prefix)
-    save_results(fname, args.__dict__, history.history, true, pred)
+
+    fig, axes = plt.subplots(2, 2)
+    ax1 = plt.subplot(223)
+    ax2 = plt.subplot(221, sharex=ax1)
+
+    ax1.plot(history.history['loss'], label='training loss'),
+    ax1.plot(history.history['val_loss'], label='validation loss'),
+    ax1.legend()
+    ax1.set(xlabel='Epoch', ylabel='Loss')
+
+    ax2.plot(history.history['dense_2_acc'], label='CEFR train acc'),
+    ax2.plot(history.history['val_dense_2_acc'], label='CEFR val acc')
+    ax2.plot(history.history['dense_3_acc'], label='L1 train acc'),
+    ax2.plot(history.history['val_dense_3_acc'], label='L1 val acc')
+    ax2.legend()
+    ax2.set(ylabel='Accuracy')
+
+    ax3 = plt.subplot(122)
+    report(true, pred, cefr_labels, ax3)
+
+    if not args.nosave:
+        prefix = 'mlp_%s' % args.featuretype
+        fname = get_file_name(prefix)
+        save_results(fname, args.__dict__, history.history, true, pred)
 
 
 if __name__ == '__main__':
