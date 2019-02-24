@@ -132,8 +132,13 @@ layer with softmax activation and 7 or 4 dimensions, depending on whether we
 run with collapsed labels or not.
 
 The model was trained using the Adam optimization algorithm
-\autocite{kingma2014adam} to minimize the categorical cross-entropy loss. The
-learning rate was set to $2\cdot 10^{-4}$.
+\autocite{kingma2014adam} to minimize the categorical cross-entropy loss
+(equation \ref{eq:crossentropy}). The learning rate was set to $2\cdot
+10^{-4}$.
+
+\begin{equation}\label{eq:crossentropy}
+  \mathcal{L} = -\sum_{c\in C} {y_c \log{{\hat y}_c}}
+\end{equation}
 
 The new \ngram features add a certain sensitivity to local order of features.
 Many character \ngrams will represent entities smaller than a word, but may
