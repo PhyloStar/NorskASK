@@ -135,8 +135,8 @@ used tokens had a higher accuracy. Filters of size 4, 5, and 6 were used.
     +POS      &         $0.259$  &         $0.447$  &         $0.388$  &         $0.732$  \\
     \midrule
     % With L2 constraint 3
-    %           cnn-02-25_11-44-23
-    Tokens    &         $0.247$  &         $0.415$  &         $00000$  & $\mathbf{00000}$ \\
+    %           cnn-02-25_11-44-23                    cnn-02-25_12-16-18
+    Tokens    &         $0.247$  &         $0.415$  &         $0.452$  & $\mathbf{0.789}$ \\
     +POS      & $\mathbf{00000}$ &         $00000$  & $\mathbf{00000}$ &         $00000$  \\
     %                               
     Mixed POS &         $00000$  & $\mathbf{00000}$ &         $00000$  & $\mathbf{00000}$ \\
@@ -152,6 +152,22 @@ used tokens had a higher accuracy. Filters of size 4, 5, and 6 were used.
   \caption{\FI scores of CNN classifiers on AES}
   \label{tab:cnn-results}
 \end{table}
+
+
+\subsection{Training behaviour}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{cnn-training}
+  \caption{Training and validation loss and accuracy over 50 epochs of training.}
+  \label{fig:cnn-training}
+\end{figure}
+
+Figure \ref{fig:cnn-training} shows that the best performing model overfits
+the training data. While the validation metrics plateau after approximately
+10 epochs, after which we see only small, seemingly random fluctuations.
+The training metrics keep improving, suggesting that the model is memorizing
+the data rather than discovering general features.
 
 
 \section{Recurrent neural networks}
