@@ -63,7 +63,17 @@ training signals from the task.
 
 \subsection{Multi-channel input}
 
-Word and POS tags input in parallel. \todo{expand}
+For some of our experiments we use both word tokens and their POS tags as
+input at the same time. To do this we include two separate embedding matrices
+in our network, one for words and one for POS tags. These embedding matrices
+do not need to have the same dimensionalities, and because the number of
+different POS tags is very low compared to the number of different words, we
+use smaller vectors for POS tags.
+
+To create the input to the core part of our network, we concatenate the word
+and POS embeddings into a single vector. For instance, if we use word
+embeddings of size 50 and POS embeddings of size 10, the next layer will
+receive vectors of size 60.
 
 
 \section{Convolutional neural networks}
@@ -111,7 +121,8 @@ used tokens had a higher accuracy. Filters of size 4, 5, and 6 were used.
     \cmidrule(lr){4-5}
     Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
     \midrule
-    Tokens    &         $0.234$  &         $0.415$  &         $0.423$  & $\mathbf{0.797}$ \\
+    %           cnn-02-25_11-28-44
+    Tokens    &         $0.243$  &         $0.439$  &         $0.423$  & $\mathbf{0.797}$ \\
     +POS      & $\mathbf{0.283}$ &         $0.431$  & $\mathbf{0.444}$ &         $0.772$  \\
     %           cnn-02-11_14-52-21                    cnn-02-11_15-00-41
     Mixed POS &         $0.276$  & $\mathbf{0.472}$ &         $0.423$  & $\mathbf{0.797}$ \\
@@ -120,8 +131,22 @@ used tokens had a higher accuracy. Filters of size 4, 5, and 6 were used.
     Mixed POS &         $0.265$  &         $0.455$  &         $0.430$  &         $0.748$  \\
     \midrule
     % pre-trained embeddings, windows 2,3,4. Max pooling only
-    %           cnn-02-13_14-41-37
+    %           cnn-02-13_14-41-37                    cnn-02-13_14-54-09
     +POS      &         $0.259$  &         $0.447$  &         $0.388$  &         $0.732$  \\
+    \midrule
+    % With L2 constraint 3
+    %           cnn-02-25_11-44-23
+    Tokens    &         $0.247$  &         $0.415$  &         $00000$  & $\mathbf{00000}$ \\
+    +POS      & $\mathbf{00000}$ &         $00000$  & $\mathbf{00000}$ &         $00000$  \\
+    %                               
+    Mixed POS &         $00000$  & $\mathbf{00000}$ &         $00000$  & $\mathbf{00000}$ \\
+    % Windows 2, 3, 4
+    %                               
+    Mixed POS &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    \midrule
+    % pre-trained embeddings, windows 2,3,4. Max pooling only
+    %                               
+    +POS      &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of CNN classifiers on AES}
