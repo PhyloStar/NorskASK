@@ -10,11 +10,13 @@ from keras.utils import to_categorical
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 
-from masterthesis.features.build_features import bag_of_words, filename_iter
+from masterthesis.features.build_features import (
+    bag_of_words, filename_iter, iterate_mixed_pos_docs, iterate_pos_docs
+)
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import report
 from masterthesis.results import save_results
-from masterthesis.utils import conll_reader, DATA_DIR, load_split, REPRESENTATION_LAYER
+from masterthesis.utils import DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER
 
 
 conll_folder = DATA_DIR / 'conll'
@@ -22,7 +24,7 @@ conll_folder = DATA_DIR / 'conll'
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('featuretype', choices=['pos', 'word', 'char'])
+    parser.add_argument('featuretype', choices={'pos', 'word', 'char', 'mixed'})
     parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--max-features', type=int, default=10000)
     parser.add_argument('--lr', type=float, default=2e-4)
@@ -39,13 +41,14 @@ def build_model(vocab_size: int, num_classes: int):
     return Model(inputs=[input_], outputs=[output])
 
 
-def pos_line_iter(meta) -> Iterable[str]:
-    for stem in meta.filename:
-        file = (conll_folder / stem).with_suffix('.conll')
-        sents = []
-        for sent in conll_reader(file, ['UPOS'], tags=False):
-            sents.append(' '.join(tag for (tag,) in sent))
-        yield '\n'.join(sents)
+def pos_line_iter(split) -> Iterable[str]:
+    for doc in iterate_pos_docs(split):
+        yield ' '.join(doc)
+
+
+def mixed_pos_line_iter(split) -> Iterable[str]:
+    for doc in iterate_mixed_pos_docs(split):
+        yield ' '.join(doc)
 
 
 def preprocess(kind: str, max_features: int, train_meta, dev_meta):
@@ -53,8 +56,15 @@ def preprocess(kind: str, max_features: int, train_meta, dev_meta):
         vectorizer = CountVectorizer(
             lowercase=False, token_pattern=r"[^\s]+",
             ngram_range=(2, 4), max_features=max_features)
-        train_x = vectorizer.fit_transform(pos_line_iter(train_meta))
-        dev_x = vectorizer.transform(pos_line_iter(dev_meta))
+        train_x = vectorizer.fit_transform(pos_line_iter('train'))
+        dev_x = vectorizer.transform(pos_line_iter('dev'))
+        num_features = len(vectorizer.vocabulary_)
+    elif kind == 'mixed':
+        vectorizer = CountVectorizer(
+            lowercase=False, token_pattern=r"[^\s]+",
+            ngram_range=(1, 3), max_features=max_features)
+        train_x = vectorizer.fit_transform(mixed_pos_line_iter('train'))
+        dev_x = vectorizer.transform(mixed_pos_line_iter('dev'))
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'char':
         train_x, vectorizer = bag_of_words(
@@ -94,7 +104,7 @@ def main():
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
     callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
     history = model.fit(
-        train_x, train_y, epochs=20, callbacks=callbacks, validation_data=(dev_x, dev_y),
+        train_x, train_y, epochs=50, callbacks=callbacks, validation_data=(dev_x, dev_y),
         verbose=2)
     model.load_weights(weights_path)
     os.close(temp_handle)
@@ -105,7 +115,9 @@ def main():
     true = np.argmax(dev_y, axis=1)
     pred = np.argmax(predictions, axis=1)
     report(true, pred, labels)
-    save_results('mlp_baseline', args.__dict__, history.history, true, pred)
+    prefix = 'mlp_%s' % args.featuretype
+    fname = get_file_name(prefix)
+    save_results(fname, args.__dict__, history.history, true, pred)
 
 
 if __name__ == '__main__':

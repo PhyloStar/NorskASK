@@ -6,7 +6,7 @@ import tempfile
 from keras import backend as K
 from keras.layers import (
     Activation, Bidirectional, Concatenate, Dense, Dropout, Embedding, Flatten, GRU, Input, Lambda,
-    LSTM, Multiply, Permute, RepeatVector, TimeDistributed
+    Layer, LSTM, Multiply, Permute, RepeatVector, TimeDistributed
 )
 from keras.models import Model
 from keras.optimizers import RMSprop
@@ -64,9 +64,9 @@ def parse_args():
 def _build_inputs_and_embeddings(vocab_size: int, sequence_len: int, embed_dim: int,
                                  mask_zero: bool, trainable_embeddings: bool, num_pos: int):
     word_input_layer = Input((sequence_len,))
-    word_embedding_layer = Embedding(vocab_size, embed_dim, mask_zero=mask_zero,
-                                     name=EMB_LAYER_NAME,
-                                     trainable=trainable_embeddings)(word_input_layer)
+    word_embedding_layer = Embedding(
+        vocab_size, embed_dim, mask_zero=mask_zero, name=EMB_LAYER_NAME,
+        trainable=trainable_embeddings)(word_input_layer)
     if num_pos > 0:
         pos_input_layer = Input((sequence_len,))
         pos_embedding_layer = Embedding(num_pos, POS_EMB_DIM)(pos_input_layer)
@@ -78,7 +78,7 @@ def _build_inputs_and_embeddings(vocab_size: int, sequence_len: int, embed_dim: 
     return inputs, embedding_layer
 
 
-def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool):
+def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool) -> Layer:
     if rnn_cell == 'lstm':
         cell_factory = LSTM
     elif rnn_cell == 'gru':

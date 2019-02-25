@@ -18,10 +18,10 @@ space-separated tokens, and an empty line separating paragraphs.
 
 These raw text files were then sent through the UDPipe pipeline
 \autocite{udpipe:2017} for tagging and dependency parsing. The UDPipe project
-maintains a \ac{REST} \ac{API} containing a selection of pretrained models. All
-documents were transformed by the \ac{REST} \ac{API} using what was at the time of
-writing the newest Norwegian bokmål (nb) model, available, namely
-\texttt{norwegian-bokmaal-ud-2.3-181115}.
+maintains an online REST \ac{API} containing a selection of pretrained models.
+All documents were transformed by the REST \ac{API} using what was at
+the time of writing the newest Norwegian bokmål (nb) model
+available\footnote{\texttt{norwegian-bokmaal-ud-2.3-181115}}.
 
 The pipeline accepts raw text files as input, where each sentence is put on a
 separate line. The output from UDPipe is in the CoNLL file format, with a
@@ -56,8 +56,60 @@ tags.
 
 \section{Model descriptions}
 
-Initial experiments were run using logistic regression, which is a linear
-classification method, and \acp{MLP}, which are simple neural networks.
+Initial experiments were run using logistic regression, and \acp{MLP}, which
+are simple neural networks.
+
+\subsection{Input representations}
+
+Input representations are shared between the linear and neural models, except
+for the total number of features. The neural models may restrict the number
+of features by cutting off less frequently occuring features, and this is
+noted below.
+
+\subsubsection*{Word counts}
+
+This representation is a vector with a entry for each unique word form in the
+training data, 18,305 in total. The value of each entry is the number of
+times the word form occurs in the document. The neural models limits the
+count vectors to the 10,000 most common tokens.
+
+\subsubsection*{Character \ngrams}
+
+Documents are represented by count vectors where each entry represents a
+\ngram of characters. Some examples of character \ngrams are \textlangle
+eg␣\textrangle, \textlangle␣i␣\textrangle\xspace or \textlangle si\textrangle. For
+the linear model, all \ngrams with $n\in \{1,2,3\}$ were used, and for the
+neural models the 10,000 most commonly occuring \ngrams with $n\in \{2,3,4\}$
+were used.
+
+\subsubsection*{POS \ngrams}
+
+Documents are represented by count vectors where each entry represents a
+\ngram of POS tags. Some examples of POS \ngrams are \textlangle NOUN
+NOUN\textrangle, \textlangle PRON AUX PRON\textrangle or \textlangle SCONJ
+ADJ\textrangle. For the linear model, all \ngrams with $n\in \{1,2,3\}$ were
+used, and for the neural models the 10,000 most commonly occuring \ngrams
+with $n\in \{2,3,4\}$ were used.
+
+\subsubsection*{Mixed POS}
+
+The Mixed POS mode was taken from \textcite{malmasi15}. Their best performing
+single feature was a mix of word forms and POS tags, so that common function
+words appeared in their written form, while content words were substituted
+with their POS tag.
+
+As an example, the sequence 
+\begin{displayquote}
+generasjoner kan også få anledning til å utnytte dem
+\end{displayquote}
+is transformed into
+\begin{displayquote}
+NOUN kan også VERB NOUN til å VERB dem
+\end{displayquote}
+
+We used the same set of stop words as \citeauthor{malmasi15}. From these
+transformed sequences, we extracted \ngrams in the interval $[1,3]$. The
+10,000 most commonly occuring of these were used for the neural models.
 
 
 \subsection{Logistic regression}
@@ -66,10 +118,6 @@ The logistic regression model was implemented using the Python library
 Scikit-Learn \autocite{scikit-learn}. The model was instantiated with the
 `lgbfs' solver to minimize multinomial loss. No regularization was used, and
 the optimizer was set to run for a maximum of 100 iterations.
-
-This model used word count vectors as features. All tokens in the training set
-were included, totalling 18,305 different forms. This is then the dimensionality
-of the input vectors.
 
 
 \subsection{Multi-layer perceptron}
@@ -84,31 +132,30 @@ layer with softmax activation and 7 or 4 dimensions, depending on whether we
 run with collapsed labels or not.
 
 The model was trained using the Adam optimization algorithm
-\autocite{kingma2014adam} to minimize the categorical cross-entropy loss. The
-learning rate was set to $2\cdot 10^{-4}$.
+\autocite{kingma2014adam} to minimize the categorical cross-entropy loss
+(equation \ref{eq:crossentropy}). The learning rate was set to $2\cdot
+10^{-4}$.
 
-The neural network models were used with three different input features. For
-word count vectors, the input is identical as for the logistic regression,
-except that the number of features is limited to the 10,000 most common. 
-The model was only used with \ac{POS} and character \ngrams. Here, all 
-\textit{n}s in the interval [2, 4] were extracted, and only the 10,000 most
-common of them kept.
+\begin{equation}\label{eq:crossentropy}
+  \mathcal{L} = -\sum_{c\in C} {y_c \log{{\hat y}_c}}
+\end{equation}
 
 The new \ngram features add a certain sensitivity to local order of features.
 Many character \ngrams will represent entities smaller than a word, but may
-indicate common spelling errors. \ac{POS} \ngrams, on the other hand, might
-be able to represent syntactic features. Spelling and syntax should be
-correlated with L2 proficiency, and traditional \ac{ML} methods that rely on
-manual feature engineering have included domain specific features designed to
-capture spelling and syntax, as for instance in \textcite{vajjala17}.
+indicate common spelling mistakes. \ac{POS} and Mixed POS \ngrams, on the
+other hand, might be able to represent syntactic features. Spelling and
+syntax should be correlated with L2 proficiency, and traditional \ac{ML}
+methods that rely on manual feature engineering have included domain specific
+features designed to capture spelling and syntax, as for instance in
+\textcite{vajjala17}.
 
 
 \section{Results}
 
-Two different sets of classes are used in the experiments. The original seven
-CEFR labels, and a collapsed set where the intermediate classes, such as
-``A2/B1'', are rounded up to the nearest canonical class, i.e. the CEFR label
-right of the slash. This results in only four different labels: ``A2'',
+Two different sets of output labels are used in the experiments: The original
+seven CEFR labels, and a collapsed set where the intermediate classes, such
+as ``A2/B1'', are rounded up to the nearest canonical class, i.e. the CEFR
+label after the slash. This results in only four different labels: ``A2'',
 ``B1'', ``B2'' and ``C1''.
 
 As a dumb baseline, we consider the majority class classifier. The majority
@@ -120,7 +167,8 @@ majority class classifier predicts no samples for any other classes.
 
 Moving to a linear model, a logistic regression classifier using only
 bag-of-word features achieves an accuracy of 28.5\% on the dev set without
-collapsed labels and 58.5\% with collapsed labels. 
+collapsed labels and 58.5\% with collapsed labels. However, the linear model
+that performs the best is the one using character \ngrams.
 
 \begin{table}
   \centering
@@ -132,10 +180,17 @@ collapsed labels and 58.5\% with collapsed labels.
     Model      & Macro \FI       & Micro \FI       & Macro \FI       & Micro \FI      \\
     \midrule
     Majority   &         $0.040$  &         $0.163$  &         $0.127$  &         $0.341$ \\
+    \midrule
     LogReg BOW &         $0.179$  &         $0.285$  &         $0.319$  &         $0.585$ \\
+    LogReg Char&         $0.221$  &         $0.317$  &         $0.399$  &         $0.602$ \\
+    LogReg POS &         $0.188$  &         $0.276$  &         $0.344$  &         $0.585$ \\
+    LogReg Mix &         $0.213$  &         $0.341$  &         $0.342$  &         $0.585$ \\
+    \midrule
     MLP BOW    &         $0.221$  &         $0.350$  &         $0.410$  &         $0.642$ \\
     MLP Char   &         $0.203$  &         $0.366$  &         $0.368$  & $\mathbf{0.707}$ \\
-    MLP POS    & $\mathbf{0.254}$ & $\mathbf{0.390}$ & $\mathbf{0.425}$ &         $0.691$ \\
+    MLP POS    & $\mathbf{0.254}$ &         $0.390$  & $\mathbf{0.425}$ &         $0.691$ \\
+    %            mlp_mixed-02-20_14-45-16.pkl          mlp_mixed-02-22_13-43-37.pkl
+    MLP Mix    &         $0.239$  & $\mathbf{0.398}$ &         $0.384$  &         $0.667$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of different classifiers}
@@ -148,45 +203,19 @@ for the full label set, both for macro and micro average. On the collapsed set
 of labels, the part of speech \ngrams had the highest macro \FI score, but were
 beat in micro \FI by the character \ngrams.
 
-Confusion matrices from MLP POS:
+Confusion matrices from MLP Mix:
 \todo{Replace tables with heatmaps}
 
-\begin{table}
+\begin{figure}
   \centering
-  \begin{tabular}{lrrrrrrr}
-    \toprule
-          & A2 & A2/B1 & B1 & B1/B2 & B2 & B2/C1 & C1 \\
-    \midrule
-    A2    &  0 &     0 &  1 &     0 &  0 &     0 &  0 \\
-    A2/B1 &  0 &     6 & 12 &     2 &  2 &     0 &  0 \\
-    B1    &  0 &     2 & 13 &     3 &  2 &     0 &  0 \\
-    B1/B2 &  0 &     1 & 10 &    11 &  8 &     0 &  0 \\
-    B2    &  0 &     0 & 10 &     9 & 17 &     1 &  0 \\
-    B2/C1 &  0 &     0 &  2 &     2 &  5 &     1 &  0 \\
-    C1    &  0 &     0 &  0 &     1 &  1 &     1 &  0 \\
-    \bottomrule
-  \end{tabular}
-  \caption{Confusion matrix of POS MLP on all labels}
-  \label{tab:confusion-full}
-\end{table}
+  \includegraphics[width=\textwidth]{mlp-mixed-conf}
+  \caption{Confusion matrix for MLP Mix}
+  \label{fig:mlp-mixed-conf}
+\end{figure}
 
-\begin{table}
+\begin{figure}
   \centering
-  \begin{tabular}{lrrrr}
-    \toprule
-       & A2 & B1 & B2 & C1 \\
-    \midrule
-    A2 &  0 &  1 &  0 &  0 \\
-    B1 &  0 & 36 &  6 &  0 \\
-    B2 &  0 & 19 & 47 &  1 \\
-    C1 &  0 &  1 & 10 &  2 \\
-    \bottomrule
-  \end{tabular}
-  \caption{Confusion matrix of POS MLP on collapsed labels}
-  \label{tab:confusion-collapsed}
-\end{table}
-
-Taghipour and Ng:
-brukte de CNN foran LSTM eller ikke?
-ulike numeriske karakterskalaer
-evalueringer separert basert på prompt
+  \includegraphics[width=\textwidth]{mlp-mixed-conf-round}
+  \caption{Confusion matrix for MLP Mix on collapsed labels}
+  \label{fig:mlp-mixed-conf-round}
+\end{figure}

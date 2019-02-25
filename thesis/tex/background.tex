@@ -170,10 +170,10 @@ commonly the sigmoid (Eq. \ref{eq:sigmoid}) or hard sigmoid (Eq.
 
 \begin{equation} \label{eq:gru}
   \begin{aligned}
-  s_j = R_{\text{GRU}}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot \tilde{s_{j}} \\
+  s_j = R_{\text{GRU}}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot {\tilde s}_j \\
                             z &= \sigma(x_j W^{xz} + b_f + h_{j-1} W^{sz}) \\
                             r &= \sigma(x_j W^{xr} + b_i + h_{j-1} W^{sr}) \\
-                 \tilde{s{j}} &= \tanh(x_j W^{xs} + b_z + (r \odot s{j-1}) W^{sg}) \\
+                 {\tilde s}_j &= \tanh(x_j W^{xs} + b_z + (r \odot s{j-1}) W^{sg}) \\
   \\[1\jot]
                  O_{\text{GRU}}(s_j) &= s_j
   \end{aligned}

@@ -21,11 +21,22 @@ contains 1700 texts.}. Each document includes metadata such as the writer's
 L1: one of German, Dutch, English, Spanish, Russian, Polish,
 Bosnian-Croatian-Serbian, Albanian, Vietnamese and Somali. All texts from
 seven of these language backgrounds, 1212\footnote{Reported to be 1222 in
-\textcite{carlsen2012proficiency}.} in total, have been assigned a CEFR
-score. In particular, all texts except those written by people with Dutch,
+\textcite{carlsen2012proficiency}.} in total, have been assigned a \ac{CEFR}
+score, and these texts comprise the subcorpus we will be working with. In
+particular, all texts except those written by people with Dutch,
 Bosnian-Croatian-Serbian or Albanian as L1 have a CEFR score. The CEFR labels
 are available since work by \textcite{carlsen2012proficiency}, and were not
-included at the corpus' initial release.
+included at the corpus' initial release. Table \ref{tab:l1-and-testlevel}
+shows the number of texts in the corpus for each native language and at each
+test level.
+
+The corpus also includes 200 texts written by native Norwegian speakers as a
+control corpus. The total number of word and punctuation tokens in the full
+corpus, including the control corpus, is approximately 770,000. Restricting
+the corpus to the 1212 documents with \ac{CEFR} score, the number of tokens
+is approximately 487,000 in total. Other metadata included, apart from L1 and
+CEFR score, are the test level the essays were written for, what topic the
+essay is about, the learner's country of origin, age, gender and more.
 
 The CEFR scores in the ASK corpus range between A2 and C1, and also includes
 intermediate labels between the canonical proficiency scores, such as A2/B1
@@ -40,15 +51,6 @@ and also to compare the results against work on other corpora, because the
 gravity of a misclassification may not the same on the more fine-grained
 labels.
 
-The corpus also includes 200 texts written by native Norwegian speakers as a
-control corpus. The total number of word and punctuation tokens in the full
-corpus, including the control corpus, is approximately 770,000. Restricting
-the corpus to the 1212 documents with CEFR score, the number of tokens is
-approximately 487,000 in total. Other metadata included, apart from L1 and
-CEFR score, are the test level the essays were written for, what topic the
-essay is about, the learner's country of origin, age, gender and more.
-
-
 \begin{figure}
   \centering
   \includegraphics[height=0.3\textheight]{lang_vs_cefr}
@@ -62,6 +64,38 @@ essay is about, the learner's country of origin, age, gender and more.
   \caption{L1 versus CEFR score for each test level}
   \label{fig:testlevel-lang-vs-cefr}
 \end{figure}
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrr}
+    \toprule
+    First language             & AL test & IL test & Total \\
+    \midrule
+    English                    &     100 &     100 &   200 \\
+    Polish                     &     100 &     100 &   200 \\
+    Russian                    &     100 &     100 &   200 \\
+    Somali                     &       7 &     100 &   107 \\
+    Spanish                    &     100 &     100 &   200 \\
+    German                     &     100 &     100 &   200 \\
+    Vietnamese                 &       5 &     100 &   105 \\
+    \midrule
+    Subtotal (included languages) &  512 &     700 &  1212 \\ \addlinespace
+    \midrule
+    (Albanian)                 &      24 &     100 &   124 \\
+    (Bosnian-Croatian-Serbian) &     100 &     100 &   200 \\
+    (Dutch)                    &     100 &     100 &   200 \\
+    (Norwegian nynorsk)        &      21 &      11 &    32 \\
+    (Norwegian bokmål)         &      79 &      89 &   168 \\
+    \midrule
+    Subtotal (excluded languages) &  324 &     400 &   724 \\ \addlinespace
+    \midrule
+    Total (all languages)      &     836 &    1100 &  1936 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Texts in each test level for all \acp{L1}.
+           Excluded languages are listed in round brackets.}
+  \label{tab:l1-and-testlevel}
+\end{table}
  
 
 \subsection{Analyzing non-linguistic variables}
@@ -69,7 +103,7 @@ essay is about, the learner's country of origin, age, gender and more.
 Analysis of the data set was carried out in order to find correlations
 between different metadata. Knowing that the documents stem from two
 different language tests that measure different levels of proficiency, the
-data set was split into two along the \emph{Test level} label, and then broken
+data set was split in two using the \emph{Test level} label, and then broken
 down by language and proficiency again. Figure \ref{fig:testlevel-lang-vs-cefr}
 shows that the test levels have different distributions of proficiency. Note
 also that two language groups are underrepresented at the B2 test level
@@ -92,15 +126,16 @@ There is also a difference in granularity. There are 52 topics in ``Høyere
 nivå'' and only 38 topics in \emph{IL test}, even though there are more
 documents in the latter test level (512 vs. 700). This also means that the
 topics within each test level have different support. The median number of
-documents for a topic in \emph{AL test} is 5 (mean 9.8), while it is 11 in
-\emph{IL test} (mean 18.4). This also explains the overrepresentation of
+documents for a topic in \emph{AL test} is 5 (mean $9.8$), while it is 11 in
+\emph{IL test} (mean $18.4$). This also explains the overrepresentation of
 \emph{IL test} in the table of top ten topics.
 
 It has been observed that some topics in the diagram consist of several
-sub-topics. However, the number of individual sub-topics is 62, still quite
+sub-topics (for instance, ``natur norge'' consists of ``natur'' and
+``norge''). However, the number of individual sub-topics is 62, still quite
 large. However, they seem to be more evenly distributed across essays. The
 median number of documents for a sub-topic, for both test levels, is 25 (mean
-34.8). 13 sub-topics are represented in 5 or fewer documents.
+$34.8$). 13 sub-topics are only represented in 5 or fewer documents.
 
 \begin{table}
   \centering

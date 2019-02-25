@@ -1,9 +1,11 @@
 import argparse
+from math import isfinite
 import os
 from pathlib import Path
 import tempfile
-from typing import Iterable, List
+from typing import Iterable, List, Optional
 
+from keras.constraints import max_norm
 from keras.layers import Concatenate, Conv1D, Dense, Dropout, Embedding, GlobalMaxPooling1D, Input
 from keras.models import Model
 from keras.utils import to_categorical
@@ -21,6 +23,7 @@ from masterthesis.results import save_results
 from masterthesis.utils import get_file_name, load_split, REPRESENTATION_LAYER, save_model
 
 EMB_LAYER_NAME = 'embedding_layer'
+POS_EMB_SIZE = 10
 
 
 def int_list(strlist: str) -> List[int]:
@@ -36,9 +39,17 @@ def int_list(strlist: str) -> List[int]:
     return ints
 
 
+def positive_float(s: str) -> float:
+    f = float(s)
+    if f > 0.0 and isfinite(f):
+        return f
+    raise ValueError('Invalid constraint value (must be positive, finite float)')
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch-size', '-b', type=int)
+    parser.add_argument('--constraint', type=positive_float)
     parser.add_argument('--doc-length', '-l', type=int)
     parser.add_argument('--embed-dim', type=int)
     parser.add_argument('--epochs', '-e', type=int)
@@ -55,13 +66,14 @@ def parse_args():
     return parser.parse_args()
 
 
-def build_model(vocab_size: int, sequence_length: int, num_classes: int,
-                windows: Iterable[int], num_pos: int = 0) -> Model:
+def build_model(vocab_size: int, sequence_length: int, num_classes: int, embed_dim: int,
+                windows: Iterable[int], num_pos: int = 0,
+                constraint: Optional[float] = None) -> Model:
     word_input_layer = Input((sequence_length,))
-    word_embedding_layer = Embedding(vocab_size, 50, name=EMB_LAYER_NAME)(word_input_layer)
+    word_embedding_layer = Embedding(vocab_size, embed_dim, name=EMB_LAYER_NAME)(word_input_layer)
     if num_pos > 0:
         pos_input_layer = Input((sequence_length,))
-        pos_embedding_layer = Embedding(num_pos, 10)(pos_input_layer)
+        pos_embedding_layer = Embedding(num_pos, POS_EMB_SIZE)(pos_input_layer)
         embedding_layer = Concatenate()([word_embedding_layer, pos_embedding_layer])
         inputs = [word_input_layer, pos_input_layer]
     else:
@@ -78,7 +90,12 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: int,
         ])
     merged = Concatenate(name=REPRESENTATION_LAYER)(pooled_feature_maps)
     dropout_layer = Dropout(0.5)(merged)
-    output_layer = Dense(num_classes, activation='softmax')(dropout_layer)
+    if constraint is not None:
+        kernel_constraint = max_norm(constraint)
+    else:
+        kernel_constraint = None
+    output_layer = Dense(num_classes, activation='softmax',
+                         kernel_constraint=kernel_constraint)(dropout_layer)
     return Model(inputs=inputs, outputs=output_layer)
 
 
@@ -111,8 +128,8 @@ def main():
     train_y = to_categorical([labels.index(c) for c in train[y_column]])
     dev_y = to_categorical([labels.index(c) for c in dev[y_column]])
 
-    model = build_model(args.vocab_size, seq_length, len(labels),
-                        windows=args.windows, num_pos=num_pos)
+    model = build_model(args.vocab_size, seq_length, len(labels), args.embed_dim,
+                        windows=args.windows, num_pos=num_pos, constraint=args.constraint)
     model.summary()
 
     if args.vectors:

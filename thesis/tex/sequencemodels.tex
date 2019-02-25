@@ -13,7 +13,14 @@ like it would be useful for the tasks at hand. For instance, the ability to
 connect different sections of a text and refer back to things that have been
 mentioned before can be considered a part of language proficiency.
 
-\todo{This goes in a subsection somewhere}
+
+\section{Experimental setup}
+
+Certain aspects of setup are shared between experiments using \ac{CNN} and
+\ac{RNN} models.
+
+\subsection{Input length}
+
 The models in this chapter take as input a document of a predetermined
 length. We therefore needed to set a fixed number of tokens such that shorter
 documents were padded to this length, and longer documents truncated. In
@@ -27,20 +34,10 @@ tokens. These values are all close to each other, and we decided to settle on
 700 tokens since it is a round number close to all values we examined.
 
 
-\section{Convolutional neural networks}
-
-We create a model with convolutional architecture based on the model
-described in \textcite{zhang2017sensitivity}. The basis of this architecture
-is a set of filter banks with varying window size. After applying the
-convolutions, the output is pooled along the time axis, leaving a vector with
-as many elements as there are filters in the filter banks. The vectors for
-each of the filter banks are concatenated into a single vector.
-
-
 \subsection{Pre-trained embeddings}
 
 We experimented with randomly initialized word embedding vectors trained from
-scratch, as well as initializing the vectors with pre-trained embeddings. In
+scratch, as well as initializing the vectors with pre-trained embeddings.In
 this case, the embeddings came from different models trained on a large
 Norwegian corpus, the combination of Norsk aviskorpus and NoWaC (Norwegian
 Web As Corpus). The FastText algorithm lets us use these models to compute
@@ -57,8 +54,55 @@ model containing only 18,305 words. In this way, we are also able to benefit
 from the FastText models' ability to compute vectors for unknown words, since
 the \ngram algorithm is being used when computing the reduced models.
 However, the fine-tuning of vectors happens no different from if we had used
-embeddings from simpler models such as Word2vec, since the FastText
-architecture is not part of our own network.
+embeddings from simpler models such as Word2vec, since the FastText network
+is not incorporated into our models.
+
+When using pre-trained embeddings, we ran some experiments keeping the
+embeddings static, and some where we further fine-tuned the embeddings using
+training signals from the task.
+
+\subsection{Multi-channel input}
+
+For some of our experiments we use both word tokens and their POS tags as
+input at the same time. To do this we include two separate embedding matrices
+in our network, one for words and one for POS tags. These embedding matrices
+do not need to have the same dimensionalities, and because the number of
+different POS tags is very low compared to the number of different words, we
+use smaller vectors for POS tags.
+
+To create the input to the core part of our network, we concatenate the word
+and POS embeddings into a single vector. For instance, if we use word
+embeddings of size 50 and POS embeddings of size 10, the next layer will
+receive vectors of size 60.
+
+
+\section{Convolutional neural networks}
+
+We create a model with convolutional architecture based on the model
+described in \textcite{kim2014convolutional}. Documents are represented as
+sequences of token IDs, and fed into an embedding lookup layer. A separate
+token ID is used for padding if the document is shorter than 700 tokens.
+Another unique token ID is used for unknown tokens, i.e. tokens that either
+are not present in training data, or are not among the $n$ most frequent
+tokens, if we select a frequency cutoff.
+
+The central part of the architecture is a set of convolutional filter banks
+that are applied to sequences of embeddings. We may use several different
+window sizes for the filters. The default architecture from
+\textcite{kim2014convolutional} uses 300 convolutional filters: 100 each of
+window size 3, 4 and 5. After applying the convolutions, the output is max
+pooled along the time axis. This selects the highest output each filter
+computed across all windows in the document. In practice, three pooling
+operations are included in the computational graph, one for each filter bank.
+This is a technical consideration, necessary because of the different window
+sizes. The pooled vectors for each of the filter banks are concatenated into
+a single vector. This vector has as many elements as there are filters in all
+the filter banks combined.
+
+The vector post-pooling is a vector representation of the entire document,
+and is fed to a final softmax layer to produce a classification output.
+During training, we apply dropout to this final weight layer as a
+regularization method.
 
 
 \subsection{Results}
@@ -67,19 +111,6 @@ The \ac{CNN} classifier that used both tokens and POS tags as input performed
 better than the one which only used tokens as input, as seen in table
 \ref{tab:cnn-results}. However, on the collapsed label set, the model which only
 used tokens had a higher accuracy. Filters of size 4, 5, and 6 were used.
-
-\todo{find the right reference}
-The Mixed POS mode was inspired by \textcite{malmasi15}. They tried using as
-input a mix of word forms and POS tags, so that common function words appeared
-in their written form, while content words were substituted for their POS tag.
-As an example, the sequence 
-\begin{displayquote}
-generasjoner kan også få anledning til å utnytte dem
-\end{displayquote}
-is transformed into
-\begin{displayquote}
-NOUN kan også VERB NOUN til å VERB dem
-\end{displayquote}
 
 \begin{table}
   \centering
@@ -90,7 +121,8 @@ NOUN kan også VERB NOUN til å VERB dem
     \cmidrule(lr){4-5}
     Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
     \midrule
-    Tokens    &         $0.234$  &         $0.415$  &         $0.423$  & $\mathbf{0.797}$ \\
+    %           cnn-02-25_11-28-44
+    Tokens    &         $0.243$  &         $0.439$  &         $0.423$  & $\mathbf{0.797}$ \\
     +POS      & $\mathbf{0.283}$ &         $0.431$  & $\mathbf{0.444}$ &         $0.772$  \\
     %           cnn-02-11_14-52-21                    cnn-02-11_15-00-41
     Mixed POS &         $0.276$  & $\mathbf{0.472}$ &         $0.423$  & $\mathbf{0.797}$ \\
@@ -99,8 +131,22 @@ NOUN kan også VERB NOUN til å VERB dem
     Mixed POS &         $0.265$  &         $0.455$  &         $0.430$  &         $0.748$  \\
     \midrule
     % pre-trained embeddings, windows 2,3,4. Max pooling only
-    %           cnn-02-13_14-41-37
+    %           cnn-02-13_14-41-37                    cnn-02-13_14-54-09
     +POS      &         $0.259$  &         $0.447$  &         $0.388$  &         $0.732$  \\
+    \midrule
+    % With L2 constraint 3
+    %           cnn-02-25_11-44-23
+    Tokens    &         $0.247$  &         $0.415$  &         $00000$  & $\mathbf{00000}$ \\
+    +POS      & $\mathbf{00000}$ &         $00000$  & $\mathbf{00000}$ &         $00000$  \\
+    %                               
+    Mixed POS &         $00000$  & $\mathbf{00000}$ &         $00000$  & $\mathbf{00000}$ \\
+    % Windows 2, 3, 4
+    %                               
+    Mixed POS &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    \midrule
+    % pre-trained embeddings, windows 2,3,4. Max pooling only
+    %                               
+    +POS      &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of CNN classifiers on AES}
@@ -119,24 +165,26 @@ was replaced with a softmax layer similar to the \acp{MLP} in section
 \ref{subsec:mlp}.
 
 We then chose a loss function to be compatible with a multi-class softmax
-output. We used categorical cross-entropy. A different evaluation metric was
-also needed because we are treating the task as multi-class prediction. We
-are reporting macro and micro \FI as before. The \ac{QWK} metric used by
-\citeauthor{taghipour16} is not applicable to the predictions of our
-classifier.
+output. Like above, we used categorical cross-entropy (equation
+\ref{eq:crossentropy}). A different evaluation metric was also needed because
+we are treating the task as multi-class prediction. We are reporting macro
+and micro \FI as before. We do not use the \ac{QWK} metric used by
+\citeauthor{taghipour16}. \todo{why not QWK}
 
-The formulation of the \ac{AES} task as a regression problem by \citeauthor{taghipour16}
-was partly a constraint stemming from the Kaggle competition that supplied
-the data and problem formulation, and partly motivated by the nature of the
-data. The ASAP data consists of essays from eight different prompts, and the
-scoring methods differs across prompts. Since the scores are numeric values over
-different ranges, modelling the task as a regression problem made it sufficient
-to normalize the numeric scores to a common interval before training.
+The formulation of the \ac{AES} task as a regression problem by
+\citeauthor{taghipour16} was partly a constraint stemming from the Kaggle
+competition that supplied the data and problem formulation, and partly
+motivated by the nature of the data. The ASAP data consists of essays from
+eight different prompts, and the scoring methods differs across prompts.
+Since the scores are numeric values over different ranges, modelling the task
+as a regression problem made it sufficient to normalize the numeric scores to
+a common interval before training.
 
-Generally for \ac{AES}, modelling the task as multi-class prediction is common,
-and is used in \autocite{vajjala18universalCEFR}. In \autocite{vajjala17}, two
-different datasets with different properties were used, and the author utilized
-both multi-class prediction and regression at different points.
+Generally for \ac{AES}, modelling the task as multi-class prediction is
+common, and is used in \autocite{vajjala18universalCEFR}. In
+\autocite{vajjala17}, two different datasets with different properties were
+used, and the author utilized both multi-class prediction and regression at
+different points.
 
 The embedding layer in \textcite{taghipour16} was initialized with
 pre-trained embeddings of size 50. Our embedding layer was initialized to
@@ -177,33 +225,35 @@ a sequence of vectors where, for each timestep $j$, the vector is the
 concatenation of two vectors $[s_f;s_b]$ where $s_f$ at timestep $j$ is the
 output from the forwards \ac{RNN} after processing the inputs $(x_1, x_2,
 \ldots, x_j)$ and $s_b$ the output from the backwards \ac{RNN} after
-processing the inputs $(x_m, x_{m-1}, \ldots, x_j)$, $m$ being the total
+processing the inputs $(x_m, x_{m-1}, \ldots, x_j)$, where $m$ is the total
 number of timesteps. The BiRNN should therefore be able to extract context on
 both sides of a input timestep.
 
 \todo{Mean of the final state}
 \todo{Add POS inputs to RNN}
 
-The attention model uses an attention layer, which instead computes a
-weighted sum of the states, and therefore should be able in theory to
-disregard uninformative timesteps and improve performance. In order to find
-the weight to apply to each state, a single-layer neural network computes a
-value between -1 and 1 for each timestep. These values are normalized by a
-softmax layer and then used to compute the weighted average. The attention
-mechanism is trained along with the rest of the network. The attention models
-use unidirectional \acp{RNN}.
+The attention model uses an attention layer, which differs from the mean over
+time layer in that timesteps are weighted by an attention mechanism: a
+single-layer neural network computes a value between -1 and 1 for each
+timestep. These values are normalized by a softmax layer and then used to
+compute the weighted average. Since each timestep contributes to the final
+representation in differing amounts, the mechanism should be able in theory
+to focus on crucial information by choosing weights such as to disregard
+uninformative timesteps, improving performance. The attention mechanism is
+trained along with the rest of the network.
 
 All the models a hidden state vector of size 300 in the \ac{RNN}. The
-vocabulary was limited to the 4,000 most common words.
+vocabulary was limited to the 4,000 most common words, the same vocabulary
+size as is used in \textcite{taghipour16}.
 
 
 \subsection{Results}
 
-Results for four different models are shown in table \ref{tab:rnn-results}. All
-but \emph{Modified} are using the same hyperparameters as
-\citeauthor{taghipour16}. The \emph{Attention} model does not use masking,
-while \emph{Mean/Time} and \emph{BiLSTM} do.
-\todo{Always use pre-trained embeddings when repeating the experiments?}
+Results for four different models are shown in table \ref{tab:rnn-results}.
+Except where noted, hyperparameters match \textcite{taghipour16}. The
+\emph{Attention} models do not use masking, while \emph{Mean/Time} and
+\emph{BiLSTM} do. \todo{Always use pre-trained embeddings when repeating the
+experiments?}
 
 \begin{table}
   \centering
@@ -222,7 +272,7 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     %           taghipour_ng-2019-01-22_12-58-00      taghipour_ng-2019-01-22_13-01-44
     BiLSTM    &         $0.286$  &         $0.398$  &         $0.485$  &         $0.683$  \\
     %           rnn-25832764                          rnn-25832765
-    Attention &         $0.244$  & $\mathbf{0.423}$ & $\mathbf{0.559}$ &         $0.780$  \\
+    Attention &         $0.244$  & $\mathbf{0.423}$ &         $0.559$  &         $0.780$  \\
     \midrule
     % 50 dim, pretrained, fine tune
               \multicolumn{5}{c}{50 dimensional, pre-trained embeddings, w/ fine tuning} \\
@@ -253,30 +303,31 @@ while \emph{Mean/Time} and \emph{BiLSTM} do.
     Pre train & $\mathbf{0.354}$ &         $0.390$  &         $0.493$  &         $0.724$  \\
     \midrule
     % LSTM cells, attention, frozen embeddings
-              \multicolumn{5}{c}{LSTM + Attention with pre-trained, frozen embeddings} \\
+              \multicolumn{5}{c}{LSTM + Attention with pre-trained, static embeddings} \\
     \midrule
     %           rnn-25858349                          rnn-25858350
     50 dim    &         $0.261$  & $\mathbf{0.488}$ &         $0.511$  &         $0.772$  \\
     %           rnn-25858483                          rnn-25858494
     100 dim   &         $0.271$  &         $0.472$  &         $0.491$  &         $0.707$  \\
+    \midrule
     % LSTM cells, POS as additional input, attention
               \multicolumn{5}{c}{POS included with input} \\
     \midrule
-    %           rnn-25983018                          rnn-25983019
-    Rnd. init &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
-    %           rnn-25983020                          rnn-25983021
-    Pre train &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    %           rnn-25985449                          rnn-25985450
+    Rnd. init &         $0.261$  &         $0.366$  &         $0.552$  &         $0.780$  \\
+    %           rnn-25985451                          rnn-25985452
+    Pre train &         $0.277$  &         $0.407$  & $\mathbf{0.624}$ &         $0.756$  \\
     \bottomrule
   \end{tabular}
-  \caption{\FI scores of RNN classifiers}
+  \caption{\FI scores of RNN classifiers on AES}
   \label{tab:rnn-results}
 \end{table}
+\todo{300-dim embs: ran out of memory}
 
 We find that the best performing models all use the attention mechanism.
 Keep in mind that the stopping criterion is the macro \FI score, and thus
 the micro \FI score is to be considered a side effect of the macro \FI.
 
-\todo{Analysis of attention model}
 \todo{Per-class results}
 
 
@@ -320,20 +371,49 @@ attention model that was best, but a bidirectional LSTM.
   \caption{\FI scores of RNN classifiers on NLI}
   \label{tab:rnn-nli-results}
 \end{table}
-\todo{Include POS in RNN models}
 
 The attention model allows us to visualize the weights the network gives to
-each token in a document. Figure \ref{fig:nli-attention} shows the first 300
-tokens of a text which was correctly predicted to be written by a native Polish
-speaker. Red tokens indicate timesteps that were given higher weight by the attention
-model, and blue tokens ones that were given low weights. Out of vocabulary tokens
-are replaced by question mark emoji. The attention values do not seem easily
-interpretable, as there are lexical and grammatical errors both in the red and
-the blue sections.
+each token in a document. In figures
+\ref{fig:h0186-nli-attention}--\ref{fig:s0621-nli-attention} we see up to 300
+tokens of texts from different documents in the dev set for which the L1 was
+correctly predicted by an attention model. Red tokens indicate timesteps that
+were given higher weight by the attention model, and blue tokens ones that
+were given low weights. Out of vocabulary tokens are replaced by the special
+token ``UNK''. The attention values do not seem easily interpretable, as
+there are lexical and grammatical errors both in the red and the blue
+sections.
+
+native Russian speaker.  \todo{expand analysis}
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{nli-attention}
-  \caption{Attention values of NLI classifier on excerpt from ASK text h0131}
-  \label{fig:nli-attention}
+  \includegraphics[width=\textwidth]{h0186-nli-attention}
+  \caption{Attention values of NLI classifier on excerpt from ASK text h0186.
+           L1 is Russian, CEFR score B2}
+  \label{fig:h0186-nli-attention}
 \end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{h0189-nli-attention}
+  \caption{Attention values of NLI classifier on excerpt from ASK text h0189.
+           L1 is English, CEFR score C1}
+  \label{fig:h0189-nli-attention}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{s0180-nli-attention}
+  \caption{Attention values of NLI classifier on excerpt from ASK text s0180.
+           L1 is Vietnamese, CEFR score A2/B1}
+  \label{fig:s0180-nli-attention}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{s0621-nli-attention}
+  \caption{Attention values of NLI classifier on full ASK text s0621.
+           L1 is Somali, CEFR score A2/B1}
+  \label{fig:s0621-nli-attention}
+\end{figure}
+\todo{Visualize UPOS tags}
