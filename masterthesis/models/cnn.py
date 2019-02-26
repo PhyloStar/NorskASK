@@ -63,7 +63,7 @@ def parse_args():
     parser.add_argument('--vocab-size', '-s', type=int)
     parser.add_argument('--windows', '-w', type=int_list)
     parser.set_defaults(batch_size=32, doc_length=700, embed_dim=50, epochs=50, vocab_size=4000,
-                        windows=[4, 5, 6])
+                        windows=[3, 4, 5])
     return parser.parse_args()
 
 

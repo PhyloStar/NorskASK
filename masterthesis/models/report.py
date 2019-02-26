@@ -1,14 +1,6 @@
-import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
 
-from masterthesis.utils import heatmap
-from masterthesis.utils import safe_plt as plt
-
-
-def _collapse_array(arr):
-    if isinstance(arr, np.ndarray):
-        return (arr + 1) // 2
-    return [(s + 1) // 2 for s in arr]
+from masterthesis.utils import heatmap, safe_plt as plt
 
 
 def report(true, pred, labels, normalize: bool = False, ax=None):
@@ -21,4 +13,3 @@ def report(true, pred, labels, normalize: bool = False, ax=None):
     print(conf_matrix)
 
     heatmap(conf_matrix, labels, labels, normalize=normalize, ax=ax)
-    plt.show()
