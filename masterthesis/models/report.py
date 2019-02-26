@@ -1,6 +1,6 @@
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
 
-from masterthesis.utils import heatmap, safe_plt as plt
+from masterthesis.utils import heatmap
 
 
 def report(true, pred, labels, normalize: bool = False, ax=None):

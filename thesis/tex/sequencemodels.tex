@@ -113,47 +113,42 @@ regularization method.
 
 The \ac{CNN} classifier that used both tokens and POS tags as input performed
 better than the one which only used tokens as input, as seen in table
-\ref{tab:cnn-results}. However, on the collapsed label set, the model which only
-used tokens had a higher accuracy. Filters of size 4, 5, and 6 were used.
+\ref{tab:cnn-results}. However, on the collapsed label set, the model which
+only used tokens had a higher accuracy. Filters of size 3, 4, and 5 were
+used. The last dense layer uses dropout with $p=0.5$ and a constraint on
+maximum $L_2$ norm of 3.
 
 \begin{table}
   \centering
   \begin{tabular}{lrrrr}
     \toprule
-            & \multicolumn{2}{c}{All labels} & \multicolumn{2}{c}{Collapsed labels} \\
+            & \multicolumn{2}{c}{All labels}       & \multicolumn{2}{c}{Collapsed labels} \\
     \cmidrule(lr){2-3}
     \cmidrule(lr){4-5}
-    Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
+    Model     & Macro \FI        & Micro \FI        & Macro \FI        & Micro \FI \\
     \midrule
-    %           cnn-02-25_11-28-44
-    Tokens    &         $0.243$  &         $0.439$  &         $0.423$  & $\mathbf{0.797}$ \\
-    +POS      & $\mathbf{0.283}$ &         $0.431$  & $\mathbf{0.444}$ &         $0.772$  \\
-    %           cnn-02-11_14-52-21                    cnn-02-11_15-00-41
-    Mixed POS &         $0.276$  & $\mathbf{0.472}$ &         $0.423$  & $\mathbf{0.797}$ \\
-    % Windows 2, 3, 4
-    %           cnn-02-11_15-15-08                    cnn-02-13_12-11-43
-    Mixed POS &         $0.265$  &         $0.455$  &         $0.430$  &         $0.748$  \\
-    \midrule
-    % pre-trained embeddings, windows 2,3,4. Max pooling only
-    %           cnn-02-13_14-41-37                    cnn-02-13_14-54-09
-    +POS      &         $0.259$  &         $0.447$  &         $0.388$  &         $0.732$  \\
-    \midrule
-    % With L2 constraint 3
-    %           cnn-02-25_11-44-23                    cnn-02-25_12-16-18
-    Tokens    &         $0.247$  &         $0.415$  &         $0.452$  & $\mathbf{0.789}$ \\
-    +POS      & $\mathbf{00000}$ &         $00000$  & $\mathbf{00000}$ &         $00000$  \\
-    %                               
-    Mixed POS &         $00000$  & $\mathbf{00000}$ &         $00000$  & $\mathbf{00000}$ \\
-    % Windows 2, 3, 4
-    %                               
-    Mixed POS &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
-    \midrule
-    % pre-trained embeddings, windows 2,3,4. Max pooling only
-    %                               
-    +POS      &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    %           cnn-26092298_01                       cnn-26092298_02
+    Words     &         $0.226$  &         $0.415$  &         $0.397$  &         $0.748$  \\
+    %           cnn-26092298_03                       cnn-26092298_04
+    Words+PTD &         $0.238$  &         $0.390$  &         $0.375$  &         $0.707$  \\
+    %           cnn-26092298_05                       cnn-26092298_06
+    Words+PTS &         $0.226$  &         $0.390$  &         $0.392$  &         $0.740$  \\
+    %           cnn-26092298_07                       cnn-26092298_08
+    +POS      &         $0.228$  &         $0.390$  &         $0.402$  &         $0.756$  \\
+    %           cnn-26092298_09                       cnn-26092298_10
+    +POS+PTD  &         $0.229$  &         $0.415$  &         $0.388$  &         $0.732$  \\
+    %           cnn-26092298_11                       cnn-26092298_12
+    +POS+PTS  &         $0.201$  &         $0.382$  &         $0.426$  &         $0.740$  \\
+    %           cnn-26093545_13                       cnn-26093545_14
+    Mix       &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
+    %           cnn-26093545_15                       cnn-26093545_16
+    Mix 234   &         $00000$  &         $00000$  &         $00000$  &         $00000$  \\
     \bottomrule
   \end{tabular}
-  \caption{\FI scores of CNN classifiers on AES}
+  \caption{\FI scores of CNN classifiers on AES. +POS: Multi-channel input with
+           both words and POS tags. +PTD: Pre-trained word embeddings, further
+           fine-tuning. +PTS: Pre-trained word embeddings kept static. 234:
+           filter widths 2, 3 and 4.}
   \label{tab:cnn-results}
 \end{table}
 
@@ -161,9 +156,11 @@ used tokens had a higher accuracy. Filters of size 4, 5, and 6 were used.
 \subsection{Training behaviour}
 
 \begin{figure}
+  % cnn-26092298_03
   \centering
   \includegraphics[width=\textwidth]{cnn-training}
-  \caption{Training and validation loss and accuracy over 50 epochs of training.}
+  \caption{Training and validation loss and accuracy over 50 epochs of training.
+           Also, confusion matrices with counts and normalized by class.}
   \label{fig:cnn-training}
 \end{figure}
 
@@ -171,7 +168,8 @@ Figure \ref{fig:cnn-training} shows that the best performing model overfits
 the training data. While the validation metrics plateau after approximately
 10 epochs, after which we see only small, seemingly random fluctuations.
 The training metrics keep improving, suggesting that the model is memorizing
-the data rather than discovering general features.
+the data rather than discovering general features. After roughly 25 epochs,
+the training accuracy reaches almost 100\% and stays there.
 
 
 \section{Recurrent neural networks}
@@ -348,7 +346,24 @@ We find that the best performing models all use the attention mechanism.
 Keep in mind that the stopping criterion is the macro \FI score, and thus
 the micro \FI score is to be considered a side effect of the macro \FI.
 
-\todo{Per-class results}
+\subsection{Training behaviour}
+
+\begin{figure}
+  % rnn-25858209
+  \centering
+  \includegraphics[width=\textwidth]{lstm-training}
+  \caption{Training and validation loss and accuracy over 50 epochs of training.
+           Also, confusion matrices with counts and normalized by class.}
+  \label{fig:lstm-training}
+\end{figure}
+
+We see the training and classification of the best RNN model in figure
+\ref{fig:lstm-training}, namely the GRU cell with pre-trained, fine-tuned
+embeddings and an attention mechanism. It is plain to see that the model
+overfits while the validation performance fluctuates. The validation metrics
+seem to fluctuate more than they did with the CNN model in fig
+\ref{fig:cnn-training}. However, the training accuracy seems to increase
+slower, and does not quite reach 100\% in the course of 50 epochs.
 
 
 \section{Native language identification}
@@ -395,15 +410,15 @@ attention model that was best, but a bidirectional LSTM.
 The attention model allows us to visualize the weights the network gives to
 each token in a document. In figures
 \ref{fig:h0186-nli-attention}--\ref{fig:s0621-nli-attention} we see up to 300
-tokens of texts from different documents in the dev set for which the L1 was
-correctly predicted by an attention model. Red tokens indicate timesteps that
-were given higher weight by the attention model, and blue tokens ones that
-were given low weights. Out of vocabulary tokens are replaced by the special
-token ``UNK''. The attention values do not seem easily interpretable, as
-there are lexical and grammatical errors both in the red and the blue
+tokens of texts from four different documents in the dev set for which the L1
+was correctly predicted by an attention model. Red tokens indicate timesteps
+that were given higher weight by the attention model, and blue tokens ones
+that were given low weights. Out of vocabulary tokens are replaced by the
+special token ``UNK''. The attention values do not seem easily interpretable,
+as there are lexical and grammatical errors both in the red and the blue
 sections.
 
-native Russian speaker.  \todo{expand analysis}
+Looking for cues as to what features are picked up by the model. \todo{expand analysis}
 
 \begin{figure}
   \centering
