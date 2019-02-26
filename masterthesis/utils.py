@@ -9,6 +9,7 @@ import itertools
 import os
 from pathlib import Path
 import pickle
+import sys
 from typing import Iterable, List, Optional, Sequence, Set, TextIO, Tuple, Union
 
 import matplotlib
@@ -18,6 +19,12 @@ if 'SLURM_JOB_NODELIST' in os.environ or \
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+try:
+    import seaborn as sns
+    sns.set(context='paper', style='whitegrid')
+except ImportError:
+    pass
 
 safe_plt = plt
 
@@ -50,42 +57,72 @@ REPRESENTATION_LAYER = 'vector_representation'
 ATTENTION_LAYER = 'attention_layer'
 
 
-def heatmap(values: np.ndarray,
-            xticks: Sequence[str],
-            yticks: Sequence[str],
-            normalize: bool = False,
-            ax: Optional[plt.Axes] = None) -> None:
-    """Plot a 2D array as a heatmap with overlayed values.
+if 'seaborn' in sys.modules:
+    def heatmap(values: np.ndarray,
+                xticks: Sequence[str],
+                yticks: Sequence[str],
+                normalize: bool = False,
+                ax: Optional[plt.Axes] = None) -> None:
+        """Plot a 2D array as a heatmap with overlayed values.
 
-    Args:
-        values: The 2D array to plot
-        xticks: The labels to place on the X axis
-        yticks: The labels to place on the Y axis
-        ax: An optional Axes object to plot the heatmap on
-    """
-    if ax is None:
-        ax = plt.gca()
-    if normalize:
-        values = values / np.sum(values, axis=1, keepdims=True)
-    ax.imshow(values, cmap='viridis')
-    ax.set(
-        yticks=range(len(yticks)),
-        xticks=range(len(xticks)),
-        yticklabels=yticks,
-        xticklabels=xticks
-    )
-    color_cutoff = values.max() / 2
-
-    for row, col in itertools.product(range(values.shape[0]), range(values.shape[1])):
-        val = values[row, col]
-        color = 'white' if val < color_cutoff else 'black'
-        if np.issubdtype(values.dtype, np.floating):
-            label = '%.2f' % val
+        Args:
+            values: The 2D array to plot
+            xticks: The labels to place on the X axis
+            yticks: The labels to place on the Y axis
+            ax: An optional Axes object to plot the heatmap on
+        """
+        if normalize:
+            values = values / values.sum(axis=1, keepdims=True)
+            annot = False
+            cbar = True
+            vmin = 0.0  # type: Optional[float]
+            vmax = 1.0  # type: Optional[float]
         else:
-            label = str(int(val))
-        ax.text(col, row, label,
-                horizontalalignment='center',
-                verticalalignment='center', color=color)
+            annot = True
+            cbar = False
+            vmin = None
+            vmax = None
+        ax = sns.heatmap(values, square=True, annot=annot, fmt='.2g',
+                         ax=ax, cbar=cbar, vmin=vmin, vmax=vmax)
+        ax.set_xticklabels(xticks)
+        ax.set_yticklabels(yticks, rotation=0)
+else:
+    def heatmap(values: np.ndarray,
+                xticks: Sequence[str],
+                yticks: Sequence[str],
+                normalize: bool = False,
+                ax: Optional[plt.Axes] = None) -> None:
+        """Plot a 2D array as a heatmap with overlayed values.
+
+        Args:
+            values: The 2D array to plot
+            xticks: The labels to place on the X axis
+            yticks: The labels to place on the Y axis
+            ax: An optional Axes object to plot the heatmap on
+        """
+        if ax is None:
+            ax = plt.gca()
+        if normalize:
+            values = values / np.sum(values, axis=1, keepdims=True)
+        ax.imshow(values, cmap='viridis')
+        ax.set(
+            yticks=range(len(yticks)),
+            xticks=range(len(xticks)),
+            yticklabels=yticks,
+            xticklabels=xticks
+        )
+        color_cutoff = values.max() / 2
+
+        for row, col in itertools.product(range(values.shape[0]), range(values.shape[1])):
+            val = values[row, col]
+            color = 'white' if val < color_cutoff else 'black'
+            if np.issubdtype(values.dtype, np.floating):
+                label = '%.2f' % val
+            else:
+                label = str(int(val))
+            ax.text(col, row, label,
+                    horizontalalignment='center',
+                    verticalalignment='center', color=color)
 
 
 def load_train_and_dev() -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -215,9 +252,14 @@ def get_split_len(split: str) -> int:
 def get_file_name(name: str) -> str:
     slurm_job_id = os.environ.get('SLURM_JOB_ID', None)
     if slurm_job_id is not None:
-        return name + '-' + slurm_job_id
-    timestamp = dt.datetime.utcnow().strftime('%m-%d_%H-%M-%S')
-    return name + '-' + timestamp
+        fn = name + '-' + slurm_job_id
+    else:
+        timestamp = dt.datetime.utcnow().strftime('%m-%d_%H-%M-%S')
+        fn = name + '-' + timestamp
+    suf = os.environ.get('SUF', None)
+    if suf is not None:
+        fn = fn + '_' + suf
+    return fn
 
 
 def save_model(name: str, model, w2i):

@@ -2,10 +2,11 @@ import argparse
 from pathlib import Path
 import pickle
 
+from sklearn.metrics import confusion_matrix
+
 from masterthesis.models.report import report
 from masterthesis.results import Results  # noqa: F401
-from masterthesis.utils import CEFR_LABELS, LANG_LABELS, ROUND_CEFR_LABELS
-from masterthesis.utils import safe_plt as plt
+from masterthesis.utils import CEFR_LABELS, heatmap, LANG_LABELS, ROUND_CEFR_LABELS, safe_plt as plt
 
 
 def parse_args() -> argparse.Namespace:
@@ -53,15 +54,19 @@ def main():
     ax2 = plt.subplot(221, sharex=ax1)
     plot_history(history, ax1, ax2)
 
-    if args.nli:
+    if args.nli or results.config.get('nli', False):
         labels = LANG_LABELS
     elif max(true) > 4:
         labels = CEFR_LABELS
     else:
         labels = ROUND_CEFR_LABELS
 
-    ax3 = plt.subplot(122)
-    report(true, pred, labels, normalize=args.normalize, ax=ax3)
+    ax3 = plt.subplot(222)
+    report(true, pred, labels, normalize=False, ax=ax3)
+    ax4 = plt.subplot(224)
+    conf_matrix = confusion_matrix(true, pred)
+    heatmap(conf_matrix, labels, labels, normalize=True, ax=ax4)
+    plt.show()
 
 
 if __name__ == '__main__':
