@@ -39,7 +39,9 @@ def int_list(strlist: str) -> List[int]:
     return ints
 
 
-def positive_float(s: str) -> float:
+def positive_float(s: str) -> Optional[float]:
+    if s.lower() == 'none':
+        return None
     f = float(s)
     if f > 0.0 and isfinite(f):
         return f
@@ -69,9 +71,11 @@ def parse_args():
 
 def build_model(vocab_size: int, sequence_length: int, num_classes: int, embed_dim: int,
                 windows: Iterable[int], num_pos: int = 0,
-                constraint: Optional[float] = None) -> Model:
+                constraint: Optional[float] = None, static_embs: bool = False) -> Model:
+    trainable_embs = not static_embs
     word_input_layer = Input((sequence_length,))
-    word_embedding_layer = Embedding(vocab_size, embed_dim, name=EMB_LAYER_NAME)(word_input_layer)
+    word_embedding_layer = Embedding(vocab_size, embed_dim, name=EMB_LAYER_NAME,
+                                     trainable=trainable_embs)(word_input_layer)
     if num_pos > 0:
         pos_input_layer = Input((sequence_length,))
         pos_embedding_layer = Embedding(num_pos, POS_EMB_SIZE)(pos_input_layer)
@@ -130,7 +134,8 @@ def main():
     dev_y = to_categorical([labels.index(c) for c in dev[y_column]])
 
     model = build_model(args.vocab_size, seq_length, len(labels), args.embed_dim,
-                        windows=args.windows, num_pos=num_pos, constraint=args.constraint)
+                        windows=args.windows, num_pos=num_pos, constraint=args.constraint,
+                        static_embs=args.static_embs)
     model.summary()
 
     if args.vectors:
