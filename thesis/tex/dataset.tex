@@ -15,56 +15,6 @@ B2 levels, respectively. Following the naming in
 \emph{IL test} (Intermediate Level, ``Språkprøven'') and the \emph{AL test}
 (Advanced Level, ``Høyere nivå'').
 
-The corpus contains 1736 texts\footnote{In
-\textcite{carlsen2012proficiency,malmasi15,malmasi17}, it's reported that it
-contains 1700 texts.}. Each document includes metadata such as the writer's
-L1: one of German, Dutch, English, Spanish, Russian, Polish,
-Bosnian-Croatian-Serbian, Albanian, Vietnamese and Somali. All texts from
-seven of these language backgrounds, 1212\footnote{Reported to be 1222 in
-\textcite{carlsen2012proficiency}.} in total, have been assigned a \ac{CEFR}
-score, and these texts comprise the subcorpus we will be working with. In
-particular, all texts except those written by people with Dutch,
-Bosnian-Croatian-Serbian or Albanian as L1 have a CEFR score. The CEFR labels
-are available since work by \textcite{carlsen2012proficiency}, and were not
-included at the corpus' initial release. Table \ref{tab:l1-and-testlevel}
-shows the number of texts in the corpus for each native language and at each
-test level.
-
-The corpus also includes 200 texts written by native Norwegian speakers as a
-control corpus. The total number of word and punctuation tokens in the full
-corpus, including the control corpus, is approximately 770,000. Restricting
-the corpus to the 1212 documents with \ac{CEFR} score, the number of tokens
-is approximately 487,000 in total. Other metadata included, apart from L1 and
-CEFR score, are the test level the essays were written for, what topic the
-essay is about, the learner's country of origin, age, gender and more.
-
-The CEFR scores in the ASK corpus range between A2 and C1, and also includes
-intermediate labels between the canonical proficiency scores, such as A2/B1
-and B1/B2. Thus, the total number of distinct CEFR scores is seven, which is
-more fine-grained than the TOEFL11 corpus \autocite{blanchard13}, which only
-uses three distinct proficiency categories, or the corpus used in
-\textcite{vajjala18universalCEFR}, the MERLIN corpus, where the CEFR scores
-range between A1 and C1, but without any intermediate levels.
-
-The fine-grained labels makes it challenging to train and evaluate models,
-and also to compare the results against work on other corpora, because the
-gravity of a misclassification may not the same on the more fine-grained
-labels.
-
-\begin{figure}
-  \centering
-  \includegraphics[height=0.3\textheight]{lang_vs_cefr}
-  \caption{The distribution of proficiency scores for each L1}
-  \label{fig:lang-vs-cefr}
-\end{figure}
- 
-\begin{figure}
-  \centering
-  \includegraphics[width=\textwidth]{testlevel_lang_vs_cefr}
-  \caption{L1 versus CEFR score for each test level}
-  \label{fig:testlevel-lang-vs-cefr}
-\end{figure}
-
 \begin{table}
   \centering
   \begin{tabular}{lrrr}
@@ -96,9 +46,60 @@ labels.
            Excluded languages are listed in round brackets.}
   \label{tab:l1-and-testlevel}
 \end{table}
+
+The corpus contains 1736 texts\footnote{In
+\textcite{carlsen2012proficiency,malmasi15,malmasi17}, it's reported that it
+contains 1700 texts.}. Each document includes metadata such as the writer's
+L1: one of German, Dutch, English, Spanish, Russian, Polish,
+Bosnian-Croatian-Serbian, Albanian, Vietnamese and Somali. All texts from
+seven of these language backgrounds, 1212\footnote{Reported to be 1222 in
+\textcite{carlsen2012proficiency}.} in total, have been assigned a \ac{CEFR}
+score, and these texts comprise the subcorpus we will be working with. In
+particular, all texts except those written by people with Dutch,
+Bosnian-Croatian-Serbian or Albanian as L1 have a CEFR score. The CEFR labels
+are available since work by \textcite{carlsen2012proficiency}, and were not
+included at the corpus' initial release. Table \ref{tab:l1-and-testlevel}
+shows the number of texts in the corpus for each native language and at each
+test level.
+
+The corpus also includes 200 texts written by native Norwegian speakers as a
+control corpus, bringing the total number of documents up to 1936. The total
+number of word and punctuation tokens in the full corpus, including the
+control corpus, is approximately 770,000. Restricting the corpus to the 1212
+documents with \ac{CEFR} score, the number of tokens is approximately 487,000
+in total. Other metadata, apart from L1 and CEFR score, includes, but are not
+limited to: the test level the essay was written for, what topic the essay
+is about, and the learner's country of origin, age, and gender.
+
+The CEFR scores in the ASK corpus range between A2 and C1, and also includes
+intermediate labels between the canonical proficiency scores, such as A2/B1
+and B1/B2. Thus, the total number of distinct CEFR scores is seven, which is
+more fine-grained than the TOEFL11 corpus \autocite{blanchard13}, which only
+uses three distinct proficiency categories, or the corpus used in
+\textcite{vajjala18universalCEFR}, the MERLIN corpus, where the CEFR scores
+range between A1 and C1, but without any intermediate levels.
+
+The fine-grained labels makes it challenging to train and evaluate models,
+and also to compare the results against work on other corpora, because the
+gravity of a misclassification may not the same on the more fine-grained
+labels.
  
 
 \subsection{Analyzing non-linguistic variables}
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.3\textheight]{lang_vs_cefr}
+  \caption{The distribution of proficiency scores for each L1}
+  \label{fig:lang-vs-cefr}
+\end{figure}
+ 
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{testlevel_lang_vs_cefr}
+  \caption{L1 versus CEFR score for each test level}
+  \label{fig:testlevel-lang-vs-cefr}
+\end{figure}
 
 Analysis of the data set was carried out in order to find correlations
 between different metadata. Knowing that the documents stem from two
@@ -113,6 +114,28 @@ test level contain exactly 100 essays. This partly explains the low average
 proficiency of Somali and Vietnamese speakers apparent in figure
 \ref{fig:lang-vs-cefr}. The difference compared to the other language groups is
 not as salient when looking only at the B1 test level (\emph{IL test}) data.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrr}
+    \toprule
+    Topic                    & AL test & IL test & Total \\
+    \midrule
+    telefon                  &      37 &      64 &   101 \\
+    bolig                    &       0 &      83 &    83 \\
+    familie helse vekt       &      59 &       0 &    59 \\
+    tid                      &       2 &      51 &    53 \\
+    natur norge              &       0 &      48 &    48 \\
+    folk relasjoner vennskap &       0 &      45 &    45 \\
+    tradisjoner flytting     &       0 &      38 &    38 \\
+    barn                     &       3 &      32 &    35 \\
+    kultur norge             &       0 &      34 &    34 \\
+    media                    &       0 &      31 &    31 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Number of texts in each test level for top 10 topics}
+  \label{tab:texts-per-topic}
+\end{table}
 
 Another interesting variable is the essay topic. There is generally a strong
 correlation between topic and vocabulary, and not accounting for this may
@@ -137,27 +160,12 @@ large. However, they seem to be more evenly distributed across essays. The
 median number of documents for a sub-topic, for both test levels, is 25 (mean
 $34.8$). 13 sub-topics are only represented in 5 or fewer documents.
 
-\begin{table}
+\begin{figure}
   \centering
-  \begin{tabular}{lrrr}
-    \toprule
-    Topic                    & AL test & IL test & Total \\
-    \midrule
-    telefon                  &      37 &      64 &   101 \\
-    bolig                    &       0 &      83 &    83 \\
-    familie helse vekt       &      59 &       0 &    59 \\
-    tid                      &       2 &      51 &    53 \\
-    natur norge              &       0 &      48 &    48 \\
-    folk relasjoner vennskap &       0 &      45 &    45 \\
-    tradisjoner flytting     &       0 &      38 &    38 \\
-    barn                     &       3 &      32 &    35 \\
-    kultur norge             &       0 &      34 &    34 \\
-    media                    &       0 &      31 &    31 \\
-    \bottomrule
-  \end{tabular}
-  \caption{Number of texts in each test level for top 10 topics}
-  \label{tab:texts-per-topic}
-\end{table}
+  \includegraphics[width=\textwidth]{testlevel_lengths_per_cefr}
+  \caption{Distributions of essay lengths for CEFR scores on each test level}
+  \label{fig:testlevel-lengths-per-cefr}
+\end{figure}
 
 Document lengths have been seen to correlate with essay score in other
 studies such as \textcite{vajjala17}. To see the relationship between these
@@ -166,20 +174,18 @@ group, \emph{B2/C1} CEFR score within \emph{IL test}, was excluded due to
 having fewer than ten documents. Looking at figure
 \ref{fig:testlevel-lengths-per-cefr}, two relations are apparent. Essays in the
 \emph{AL test} test level are generally longer than in \emph{IL test}, and
-within each test level the higher scoring essays are generally longer. Note
-that even for the same CEFR score, the essays from the higher test level are
-considerably longer. As an example, consider the \emph{B1/B2} score, which is
-the most evenly distributed between the two test levels (101 essays in
-\emph{IL test}, 131 in \emph{AL test}). More than 75\% of these texts on
-the lower test level have fewer than 400 tokens, and more than 75\% on the
-higher level are longer than 400 tokens.
+within each test level the higher scoring essays are generally longer.
+Also, outliers are generally on the long side.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=\textwidth]{testlevel_lengths_per_cefr}
-  \caption{Distributions of essay lengths for CEFR scores on each test level}
-  \label{fig:testlevel-lengths-per-cefr}
-\end{figure}
+Note that even for the same CEFR score, the essays from the higher test level
+are considerably longer. As an example, consider the \emph{B1/B2} score,
+which is the most evenly distributed between the two test levels (101 essays
+in \emph{IL test}, 131 in \emph{AL test}). More than 75\% of these texts on
+the lower test level have fewer than 400 tokens, and more than 75\% on the
+higher level are longer than 400 tokens. In fact, for all four CEFR scores
+that are present on both test levels, there is no overlap of the
+interquartile ranges\footnote{The range of values when the top 25\% and
+bottom 25\% are excluded} between IL and AL test level.
 
 
 \subsection{Data split}

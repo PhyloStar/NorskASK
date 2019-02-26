@@ -58,6 +58,7 @@ def parse_args():
     parser.add_argument('--nli', action='store_true')
     parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--save-model', action='store_true')
+    parser.add_argument('--static-embs', action='store_true')
     parser.add_argument('--vectors', '-V', type=Path)
     parser.add_argument('--vocab-size', '-s', type=int)
     parser.add_argument('--windows', '-w', type=int_list)

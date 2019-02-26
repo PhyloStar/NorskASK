@@ -140,6 +140,12 @@ The model was trained using the Adam optimization algorithm
   \mathcal{L} = -\sum_{c\in C} {y_c \log{{\hat y}_c}}
 \end{equation}
 
+Of note concerning categorical cross-entropy is that in the case where there
+is only a single true label for each example, the true vector $y$ is one-hot,
+i.e.\ zero in all elements but one. In this case, the loss calculation
+simplifies to $-\log{{\hat y}_t}$, where $t$ is the index of the true label.
+\todo{Move description of loss to background?}
+
 The new \ngram features add a certain sensitivity to local order of features.
 Many character \ngrams will represent entities smaller than a word, but may
 indicate common spelling mistakes. \ac{POS} and Mixed POS \ngrams, on the

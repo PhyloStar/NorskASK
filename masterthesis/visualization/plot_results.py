@@ -48,6 +48,7 @@ def main():
     print_config(results.config)
 
     fig, axes = plt.subplots(2, 2)
+    plt.tight_layout()
     ax1 = plt.subplot(223)
     ax2 = plt.subplot(221, sharex=ax1)
     plot_history(history, ax1, ax2)
