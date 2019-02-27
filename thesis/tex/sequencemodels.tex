@@ -156,7 +156,7 @@ maximum $L_2$ norm of 3.
 \subsection{Training behaviour}
 
 \begin{figure}
-  % cnn-26092298_03
+  % cnn-26094553_11
   \centering
   \includegraphics[width=\textwidth]{cnn-training}
   \caption{Training and validation loss and accuracy over 50 epochs of training.
@@ -164,12 +164,16 @@ maximum $L_2$ norm of 3.
   \label{fig:cnn-training}
 \end{figure}
 
-Figure \ref{fig:cnn-training} shows that the best performing model overfits
-the training data. While the validation metrics plateau after approximately
-10 epochs, after which we see only small, seemingly random fluctuations.
-The training metrics keep improving, suggesting that the model is memorizing
-the data rather than discovering general features. After roughly 25 epochs,
-the training accuracy reaches almost 100\% and stays there.
+Figure \ref{fig:cnn-training} shows that how the training and validation metrics
+evolve in the course of training, as well as the confusion matrix of the final model. The validation metrics
+plateau after approximately 20 epochs, after which any improvement is
+eclipsed by small, seemingly random fluctuations. The training metrics keep
+improving, suggesting that the model is memorizing the data rather than
+discovering general features. When training stops after 50 epochs, the
+training accuracy reaches is almost at 100\%.
+
+The confusion matrix reveals that the final model has no predictions for the
+classes `A2', `B2/C1' and `C1', the smallest classes 
 
 
 \section{Recurrent neural networks}
