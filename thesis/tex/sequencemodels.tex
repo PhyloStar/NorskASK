@@ -191,7 +191,7 @@ output. Like above, we used categorical cross-entropy (equation
 \ref{eq:crossentropy}). A different evaluation metric was also needed because
 we are treating the task as multi-class prediction. We are reporting macro
 and micro \FI as before. We do not use the \ac{QWK} metric used by
-\citeauthor{taghipour16}. \todo{why not QWK}
+\citeauthor{taghipour16}.
 
 The formulation of the \ac{AES} task as a regression problem by
 \citeauthor{taghipour16} was partly a constraint stemming from the Kaggle
@@ -209,10 +209,10 @@ used, and the author utilized both multi-class prediction and regression at
 different points.
 
 The embedding layer in \textcite{taghipour16} was initialized with
-pre-trained embeddings of size 50. Our embedding layer was initialized to
-random vectors and trained as part of the network.
+pre-trained embeddings of size 50. We experiment with different sizes of
+embeddings, as well as random vs. pre-trained initialization.
 
-Unlike our corpus, ASK, the dataset used by \citeauthor{taghipour16}
+Unlike our corpus, ASK, the ASAP dataset used by \citeauthor{taghipour16}
 contained essays that were not necessarily written in a second language. Our
 data is not split into different parts based on the prompt. There are two
 different test levels in ASK, but these are not distinguished in training.
@@ -252,7 +252,6 @@ number of timesteps. The BiRNN should therefore be able to extract context on
 both sides of a input timestep.
 
 \todo{Mean of the final state}
-\todo{Add POS inputs to RNN}
 
 The attention model uses an attention layer, which differs from the mean over
 time layer in that timesteps are weighted by an attention mechanism: a

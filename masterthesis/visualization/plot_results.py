@@ -63,9 +63,11 @@ def main():
 
     ax3 = plt.subplot(222)
     report(true, pred, labels, normalize=False, ax=ax3)
+    ax3.set(ylabel='Gold class')
     ax4 = plt.subplot(224)
     conf_matrix = confusion_matrix(true, pred)
     heatmap(conf_matrix, labels, labels, normalize=True, ax=ax4)
+    ax4.set(xlabel='Predicted class', ylabel='Gold class')
     plt.show()
 
 
