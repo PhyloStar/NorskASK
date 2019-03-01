@@ -55,8 +55,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def build_model(vocab_size: int, sequence_length: int, num_classes: int,
-                windows: Iterable[int], num_pos: int = 0) -> Model:
+def _build_inputs(sequence_length: int, vocab_size: int, num_pos: int):
     word_input_layer = Input((sequence_length,))
     word_embedding_layer = Embedding(vocab_size, 50, name=EMB_LAYER_NAME)(word_input_layer)
     if num_pos > 0:
@@ -67,6 +66,13 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: int,
     else:
         embedding_layer = word_embedding_layer
         inputs = [word_input_layer]
+    return inputs, embedding_layer
+
+
+def build_model(vocab_size: int, sequence_length: int, num_classes: Iterable[int],
+                windows: Iterable[int], num_pos: int = 0) -> Model:
+    """Build CNN model."""
+    inputs, embedding_layer = _build_inputs(sequence_length, vocab_size, num_pos)
 
     pooled_feature_maps = []
     for kernel_size in windows:
@@ -78,8 +84,8 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: int,
         ])
     merged = Concatenate(name=REPRESENTATION_LAYER)(pooled_feature_maps)
     dropout_layer = Dropout(0.5)(merged)
-    output_layer = Dense(num_classes, activation='softmax')(dropout_layer)
-    return Model(inputs=inputs, outputs=output_layer)
+    outputs = [Dense(n_c, activation='softmax')(dropout_layer) for n_c in num_classes]
+    return Model(inputs=inputs, outputs=outputs)
 
 
 def main():
@@ -108,10 +114,18 @@ def main():
         else:
             num_pos = 0
 
-    train_y = to_categorical([labels.index(c) for c in train[y_column]])
-    dev_y = to_categorical([labels.index(c) for c in dev[y_column]])
+    train_y = [to_categorical([labels.index(c) for c in train[y_column]])]
+    dev_y = [to_categorical([labels.index(c) for c in dev[y_column]])]
+    num_classes = [len(labels)]
 
-    model = build_model(args.vocab_size, seq_length, len(labels),
+    if args.multi:
+        assert not args.nli, "Both NLI and multi-task specified"
+        lang_labels = sorted(train.lang.unique())
+        train_y.append(to_categorical([lang_labels.index(l) for l in train.lang]))
+        dev_y.append(to_categorical([lang_labels.index(l) for l in dev.lang]))
+        num_classes.append(len(lang_labels))
+
+    model = build_model(args.vocab_size, seq_length, num_classes,
                         windows=args.windows, num_pos=num_pos)
     model.summary()
 

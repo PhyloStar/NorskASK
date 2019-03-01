@@ -14,7 +14,7 @@ from masterthesis.features.build_features import (
     bag_of_words, filename_iter, iterate_mixed_pos_docs, iterate_pos_docs
 )
 from masterthesis.models.callbacks import F1Metrics
-from masterthesis.models.report import report
+from masterthesis.models.report import multi_task_report, report
 from masterthesis.results import save_results
 from masterthesis.utils import (
     DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER, safe_plt as plt
@@ -132,24 +132,11 @@ def main():
 
     pred = np.argmax(predictions, axis=1)
 
-    fig, axes = plt.subplots(2, 2)
-    ax1 = plt.subplot(223)
-    ax2 = plt.subplot(221, sharex=ax1)
-
-    ax1.plot(history.history['loss'], label='training loss'),
-    ax1.plot(history.history['val_loss'], label='validation loss'),
-    ax1.legend()
-    ax1.set(xlabel='Epoch', ylabel='Loss')
-
-    ax2.plot(history.history['dense_2_acc'], label='CEFR train acc'),
-    ax2.plot(history.history['val_dense_2_acc'], label='CEFR val acc')
-    ax2.plot(history.history['dense_3_acc'], label='L1 train acc'),
-    ax2.plot(history.history['val_dense_3_acc'], label='L1 val acc')
-    ax2.legend()
-    ax2.set(ylabel='Accuracy')
-
-    ax3 = plt.subplot(122)
-    report(true, pred, cefr_labels, ax3)
+    if args.multi:
+        multi_task_report(history.history, true, pred, cefr_labels)
+    else:
+        report(true, pred, cefr_labels)
+    plt.show()
 
     if not args.nosave:
         prefix = 'mlp_%s' % args.featuretype
