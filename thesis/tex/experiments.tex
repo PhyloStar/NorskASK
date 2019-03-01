@@ -32,14 +32,56 @@ tagset.
 
 \section{Metrics}
 
-Because of the unbalanced nature of the classes in the dataset, special
-consideration has to be made as to the metrics of evaluation. Two metrics are
-reported for all experiments: The macro average \FI and the micro average \FI.
-The latter is equivalent to the accuracy (ratio of correctly predicted
-samples), while the former gives all the classes equal weight. If a model
-correctly classifies most samples in the classes with most samples, but gives
-poor predictions for smaller classes, then the macro \FI score for the model
-will be considerably lower than the micro \FI score.
+The \FI score for a single class is the harmonic mean of the precision and
+recall. The formula is given in equation \ref{eq:fi}, where $TP$, $FN$ and
+$FP$ are the number of true positives, false negatives, and false positives,
+respectively.
+
+\begin{equation}\label{eq:fi}
+  F_1 = {{2\cdot TP}\over{2\cdot TP + FN + FP}}
+\end{equation}
+
+In a multi-class prediction setup, there are several ways to combine the
+classes' individual \FI scores into a single metric. There is the micro
+average \FI, which is equivalent to accuracy: The proportion of samples where
+the gold labels and predicted labels are the same. Then there is the macro
+average, which is the unweighted average of \FI scores for all classes. When
+the distribution of classes is uneven, a macro average will give
+proportionally more weight on samples from small classes, and less weight to
+all samples in classes with large support. A model with a high micro \FI and
+a low macro \FI indicates that it is good at classifying examples from the
+most frequent classes, but performs worse on classes with low support. In
+addition, the weighted \FI is a weighted average where each class is weighted
+proportionally to its prevalence.
+
+\FI scores previously reported in \ac{AES} literature include Micro \FI score
+in \textcite{vajjala17}, and weighted \FI in
+\textcite{vajjala18universalCEFR}. For the \ac{NLI} task, micro \FI is
+reported in \textcite{malmasi15,malmasi17}.
+
+Other, non-\FI metrics that have been reported in \ac{AES} literature include
+\ac{QWK} \autocite{taghipour16, alikaniotis2016automatic}, Pearson's
+correlation coefficient \autocite{vajjala17, alikaniotis2016automatic},
+Spearman's rank correlation coefficient and root mean squared error
+\autocite{alikaniotis2016automatic}, and mean absolute error
+\autocite{vajjala17}. These are metrics that may depend on the ordinal nature
+of proficiency scores, and potentially the relative differences between
+different scores. For instance, a prediction of `C1' for an essay with gold
+label `B1' is a more serious misclassification than a prediction of `A2/B1'
+for the same sample, and this can be taken into account by some metrics.
+
+According to \textcite{yannakoudakis2015evaluating}, \ac{QWK} is an
+ill-suited metric for the task, because it depends on trait prevalence, the
+scoring scale and the marginal distributions of labels and predictions.
+Therefore it is problematic to compare \ac{QWK} scores between different
+systems and datasets. However, since two of the cited studies are based on
+a dataset from a Kaggle competition where \ac{QWK} was the official metric,
+it has been reported.
+
+
+\subsection{Reported metrics}
+
+We report the macro and micro \FI for all experiments.
 
 The metrics are reported for two different modes: The first utilizing the
 full set of classes, and the second training and evaluating on the collapsed
@@ -132,8 +174,19 @@ layer with softmax activation and 7 or 4 dimensions, depending on whether we
 run with collapsed labels or not.
 
 The model was trained using the Adam optimization algorithm
-\autocite{kingma2014adam} to minimize the categorical cross-entropy loss. The
-learning rate was set to $2\cdot 10^{-4}$.
+\autocite{kingma2014adam} to minimize the categorical cross-entropy loss
+(equation \ref{eq:crossentropy}). The learning rate was set to $2\cdot
+10^{-4}$.
+
+\begin{equation}\label{eq:crossentropy}
+  \mathcal{L} = -\sum_{c\in C} {y_c \log{{\hat y}_c}}
+\end{equation}
+
+Of note concerning categorical cross-entropy is that in the case where there
+is only a single true label for each example, the true vector $y$ is one-hot,
+i.e.\ zero in all elements but one. In this case, the loss calculation
+simplifies to $-\log{{\hat y}_t}$, where $t$ is the index of the true label.
+\todo{Move description of loss to background?}
 
 The new \ngram features add a certain sensitivity to local order of features.
 Many character \ngrams will represent entities smaller than a word, but may
@@ -181,11 +234,14 @@ that performs the best is the one using character \ngrams.
     LogReg POS &         $0.188$  &         $0.276$  &         $0.344$  &         $0.585$ \\
     LogReg Mix &         $0.213$  &         $0.341$  &         $0.342$  &         $0.585$ \\
     \midrule
-    MLP BOW    &         $0.221$  &         $0.350$  &         $0.410$  &         $0.642$ \\
-    MLP Char   &         $0.203$  &         $0.366$  &         $0.368$  & $\mathbf{0.707}$ \\
-    MLP POS    & $\mathbf{0.254}$ &         $0.390$  & $\mathbf{0.425}$ &         $0.691$ \\
-    %            mlp_mixed-02-20_14-45-16.pkl          mlp_mixed-02-22_13-43-37.pkl
-    MLP Mix    &         $0.239$  & $\mathbf{0.398}$ &         $0.384$  &         $0.667$ \\
+    %            mlp_word-03-01_11-53-35               mlp_word-03-01_11-55-36
+    MLP BOW    &         $0.209$  &         $0.366$  &         $0.392$  &         $0.642$ \\
+    %            mlp_char-03-01_11-57-23               mlp_char-03-01_11-59-00
+    MLP Char   & $\mathbf{0.281}$ & $\mathbf{0.472}$ &         $0.423$  &         $0.659$ \\
+    %            mlp_pos-03-01_12-00-44                mlp_pos-03-01_12-02-31
+    MLP POS    &         $0.245$  &         $0.366$  & $\mathbf{0.439}$ & $\mathbf{0.691}$\\
+    %            mlp_mixed-02-20_14-45-16              mlp_mixed-02-22_13-43-37
+    MLP Mix    &         $0.239$  &         $0.398$  &         $0.384$  &         $0.667$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of different classifiers}
@@ -199,7 +255,6 @@ of labels, the part of speech \ngrams had the highest macro \FI score, but were
 beat in micro \FI by the character \ngrams.
 
 Confusion matrices from MLP Mix:
-\todo{Replace tables with heatmaps}
 
 \begin{figure}
   \centering
