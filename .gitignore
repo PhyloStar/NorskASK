@@ -5,6 +5,9 @@
 /results/
 /slurm_logs/
 /models/
+/notebooks/*.html
+/notebooks/*.pdf
+/notebooks/*.svg
 
 /ASK/conll/
 /ASK/conll-2-0/

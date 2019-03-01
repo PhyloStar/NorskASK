@@ -1,12 +1,12 @@
-from collections import Counter
+import argparse
+from collections import Counter, defaultdict
 from math import sqrt
+from pathlib import Path
 import pickle
 from typing import List
 
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr
-
-from masterthesis.utils import RESULTS_DIR
 
 
 def pi_k(a: List[int], b: List[int]) -> float:
@@ -23,12 +23,23 @@ def pi_k(a: List[int], b: List[int]) -> float:
     return ac
 
 
+def parse_args() -> argparse.Namespace:
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('files', nargs='+')
+    return parser.parse_args()
+
+
 def main():
-    data = {'filename': [], 'pearson': [], 'spearman': [], 'rmse': [], 'n_class': []}
-    for results_file in RESULTS_DIR.iterdir():
+    args = parse_args()
+    data = defaultdict(list)
+    for filename in args.files:
+        results_file = Path(filename)
+        assert results_file.exists()
         try:
             res = pickle.load(results_file.open('rb'))
-        except Exception:
+        except Exception as e:
+            print(e)
             print('Could not read file %s' % results_file)
             continue
         try:
