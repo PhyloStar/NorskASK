@@ -42,7 +42,8 @@ def build_model(vocab_size: int, num_classes: Sequence[int]):
     dropout_1 = Dropout(0.5)(hidden_1)
     hidden_2 = Dense(256, activation='relu', name=REPRESENTATION_LAYER)(dropout_1)
     dropout_2 = Dropout(0.5)(hidden_2)
-    outputs = [Dense(n_c, activation='softmax')(dropout_2) for n_c in num_classes]
+    outputs = [Dense(n_c, activation='softmax', name=name)(dropout_2)
+               for name, n_c in zip(['output', 'aux_output'], num_classes)]
     return Model(inputs=[input_], outputs=outputs)
 
 
@@ -125,17 +126,15 @@ def main():
 
     if args.multi:
         predictions = model.predict(dev_x)[0]
+        pred = np.argmax(predictions, axis=1)
         true = np.argmax(dev_y[0], axis=1)
-    else:
-        predictions = model.predict(dev_x)
-        true = np.argmax(dev_y, axis=1)
-
-    pred = np.argmax(predictions, axis=1)
-
-    if args.multi:
         multi_task_report(history.history, true, pred, cefr_labels)
     else:
+        predictions = model.predict(dev_x)
+        pred = np.argmax(predictions, axis=1)
+        true = np.argmax(dev_y, axis=1)
         report(true, pred, cefr_labels)
+
     plt.show()
 
     if not args.nosave:

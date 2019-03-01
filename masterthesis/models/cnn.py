@@ -18,9 +18,11 @@ from masterthesis.features.build_features import (
 )
 from masterthesis.gensim_utils import load_embeddings
 from masterthesis.models.callbacks import F1Metrics
-from masterthesis.models.report import report
+from masterthesis.models.report import multi_task_report, report
 from masterthesis.results import save_results
-from masterthesis.utils import get_file_name, load_split, REPRESENTATION_LAYER, save_model
+from masterthesis.utils import (
+    get_file_name, load_split, REPRESENTATION_LAYER, save_model, safe_plt as plt
+)
 
 EMB_LAYER_NAME = 'embedding_layer'
 POS_EMB_SIZE = 10
@@ -57,6 +59,7 @@ def parse_args():
     parser.add_argument('--epochs', '-e', type=int)
     parser.add_argument('--include-pos', action='store_true')
     parser.add_argument('--mixed-pos', action='store_true')
+    parser.add_argument('--multi', action='store_true')
     parser.add_argument('--nli', action='store_true')
     parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--save-model', action='store_true')
@@ -69,7 +72,8 @@ def parse_args():
     return parser.parse_args()
 
 
-def _build_inputs(sequence_length: int, vocab_size: int, num_pos: int, static_embs: bool):
+def _build_inputs(sequence_length: int, vocab_size: int, embed_dim: int,
+                  num_pos: int, static_embs: bool):
     trainable_embs = not static_embs
     word_input_layer = Input((sequence_length,))
     word_embedding_layer = Embedding(vocab_size, embed_dim, name=EMB_LAYER_NAME,
@@ -89,7 +93,8 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: Iterable[int
                 windows: Iterable[int], num_pos: int = 0,
                 constraint: Optional[float] = None, static_embs: bool = False) -> Model:
     """Build CNN model."""
-    inputs, embedding_layer = _build_inputs(sequence_length, vocab_size, num_pos, static_embs)
+    inputs, embedding_layer = _build_inputs(sequence_length, vocab_size, embed_dim,
+                                            num_pos, static_embs)
 
     pooled_feature_maps = []
     for kernel_size in windows:
@@ -105,9 +110,32 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: Iterable[int
         kernel_constraint = max_norm(constraint)
     else:
         kernel_constraint = None
-    outputs = [Dense(n_c, activation='softmax', kernel_constraint=kernel_constraint)(dropout_layer)
-               for n_c in num_classes]
+    outputs = [Dense(n_c, activation='softmax',
+                     kernel_constraint=kernel_constraint, name=name)(dropout_layer)
+               for name, n_c in zip(['output', 'aux_output'], num_classes)]
     return Model(inputs=inputs, outputs=outputs)
+
+
+def init_pretrained_embs(model: Model, vector_path: Path, w2i) -> None:
+    if not vector_path.is_file():
+        if 'SUBMITDIR' in os.environ:
+            vector_path = Path(os.environ['SUBMITDIR']) / vector_path
+        print('New path: %r' % vector_path)
+    if not vector_path.is_file():
+        print('Embeddings path not available, searching for submitdir')
+    else:
+        kv = load_embeddings(vector_path)
+        embed_dim = kv.vector_size
+        emb_layer = model.get_layer(EMB_LAYER_NAME)
+        vocab_size = emb_layer.input_dim
+        assert embed_dim == emb_layer.output_dim
+        assert len(w2i) == vocab_size
+        embeddings_matrix = np.zeros((vocab_size, embed_dim))
+        print('Making embeddings:')
+        for word, idx in tqdm(w2i.items(), total=vocab_size):
+            vec = kv.word_vec(word)
+            embeddings_matrix[idx, :] = vec
+        emb_layer.set_weights([embeddings_matrix])
 
 
 def main():
@@ -153,21 +181,7 @@ def main():
     model.summary()
 
     if args.vectors:
-        if not args.vectors.is_file():
-            if 'SUBMITDIR' in os.environ:
-                args.vectors = Path(os.environ['SUBMITDIR'] / args.vectors)
-            print('New path: %r' % args.vectors)
-        if not args.vectors.is_file():
-            print('Embeddings path not available, searching for submitdir')
-        else:
-            kv = load_embeddings(args.vectors)
-            embed_dim = kv.vector_size
-            embeddings_matrix = np.zeros((args.vocab_size, embed_dim))
-            print('Making embeddings:')
-            for word, idx in tqdm(w2i.items(), total=len(w2i)):
-                vec = kv.word_vec(word)
-                embeddings_matrix[idx, :] = vec
-            model.get_layer(EMB_LAYER_NAME).set_weights([embeddings_matrix])
+        init_pretrained_embs(model, args.vectors, w2i)
 
     model.compile('adam', 'categorical_crossentropy', metrics=['accuracy'])
 
@@ -181,6 +195,17 @@ def main():
     os.close(temp_handle)
     os.remove(weights_path)
 
+    if args.multi:
+        predictions = model.predict(dev_x)[0]
+        pred = np.argmax(predictions, axis=1)
+        true = np.argmax(dev_y[0], axis=1)
+        multi_task_report(history.history, true, pred, labels)
+    else:
+        predictions = model.predict(dev_x)
+        pred = np.argmax(predictions, axis=1)
+        true = np.argmax(dev_y, axis=1)
+        report(true, pred, labels)
+
     name = 'cnn'
     if args.nli:
         name = 'cnn-nli'
@@ -189,12 +214,9 @@ def main():
     if args.save_model:
         save_model(name, model, w2i)
 
-    predictions = model.predict(dev_x)
-    true = np.argmax(dev_y, axis=1)
-    pred = np.argmax(predictions, axis=1)
-    report(true, pred, labels)
-
     save_results(name, args.__dict__, history.history, true, pred)
+
+    plt.show()
 
 
 if __name__ == '__main__':

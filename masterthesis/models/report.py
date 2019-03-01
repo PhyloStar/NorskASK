@@ -1,6 +1,6 @@
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
 
-from masterthesis.utils import heatmap
+from masterthesis.utils import heatmap, safe_plt as plt
 
 
 def report(true, pred, labels, normalize: bool = False, ax=None):
@@ -19,16 +19,17 @@ def multi_task_report(history, true, pred, labels):
     fig, axes = plt.subplots(2, 2)
     ax1 = plt.subplot(223)
     ax2 = plt.subplot(221, sharex=ax1)
+    xs = list(range(1, len(history['loss']) + 1))
 
-    ax1.plot(history['loss'], label='training loss'),
-    ax1.plot(history['val_loss'], label='validation loss'),
+    ax1.plot(xs, history['loss'], label='training loss'),
+    ax1.plot(xs, history['val_loss'], label='validation loss'),
     ax1.legend()
     ax1.set(xlabel='Epoch', ylabel='Loss')
 
-    ax2.plot(history['dense_2_acc'], label='CEFR train acc'),
-    ax2.plot(history['val_dense_2_acc'], label='CEFR val acc')
-    ax2.plot(history['dense_3_acc'], label='L1 train acc'),
-    ax2.plot(history['val_dense_3_acc'], label='L1 val acc')
+    ax2.plot(xs, history['output_acc'], label='CEFR train acc'),
+    ax2.plot(xs, history['val_output_acc'], label='CEFR val acc')
+    ax2.plot(xs, history['aux_output_acc'], label='L1 train acc'),
+    ax2.plot(xs, history['val_aux_output_acc'], label='L1 val acc')
     ax2.legend()
     ax2.set(ylabel='Accuracy')
 

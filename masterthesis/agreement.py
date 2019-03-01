@@ -5,8 +5,12 @@ from pathlib import Path
 import pickle
 from typing import List
 
+import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr
+import seaborn as sns
+from sklearn.metrics import f1_score
+sns.set()
 
 
 def pi_k(a: List[int], b: List[int]) -> float:
@@ -35,7 +39,6 @@ def main():
     data = defaultdict(list)
     for filename in args.files:
         results_file = Path(filename)
-        assert results_file.exists()
         try:
             res = pickle.load(results_file.open('rb'))
         except Exception as e:
@@ -51,40 +54,51 @@ def main():
         data['filename'].append(results_file.name)
         data['pearson'].append(pearsonr(gold, pred)[0])
         data['spearman'].append(spearmanr(gold, pred)[0])
+        data['macrof1'].append(f1_score(gold, pred, average='macro'))
+        data['microf1'].append(f1_score(gold, pred, average='micro'))
+        data['weightedf1'].append(f1_score(gold, pred, average='weighted'))
         data['n_class'].append(max(max(gold), max(pred)) + 1)
         mse = sum((a - b) ** 2 for a, b in zip(gold, pred)) / len(gold)
         rmse = sqrt(mse)
         data['rmse'].append(rmse)
     df = pd.DataFrame.from_dict(data)
     print('== All labels ==')
-    lim_df = df[df.n_class == 7]
+    lim_df = df[df.n_class == 7].dropna()
+    sns.heatmap(lim_df.drop(columns=['filename', 'n_class']).corr(), cmap='BrBG')
+    plt.show()
     print('\nTop Pearson:')
     print(lim_df.sort_values('pearson', ascending=False)
-                .loc[:, ['filename', 'pearson', 'n_class']]
+                .drop(columns=['filename', 'n_class'])
                 .head(5))
     print('\nTop Spearman:')
     print(lim_df.sort_values('spearman', ascending=False)
-                .loc[:, ['filename', 'spearman', 'n_class']]
+                .drop(columns=['filename', 'n_class'])
                 .head(5))
     print('\nTop RMSE:')
     print(lim_df.sort_values('rmse')
-                .loc[:, ['filename', 'rmse', 'n_class']]
+                .drop(columns=['filename', 'n_class'])
                 .head(5))
+    sns.pairplot(lim_df.drop(columns=['filename', 'n_class']))
+    plt.show()
 
     print('== Collapsed labels ==')
-    lim_df = df[df.n_class == 4]
+    lim_df = df[df.n_class == 4].dropna()
+    sns.heatmap(lim_df.drop(columns=['filename', 'n_class'],).corr(), cmap='BrBG')
+    plt.show()
     print('\nTop Pearson:')
     print(lim_df.sort_values('pearson', ascending=False)
-                .loc[:, ['filename', 'pearson', 'n_class']]
+                .drop(columns=['filename', 'n_class'])
                 .head(5))
     print('\nTop Spearman:')
     print(lim_df.sort_values('spearman', ascending=False)
-                .loc[:, ['filename', 'spearman', 'n_class']]
+                .drop(columns=['filename', 'n_class'])
                 .head(5))
     print('\nTop RMSE:')
     print(lim_df.sort_values('rmse')
-                .loc[:, ['filename', 'rmse', 'n_class']]
+                .drop(columns=['filename', 'n_class'])
                 .head(5))
+    sns.pairplot(lim_df.drop(columns=['filename', 'n_class']))
+    plt.show()
 
 
 if __name__ == '__main__':
