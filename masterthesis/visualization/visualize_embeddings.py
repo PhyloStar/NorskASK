@@ -6,16 +6,18 @@ from typing import Iterable
 
 from keras.models import load_model, Model
 import numpy as np
+import seaborn as sns
 from sklearn.manifold import TSNE
 import tqdm
 
 from masterthesis.features.build_features import words_to_sequences
 from masterthesis.gensim_utils import fingerprint, load_embeddings
 from masterthesis.utils import (
-    CEFR_LABELS, DATA_DIR, document_iterator, iso639_3, LANG_LABELS, load_split,
+    CEFR_LABELS, DATA_DIR, document_iterator, iso639_3, load_split,
     REPRESENTATION_LAYER, safe_plt as plt
 )
 
+sns.set_style('white')
 logging.basicConfig(level=logging.INFO)
 
 
@@ -35,7 +37,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--embeddings', type=Path)
     parser.add_argument('--model', type=Path)
     parser.add_argument('--debug', action='store_true')
-    parser.add_argument('--split', choices=['train', 'dev', 'test'], default='dev')
+    parser.add_argument('--split', choices={'train', 'dev', 'test'}, default='dev')
     return parser.parse_args()
 
 
@@ -71,22 +73,23 @@ def main():
     elif args.model:
         representations = get_model_representations(args.model, args.split)
 
-    cefr_list = CEFR_LABELS
-    testlevel_list = sorted(meta.testlevel.unique())
-    lang_list = LANG_LABELS
     column_list = ['cefr', 'testlevel', 'lang']
 
     print('Computing t-SNE embeddings ...')
     embedded = TSNE(n_components=2, verbose=True).fit_transform(representations)
+    meta['x'] = embedded[:, 0]
+    meta['y'] = embedded[:, 1]
 
     fig, axes = plt.subplots(1, 3)
-    for ax, label_list, col in zip(axes, [cefr_list, testlevel_list, lang_list], column_list):
-        for label in label_list:
-            mask = meta.loc[:, col] == label
-            xs = embedded[mask, 0]
-            ys = embedded[mask, 1]
-            ax.plot(xs, ys, 'o', label=label)
-        ax.legend()
+    for ax, col in zip(axes, column_list):
+        if col == 'cefr':
+            palette = sns.mpl_palette('cool', 7)
+            hue_order = CEFR_LABELS
+        else:
+            palette = None
+            hue_order = None
+        sns.scatterplot(x='x', y='y', hue=col, data=meta, ax=ax,
+                        palette=palette, hue_order=hue_order)
     plt.show()
 
 

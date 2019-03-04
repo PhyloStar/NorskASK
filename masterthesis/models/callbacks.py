@@ -12,7 +12,6 @@ class F1Metrics(Callback):
             self.dev_y = dev_y
             self.multi = False
         self.dev_x = dev_x
-        assert self.dev_x.shape[0] == self.dev_y.shape[0]
         self.weights_path = weights_path
         self.average = average
 
