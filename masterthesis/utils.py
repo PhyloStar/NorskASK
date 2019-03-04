@@ -255,7 +255,7 @@ def get_file_name(name: str) -> str:
         suf = os.environ.get('SLURM_ARRAY_TASK_ID', None)
         return '%s-%s_%s' % (name, slurm_job_id, suf)
     elif 'SLURM_JOB_ID' in os.environ:
-        slurm_job_id = os.environ.get('SLURM_JOB_ID', None)
+        slurm_job_id = os.environ['SLURM_JOB_ID']
         fn = name + '-' + slurm_job_id
         suf = os.environ.get('SUF', None)
         if suf is not None:

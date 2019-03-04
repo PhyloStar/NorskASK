@@ -1,8 +1,8 @@
 import argparse
 from typing import Iterable, Optional
 
-import sklearn.linear_model
 from sklearn.feature_extraction.text import CountVectorizer
+import sklearn.linear_model
 
 from masterthesis.features.build_features import (
     bag_of_words, filename_iter, iterate_mixed_pos_docs, iterate_pos_docs
