@@ -5,9 +5,9 @@ from sklearn.metrics import f1_score
 
 class F1Metrics(Callback):
     def __init__(self, dev_x, dev_y, weights_path, average='macro'):
-        if isinstance(dev_y, list) and len(dev_y) > 1:
+        if isinstance(dev_y, list):
             self.dev_y = dev_y[0]
-            self.multi = True
+            self.multi = len(dev_y) > 1
         else:
             self.dev_y = dev_y
             self.multi = False
