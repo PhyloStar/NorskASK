@@ -24,6 +24,21 @@ def print_config(config):
     for key, val in config.items():
         print(fmt.format(key, val))
 
+def multi_task_plot_history(history, ax1, ax2):
+    xs = list(range(1, len(history['loss']) + 1))
+
+    ax1.plot(xs, history['loss'], label='training loss'),
+    ax1.plot(xs, history['val_loss'], label='validation loss'),
+    ax1.legend()
+    ax1.set(xlabel='Epoch', ylabel='Loss')
+
+    ax2.plot(xs, history['output_acc'], label='Train CEFR acc'),
+    ax2.plot(xs, history['aux_output_acc'], label='Train L1 acc'),
+    ax2.plot(xs, history['val_output_acc'], label='Val CEFR acc')
+    ax2.plot(xs, history['val_aux_output_acc'], label='Val L1 acc')
+    ax2.legend()
+    ax2.set(ylabel='Accuracy')
+
 
 def plot_history(history, ax1, ax2):
     ax1.plot(history['loss'], label='training loss'),
@@ -52,7 +67,10 @@ def main():
     plt.tight_layout()
     ax1 = plt.subplot(223)
     ax2 = plt.subplot(221, sharex=ax1)
-    plot_history(history, ax1, ax2)
+    if results.config.get('multi', False):
+        multi_task_plot_history(history, ax1, ax2)
+    else:
+        plot_history(history, ax1, ax2)
 
     if args.nli or results.config.get('nli', False):
         labels = LANG_LABELS
