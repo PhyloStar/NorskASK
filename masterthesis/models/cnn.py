@@ -24,8 +24,7 @@ from masterthesis.utils import (
     get_file_name, load_split, REPRESENTATION_LAYER, save_model, safe_plt as plt
 )
 
-EMB_LAYER_NAME = 'embedding_layer'
-POS_EMB_SIZE = 10
+POS_EMB_DIM = 10
 
 
 def int_list(strlist: str) -> List[int]:
@@ -77,7 +76,7 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: Iterable[int
                 constraint: Optional[float] = None, static_embs: bool = False) -> Model:
     """Build CNN model."""
     input_layer_args = InputLayerArgs(
-        num_pos=num_pos, mask_zero=False, embed_dim=embed_dim,
+        num_pos=num_pos, mask_zero=False, embed_dim=embed_dim, pos_embed_dim=POS_EMB_DIM,
         vocab_size=vocab_size, sequence_len=sequence_length, static_embeddings=static_embs
     )
     inputs, embedding_layer = build_inputs_and_embeddings(input_layer_args)
@@ -108,8 +107,8 @@ def main():
     train = load_split('train', round_cefr=args.round_cefr)
     dev = load_split('dev', round_cefr=args.round_cefr)
 
-    y_column = 'lang' if args.nli else 'cefr'
-    labels = sorted(train[y_column].unique())
+    target_col = 'lang' if args.nli else 'cefr'
+    labels = sorted(train[target_col].unique())
 
     if args.mixed_pos:
         t2i = make_mixed_pos2i()
@@ -128,8 +127,8 @@ def main():
         else:
             num_pos = 0
 
-    train_y = [to_categorical([labels.index(c) for c in train[y_column]])]
-    dev_y = [to_categorical([labels.index(c) for c in dev[y_column]])]
+    train_y = [to_categorical([labels.index(c) for c in train[target_col]])]
+    dev_y = [to_categorical([labels.index(c) for c in dev[target_col]])]
     num_classes = [len(labels)]
 
     if args.multi:
@@ -147,7 +146,8 @@ def main():
     if args.vectors:
         init_pretrained_embs(model, args.vectors, w2i)
 
-    model.compile('adam', 'categorical_crossentropy', metrics=['accuracy'])
+    optimizer = 'adam'
+    model.compile(optimizer, 'categorical_crossentropy', metrics=['accuracy'])
 
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
     callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
@@ -170,9 +170,12 @@ def main():
         true = np.argmax(dev_y, axis=1)
         report(true, pred, labels)
 
-    name = 'cnn'
     if args.nli:
         name = 'cnn-nli'
+    elif args.multi:
+        name = 'cnn-multi'
+    else:
+        name = 'cnn'
     name = get_file_name(name)
 
     if args.save_model:

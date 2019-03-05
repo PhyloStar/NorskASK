@@ -2,6 +2,7 @@ import argparse
 import os
 from pathlib import Path
 import tempfile
+from typing import Iterable
 
 from keras import backend as K
 from keras.layers import (
@@ -20,14 +21,12 @@ from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.layers import (
     build_inputs_and_embeddings, GlobalAveragePooling1D, InputLayerArgs
 )
-from masterthesis.models.report import report
+from masterthesis.models.report import multi_task_report, report
 from masterthesis.models.utils import init_pretrained_embs
 from masterthesis.results import save_results
 from masterthesis.utils import (
-    ATTENTION_LAYER, DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER, save_model
+    ATTENTION_LAYER, get_file_name, load_split, REPRESENTATION_LAYER, safe_plt as plt, save_model
 )
-
-conll_folder = DATA_DIR / 'conll'
 
 SEQ_LEN = 700  # 95th percentile of documents
 INPUT_DROPOUT = 0.5
@@ -72,14 +71,14 @@ def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool) -> Layer:
     return rnn_factory
 
 
-def build_model(vocab_size: int, sequence_len: int, num_classes: int,
+def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
                 embed_dim: int, rnn_dim: int, dropout_rate: float,
                 bidirectional: bool, attention: bool, freeze_embeddings: bool, rnn_cell: str,
                 num_pos: int = 0):
     mask_zero = not attention  # The attention mechanism does not support masked inputs
 
     input_layer_args = InputLayerArgs(
-        num_pos=num_pos, mask_zero=mask_zero, embed_dim=embed_dim,
+        num_pos=num_pos, mask_zero=mask_zero, embed_dim=embed_dim, pos_embed_dim=POS_EMB_DIM,
         vocab_size=vocab_size, sequence_len=sequence_len, static_embeddings=freeze_embeddings
     )
     inputs, embedding_layer = build_inputs_and_embeddings(input_layer_args)
@@ -105,24 +104,22 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: int,
     else:
         pooled = GlobalAveragePooling1D(name=REPRESENTATION_LAYER)(dropout)
 
-    output = Dense(num_classes, activation='softmax')(pooled)
-    return Model(inputs=inputs, outputs=[output])
+    outputs = [Dense(n_c, activation='softmax')(pooled)
+               for name, n_c in zip(['output', 'aux_output'], num_classes)]
+    return Model(inputs=inputs, outputs=outputs)
 
 
 def main():
     args = parse_args()
-    train_meta = load_split('train', round_cefr=args.round_cefr)
-    dev_meta = load_split('dev', round_cefr=args.round_cefr)
+    train = load_split('train', round_cefr=args.round_cefr)
+    dev = load_split('dev', round_cefr=args.round_cefr)
 
     vocab_size = args.vocab_size
     w2i = make_w2i(vocab_size)
     train_x, dev_x = words_to_sequences(SEQ_LEN, ['train', 'dev'], w2i)
 
     target_col = 'lang' if args.nli else 'cefr'
-    labels = sorted(train_meta[target_col].unique())
-
-    train_y = to_categorical([labels.index(c) for c in train_meta[target_col]])
-    dev_y = to_categorical([labels.index(c) for c in dev_meta[target_col]])
+    labels = sorted(train[target_col].unique())
 
     if args.include_pos:
         pos2i = make_pos2i()
@@ -133,8 +130,19 @@ def main():
     else:
         num_pos = 0
 
+    train_y = [to_categorical([labels.index(c) for c in train[target_col]])]
+    dev_y = [to_categorical([labels.index(c) for c in dev[target_col]])]
+    num_classes = [len(labels)]
+
+    if args.multi:
+        assert not args.nli, "Both NLI and multi-task specified"
+        lang_labels = sorted(train.lang.unique())
+        train_y.append(to_categorical([lang_labels.index(l) for l in train.lang]))
+        dev_y.append(to_categorical([lang_labels.index(l) for l in dev.lang]))
+        num_classes.append(len(lang_labels))
+
     model = build_model(
-        vocab_size=vocab_size, sequence_len=SEQ_LEN, num_classes=len(labels),
+        vocab_size=vocab_size, sequence_len=SEQ_LEN, num_classes=num_classes,
         embed_dim=args.embed_dim, rnn_dim=args.rnn_dim, dropout_rate=args.dropout_rate,
         bidirectional=args.bidirectional, attention=args.attention,
         freeze_embeddings=args.freeze_embeddings, rnn_cell=args.rnn_cell, num_pos=num_pos)
@@ -143,10 +151,8 @@ def main():
     if args.vectors:
         init_pretrained_embs(model, args.vectors, w2i)
 
-    model.compile(
-        optimizer=RMSprop(lr=args.lr, rho=args.decay_rate),
-        loss='categorical_crossentropy',
-        metrics=['accuracy'])
+    optimizer = RMSprop(lr=args.lr, rho=args.decay_rate)
+    model.compile(optimizer, 'categorical_crossentropy', metrics=['accuracy'])
 
     # Context manager fails on Windows (can't open an open file again)
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
@@ -159,20 +165,31 @@ def main():
     os.close(temp_handle)
     os.remove(weights_path)
 
-    name = 'rnn'
+    if args.multi:
+        predictions = model.predict(dev_x)[0]
+        pred = np.argmax(predictions, axis=1)
+        true = np.argmax(dev_y[0], axis=1)
+        multi_task_report(history.history, true, pred, labels)
+    else:
+        predictions = model.predict(dev_x)
+        pred = np.argmax(predictions, axis=1)
+        true = np.argmax(dev_y, axis=1)
+        report(true, pred, labels)
+
     if args.nli:
-        name += '_nli'
+        name = 'rnn-nli'
+    elif args.multi:
+        name = 'rnn-multi'
+    else:
+        name = 'rnn'
     name = get_file_name(name)
 
     if args.save_model:
         save_model(name, model, w2i)
 
-    predictions = model.predict(dev_x)
-
-    true = np.argmax(dev_y, axis=1)
-    pred = np.argmax(predictions, axis=1)
-    report(true, pred, labels)
     save_results(name, args.__dict__, history.history, true, pred)
+
+    plt.show()
 
 
 if __name__ == '__main__':
