@@ -251,16 +251,20 @@ def get_split_len(split: str) -> int:
 
 
 def get_file_name(name: str) -> str:
-    slurm_job_id = os.environ.get('SLURM_JOB_ID', None)
-    if slurm_job_id is not None:
+    if 'SLURM_ARRAY_JOB_ID' in os.environ:
+        slurm_job_id = os.environ.get('SLURM_ARRAY_JOB_ID', None)
+        suf = os.environ.get('SLURM_ARRAY_TASK_ID', None)
+        return '%s-%s_%s' % (name, slurm_job_id, suf)
+    elif 'SLURM_JOB_ID' in os.environ:
+        slurm_job_id = os.environ['SLURM_JOB_ID']
         fn = name + '-' + slurm_job_id
-    else:
-        timestamp = dt.datetime.utcnow().strftime('%m-%d_%H-%M-%S')
-        fn = name + '-' + timestamp
-    suf = os.environ.get('SUF', None)
-    if suf is not None:
-        fn = fn + '_' + suf
-    return fn
+        suf = os.environ.get('SUF', None)
+        if suf is not None:
+            fn = fn + '_' + suf
+        return fn
+
+    timestamp = dt.datetime.utcnow().strftime('%m-%d_%H-%M-%S')
+    return name + '-' + timestamp
 
 
 def save_model(name: str, model, w2i):
