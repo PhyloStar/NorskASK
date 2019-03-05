@@ -55,6 +55,7 @@ LANG_LABELS = ['eng', 'pol', 'rus', 'som', 'spa', 'deu', 'vie']
 
 REPRESENTATION_LAYER = 'vector_representation'
 ATTENTION_LAYER = 'attention_layer'
+EMB_LAYER_NAME = 'embedding_layer'
 
 
 if 'seaborn' in sys.modules:

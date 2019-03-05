@@ -6,19 +6,19 @@ import tempfile
 from typing import Iterable, List, Optional
 
 from keras.constraints import max_norm
-from keras.layers import Concatenate, Conv1D, Dense, Dropout, Embedding, GlobalMaxPooling1D, Input
+from keras.layers import Concatenate, Conv1D, Dense, Dropout, GlobalMaxPooling1D
 from keras.models import Model
 from keras.utils import to_categorical
 import numpy as np
-from tqdm import tqdm
 
 from masterthesis.features.build_features import (
     make_mixed_pos2i, make_pos2i, make_w2i, mixed_pos_to_sequences, pos_to_sequences,
     words_to_sequences
 )
-from masterthesis.gensim_utils import load_embeddings
 from masterthesis.models.callbacks import F1Metrics
+from masterthesis.models.layers import build_inputs_and_embeddings, InputLayerArgs
 from masterthesis.models.report import multi_task_report, report
+from masterthesis.models.utils import init_pretrained_embs
 from masterthesis.results import save_results
 from masterthesis.utils import (
     get_file_name, load_split, REPRESENTATION_LAYER, save_model, safe_plt as plt
@@ -72,29 +72,15 @@ def parse_args():
     return parser.parse_args()
 
 
-def _build_inputs(sequence_length: int, vocab_size: int, embed_dim: int,
-                  num_pos: int, static_embs: bool):
-    trainable_embs = not static_embs
-    word_input_layer = Input((sequence_length,))
-    word_embedding_layer = Embedding(vocab_size, embed_dim, name=EMB_LAYER_NAME,
-                                     trainable=trainable_embs)(word_input_layer)
-    if num_pos > 0:
-        pos_input_layer = Input((sequence_length,))
-        pos_embedding_layer = Embedding(num_pos, POS_EMB_SIZE)(pos_input_layer)
-        embedding_layer = Concatenate()([word_embedding_layer, pos_embedding_layer])
-        inputs = [word_input_layer, pos_input_layer]
-    else:
-        embedding_layer = word_embedding_layer
-        inputs = [word_input_layer]
-    return inputs, embedding_layer
-
-
 def build_model(vocab_size: int, sequence_length: int, num_classes: Iterable[int], embed_dim: int,
                 windows: Iterable[int], num_pos: int = 0,
                 constraint: Optional[float] = None, static_embs: bool = False) -> Model:
     """Build CNN model."""
-    inputs, embedding_layer = _build_inputs(sequence_length, vocab_size, embed_dim,
-                                            num_pos, static_embs)
+    input_layer_args = InputLayerArgs(
+        num_pos=num_pos, mask_zero=False, embed_dim=embed_dim,
+        vocab_size=vocab_size, sequence_len=sequence_length, static_embeddings=static_embs
+    )
+    inputs, embedding_layer = build_inputs_and_embeddings(input_layer_args)
 
     pooled_feature_maps = []
     for kernel_size in windows:
@@ -114,28 +100,6 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: Iterable[int
                      kernel_constraint=kernel_constraint, name=name)(dropout_layer)
                for name, n_c in zip(['output', 'aux_output'], num_classes)]
     return Model(inputs=inputs, outputs=outputs)
-
-
-def init_pretrained_embs(model: Model, vector_path: Path, w2i) -> None:
-    if not vector_path.is_file():
-        if 'SUBMITDIR' in os.environ:
-            vector_path = Path(os.environ['SUBMITDIR']) / vector_path
-        print('New path: %r' % vector_path)
-    if not vector_path.is_file():
-        print('Embeddings path not available, searching for submitdir')
-    else:
-        kv = load_embeddings(vector_path)
-        embed_dim = kv.vector_size
-        emb_layer = model.get_layer(EMB_LAYER_NAME)
-        vocab_size = emb_layer.input_dim
-        assert embed_dim == emb_layer.output_dim
-        assert len(w2i) == vocab_size
-        embeddings_matrix = np.zeros((vocab_size, embed_dim))
-        print('Making embeddings:')
-        for word, idx in tqdm(w2i.items(), total=vocab_size):
-            vec = kv.word_vec(word)
-            embeddings_matrix[idx, :] = vec
-        emb_layer.set_weights([embeddings_matrix])
 
 
 def main():

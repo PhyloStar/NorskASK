@@ -5,27 +5,27 @@ import tempfile
 
 from keras import backend as K
 from keras.layers import (
-    Activation, Bidirectional, Concatenate, Dense, Dropout, Embedding, Flatten, GRU, Input, Lambda,
+    Activation, Bidirectional, Dense, Dropout, Flatten, GRU, Lambda,
     Layer, LSTM, Multiply, Permute, RepeatVector, TimeDistributed
 )
 from keras.models import Model
 from keras.optimizers import RMSprop
 from keras.utils import to_categorical
 import numpy as np
-from tqdm import tqdm
 
 from masterthesis.features.build_features import (
     make_pos2i, make_w2i, pos_to_sequences, words_to_sequences
 )
-from masterthesis.gensim_utils import load_embeddings
 from masterthesis.models.callbacks import F1Metrics
-from masterthesis.models.layers import GlobalAveragePooling1D
+from masterthesis.models.layers import (
+    build_inputs_and_embeddings, GlobalAveragePooling1D, InputLayerArgs
+)
 from masterthesis.models.report import report
+from masterthesis.models.utils import init_pretrained_embs
 from masterthesis.results import save_results
 from masterthesis.utils import (
     ATTENTION_LAYER, DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER, save_model
 )
-
 
 conll_folder = DATA_DIR / 'conll'
 
@@ -33,7 +33,6 @@ SEQ_LEN = 700  # 95th percentile of documents
 INPUT_DROPOUT = 0.5
 RECURRENT_DROPOUT = 0.1
 POS_EMB_DIM = 10
-EMB_LAYER_NAME = 'embedding_layer'
 
 
 def parse_args():
@@ -61,23 +60,6 @@ def parse_args():
     return parser.parse_args()
 
 
-def _build_inputs_and_embeddings(vocab_size: int, sequence_len: int, embed_dim: int,
-                                 mask_zero: bool, trainable_embeddings: bool, num_pos: int):
-    word_input_layer = Input((sequence_len,))
-    word_embedding_layer = Embedding(
-        vocab_size, embed_dim, mask_zero=mask_zero, name=EMB_LAYER_NAME,
-        trainable=trainable_embeddings)(word_input_layer)
-    if num_pos > 0:
-        pos_input_layer = Input((sequence_len,))
-        pos_embedding_layer = Embedding(num_pos, POS_EMB_DIM)(pos_input_layer)
-        embedding_layer = Concatenate()([word_embedding_layer, pos_embedding_layer])
-        inputs = [word_input_layer, pos_input_layer]
-    else:
-        embedding_layer = word_embedding_layer
-        inputs = [word_input_layer]
-    return inputs, embedding_layer
-
-
 def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool) -> Layer:
     if rnn_cell == 'lstm':
         cell_factory = LSTM
@@ -95,10 +77,12 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: int,
                 bidirectional: bool, attention: bool, freeze_embeddings: bool, rnn_cell: str,
                 num_pos: int = 0):
     mask_zero = not attention  # The attention mechanism does not support masked inputs
-    trainable_embeddings = not freeze_embeddings
 
-    inputs, embedding_layer = _build_inputs_and_embeddings(
-        vocab_size, sequence_len, embed_dim, mask_zero, trainable_embeddings, num_pos)
+    input_layer_args = InputLayerArgs(
+        num_pos=num_pos, mask_zero=mask_zero, embed_dim=embed_dim,
+        vocab_size=vocab_size, sequence_len=sequence_len, static_embeddings=freeze_embeddings
+    )
+    inputs, embedding_layer = build_inputs_and_embeddings(input_layer_args)
 
     rnn_factory = _build_rnn(rnn_cell, rnn_dim, bidirectional)
     rnn = rnn_factory(embedding_layer)
@@ -157,20 +141,7 @@ def main():
     model.summary()
 
     if args.vectors:
-        if not args.vectors.is_file():
-            if 'SUBMITDIR' in os.environ:
-                args.vectors = Path(os.environ['SUBMITDIR'] / args.vectors)
-            print('New path: %r' % args.vectors)
-        if not args.vectors.is_file():
-            print('Embeddings path not available, searching for submitdir')
-        else:
-            kv = load_embeddings(args.vectors, fasttext=args.fasttext)
-            embeddings_matrix = np.zeros((vocab_size, args.embed_dim))
-            print('Making embeddings:')
-            for word, idx in tqdm(w2i.items(), total=len(w2i)):
-                vec = kv.word_vec(word)
-                embeddings_matrix[idx, :] = vec
-            model.get_layer(EMB_LAYER_NAME).set_weights([embeddings_matrix])
+        init_pretrained_embs(model, args.vectors, w2i)
 
     model.compile(
         optimizer=RMSprop(lr=args.lr, rho=args.decay_rate),
