@@ -49,12 +49,12 @@ vectors for words that do not have entries in the model, by instead basing
 the vector on the word's character \ngrams.
 
 These vector models are very large, containing vectors for more than
-2,500,000 words. Our training data only contains 18,305 unique tokens, and
+2,500,000 words. Our training data only contains 20,766 unique tokens, and
 loading the full pre-trained model takes a long time and uses huge amounts of
 memory for word vectors we will never use. For that reason, we created models
 of smaller size by loading the full models once and iterating through all of
 the word forms in our corpus, storing the resulting vectors in a new vector
-model containing only 18,305 words. In this way, we are also able to benefit
+model containing only 20,766 words. In this way, we are also able to benefit
 from the FastText models' ability to compute vectors for unknown words, since
 the \ngram algorithm is being used when computing the reduced models.
 However, the fine-tuning of vectors happens no different from if we had used
@@ -265,7 +265,9 @@ trained along with the rest of the network.
 
 All the models a hidden state vector of size 300 in the \ac{RNN}. The
 vocabulary was limited to the 4,000 most common words, the same vocabulary
-size as is used in \textcite{taghipour16}.
+size as is used in \textcite{taghipour16}. In our dataset, this is nearly
+equivalent to using all tokens that occur at least 5 times: There are 4,031
+tokens in our training set that occur at least 5 times.
 
 
 \subsection{Results}

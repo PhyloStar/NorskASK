@@ -27,7 +27,7 @@ def mixed_pos_line_iter(split) -> Iterable[str]:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('kind', choices={'bow', 'char', 'pos', 'mixed'}, default='bow')
+    parser.add_argument('kind', choices={'word', 'char', 'pos', 'mixed'}, default='bow')
     parser.add_argument('--round-cefr', action='store_true')
     return parser.parse_args()
 
@@ -52,8 +52,10 @@ def preprocess(kind: str, max_features: Optional[int], train_meta, dev_meta):
             'train', analyzer='char', ngram_range=(1, 3), max_features=max_features)
         dev_x = vectorizer.transform(filename_iter(dev_meta))
         num_features = len(vectorizer.vocabulary_)
-    elif kind == 'bow':
-        train_x, vectorizer = bag_of_words('train', max_features=max_features)
+    elif kind == 'word':
+        train_x, vectorizer = bag_of_words(
+            'train', max_features=max_features,
+            token_pattern=r"[^\s]+", lowercase=False)
         dev_x = vectorizer.transform(filename_iter(dev_meta))
         num_features = len(vectorizer.vocabulary_)
     else:

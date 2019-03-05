@@ -111,7 +111,7 @@ noted below.
 \subsubsection*{Word counts}
 
 This representation is a vector with a entry for each unique word form in the
-training data, 18,305 in total. The value of each entry is the number of
+training data, 20,766 in total. The value of each entry is the number of
 times the word form occurs in the document. The neural models limits the
 count vectors to the 10,000 most common tokens.
 
@@ -229,7 +229,7 @@ that performs the best is the one using character \ngrams.
     \midrule
     Majority   &         $0.040$  &         $0.163$  &         $0.127$  &         $0.341$ \\
     \midrule
-    LogReg BOW &         $0.179$  &         $0.285$  &         $0.319$  &         $0.585$ \\
+    LogReg BOW &         $0.199$  &         $0.317$  &         $0.384$  &         $0.626$ \\
     LogReg Char&         $0.221$  &         $0.317$  &         $0.399$  &         $0.602$ \\
     LogReg POS &         $0.188$  &         $0.276$  &         $0.344$  &         $0.585$ \\
     LogReg Mix &         $0.213$  &         $0.341$  &         $0.342$  &         $0.585$ \\

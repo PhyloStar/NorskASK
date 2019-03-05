@@ -74,11 +74,13 @@ def preprocess(kind: str, max_features: int, train_meta, dev_meta):
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'char':
         train_x, vectorizer = bag_of_words(
-            'train', analyzer='char', ngram_range=(2, 4), max_features=max_features)
+            'train', analyzer='char',
+            ngram_range=(2, 4), max_features=max_features, lowercase=False)
         dev_x = vectorizer.transform(filename_iter(dev_meta))
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'word':
-        train_x, vectorizer = bag_of_words('train', max_features=max_features)
+        train_x, vectorizer = bag_of_words(
+            'train', token_pattern=r"[^\s]+", max_features=max_features, lowercase=False)
         dev_x = vectorizer.transform(filename_iter(dev_meta))
         num_features = len(vectorizer.vocabulary_)
     else:
@@ -106,6 +108,7 @@ def main():
         num_classes.append(len(lang_labels))
 
     print(num_classes)
+    print(num_features)
 
     model = build_model(num_features, num_classes)
     model.summary()
