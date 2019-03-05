@@ -3,7 +3,7 @@
 #SBATCH --job-name=stigjb-train-model
 #SBATCH --mail-type=FAIL
 #SBATCH --account=nn9447k
-#SBATCH --time=03:00:00
+#SBATCH --time=01:00:00
 #SBATCH --nodes=1
 #SBATCH --mem-per-cpu=4G
 

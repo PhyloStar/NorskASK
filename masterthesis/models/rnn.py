@@ -47,6 +47,7 @@ def parse_args():
     parser.add_argument('--freeze-embeddings', action='store_true')
     parser.add_argument('--include-pos', action='store_true')
     parser.add_argument('--lr', type=float)
+    parser.add_argument('--multi', action="store_true")
     parser.add_argument('--nli', action="store_true", help='Classify NLI')
     parser.add_argument('--rnn-cell', choices={'gru', 'lstm'})
     parser.add_argument('--rnn-dim', type=int)
@@ -104,7 +105,7 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
     else:
         pooled = GlobalAveragePooling1D(name=REPRESENTATION_LAYER)(dropout)
 
-    outputs = [Dense(n_c, activation='softmax')(pooled)
+    outputs = [Dense(n_c, activation='softmax', name=name)(pooled)
                for name, n_c in zip(['output', 'aux_output'], num_classes)]
     return Model(inputs=inputs, outputs=outputs)
 
