@@ -41,42 +41,48 @@ embdim50="--vectors models/vectors/127-small.pkl"
 embdim100="--vectors models/vectors/127-small.pkl"
 
 case $SLURM_ARRAY_TASK_ID in
-	1) $cmd ;;
-	2) $cmd --round-cefr ;;
-	3) $cmd --bidirectional ;;
-	4) $cmd --bidirectional --round-cefr ;;
-	5) $cmd --attention ;;
-	6) $cmd --attention --round-cefr ;;
+	1) args="" ;;
+	2) args="--round-cefr" ;;
+	3) args="--bidirectional" ;;
+	4) args="--bidirectional --round-cefr" ;;
+	5) args="--attention" ;;
+	6) args="--attention --round-cefr" ;;
 
-	7) $cmd $embdim50 ;;
-	8) $cmd $embdim50 --round-cefr ;;
-	9) $cmd $embdim50 --bidirectional ;;
-	10) $cmd $embdim50 --bidirectional --round-cefr ;;
-	11) $cmd $embdim50 --attention ;;
-	12) $cmd $embdim50 --attention --round-cefr ;;
+	7) args="$embdim50" ;;
+	8) args="$embdim50 --round-cefr" ;;
+	9) args="$embdim50 --bidirectional" ;;
+	10) args="$embdim50 --bidirectional --round-cefr" ;;
+	11) args="$embdim50 --attention" ;;
+	12) args="$embdim50 --attention --round-cefr" ;;
 
-	13) $cmd $embdim100 ;;
-	14) $cmd $embdim100 --round-cefr ;;
-	15) $cmd $embdim100 --bidirectional ;;
-	16) $cmd $embdim100 --bidirectional --round-cefr ;;
-	17) $cmd $embdim100 --attention ;;
-	18) $cmd $embdim100 --attention --round-cefr ;;
+	13) args="$embdim100" ;;
+	14) args="$embdim100 --round-cefr" ;;
+	15) args="$embdim100 --bidirectional" ;;
+	16) args="$embdim100 --bidirectional --round-cefr" ;;
+	17) args="$embdim100 --attention" ;;
+	18) args="$embdim100 --attention --round-cefr" ;;
 
-	19) $cmd --attention --rnn-cell gru ;;
-	20) $cmd --attention --rnn-cell gru --round-cefr ;;
-	21) $cmd $embdim50 --attention --rnn-cell gru ;;
-	22) $cmd $embdim50 --attention --rnn-cell gru --round-cefr ;;
+	19) args="--attention --rnn-cell gru" ;;
+	20) args="--attention --rnn-cell gru --round-cefr" ;;
+	21) args="$embdim50 --attention --rnn-cell gru" ;;
+	22) args="$embdim50 --attention --rnn-cell gru --round-cefr" ;;
  
-	23) $cmd $embdim50 --freeze-embeddings --attention ;;
-	24) $cmd $embdim50 --freeze-embeddings --attention --round-cefr ;;
-	25) $cmd $embdim100 --freeze-embeddings --attention ;;
-	26) $cmd $embdim100 --freeze-embeddings --attention --round-cefr ;;
+	23) args="$embdim50 --freeze-embeddings --attention" ;;
+	24) args="$embdim50 --freeze-embeddings --attention --round-cefr" ;;
+	25) args="$embdim100 --freeze-embeddings --attention" ;;
+	26) args="$embdim100 --freeze-embeddings --attention --round-cefr" ;;
 
-	27) $cmd --include-pos --attention ;;
-	28) $cmd --include-pos --attention --round-cefr ;;
-	29) $cmd $embdim50 --include-pos --attention ;;
-	30) $cmd $embdim50 --include-pos --attention --round-cefr ;;
-	
-	# Run command with arguments if not array job
-	*) $cmd "$@" ;;
+	27) args="--include-pos --attention" ;;
+	28) args="--include-pos --attention --round-cefr" ;;
+	29) args="$embdim50 --include-pos --attention" ;;
+	30) args="$embdim50 --include-pos --attention --round-cefr" ;;
+
+	# Run script with arguments if not an array job
+	'') args="" ;;
+	*)
+		echo "Array ID out of range"
+		exit 1
+		;;
 esac
+
+$cmd $args "$@"

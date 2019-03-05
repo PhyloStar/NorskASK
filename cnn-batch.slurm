@@ -39,25 +39,31 @@ cmd="python -m masterthesis.models.cnn --constraint 3"
 embdim50="--vectors models/vectors/127-small.pkl"
 
 case $SLURM_ARRAY_TASK_ID in
-	1) $cmd ;;
-	2) $cmd --round-cefr ;;
-	3) $cmd $embdim50  ;;
-	4) $cmd $embdim50 --round-cefr ;;
-	5) $cmd --static-embs $embdim50 ;;
-	6) $cmd --static-embs $embdim50 --round-cefr ;;
+	1) args="" ;;
+	2) args="--round-cefr" ;;
+	3) args="$embdim50" ;;
+	4) args="$embdim50 --round-cefr" ;;
+	5) args="--static-embs $embdim50" ;;
+	6) args="--static-embs $embdim50 --round-cefr" ;;
 
-	7) $cmd --include-pos ;;
-	8) $cmd --include-pos --round-cefr ;;
-	9) $cmd --include-pos $embdim50 ;;
-	10) $cmd --include-pos $embdim50 --round-cefr ;;
-	11) $cmd --include-pos --static-embs $embdim50 ;;
-	12) $cmd --include-pos --static-embs $embdim50 --round-cefr ;;
+	7) args="--include-pos" ;;
+	8) args="--include-pos --round-cefr" ;;
+	9) args="--include-pos $embdim50" ;;
+	10) args="--include-pos $embdim50 --round-cefr" ;;
+	11) args="--include-pos --static-embs $embdim50" ;;
+	12) args="--include-pos --static-embs $embdim50 --round-cefr" ;;
 
-	13) $cmd --mixed-pos ;;
-	14) $cmd --mixed-pos --round-cefr ;;
-	15) $cmd --mixed-pos --windows 2,3,4 ;;
-	16) $cmd --mixed-pos --windows 2,3,4 --round-cefr ;;
+	13) args="--mixed-pos" ;;
+	14) args="--mixed-pos --round-cefr" ;;
+	15) args="--mixed-pos --windows 2,3,4" ;;
+	16) args="--mixed-pos --windows 2,3,4 --round-cefr" ;;
 
-	# Run script with commands if not an array job
-	*) $cmd "$@"
+	# Run script with arguments if not an array job
+	'') args="" ;;
+	*)
+		echo "Array ID out of range"
+		exit 1
+		;;
 esac
+
+$cmd $args "$@"
