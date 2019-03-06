@@ -126,6 +126,12 @@ def main():
         train_y.append(to_categorical([lang_labels.index(l) for l in train.lang]))
         dev_y.append(to_categorical([lang_labels.index(l) for l in dev.lang]))
         num_classes.append(len(lang_labels))
+        loss_weights = {
+            AUX_OUTPUT_NAME: args.aux_loss_weight,
+            OUTPUT_NAME: 1.0 - args.aux_loss_weight
+        }
+    else:
+        loss_weights = None
 
     model = build_model(args.vocab_size, seq_length, num_classes, args.embed_dim,
                         windows=args.windows, num_pos=num_pos, constraint=args.constraint,
@@ -153,15 +159,14 @@ def main():
     os.close(temp_handle)
     os.remove(weights_path)
 
+    true = np.argmax(dev_y[0], axis=1)
     if args.multi:
         predictions = model.predict(dev_x)[0]
         pred = np.argmax(predictions, axis=1)
-        true = np.argmax(dev_y[0], axis=1)
         multi_task_report(history.history, true, pred, labels)
     else:
         predictions = model.predict(dev_x)
         pred = np.argmax(predictions, axis=1)
-        true = np.argmax(dev_y, axis=1)
         report(true, pred, labels)
 
     if args.nli:
