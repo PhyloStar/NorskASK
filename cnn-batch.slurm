@@ -19,8 +19,7 @@ if [ -n "${SLURM_JOB_NODELIST}" ]; then
     cp $SUBMITDIR/ASK/metadata.csv $SCRATCH/ASK/metadata.csv
     ln -s $SUBMITDIR/ASK/txt $SCRATCH/ASK
     ln -s $SUBMITDIR/ASK/conll $SCRATCH/ASK/conll
-    mkdir $SCRATCH/models
-    mkdir $SCRATCH/models/stopwords
+    mkdir -p $SCRATCH/models/stopwords
     cp $SUBMITDIR/models/stopwords/* $SCRATCH/models/stopwords/
 
     cd $SCRATCH
