@@ -1,6 +1,5 @@
 import argparse
 import os
-from pathlib import Path
 import tempfile
 from typing import Iterable
 
@@ -22,7 +21,7 @@ from masterthesis.models.layers import (
     build_inputs_and_embeddings, GlobalAveragePooling1D, InputLayerArgs
 )
 from masterthesis.models.report import multi_task_report, report
-from masterthesis.models.utils import init_pretrained_embs
+from masterthesis.models.utils import init_pretrained_embs, add_common_args, add_seq_common_args
 from masterthesis.results import save_results
 from masterthesis.utils import (
     ATTENTION_LAYER, get_file_name, load_split, REPRESENTATION_LAYER, safe_plt as plt, save_model
@@ -36,25 +35,16 @@ POS_EMB_DIM = 10
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    add_common_args(parser)
+    add_seq_common_args(parser)
     parser.add_argument('--attention', action="store_true")
-    parser.add_argument('--batch-size', type=int)
     parser.add_argument('--bidirectional', action="store_true")
     parser.add_argument('--decay-rate', type=float)
     parser.add_argument('--dropout-rate', type=float)
-    parser.add_argument('--embed-dim', type=int)
-    parser.add_argument('--epochs', type=int)
     parser.add_argument('--fasttext', action="store_true", help='Initialize embeddings')
-    parser.add_argument('--freeze-embeddings', action='store_true')
-    parser.add_argument('--include-pos', action='store_true')
     parser.add_argument('--lr', type=float)
-    parser.add_argument('--multi', action="store_true")
-    parser.add_argument('--nli', action="store_true", help='Classify NLI')
     parser.add_argument('--rnn-cell', choices={'gru', 'lstm'})
     parser.add_argument('--rnn-dim', type=int)
-    parser.add_argument('--round-cefr', action='store_true')
-    parser.add_argument('--save-model', action='store_true')
-    parser.add_argument('--vectors', type=Path, help='Embedding vectors')
-    parser.add_argument('--vocab-size', type=int)
     parser.set_defaults(batch_size=32, decay_rate=0.9, dropout_rate=0.5, embed_dim=50, epochs=50,
                         lr=1e-3, rnn_cell='lstm', rnn_dim=300, vocab_size=4000)
     return parser.parse_args()
@@ -74,13 +64,13 @@ def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool) -> Layer:
 
 def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
                 embed_dim: int, rnn_dim: int, dropout_rate: float,
-                bidirectional: bool, attention: bool, freeze_embeddings: bool, rnn_cell: str,
+                bidirectional: bool, attention: bool, static_embs: bool, rnn_cell: str,
                 num_pos: int = 0):
     mask_zero = not attention  # The attention mechanism does not support masked inputs
 
     input_layer_args = InputLayerArgs(
         num_pos=num_pos, mask_zero=mask_zero, embed_dim=embed_dim, pos_embed_dim=POS_EMB_DIM,
-        vocab_size=vocab_size, sequence_len=sequence_len, static_embeddings=freeze_embeddings
+        vocab_size=vocab_size, sequence_len=sequence_len, static_embeddings=static_embs
     )
     inputs, embedding_layer = build_inputs_and_embeddings(input_layer_args)
 
@@ -146,7 +136,7 @@ def main():
         vocab_size=vocab_size, sequence_len=SEQ_LEN, num_classes=num_classes,
         embed_dim=args.embed_dim, rnn_dim=args.rnn_dim, dropout_rate=args.dropout_rate,
         bidirectional=args.bidirectional, attention=args.attention,
-        freeze_embeddings=args.freeze_embeddings, rnn_cell=args.rnn_cell, num_pos=num_pos)
+        static_embs=args.static_embs, rnn_cell=args.rnn_cell, num_pos=num_pos)
     model.summary()
 
     if args.vectors:

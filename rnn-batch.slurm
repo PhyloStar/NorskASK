@@ -67,10 +67,10 @@ case $SLURM_ARRAY_TASK_ID in
 	21) args="$embdim50 --attention --rnn-cell gru" ;;
 	22) args="$embdim50 --attention --rnn-cell gru --round-cefr" ;;
  
-	23) args="$embdim50 --freeze-embeddings --attention" ;;
-	24) args="$embdim50 --freeze-embeddings --attention --round-cefr" ;;
-	25) args="$embdim100 --freeze-embeddings --attention" ;;
-	26) args="$embdim100 --freeze-embeddings --attention --round-cefr" ;;
+	23) args="$embdim50 --static-embs --attention" ;;
+	24) args="$embdim50 --static-embs --attention --round-cefr" ;;
+	25) args="$embdim100 --static-embs --attention" ;;
+	26) args="$embdim100 --static-embs --attention --round-cefr" ;;
 
 	27) args="--include-pos --attention" ;;
 	28) args="--include-pos --attention --round-cefr" ;;

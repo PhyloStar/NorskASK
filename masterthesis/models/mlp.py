@@ -15,9 +15,10 @@ from masterthesis.features.build_features import (
 )
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import multi_task_report, report
+from masterthesis.models.utils import add_common_args
 from masterthesis.results import save_results
 from masterthesis.utils import (
-    DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER, safe_plt as plt
+    DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER, safe_plt as plt, save_model
 )
 
 
@@ -26,13 +27,10 @@ conll_folder = DATA_DIR / 'conll'
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    add_common_args(parser)
     parser.add_argument('featuretype', choices={'pos', 'word', 'char', 'mixed'})
-    parser.add_argument('--epochs', type=int, default=50)
     parser.add_argument('--lr', type=float, default=2e-4)
     parser.add_argument('--max-features', type=int, default=10000)
-    parser.add_argument('--multi', action='store_true')
-    parser.add_argument('--nosave', action='store_true')
-    parser.add_argument('--round-cefr', action='store_true')
     return parser.parse_args()
 
 
@@ -140,10 +138,12 @@ def main():
 
     plt.show()
 
-    if not args.nosave:
-        prefix = 'mlp_%s' % args.featuretype
-        fname = get_file_name(prefix)
-        save_results(fname, args.__dict__, history.history, true, pred)
+    prefix = 'mlp_%s' % args.featuretype
+    fname = get_file_name(prefix)
+    save_results(fname, args.__dict__, history.history, true, pred)
+
+    if args.save_model:
+        save_model(fname, model, None)
 
 
 if __name__ == '__main__':
