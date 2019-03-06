@@ -6,7 +6,10 @@ from sklearn.metrics import confusion_matrix
 
 from masterthesis.models.report import report
 from masterthesis.results import Results  # noqa: F401
-from masterthesis.utils import CEFR_LABELS, heatmap, LANG_LABELS, ROUND_CEFR_LABELS, safe_plt as plt
+from masterthesis.utils import (
+    AUX_OUTPUT_NAME, CEFR_LABELS, heatmap, LANG_LABELS, OUTPUT_NAME,
+    ROUND_CEFR_LABELS, safe_plt as plt
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -24,6 +27,7 @@ def print_config(config):
     for key, val in config.items():
         print(fmt.format(key, val))
 
+
 def multi_task_plot_history(history, ax1, ax2):
     xs = list(range(1, len(history['loss']) + 1))
 
@@ -32,10 +36,16 @@ def multi_task_plot_history(history, ax1, ax2):
     ax1.legend()
     ax1.set(xlabel='Epoch', ylabel='Loss')
 
-    ax2.plot(xs, history['output_acc'], label='Train CEFR acc'),
-    ax2.plot(xs, history['aux_output_acc'], label='Train L1 acc'),
-    ax2.plot(xs, history['val_output_acc'], label='Val CEFR acc')
-    ax2.plot(xs, history['val_aux_output_acc'], label='Val L1 acc')
+    acc = OUTPUT_NAME + '_acc'
+    val_acc = 'val_' + acc
+
+    aux_acc = AUX_OUTPUT_NAME + '_acc'
+    aux_val_acc = 'val_' + aux_acc
+
+    ax2.plot(xs, history[acc], label='Train CEFR acc'),
+    ax2.plot(xs, history[aux_acc], label='Train L1 acc'),
+    ax2.plot(xs, history[val_acc], label='Val CEFR acc')
+    ax2.plot(xs, history[aux_val_acc], label='Val L1 acc')
     ax2.legend()
     ax2.set(ylabel='Accuracy')
 

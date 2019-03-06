@@ -18,7 +18,8 @@ from masterthesis.models.report import multi_task_report, report
 from masterthesis.models.utils import add_common_args
 from masterthesis.results import save_results
 from masterthesis.utils import (
-    DATA_DIR, get_file_name, load_split, REPRESENTATION_LAYER, safe_plt as plt, save_model
+    AUX_OUTPUT_NAME, DATA_DIR, get_file_name, load_split, OUTPUT_NAME, REPRESENTATION_LAYER,
+    safe_plt as plt, save_model
 )
 
 
@@ -41,7 +42,7 @@ def build_model(vocab_size: int, num_classes: Sequence[int]):
     hidden_2 = Dense(256, activation='relu', name=REPRESENTATION_LAYER)(dropout_1)
     dropout_2 = Dropout(0.5)(hidden_2)
     outputs = [Dense(n_c, activation='softmax', name=name)(dropout_2)
-               for name, n_c in zip(['output', 'aux_output'], num_classes)]
+               for name, n_c in zip([OUTPUT_NAME, AUX_OUTPUT_NAME], num_classes)]
     return Model(inputs=[input_], outputs=outputs)
 
 
@@ -107,12 +108,17 @@ def main():
 
     print(num_classes)
     print(num_features)
+    loss_weights = {
+        AUX_OUTPUT_NAME: args.aux_loss_weight,
+        OUTPUT_NAME: 1.0 - args.aux_loss_weight
+    }
 
     model = build_model(num_features, num_classes)
     model.summary()
     model.compile(
         optimizer=Adam(lr=args.lr),
         loss='categorical_crossentropy',
+        loss_weights=loss_weights,
         metrics=['accuracy'])
 
     # Context manager fails on Windows (can't open an open file again)

@@ -20,7 +20,8 @@ from masterthesis.models.report import multi_task_report, report
 from masterthesis.models.utils import init_pretrained_embs, add_common_args, add_seq_common_args
 from masterthesis.results import save_results
 from masterthesis.utils import (
-    get_file_name, load_split, REPRESENTATION_LAYER, save_model, safe_plt as plt
+    AUX_OUTPUT_NAME, get_file_name, load_split, OUTPUT_NAME, REPRESENTATION_LAYER,
+    save_model, safe_plt as plt
 )
 
 POS_EMB_DIM = 10
@@ -85,7 +86,7 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: Iterable[int
         kernel_constraint = None
     outputs = [Dense(n_c, activation='softmax',
                      kernel_constraint=kernel_constraint, name=name)(dropout_layer)
-               for name, n_c in zip(['output', 'aux_output'], num_classes)]
+               for name, n_c in zip([OUTPUT_NAME, AUX_OUTPUT_NAME], num_classes)]
     return Model(inputs=inputs, outputs=outputs)
 
 
@@ -134,8 +135,13 @@ def main():
     if args.vectors:
         init_pretrained_embs(model, args.vectors, w2i)
 
+    loss_weights = {
+        AUX_OUTPUT_NAME: args.aux_loss_weight,
+        OUTPUT_NAME: 1.0 - args.aux_loss_weight
+    }
     optimizer = 'adam'
-    model.compile(optimizer, 'categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer, 'categorical_crossentropy',
+                  loss_weights=loss_weights, metrics=['accuracy'])
 
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
     callbacks = [F1Metrics(dev_x, dev_y, weights_path)]

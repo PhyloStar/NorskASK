@@ -1,6 +1,6 @@
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
 
-from masterthesis.utils import heatmap, safe_plt as plt
+from masterthesis.utils import AUX_OUTPUT_NAME, heatmap, OUTPUT_NAME, safe_plt as plt
 
 
 def report(true, pred, labels, normalize: bool = False, ax=None):
@@ -26,10 +26,16 @@ def multi_task_report(history, true, pred, labels):
     ax1.legend()
     ax1.set(xlabel='Epoch', ylabel='Loss')
 
-    ax2.plot(xs, history['output_acc'], label='CEFR train acc'),
-    ax2.plot(xs, history['val_output_acc'], label='CEFR val acc')
-    ax2.plot(xs, history['aux_output_acc'], label='L1 train acc'),
-    ax2.plot(xs, history['val_aux_output_acc'], label='L1 val acc')
+    acc = OUTPUT_NAME + '_acc'
+    val_acc = 'val_' + acc
+
+    aux_acc = AUX_OUTPUT_NAME + '_acc'
+    aux_val_acc = 'val_' + aux_acc
+
+    ax2.plot(xs, history[acc], label='CEFR train acc'),
+    ax2.plot(xs, history[aux_acc], label='L1 train acc'),
+    ax2.plot(xs, history[val_acc], label='CEFR val acc')
+    ax2.plot(xs, history[aux_val_acc], label='L1 val acc')
     ax2.legend()
     ax2.set(ylabel='Accuracy')
 

@@ -24,7 +24,8 @@ from masterthesis.models.report import multi_task_report, report
 from masterthesis.models.utils import init_pretrained_embs, add_common_args, add_seq_common_args
 from masterthesis.results import save_results
 from masterthesis.utils import (
-    ATTENTION_LAYER, get_file_name, load_split, REPRESENTATION_LAYER, safe_plt as plt, save_model
+    ATTENTION_LAYER, AUX_OUTPUT_NAME, get_file_name, load_split, OUTPUT_NAME,
+    REPRESENTATION_LAYER, safe_plt as plt, save_model
 )
 
 SEQ_LEN = 700  # 95th percentile of documents
@@ -96,7 +97,7 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
         pooled = GlobalAveragePooling1D(name=REPRESENTATION_LAYER)(dropout)
 
     outputs = [Dense(n_c, activation='softmax', name=name)(pooled)
-               for name, n_c in zip(['output', 'aux_output'], num_classes)]
+               for name, n_c in zip([OUTPUT_NAME, AUX_OUTPUT_NAME], num_classes)]
     return Model(inputs=inputs, outputs=outputs)
 
 
@@ -142,8 +143,13 @@ def main():
     if args.vectors:
         init_pretrained_embs(model, args.vectors, w2i)
 
+    loss_weights = {
+        AUX_OUTPUT_NAME: args.aux_loss_weight,
+        OUTPUT_NAME: 1.0 - args.aux_loss_weight
+    }
     optimizer = RMSprop(lr=args.lr, rho=args.decay_rate)
-    model.compile(optimizer, 'categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer, 'categorical_crossentropy',
+                  loss_weights=loss_weights, metrics=['accuracy'])
 
     # Context manager fails on Windows (can't open an open file again)
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
