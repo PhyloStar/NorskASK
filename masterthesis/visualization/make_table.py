@@ -1,3 +1,4 @@
+from getpass import getpass
 from pathlib import Path
 import pickle
 import sys
@@ -65,8 +66,8 @@ def make_print_out(names, rows):
 
 
 def process_table(f: IO[str]):
-    rows = []
-    names = []
+    names = []  # type: List[str]
+    rows = []  # type: List[List[float]]
     while True:
         try:
             line = next(f)
@@ -97,9 +98,9 @@ def process_file(f: IO[str]):
         if line.strip().startswith('% $BEGIN autotable'):
             print('Found start of table!', file=sys.stderr)
             table_name = line.split()[-1]
-            if len(sys.argv) > 2 and table_name == sys.argv[2]:
+            if len(sys.argv) > 2 and table_name in sys.argv[2:]:
                 process_table(f)
-            elif input('Process table %s (y/n)? ' % table_name).lower() == 'y':
+            elif getpass('Process table %s (y/n)? ' % table_name).lower()[0] == 'y':
                 process_table(f)
             else:
                 print('Skipping table ' + table_name, file=sys.stderr)

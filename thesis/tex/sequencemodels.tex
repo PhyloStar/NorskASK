@@ -127,21 +127,24 @@ maximum $L_2$ norm of 3.
     \cmidrule(lr){4-5}
     Model     & Macro \FI        & Micro \FI        & Macro \FI        & Micro \FI \\
     \midrule
-    %           cnn-26092298_01                       cnn-26092298_02
+    % $BEGIN autotable cnn-results
+    % $META models-per-row=2 columns-per-model=macrof1,microf1
+    % Words:       cnn-26092298_01   cnn-26092298_02
+    % Words+PTD:   cnn-26092298_03   cnn-26092298_04
+    % Words+PTS:   cnn-26094553_05   cnn-26094553_06
+    % +POS:        cnn-26092298_07   cnn-26092298_08
+    % +POS+PTD:    cnn-26092298_09   cnn-26092298_10
+    % +POS+PTS:    cnn-26094553_11   cnn-26094553_12
+    % Mix:         cnn-26093545_13   cnn-26093545_14
+    % Mix 234:     cnn-26093545_15   cnn-26093545_16
+    % $END autotable
     Words     &         $0.226$  &         $0.415$  &         $0.397$  &         $0.748$  \\
-    %           cnn-26092298_03                       cnn-26092298_04
     Words+PTD &         $0.238$  &         $0.390$  &         $0.375$  &         $0.707$  \\
-    %           cnn-26094553_05                       cnn-26094553_06
     Words+PTS &         $0.235$  &         $0.382$  & $\mathbf{0.404}$ &         $0.699$  \\
-    %           cnn-26092298_07                       cnn-26092298_08
     +POS      &         $0.228$  &         $0.390$  &         $0.402$  & $\mathbf{0.756}$ \\
-    %           cnn-26092298_09                       cnn-26092298_10
     +POS+PTD  &         $0.229$  &         $0.415$  &         $0.388$  &         $0.732$  \\
-    %           cnn-26094553_11                       cnn-26094553_12
     +POS+PTS  & $\mathbf{0.255}$ & $\mathbf{0.447}$ &         $0.393$  &         $0.740$  \\
-    %           cnn-26093545_13                       cnn-26093545_14
     Mix       &         $0.244$  &         $0.415$  &         $0.358$  &         $0.675$  \\
-    %           cnn-26093545_15                       cnn-26093545_16
     Mix 234   &         $0.239$  &         $0.407$  &         $0.401$  & $\mathbf{0.756}$ \\
     \bottomrule
   \end{tabular}
