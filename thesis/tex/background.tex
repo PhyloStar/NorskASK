@@ -210,14 +210,14 @@ one may use pre-trained embeddings.
 
 Different approaches to embeddings may be necessary for different languages.
 A word-based approach can work well for a relatively analytic language such
-as English, but be less suited for agglutinative or synthetic languages,
-because of the differing amount of semantic information present in a single
-token. A converse problem occurs where a sequence of words is best analyzed
-as a single unit.
+as English, but might be less suited for agglutinative or synthetic
+languages, because of the differing amount of semantic information present in
+a single token. A converse problem occurs where a sequence of words is best
+analyzed as a single unit.
 
 Another issue is ambiguity, as the process of training embeddings only
 considers the form of a word. Homographs like \emph{well}, which can be both
-an adverb adn a noun, are each mapped to a single embedding vector, with no
+an adverb and a noun, are each mapped to a single embedding vector, with no
 way to distinguish the different meanings of the word.
 
 It is also possible to embed \ngrams of characters instead of words. A

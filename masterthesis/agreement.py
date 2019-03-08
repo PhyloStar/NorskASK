@@ -72,7 +72,7 @@ def main():
     df = pd.DataFrame.from_dict(data)
     print('== All labels ==')
     lim_df = df[df.n_class == 7].dropna()
-    corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr() 
+    corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr()
     sns.heatmap(corr_matrix, center=0, mask=get_corr_mask(len(corr_matrix)), annot=True, fmt='.3f')
     plt.show()
     print('\nTop Pearson:')
@@ -96,7 +96,7 @@ def main():
 
     print('== Collapsed labels ==')
     lim_df = df[df.n_class == 4].dropna()
-    corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr() 
+    corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr()
     sns.heatmap(corr_matrix, center=0, mask=get_corr_mask(len(corr_matrix)), annot=True, fmt='.3f')
     plt.show()
     print('\nTop Pearson:')

@@ -140,14 +140,17 @@ single feature was a mix of word forms and POS tags, so that common function
 words appeared in their written form, while content words were substituted
 with their POS tag.
 
-As an example, the sequence 
-\begin{displayquote}
-generasjoner kan også få anledning til å utnytte dem
-\end{displayquote}
-is transformed into
-\begin{displayquote}
-NOUN kan også VERB NOUN til å VERB dem
-\end{displayquote}
+\begin{example}
+\gll generasjoner kan også få   anledning til å utnytte dem
+     NOUN         kan også VERB NOUN      til å VERB    dem
+\glt `generations can also have the opportunity to exploit them'
+\glend
+\label{ex:mixed-pos}
+\end{example}
+
+Example \ref{ex:mixed-pos} shows a sentence fragment with the original series
+of tokens, the sequence of mixed function words and UPOS tags it is
+transformed into, as well as a translation into English.
 
 We used the same set of stop words as \citeauthor{malmasi15}. From these
 transformed sequences, we extracted \ngrams in the interval $[1,3]$. The
@@ -234,14 +237,17 @@ that performs the best is the one using character \ngrams.
     LogReg POS &         $0.188$  &         $0.276$  &         $0.344$  &         $0.585$ \\
     LogReg Mix &         $0.213$  &         $0.341$  &         $0.342$  &         $0.585$ \\
     \midrule
-    %            mlp_word-03-01_11-53-35               mlp_word-03-01_11-55-36
-    MLP BOW    &         $0.209$  &         $0.366$  &         $0.392$  &         $0.642$ \\
-    %            mlp_char-03-01_11-57-23               mlp_char-03-01_11-59-00
-    MLP Char   & $\mathbf{0.281}$ & $\mathbf{0.472}$ &         $0.423$  &         $0.659$ \\
-    %            mlp_pos-03-01_12-00-44                mlp_pos-03-01_12-02-31
-    MLP POS    &         $0.245$  &         $0.366$  & $\mathbf{0.439}$ & $\mathbf{0.691}$\\
-    %            mlp_mixed-02-20_14-45-16              mlp_mixed-02-22_13-43-37
-    MLP Mix    &         $0.239$  &         $0.398$  &         $0.384$  &         $0.667$ \\
+    % $BEGIN autotable baseline-accuracies
+    % $META models-per-row=2 columns-per-model=macrof1,microf1
+    % MLP BOW:   mlp_word-03-01_11-53-35               mlp_word-03-01_11-55-36
+    % MLP Char:  mlp_char-03-01_11-57-23               mlp_char-03-01_11-59-00
+    % MLP POS:   mlp_pos-03-01_12-00-44                mlp_pos-03-01_12-02-31
+    % MLP Mix:   mlp_mixed-02-20_14-45-16              mlp_mixed-02-22_13-43-37
+    % $END autotable
+    MLP BOW & $0.209$ & $0.366$ & $0.392$ & $0.642$ \\
+    MLP Char & $\mathbf{0.281}$ & $\mathbf{0.472}$ & $0.423$ & $0.659$ \\
+    MLP POS & $0.245$ & $0.366$ & $\mathbf{0.439}$ & $\mathbf{0.691}$ \\
+    MLP Mix & $0.239$ & $0.398$ & $0.384$ & $0.667$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of different classifiers}
