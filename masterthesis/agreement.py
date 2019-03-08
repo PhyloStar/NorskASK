@@ -6,6 +6,7 @@ import pickle
 from typing import List
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr
 import seaborn as sns
@@ -32,6 +33,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('files', nargs='+')
     return parser.parse_args()
+
+
+def get_corr_mask(n: int):
+    mask = np.ones((n, n), dtype=bool)
+    return np.triu(mask, 1)
 
 
 def main():
@@ -66,40 +72,50 @@ def main():
     df = pd.DataFrame.from_dict(data)
     print('== All labels ==')
     lim_df = df[df.n_class == 7].dropna()
-    sns.heatmap(lim_df.drop(columns=['filename', 'n_class']).corr(), center=0)
+    corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr() 
+    sns.heatmap(corr_matrix, center=0, mask=get_corr_mask(len(corr_matrix)), annot=True, fmt='.3f')
     plt.show()
     print('\nTop Pearson:')
     print(lim_df.sort_values('pearson', ascending=False)
-                .drop(columns=['n_class'])
+                .loc[:, ['filename', 'pearson']]
                 .head(5))
     print('\nTop Spearman:')
     print(lim_df.sort_values('spearman', ascending=False)
-                .drop(columns=['n_class'])
+                .loc[:, ['filename', 'spearman']]
                 .head(5))
     print('\nTop RMSE:')
     print(lim_df.sort_values('rmse')
-                .drop(columns=['n_class'])
+                .loc[:, ['filename', 'rmse']]
                 .head(5))
-    sns.pairplot(lim_df.drop(columns=['filename', 'n_class']))
+    print('\nTop MAE:')
+    print(lim_df.sort_values('mae')
+                .loc[:, ['filename', 'mae']]
+                .head(5))
+    # sns.pairplot(lim_df.drop(columns=['filename', 'n_class']))
     plt.show()
 
     print('== Collapsed labels ==')
     lim_df = df[df.n_class == 4].dropna()
-    sns.heatmap(lim_df.drop(columns=['filename', 'n_class'],).corr(), center=0)
+    corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr() 
+    sns.heatmap(corr_matrix, center=0, mask=get_corr_mask(len(corr_matrix)), annot=True, fmt='.3f')
     plt.show()
     print('\nTop Pearson:')
     print(lim_df.sort_values('pearson', ascending=False)
-                .drop(columns=['n_class'])
+                .loc[:, ['filename', 'pearson']]
                 .head(5))
     print('\nTop Spearman:')
     print(lim_df.sort_values('spearman', ascending=False)
-                .drop(columns=['n_class'])
+                .loc[:, ['filename', 'spearman']]
                 .head(5))
     print('\nTop RMSE:')
     print(lim_df.sort_values('rmse')
-                .drop(columns=['n_class'])
+                .loc[:, ['filename', 'rmse']]
                 .head(5))
-    sns.pairplot(lim_df.drop(columns=['filename', 'n_class', 'pearson']))
+    print('\nTop MAE:')
+    print(lim_df.sort_values('mae')
+                .loc[:, ['filename', 'mae']]
+                .head(5))
+    # sns.pairplot(lim_df.drop(columns=['filename', 'n_class', 'pearson']))
     plt.show()
 
 
