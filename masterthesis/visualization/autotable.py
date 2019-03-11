@@ -2,12 +2,15 @@ from getpass import getpass
 from pathlib import Path
 import pickle
 import sys
-from typing import Any, Dict, IO, Iterable, List
+from typing import Any, Dict, IO, Iterable, List, NamedTuple, Union  # noqa: F401
 
 import numpy as np
 from sklearn.metrics import f1_score
 
 from masterthesis.utils import RESULTS_DIR
+
+
+Row = NamedTuple('Row', [('name', str)])
 
 
 def macrof1(true, pred):
@@ -54,19 +57,25 @@ def get_config(items: Iterable[str]) -> Dict[str, Any]:
     return cfg
 
 
-def make_print_out(names, rows):
-    max_value_rows = np.array(rows).argmax(axis=0)
-    for row_nr, (name, vals) in enumerate(zip(names, rows)):
-        bold = max_value_rows == row_nr
-        num_strs = ['$\\mathbf{%.3f}$' % v
-                    if b else '$%.3f$' % v
-                    for b, v in zip(bold, vals)]
-        row = ' & '.join([name] + num_strs) + r' \\'
-        print(row)
+def make_print_out(lines, rows):
+    a = np.array(rows)
+    bold_elem = '$\\mathbf{%.3f}$'
+    regular_elem = '$%.3f$'
+    fmt_matrix = np.where(a == a.max(axis=0), bold_elem, regular_elem)
+    rows_with_fmt = zip(rows, fmt_matrix)
+    for line in lines:
+        if isinstance(line, Row):
+            name = line.name
+            vals, fmts = next(rows_with_fmt)
+            num_strs = [fmt % val for val, fmt in zip(vals, fmts)]
+            row = ' & '.join([name] + num_strs) + r' \\'
+            print(row)
+        else:
+            print(line)
 
 
 def process_table(f: IO[str]):
-    names = []  # type: List[str]
+    lines = []  # type: List[Union[str, Row]]
     rows = []  # type: List[List[float]]
     while True:
         try:
@@ -77,16 +86,20 @@ def process_table(f: IO[str]):
         if not line:
             continue
         if line == '$END autotable':
-            make_print_out(names, rows)
+            make_print_out(lines, rows)
             print('Found end of table!', file=sys.stderr)
             return
         items = line.split()
         if items[0] == '$META':
             cfg = get_config(items[1:])
-        else:
+        elif items[0] == '$ROW':
+            line = line.partition('$ROW')[2].strip()  # Everything after $ROW
             name, row = make_table_row(line, cfg)
-            names.append(name)
+            lines.append(Row(name=name))
             rows.append(row)
+        else:
+            # Verbatim row
+            lines.append(line)
 
 
 def process_file(f: IO[str]):

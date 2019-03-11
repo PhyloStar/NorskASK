@@ -41,7 +41,7 @@ could be problematic if the
 \subsection{Pre-trained embeddings}
 
 We experimented with randomly initialized word embedding vectors trained from
-scratch, as well as initializing the vectors with pre-trained embeddings.In
+scratch, as well as initializing the vectors with pre-trained embeddings. In
 this case, the embeddings came from different models trained on a large
 Norwegian corpus, the combination of Norsk aviskorpus and NoWaC (Norwegian
 Web As Corpus). The FastText algorithm lets us use these models to compute
@@ -62,15 +62,15 @@ embeddings from simpler models such as Word2vec, since the FastText network
 is not incorporated into our models.
 
 When using pre-trained embeddings, we ran some experiments keeping the
-embeddings static, and some where we further fine-tuned the embeddings using
-training signals from the task.
+embeddings static, and in some other experiments we further fine-tuned the
+embeddings using training signals from the task.
 
 \subsection{Multi-channel input}
 
 For some of our experiments we use both word tokens and their POS tags as
 input at the same time. To do this we include two separate embedding matrices
 in our network, one for words and one for POS tags. These embedding matrices
-do not need to have the same dimensionalities, and because the number of
+do not need to have the same dimensions, and because the number of
 different POS tags is very low compared to the number of different words, we
 use smaller vectors for POS tags.
 
@@ -129,23 +129,23 @@ maximum $L_2$ norm of 3.
     \midrule
     % $BEGIN autotable cnn-results
     % $META models-per-row=2 columns-per-model=macrof1,microf1
-    % Words:       cnn-26092298_01   cnn-26092298_02
-    % Words+PTD:   cnn-26092298_03   cnn-26092298_04
-    % Words+PTS:   cnn-26094553_05   cnn-26094553_06
-    % +POS:        cnn-26092298_07   cnn-26092298_08
-    % +POS+PTD:    cnn-26092298_09   cnn-26092298_10
-    % +POS+PTS:    cnn-26094553_11   cnn-26094553_12
-    % Mix:         cnn-26093545_13   cnn-26093545_14
-    % Mix 234:     cnn-26093545_15   cnn-26093545_16
+    % $ROW Words:       cnn-26092298_01   cnn-26092298_02
+    % $ROW Words+PTD:   cnn-26092298_03   cnn-26092298_04
+    % $ROW Words+PTS:   cnn-26094553_05   cnn-26094553_06
+    % $ROW +POS:        cnn-26092298_07   cnn-26092298_08
+    % $ROW +POS+PTD:    cnn-26092298_09   cnn-26092298_10
+    % $ROW +POS+PTS:    cnn-26094553_11   cnn-26094553_12
+    % $ROW Mix:         cnn-26093545_13   cnn-26093545_14
+    % $ROW Mix 234:     cnn-26093545_15   cnn-26093545_16
     % $END autotable
-    Words     &         $0.226$  &         $0.415$  &         $0.397$  &         $0.748$  \\
-    Words+PTD &         $0.238$  &         $0.390$  &         $0.375$  &         $0.707$  \\
-    Words+PTS &         $0.235$  &         $0.382$  & $\mathbf{0.404}$ &         $0.699$  \\
-    +POS      &         $0.228$  &         $0.390$  &         $0.402$  & $\mathbf{0.756}$ \\
-    +POS+PTD  &         $0.229$  &         $0.415$  &         $0.388$  &         $0.732$  \\
-    +POS+PTS  & $\mathbf{0.255}$ & $\mathbf{0.447}$ &         $0.393$  &         $0.740$  \\
-    Mix       &         $0.244$  &         $0.415$  &         $0.358$  &         $0.675$  \\
-    Mix 234   &         $0.239$  &         $0.407$  &         $0.401$  & $\mathbf{0.756}$ \\
+    Words & $0.226$ & $0.415$ & $0.397$ & $0.748$ \\
+    Words+PTD & $0.238$ & $0.390$ & $0.375$ & $0.707$ \\
+    Words+PTS & $0.235$ & $0.382$ & $\mathbf{0.404}$ & $0.699$ \\
+    +POS & $0.228$ & $0.390$ & $0.402$ & $\mathbf{0.756}$ \\
+    +POS+PTD & $0.229$ & $0.415$ & $0.388$ & $0.732$ \\
+    +POS+PTS & $\mathbf{0.255}$ & $\mathbf{0.447}$ & $0.393$ & $0.740$ \\
+    Mix & $0.244$ & $0.415$ & $0.358$ & $0.675$ \\
+    Mix 234 & $0.239$ & $0.407$ & $0.401$ & $\mathbf{0.756}$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of CNN classifiers on AES. +POS: Multi-channel input with
@@ -183,7 +183,7 @@ classes `A2', `B2/C1' and `C1', the smallest classes
 
 A \ac{LSTM} \ac{RNN} was implemented based on the architecture described by
 \textcite{taghipour16}. Several changes to their architecture were made in
-order to accomodate our data. For instance, \citeauthor{taghipour16} modelled
+order to accommodate our data. For instance, \citeauthor{taghipour16} modelled
 the task as a regression problem, their output layer consisting of a single
 node with a value constrained to (0, 1) by the sigmoid function. This layer
 was replaced with a softmax layer similar to the \acp{MLP} in section
@@ -206,8 +206,8 @@ as a regression problem made it sufficient to normalize the numeric scores to
 a common interval before training.
 
 Generally for \ac{AES}, modelling the task as multi-class prediction is
-common, and is used in \autocite{vajjala18universalCEFR}. In
-\autocite{vajjala17}, two different datasets with different properties were
+common, and is used in \textcite{vajjala18universalCEFR}. In
+\textcite{vajjala17}, two different datasets with different properties were
 used, and the author utilized both multi-class prediction and regression at
 different points.
 
@@ -292,63 +292,74 @@ experiments?}
     \midrule
               \multicolumn{5}{c}{50 dimensional, randomly initialized embeddings} \\
     \midrule
-    % 50 dim, random init
-    %           taghipour_ng-2019-01-15_20-50-06      taghipour_ng-2019-01-15_20-46-42
-    Mean/Time &         $0.280$  &         $0.382$  &         $0.461$  &         $0.699$  \\
-    %           taghipour_ng-2019-01-22_12-58-00      taghipour_ng-2019-01-22_13-01-44
-    BiLSTM    &         $0.286$  &         $0.398$  &         $0.485$  &         $0.683$  \\
-    %           rnn-25832764                          rnn-25832765
-    Attention &         $0.244$  & $\mathbf{0.423}$ &         $0.559$  &         $0.780$  \\
+    % $BEGIN autotable rnn-results
+    % $META models-per-row=2 columns-per-model=macrof1,microf1
+    % $ROW Mean/Time:          taghipour_ng-2019-01-15_20-50-06      taghipour_ng-2019-01-15_20-46-42
+    % $ROW BiLSTM   :          taghipour_ng-2019-01-22_12-58-00      taghipour_ng-2019-01-22_13-01-44
+    % $ROW Attention:          rnn-25832764                          rnn-25832765
+    % \midrule
+    % \multicolumn{5}{c}{50 dimensional, pre-trained embeddings, w/ fine tuning} \\
+    % \midrule
+    % $ROW Mean/Time:          rnn-25832746                          rnn-25832747
+    % $ROW BiLSTM   :          rnn-25832748                          rnn-25832749
+    % $ROW Attention:          taghipour_ng-2019-01-24_19-16-41      taghipour_ng-2019-01-24_21-23-34
+    % \midrule
+    % \multicolumn{5}{c}{100 dimensional, pre-trained embeddings, w/ fine tuning} \\
+    % \midrule
+    % $ROW Mean/Time:          rnn-25832716                          rnn-25832717
+    % $ROW BiLSTM   :          rnn-25831870                          rnn-25831871
+    % $ROW Attention:          rnn-25832718                          rnn-25832719
+    % \midrule
+    % \multicolumn{5}{c}{GRU cells with attention} \\
+    % \midrule
+    % $ROW Rnd. init:          rnn-25858207                          rnn-25858208
+    % $ROW Pre train:          rnn-25858209                          rnn-25858211
+    % \midrule
+    % \multicolumn{5}{c}{LSTM + Attention with pre-trained, static embeddings} \\
+    % \midrule
+    % $ROW 50 dim   :          rnn-25858349                          rnn-25858350
+    % $ROW 100 dim  :          rnn-25858483                          rnn-25858494
+    % \midrule
+    % \multicolumn{5}{c}{POS included with input} \\
+    % \midrule
+    % $ROW Rnd. init:          rnn-25985449                          rnn-25985450
+    % $ROW Pre train:          rnn-25985451                          rnn-25985452
+    % $END autotable
+    Mean/Time & $0.280$ & $0.382$ & $0.461$ & $0.699$ \\
+    BiLSTM & $0.286$ & $0.398$ & $0.485$ & $0.683$ \\
+    Attention & $0.244$ & $0.423$ & $0.559$ & $0.780$ \\
     \midrule
-    % 50 dim, pretrained, fine tune
-              \multicolumn{5}{c}{50 dimensional, pre-trained embeddings, w/ fine tuning} \\
+    \multicolumn{5}{c}{50 dimensional, pre-trained embeddings, w/ fine tuning} \\
     \midrule
-    %           rnn-25832746                          rnn-25832747
-    Mean/Time &         $0.285$  &         $0.415$  &         $0.466$  &         $0.659$  \\
-    %           rnn-25832748                          rnn-25832749
-    BiLSTM    &         $0.257$  &         $0.374$  &         $0.447$  &         $0.691$  \\
-    %           taghipour_ng-2019-01-24_19-16-41      taghipour_ng-2019-01-24_21-23-34
-    Attention &         $0.303$  &         $0.423$  &         $0.558$  & $\mathbf{0.805}$ \\
+    Mean/Time & $0.285$ & $0.415$ & $0.466$ & $0.659$ \\
+    BiLSTM & $0.257$ & $0.374$ & $0.447$ & $0.691$ \\
+    Attention & $0.303$ & $0.423$ & $0.558$ & $\mathbf{0.805}$ \\
     \midrule
-    % 100 dim, pretrained, fine tune
-              \multicolumn{5}{c}{100 dimensional, pre-trained embeddings, w/ fine tuning} \\
+    \multicolumn{5}{c}{100 dimensional, pre-trained embeddings, w/ fine tuning} \\
     \midrule
-    %           rnn-25832716                          rnn-25832717
-    Mean/Time &         $0.271$  &         $0.390$  &         $0.496$  &         $0.724$  \\
-    %           rnn-25831870                          rnn-25831871
-    BiLSTM    &         $0.301$  &         $0.350$  &         $0.456$  &         $0.683$  \\
-    %           rnn-25832718                          rnn-25832719
-    Attention &         $0.288$  &         $0.398$  &         $0.538$  &         $0.797$  \\
+    Mean/Time & $0.271$ & $0.390$ & $0.496$ & $0.724$ \\
+    BiLSTM & $0.301$ & $0.350$ & $0.456$ & $0.683$ \\
+    Attention & $0.288$ & $0.398$ & $0.538$ & $0.797$ \\
     \midrule
-    % GRU cells, attention
-              \multicolumn{5}{c}{GRU cells with attention} \\
+    \multicolumn{5}{c}{GRU cells with attention} \\
     \midrule
-    %           rnn-25858207                          rnn-25858208
-    Rnd. init &         $0.299$  &         $0.431$  &         $0.533$  &         $0.764$  \\
-    %           rnn-25858209                          rnn-25858211
-    Pre train & $\mathbf{0.354}$ &         $0.390$  &         $0.493$  &         $0.724$  \\
+    Rnd. init & $0.299$ & $0.431$ & $0.533$ & $0.764$ \\
+    Pre train & $\mathbf{0.354}$ & $0.390$ & $0.493$ & $0.724$ \\
     \midrule
-    % LSTM cells, attention, frozen embeddings
-              \multicolumn{5}{c}{LSTM + Attention with pre-trained, static embeddings} \\
+    \multicolumn{5}{c}{LSTM + Attention with pre-trained, static embeddings} \\
     \midrule
-    %           rnn-25858349                          rnn-25858350
-    50 dim    &         $0.261$  & $\mathbf{0.488}$ &         $0.511$  &         $0.772$  \\
-    %           rnn-25858483                          rnn-25858494
-    100 dim   &         $0.271$  &         $0.472$  &         $0.491$  &         $0.707$  \\
+    50 dim & $0.261$ & $\mathbf{0.488}$ & $0.511$ & $0.772$ \\
+    100 dim & $0.271$ & $0.472$ & $0.491$ & $0.707$ \\
     \midrule
-    % LSTM cells, POS as additional input, attention
-              \multicolumn{5}{c}{POS included with input} \\
+    \multicolumn{5}{c}{POS included with input} \\
     \midrule
-    %           rnn-25985449                          rnn-25985450
-    Rnd. init &         $0.261$  &         $0.366$  &         $0.552$  &         $0.780$  \\
-    %           rnn-25985451                          rnn-25985452
-    Pre train &         $0.277$  &         $0.407$  & $\mathbf{0.624}$ &         $0.756$  \\
+    Rnd. init & $0.261$ & $0.366$ & $0.552$ & $0.780$ \\
+    Pre train & $0.277$ & $0.407$ & $\mathbf{0.624}$ & $0.756$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of RNN classifiers on AES}
   \label{tab:rnn-results}
 \end{table}
-\todo{300-dim embs: ran out of memory}
 
 We find that the best performing models all use the attention mechanism.
 Keep in mind that the stopping criterion is the macro \FI score, and thus
