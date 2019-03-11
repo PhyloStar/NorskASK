@@ -38,7 +38,7 @@ $FP$ are the number of true positives, false negatives, and false positives,
 respectively.
 
 \begin{equation}\label{eq:fi}
-  F_1 = {{2\cdot TP}\over{2\cdot TP + FN + FP}}
+  F_1 = {\frac{2\cdot TP}{2\cdot TP + FN + FP}}
 \end{equation}
 
 In a multi-class prediction setup, there are several ways to combine the
@@ -181,15 +181,6 @@ The model was trained using the Adam optimization algorithm
 (equation \ref{eq:crossentropy}). The learning rate was set to $2\cdot
 10^{-4}$.
 
-\begin{equation}\label{eq:crossentropy}
-  \mathcal{L} = -\sum_{c\in C} {y_c \log{{\hat y}_c}}
-\end{equation}
-
-Of note concerning categorical cross-entropy is that in the case where there
-is only a single true label for each example, the true vector $y$ is one-hot,
-i.e.\ zero in all elements but one. In this case, the loss calculation
-simplifies to $-\log{{\hat y}_t}$, where $t$ is the index of the true label.
-\todo{Move description of loss to background?}
 
 The new \ngram features add a certain sensitivity to local order of features.
 Many character \ngrams will represent entities smaller than a word, but may
@@ -264,14 +255,14 @@ Confusion matrices from MLP Mix:
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{mlp-mixed-conf}
+  \includegraphics{mlp-mixed-conf}
   \caption{Confusion matrix for MLP Mix}
   \label{fig:mlp-mixed-conf}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{mlp-mixed-conf-round}
+  \includegraphics{mlp-mixed-conf-round}
   \caption{Confusion matrix for MLP Mix on collapsed labels}
   \label{fig:mlp-mixed-conf-round}
 \end{figure}

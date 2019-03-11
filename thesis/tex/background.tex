@@ -66,6 +66,23 @@ learning, where the performance on training samples is measured using an
 backpropagation. In order for backpropagation to work, it is crucial that the
 activation function is differentiable.
 
+A common loss function for multi-class classification is \emph{categorical
+cross-entropy} (Eq. \ref{eq:crossentropy}). The value of this function is a
+measure of how different two probability distributions are. In order to use
+this loss function, the predictions ($\hat y$) must be a probability
+distribution, i.e. all elements are positive, and the sum of elements must be
+equal to 1. This is ensured by using a softmax activation on the output
+layer.
+
+\begin{equation}\label{eq:crossentropy}
+  \mathcal{L}(y, {\hat y}) = -\sum_{c\in C} {y_c \log{{\hat y}_c}}
+\end{equation}
+
+Of note concerning categorical cross-entropy is that in the case where there
+is only a single true label for each example, the true vector $y$ is one-hot,
+i.e.\ zero in all elements but one. In this case, the loss calculation
+simplifies to $-\log{{\hat y}_t}$, where $t$ is the index of the true label.
+
 One of the simplest models in the neural networks family is the perceptron.
 It is only capable of calculating a weighted sum across a feature vector and
 applying a threshold function. This threshold function is not differentiable,
@@ -79,7 +96,7 @@ will be different from zero. The zero case can be treated as a special case,
 to avoid undefined values.
 
 \begin{equation} \label{eq:sigmoid}
-  \sigma(x) = {1\over{1 + e^{-x}}}
+  \sigma(x) = {\frac{1}{1 + e^{-x}}}
 \end{equation}
 
 \subsection{Multi-layer perceptron}
@@ -102,6 +119,9 @@ restricting each output value to be in the interval $(0,1)$, and additionally
 makes sure all output values sum to $1$. These properties allow the outputted
 values to be interpreted as a probability distribution.
 
+\begin{equation}\label{eq:softmax}
+  \mathrm{softmax}(x)_i = \frac{\exp{x_i}}{\sum_{j=1}^{m}\exp{x_j}}
+\end{equation}
 
 \subsection{Convolutional neural networks}
 
