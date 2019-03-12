@@ -2,6 +2,7 @@ import argparse
 from pathlib import Path
 import pickle
 
+import numpy as np
 from sklearn.metrics import confusion_matrix
 
 from masterthesis.models.report import report
@@ -29,10 +30,10 @@ def print_config(config):
 
 
 def multi_task_plot_history(history, ax1, ax2):
-    xs = list(range(1, len(history['loss']) + 1))
+    xs = np.arange(len(history['loss'])) + 1
 
-    ax1.plot(xs, history['loss'], label='training loss'),
-    ax1.plot(xs, history['val_loss'], label='validation loss'),
+    ax1.plot(xs, history['loss'], label='train'),
+    ax1.plot(xs, history['val_loss'], label='validation'),
     ax1.legend()
     ax1.set(xlabel='Epoch', ylabel='Loss')
 
@@ -42,24 +43,25 @@ def multi_task_plot_history(history, ax1, ax2):
     aux_acc = AUX_OUTPUT_NAME + '_acc'
     aux_val_acc = 'val_' + aux_acc
 
-    ax2.plot(xs, history[acc], label='Train CEFR acc'),
-    ax2.plot(xs, history[aux_acc], label='Train L1 acc'),
-    ax2.plot(xs, history[val_acc], label='Val CEFR acc')
-    ax2.plot(xs, history[aux_val_acc], label='Val L1 acc')
+    ax2.plot(xs, history[acc], label='train CEFR'),
+    ax2.plot(xs, history[aux_acc], label='train L1'),
+    ax2.plot(xs, history[val_acc], label='val. CEFR')
+    ax2.plot(xs, history[aux_val_acc], label='val. L1')
     ax2.legend()
     ax2.set(ylabel='Accuracy')
 
 
 def plot_history(history, ax1, ax2):
-    ax1.plot(history['loss'], label='training loss'),
-    ax1.plot(history['val_loss'], label='validation loss'),
+    xs = np.arange(len(history['loss'])) + 1
+    ax1.plot(xs, history['loss'], label='training'),
+    ax1.plot(xs, history['val_loss'], label='validation'),
     ax1.legend()
     ax1.set(xlabel='Epoch', ylabel='Loss')
 
-    ax2.plot(history['acc'], label='training accuracy'),
-    ax2.plot(history['val_acc'], label='validation accuracy')
+    ax2.plot(xs, history['acc'], label='training'),
+    ax2.plot(xs, history['val_acc'], label='validation')
     ax2.legend()
-    ax2.set(ylabel='Accuracy')
+    ax2.set(xlabel='Epoch', ylabel='Accuracy')
 
 
 def main():
@@ -74,6 +76,7 @@ def main():
     print_config(results.config)
 
     fig, axes = plt.subplots(2, 2)
+    fig.set_size_inches(5, 4)
     plt.tight_layout()
     ax1 = plt.subplot(223)
     ax2 = plt.subplot(221, sharex=ax1)

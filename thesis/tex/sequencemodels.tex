@@ -160,23 +160,30 @@ maximum $L_2$ norm of 3.
 
 \begin{figure}
   % cnn-26094553_11
-  \centering
-  \includegraphics[width=\textwidth]{cnn-training}
-  \caption{Training and validation loss and accuracy over 50 epochs of training.
-           Also, confusion matrices with counts and normalized by class.}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{cnn-training}
+    \caption{Training and validation loss and accuracy over 50 epochs of training.}
+  \end{subfigure}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{cnn-confusion}
+    \caption{Confusion matrix on validation set, raw counts and normalized.}
+  \end{subfigure}
+  \caption{CNN with UPOS as side input, using pre-trained, static embedings.}
   \label{fig:cnn-training}
 \end{figure}
 
-Figure \ref{fig:cnn-training} shows that how the training and validation metrics
-evolve in the course of training, as well as the confusion matrix of the final model. The validation metrics
-plateau after approximately 20 epochs, after which any improvement is
-eclipsed by small, seemingly random fluctuations. The training metrics keep
-improving, suggesting that the model is memorizing the data rather than
-discovering general features. When training stops after 50 epochs, the
-training accuracy reaches is almost at 100\%.
+Figure \ref{fig:cnn-training} shows that how the training and validation
+metrics evolve in the course of training, as well as the confusion matrix of
+the final model. The validation metrics plateau after approximately 20
+epochs, after which any improvement is eclipsed by small, seemingly random
+fluctuations. The training metrics keep improving, suggesting that the model
+is memorizing the data rather than discovering general features. When
+training stops after 50 epochs, the training accuracy is almost at 100\%.
 
 The confusion matrix reveals that the final model has no predictions for the
-classes `A2', `B2/C1' and `C1', the smallest classes 
+classes `A2', `B2/C1' and `C1', the smallest classes in the validation set.
 
 
 \section{Recurrent neural networks}
@@ -369,11 +376,19 @@ the micro \FI score is to be considered a side effect of the macro \FI.
 
 \begin{figure}
   % rnn-25858209
-  \centering
-  \includegraphics[width=\textwidth]{lstm-training}
-  \caption{Training and validation loss and accuracy over 50 epochs of training.
-           Also, confusion matrices with counts and normalized by class.}
-  \label{fig:lstm-training}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{rnn-training}
+    \caption{Training and validation loss and accuracy over 50 epochs of training.}
+  \end{subfigure}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{rnn-confusion}
+    \caption{Confusion matrix on validation set, raw counts and normalized.}
+  \end{subfigure}
+  \caption{RNN with GRU cells, attention mechanism, and pre-trained embeddings
+           of dimension 50, fine-tuned.}
+  \label{fig:rnn-training}
 \end{figure}
 
 We see the training and classification of the best RNN model in figure

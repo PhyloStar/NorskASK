@@ -8,6 +8,9 @@ In table \ref{tab:multitask-results}, we see the results of running some of
 the most successful models from the previous chapter in a multi-task setting,
 using the essay's L1 as the auxiliary label to predict. The number following
 the model name is the weight given to the auxiliary loss during training.
+Each model is listed with an associated number which is the weight given to
+the auxiliary task in training. The number 0 indicates a single-task setup,
+and 0.5 indicates equal weight given to both tasks in training.
 
 The reported metrics apply to the main task, CEFR prediction, only. It seems
 that the auxiliary task is beneficial for all CNN models. All CNN models get
