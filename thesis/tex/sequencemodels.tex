@@ -41,25 +41,30 @@ could be problematic if the
 \subsection{Pre-trained embeddings}
 
 We experimented with randomly initialized word embedding vectors trained from
-scratch, as well as initializing the vectors with pre-trained embeddings. In
-this case, the embeddings came from different models trained on a large
-Norwegian corpus, the combination of Norsk aviskorpus and NoWaC (Norwegian
-Web As Corpus). The FastText algorithm lets us use these models to compute
-vectors for words that do not have entries in the model, by instead basing
-the vector on the word's character \ngrams.
+scratch, as well as initializing the vectors with pre-trained embeddings.
+We know that our corpus contains tokens with spelling mistakes, which are
+likely to be absent in any pre-trained vector model. We therefore sought out
+pre-trained models using the FastText algorithm, which lets us compute
+vectors for words that do not have separate entries in the model, basing
+the vector on the word's constituent character \ngrams.
 
-These vector models are very large, containing vectors for more than
-2,500,000 words. Our training data only contains 20,766 unique tokens, and
-loading the full pre-trained model takes a long time and uses huge amounts of
-memory for word vectors we will never use. For that reason, we created models
-of smaller size by loading the full models once and iterating through all of
-the word forms in our corpus, storing the resulting vectors in a new vector
-model containing only 20,766 words. In this way, we are also able to benefit
-from the FastText models' ability to compute vectors for unknown words, since
-the \ngram algorithm is being used when computing the reduced models.
-However, the fine-tuning of vectors happens no different from if we had used
-embeddings from simpler models such as Word2vec, since the FastText network
-is not incorporated into our models.
+In our case, we used a selection of models trained on a large Norwegian
+corpus, the combination of Norsk aviskorpus (The Norwegian Newspaper Corpus)
+and NoWaC (Norwegian Web As Corpus) \autocite{stadsnes2018}. These vector
+models are very large, containing vectors for more than 2,500,000 words. Our
+training data only contains 20,766 unique tokens, and loading the full
+pre-trained model takes a long time and uses huge amounts of memory for word
+vectors we will never use. For that reason, we created models of smaller size
+by loading the full models once and iterating through all of the word forms
+in our corpus, storing the resulting vectors in a new vector model containing
+only 20,766 words. In this way, we are also able to benefit from the FastText
+models' ability to compute vectors for unknown words, since the \ngram
+algorithm is being used when computing the reduced models. However, after the
+embedding layers of our models have been initialized with vectors from the
+fastText model, fine-tuning of vectors happens in the same way as if we had
+used embeddings from any other model such as Word2vec, or even randomly
+initialized embeddings, since the FastText network is not incorporated into
+our models.
 
 When using pre-trained embeddings, we ran some experiments keeping the
 embeddings static, and in some other experiments we further fine-tuned the
@@ -82,7 +87,7 @@ receive vectors of size 60.
 
 \section{Convolutional neural networks}
 
-We create a model with convolutional architecture based on the model
+We create a model with a convolutional architecture based on the model
 described in \textcite{kim2014convolutional}. Documents are represented as
 sequences of token IDs, and fed into an embedding lookup layer. A separate
 token ID is used for padding if the document is shorter than 700 tokens.
@@ -188,7 +193,7 @@ classes `A2', `B2/C1' and `C1', the smallest classes in the validation set.
 
 \section{Recurrent neural networks}
 
-A \ac{LSTM} \ac{RNN} was implemented based on the architecture described by
+A \ac{LSTM} \ac{RNN} was implemented based on the architecture described in
 \textcite{taghipour16}. Several changes to their architecture were made in
 order to accommodate our data. For instance, \citeauthor{taghipour16} modelled
 the task as a regression problem, their output layer consisting of a single
@@ -206,12 +211,13 @@ and micro \FI as before. We do not use the \ac{QWK} metric used by
 The formulation of the \ac{AES} task as a regression problem by
 \citeauthor{taghipour16} was partly a constraint stemming from the Kaggle
 competition that supplied the data and problem formulation, and partly
-motivated by the nature of the data. The ASAP data consists of essays from
-eight different prompts, and the scoring methods differs across prompts.
-Since the scores are numeric values over different ranges, modelling the task
-as a regression problem made it sufficient to normalize the numeric scores to
-a common interval before training.
+motivated by the nature of the data. The ASAP data that they use consists of
+essays from eight different prompts, and the scoring methods differs across
+prompts. Since the scores are numeric values over different ranges, modelling
+the task as a regression problem made it sufficient to normalize the numeric
+scores to a common interval before training.
 
+\todo{remainder of section unstructured}
 Generally for \ac{AES}, modelling the task as multi-class prediction is
 common, and is used in \textcite{vajjala18universalCEFR}. In
 \textcite{vajjala17}, two different datasets with different properties were
@@ -263,7 +269,7 @@ both sides of a input timestep.
 
 \todo{Mean of the final state}
 
-The attention model uses an attention layer, which differs from the mean over
+The other method is an attention layer, which differs from the mean over
 time layer in that timesteps are weighted by an attention mechanism: a
 single-layer neural network computes a value between -1 and 1 for each
 timestep. These values are normalized by a softmax layer and then used to
@@ -273,7 +279,7 @@ to focus on crucial information by choosing weights such as to disregard
 uninformative timesteps, improving performance. The attention mechanism is
 trained along with the rest of the network.
 
-All the models a hidden state vector of size 300 in the \ac{RNN}. The
+All the models have a hidden state vector of size 300 in the \ac{RNN}. The
 vocabulary was limited to the 4,000 most common words, the same vocabulary
 size as is used in \textcite{taghipour16}. In our dataset, this is nearly
 equivalent to using all tokens that occur at least 5 times: There are 4,031
@@ -392,7 +398,7 @@ the micro \FI score is to be considered a side effect of the macro \FI.
 \end{figure}
 
 We see the training and classification of the best RNN model in figure
-\ref{fig:lstm-training}, namely the GRU cell with pre-trained, fine-tuned
+\ref{fig:rnn-training}, namely the GRU cell with pre-trained, fine-tuned
 embeddings and an attention mechanism. It is plain to see that the model
 overfits while the validation performance fluctuates. The validation metrics
 seem to fluctuate more than they did with the CNN model in fig
@@ -486,3 +492,17 @@ Looking for cues as to what features are picked up by the model. \todo{expand an
   \label{fig:s0621-nli-attention}
 \end{figure}
 \todo{Visualize UPOS tags}
+
+\section{Visualization of latent space}
+
+We can use dimensionality reduction methods such as $t$-SNE in order to see
+if the intermediate representation of documents prior to the final
+classification layer positions documents that should be similar close to each
+other.
+
+\begin{figure}
+  \centering
+  % \includegraphics[width=\textwidth]{cefr-t-sne}
+  \caption{$t$-SNE plot of the vector representations of documents}
+  \label{fig:cefr-t-sne}
+\end{figure}

@@ -14,6 +14,24 @@ from sklearn.metrics import f1_score
 sns.set()
 
 
+def macro_rmse(true, pred):
+    groups = defaultdict(list)
+    for t, p in zip(true, pred):
+        groups[t].append((t - p) ** 2)
+    rmses = []
+    for group in groups.values():
+        rmses.append(sqrt(sum(group) / len(group)))
+    return sum(rmses) / len(rmses)
+
+
+def macro_mae(true, pred):
+    groups = defaultdict(list)
+    for t, p in zip(true, pred):
+        groups[t].append(abs(t - p))  # Collect absolute error for each class
+    maes = [sum(group) / len(group) for group in groups.values()]  # MAE for each group
+    return sum(maes) / len(maes)  # Macro average
+
+
 def pi_k(a: List[int], b: List[int]) -> float:
     n_a = len(a)
     n_b = len(b)
@@ -60,20 +78,22 @@ def main():
         data['filename'].append(results_file.name)
         data['pearson'].append(pearsonr(gold, pred)[0])
         data['spearman'].append(spearmanr(gold, pred)[0])
-        data['macrof1'].append(f1_score(gold, pred, average='macro'))
-        data['microf1'].append(f1_score(gold, pred, average='micro'))
-        data['weightedf1'].append(f1_score(gold, pred, average='weighted'))
+        data['macro F1'].append(f1_score(gold, pred, average='macro'))
+        data['micro F1'].append(f1_score(gold, pred, average='micro'))
+        data['weighted F1'].append(f1_score(gold, pred, average='weighted'))
         data['n_class'].append(max(max(gold), max(pred)) + 1)
         mse = sum((a - b) ** 2 for a, b in zip(gold, pred)) / len(gold)
         rmse = sqrt(mse)
-        data['rmse'].append(rmse)
+        data['RMSE'].append(rmse)
         mae = sum(abs(a - b) for a, b in zip(gold, pred)) / len(gold)
-        data['mae'].append(mae)
+        data['MAE'].append(mae)
+        data['macro MAE'].append(macro_mae(gold, pred))
     df = pd.DataFrame.from_dict(data)
     print('== All labels ==')
     lim_df = df[df.n_class == 7].dropna()
     corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr()
     sns.heatmap(corr_matrix, center=0, mask=get_corr_mask(len(corr_matrix)), annot=True, fmt='.3f')
+    plt.tight_layout()
     plt.show()
     print('\nTop Pearson:')
     print(lim_df.sort_values('pearson', ascending=False)
@@ -84,14 +104,13 @@ def main():
                 .loc[:, ['filename', 'spearman']]
                 .head(5))
     print('\nTop RMSE:')
-    print(lim_df.sort_values('rmse')
-                .loc[:, ['filename', 'rmse']]
+    print(lim_df.sort_values('RMSE')
+                .loc[:, ['filename', 'RMSE']]
                 .head(5))
     print('\nTop MAE:')
-    print(lim_df.sort_values('mae')
-                .loc[:, ['filename', 'mae']]
+    print(lim_df.sort_values('MAE')
+                .loc[:, ['filename', 'MAE']]
                 .head(5))
-    # sns.pairplot(lim_df.drop(columns=['filename', 'n_class']))
     plt.show()
 
     print('== Collapsed labels ==')
@@ -108,14 +127,13 @@ def main():
                 .loc[:, ['filename', 'spearman']]
                 .head(5))
     print('\nTop RMSE:')
-    print(lim_df.sort_values('rmse')
-                .loc[:, ['filename', 'rmse']]
+    print(lim_df.sort_values('RMSE')
+                .loc[:, ['filename', 'RMSE']]
                 .head(5))
     print('\nTop MAE:')
-    print(lim_df.sort_values('mae')
-                .loc[:, ['filename', 'mae']]
+    print(lim_df.sort_values('MAE')
+                .loc[:, ['filename', 'MAE']]
                 .head(5))
-    # sns.pairplot(lim_df.drop(columns=['filename', 'n_class', 'pearson']))
     plt.show()
 
 

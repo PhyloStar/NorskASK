@@ -178,10 +178,10 @@ commonly the sigmoid (Eq. \ref{eq:sigmoid}) or hard sigmoid (Eq.
   s_j = R_{\text{LSTM}}(s_{j-1}, x_j) &= [c_j;h_j] \\
                            c_j &= f \odot c_{j-1} + i \odot z \\
                            h_j &= o \odot \tanh(c_j) \\
-                             i &= \sigma(x_j W^{xi} + b_i + h_{j-1} W^{hi}) \\
-                             f &= \sigma(x_j W^{xf} + b_f + h_{j-1} W^{hf}) \\
-                             o &= \sigma(x_j W^{xo} + b_o + h_{j-1} W^{ho}) \\
-                             z &= \tanh(x_j W^{xz} + b_z + h_{j-1} W^{hz}) \\
+                             i &= \sigma(x_j W^{xi} + h_{j-1} W^{hi} + b_i) \\
+                             f &= \sigma(x_j W^{xf} + h_{j-1} W^{hf} + b_f) \\
+                             o &= \sigma(x_j W^{xo} + h_{j-1} W^{ho} + b_o) \\
+                             z &= \tanh(x_j W^{xz} + h_{j-1} W^{hz} + b_z) \\
                              \\[1\jot]
                  O_{\text{LSTM}}(s_j) &= h_j
   \end{aligned}
@@ -191,9 +191,9 @@ commonly the sigmoid (Eq. \ref{eq:sigmoid}) or hard sigmoid (Eq.
 \begin{equation} \label{eq:gru}
   \begin{aligned}
   s_j = R_{\text{GRU}}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot {\tilde s}_j \\
-                            z &= \sigma(x_j W^{xz} + b_f + h_{j-1} W^{sz}) \\
-                            r &= \sigma(x_j W^{xr} + b_i + h_{j-1} W^{sr}) \\
-                 {\tilde s}_j &= \tanh(x_j W^{xs} + b_z + (r \odot s{j-1}) W^{sg}) \\
+                            z &= \sigma(x_j W^{xz} + h_{j-1} W^{sz} + b_f) \\
+                            r &= \sigma(x_j W^{xr} + h_{j-1} W^{sr} + b_i) \\
+                 {\tilde s}_j &= \tanh(x_j W^{xs} + (r \odot s{j-1}) W^{sg} + b_z) \\
   \\[1\jot]
                  O_{\text{GRU}}(s_j) &= s_j
   \end{aligned}
