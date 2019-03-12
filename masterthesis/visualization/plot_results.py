@@ -48,7 +48,7 @@ def multi_task_plot_history(history, ax1, ax2):
     ax2.plot(xs, history[val_acc], label='val. CEFR')
     ax2.plot(xs, history[aux_val_acc], label='val. L1')
     ax2.legend()
-    ax2.set(ylabel='Accuracy')
+    ax2.set(xlabel='Epoch', ylabel='Accuracy')
 
 
 def plot_history(history, ax1, ax2):

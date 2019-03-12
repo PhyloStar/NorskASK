@@ -128,19 +128,37 @@ Spearman's ranked correlation coefficient ($0.768$).
 
 \begin{figure}
   % cnn-multi-26199963_11
-  \centering
-  \includegraphics[width=\textwidth]{cnn-multi-training}
-  \caption{CNN2 0.75. Training and validation loss and accuracy over 50 epochs of training.
-           Also, confusion matrices with counts and normalized by class.}
-  \label{fig:cnn-multi-training}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{cnn-multi-training}
+    \caption{Training and validation loss and accuracy over 50 epochs of training.}
+  \end{subfigure}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{cnn-multi-confusion}
+    \caption{Confusion matrix on validation set, raw counts and normalized.}
+  \end{subfigure}
+  \caption{CNN2 0.75}
+  \label{fig:rnn-training}
 \end{figure}
-
 
 \begin{figure}
   % rnn-multi-26199963_15
-  \centering
-  \includegraphics[width=\textwidth]{rnn-multi-training}
-  \caption{RNN1 0.5. Training and validation loss and accuracy over 50 epochs of training.
-           Also, confusion matrices with counts and normalized by class.}
-  \label{fig:rnn-multi-training}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{rnn-multi-training}
+    \caption{Training and validation loss and accuracy over 50 epochs of training.}
+  \end{subfigure}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{rnn-multi-confusion}
+    \caption{Confusion matrix on validation set, raw counts and normalized.}
+  \end{subfigure}
+  \caption{RNN1 0.5}
+  \label{fig:rnn-training}
 \end{figure}
+
+\section{Stability}
+
+By training the model several times with different random seeds, we can see
+how much the final results vary.
