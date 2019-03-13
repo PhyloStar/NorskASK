@@ -19,6 +19,7 @@ mentioned before can be considered a part of language proficiency.
 Certain aspects of setup are shared between experiments using \ac{CNN} and
 \ac{RNN} models.
 
+
 \subsection{Input length}
 
 The models in this chapter take as input a document of a predetermined
@@ -51,24 +52,32 @@ the vector on the word's constituent character \ngrams.
 In our case, we used a selection of models trained on a large Norwegian
 corpus, the combination of Norsk aviskorpus (The Norwegian Newspaper Corpus)
 and NoWaC (Norwegian Web As Corpus) \autocite{stadsnes2018}. These vector
-models are very large, containing vectors for more than 2,500,000 words. Our
-training data only contains 20,766 unique tokens, and loading the full
-pre-trained model takes a long time and uses huge amounts of memory for word
-vectors we will never use. For that reason, we created models of smaller size
-by loading the full models once and iterating through all of the word forms
-in our corpus, storing the resulting vectors in a new vector model containing
-only 20,766 words. In this way, we are also able to benefit from the FastText
-models' ability to compute vectors for unknown words, since the \ngram
-algorithm is being used when computing the reduced models. However, after the
-embedding layers of our models have been initialized with vectors from the
-fastText model, fine-tuning of vectors happens in the same way as if we had
-used embeddings from any other model such as Word2vec, or even randomly
+models are very large, containing vectors for more than 2,500,000 words. The
+models are stored in a repository that is available online and on the Abel
+supercomputer cluster \autocite{murhaf2017repository}. We use three models
+trained on this corpus using the fastText algorithm, differing only in the
+dimension of embeddings. They were trained using skipgram and window size 5, 
+and lemmatization has not been applied to the corpora.
+
+Our training data only contains 20,766 unique tokens, which is less than 1\%
+of the full vocabulary of the models. Loading the full pre-trained model
+takes a long time and uses huge amounts of memory for word vectors we will
+never use. For that reason, we created models of smaller size by loading the
+full models once and iterating through all of the word forms in our corpus,
+storing the resulting vectors in a new vector model containing only 20,766
+words. In this way, we are also able to benefit from the FastText models'
+ability to compute vectors for unknown words, since the \ngram algorithm is
+being used when computing the reduced models. However, after the embedding
+layers of our models have been initialized with vectors from the fastText
+model, fine-tuning of vectors happens in the same way as if we had used
+embeddings from any other model such as Word2vec, or even randomly
 initialized embeddings, since the FastText network is not incorporated into
 our models.
 
 When using pre-trained embeddings, we ran some experiments keeping the
 embeddings static, and in some other experiments we further fine-tuned the
 embeddings using training signals from the task.
+
 
 \subsection{Multi-channel input}
 
@@ -378,6 +387,7 @@ We find that the best performing models all use the attention mechanism.
 Keep in mind that the stopping criterion is the macro \FI score, and thus
 the micro \FI score is to be considered a side effect of the macro \FI.
 
+
 \subsection{Training behaviour}
 
 \begin{figure}
@@ -492,6 +502,7 @@ Looking for cues as to what features are picked up by the model. \todo{expand an
   \label{fig:s0621-nli-attention}
 \end{figure}
 \todo{Visualize UPOS tags}
+
 
 \section{Visualization of latent space}
 

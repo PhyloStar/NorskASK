@@ -5,7 +5,7 @@ from typing import Iterable
 
 from keras import backend as K
 from keras.layers import (
-    Activation, Bidirectional, Dense, Dropout, Flatten, GRU, Lambda,
+    Activation, Bidirectional, Dense, Dropout, Flatten, GRU, GlobalMaxPooling1D, Lambda,
     Layer, LSTM, Multiply, Permute, RepeatVector, TimeDistributed
 )
 from keras.models import Model
@@ -38,7 +38,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     add_common_args(parser)
     add_seq_common_args(parser)
-    parser.add_argument('--attention', action="store_true")
+    parser.add_argument('--pool-method', choices={'mean', 'max', 'attention'})
     parser.add_argument('--bidirectional', action="store_true")
     parser.add_argument('--decay-rate', type=float)
     parser.add_argument('--dropout-rate', type=float)
@@ -47,7 +47,7 @@ def parse_args():
     parser.add_argument('--rnn-cell', choices={'gru', 'lstm'})
     parser.add_argument('--rnn-dim', type=int)
     parser.set_defaults(batch_size=32, decay_rate=0.9, dropout_rate=0.5, embed_dim=50, epochs=50,
-                        lr=1e-3, rnn_cell='lstm', rnn_dim=300, vocab_size=4000)
+                        lr=1e-3, rnn_cell='lstm', rnn_dim=300, vocab_size=4000, pool_method='mean')
     return parser.parse_args()
 
 
@@ -65,9 +65,10 @@ def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool) -> Layer:
 
 def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
                 embed_dim: int, rnn_dim: int, dropout_rate: float,
-                bidirectional: bool, attention: bool, static_embs: bool, rnn_cell: str,
+                bidirectional: bool, pool_strategy: str, static_embs: bool, rnn_cell: str,
                 num_pos: int = 0):
-    mask_zero = not attention  # The attention mechanism does not support masked inputs
+    # The attention mechanism does not support masked inputs
+    mask_zero = pool_strategy != 'attention'
 
     input_layer_args = InputLayerArgs(
         num_pos=num_pos, mask_zero=mask_zero, embed_dim=embed_dim, pos_embed_dim=POS_EMB_DIM,
@@ -80,7 +81,7 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
 
     dropout = Dropout(dropout_rate)(rnn)
 
-    if attention:
+    if pool_strategy == 'attention':
         units = 2 * rnn_dim if bidirectional else rnn_dim
         # compute importance for each step
         attention = TimeDistributed(Dense(1, activation='tanh'))(dropout)
@@ -93,8 +94,12 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
         sent_representation = Multiply()([dropout, attention])
         pooled = Lambda(lambda xin: K.sum(xin, axis=1),
                         name=REPRESENTATION_LAYER)(sent_representation)
-    else:
+    elif pool_strategy == 'mean':
         pooled = GlobalAveragePooling1D(name=REPRESENTATION_LAYER)(dropout)
+    elif pool_strategy == 'max':
+        pooled = GlobalMaxPooling1D(name=REPRESENTATION_LAYER)(dropout)
+    else:
+        raise ValueError('Unrecognized pooling strategy: ' + pool_strategy)
 
     outputs = [Dense(n_c, activation='softmax', name=name)(pooled)
                for name, n_c in zip([OUTPUT_NAME, AUX_OUTPUT_NAME], num_classes)]
@@ -142,7 +147,7 @@ def main():
     model = build_model(
         vocab_size=vocab_size, sequence_len=SEQ_LEN, num_classes=num_classes,
         embed_dim=args.embed_dim, rnn_dim=args.rnn_dim, dropout_rate=args.dropout_rate,
-        bidirectional=args.bidirectional, attention=args.attention,
+        bidirectional=args.bidirectional, pool_strategy=args.pool_strategy,
         static_embs=args.static_embs, rnn_cell=args.rnn_cell, num_pos=num_pos)
     model.summary()
 

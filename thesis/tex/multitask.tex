@@ -139,7 +139,7 @@ Spearman's ranked correlation coefficient ($0.768$).
     \caption{Confusion matrix on validation set, raw counts and normalized.}
   \end{subfigure}
   \caption{CNN2 0.75}
-  \label{fig:rnn-training}
+  \label{fig:cnn-multi-training}
 \end{figure}
 
 \begin{figure}
@@ -155,10 +155,31 @@ Spearman's ranked correlation coefficient ($0.768$).
     \caption{Confusion matrix on validation set, raw counts and normalized.}
   \end{subfigure}
   \caption{RNN1 0.5}
-  \label{fig:rnn-training}
+  \label{fig:rnn-multi-training}
 \end{figure}
+
 
 \section{Stability}
 
 By training the model several times with different random seeds, we can see
 how much the final results vary.
+
+
+\section{Correlation of metrics}
+
+We have previously discussed different evaluation metrics. Since we now have
+trained and evaluated a number of different models, it is possible to see whether
+the metrics agree on the ranking of models.
+
+Macro \FI and macro \ac{MAE} correlates only weakly, as seen in figure
+\ref{fig:f1-vs-mae}, but they seem to agree on the highest ranking models:
+The Pareto front consists of only two samples. The samples in the plot are
+models that predict the full seven classes.
+
+\begin{figure}
+  \centering
+  \includegraphics{f1-vs-mae}
+  \caption{Macro \FI versus macro MAE. Pearson's correlation coefficient = $-0.5945$, $p < 10^{-4}$.
+           The shaded area covers a 95\% confidence interval for the line of regression.}
+  \label{fig:f1-vs-mae}
+\end{figure}

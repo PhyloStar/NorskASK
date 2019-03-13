@@ -33,9 +33,8 @@ tagset.
 \section{Metrics}
 
 The \FI score for a single class is the harmonic mean of the precision and
-recall. The formula is given in equation \ref{eq:fi}, where $TP$, $FN$ and
-$FP$ are the number of true positives, false negatives, and false positives,
-respectively.
+recall. It can also be expressed as a function of true positives ($TP$), false negatives ($FN$),
+and false positives ($FP$), as in equation \ref{eq:fi}.
 
 \begin{equation}\label{eq:fi}
   F_1 = {\frac{2\cdot TP}{2\cdot TP + FN + FP}}
@@ -43,10 +42,12 @@ respectively.
 
 In a multi-class prediction setup, there are several ways to combine the
 classes' individual \FI scores into a single metric. There is the micro
-average \FI, which is equivalent to accuracy: The proportion of samples where
-the gold labels and predicted labels are the same. Then there is the macro
-average, which is the unweighted average of \FI scores for all classes. When
-the distribution of classes is uneven, a macro average will give
+average \FI, which in our case is equivalent to accuracy, since all samples
+have exactly one true label. Accuracy is the proportion of samples where the
+gold labels and predicted labels are the same. Then there is the macro
+average, which is the unweighted average of \FI scores for all classes.
+
+When the distribution of classes is uneven, a macro average will give
 proportionally more weight on samples from small classes, and less weight to
 all samples in classes with large support. A model with a high micro \FI and
 a low macro \FI indicates that it is good at classifying examples from the
@@ -57,35 +58,32 @@ proportionally to its prevalence.
 \FI scores previously reported in \ac{AES} literature include Micro \FI score
 in \textcite{vajjala17}, and weighted \FI in
 \textcite{vajjala18universalCEFR}. For the \ac{NLI} task, micro \FI is
-reported in \textcite{malmasi15,malmasi17}.
+reported in \textcite{malmasi15,malmasi17}. Other, non-\FI metrics that have
+been reported in \ac{AES} literature include \ac{QWK} \autocite{taghipour16,
+alikaniotis2016automatic}, Pearson's correlation coefficient
+\autocite{vajjala17, alikaniotis2016automatic}, Spearman's rank correlation
+coefficient and root mean squared error \autocite{alikaniotis2016automatic},
+and mean absolute error \autocite{vajjala17}. These are metrics that may
+depend on the ordinal nature of proficiency scores, and potentially the
+relative differences between different scores. For instance, a prediction of
+`C1' for an essay with gold label `B1' is a more serious misclassification
+than a prediction of `A2/B1' for the same sample, and this can be taken into
+account by some metrics.
 
-Other, non-\FI metrics that have been reported in \ac{AES} literature include
-\ac{QWK} \autocite{taghipour16, alikaniotis2016automatic}, Pearson's
-correlation coefficient \autocite{vajjala17, alikaniotis2016automatic},
-Spearman's rank correlation coefficient and root mean squared error
-\autocite{alikaniotis2016automatic}, and mean absolute error
-\autocite{vajjala17}. These are metrics that may depend on the ordinal nature
-of proficiency scores, and potentially the relative differences between
-different scores. For instance, a prediction of `C1' for an essay with gold
-label `B1' is a more serious misclassification than a prediction of `A2/B1'
-for the same sample, and this can be taken into account by some metrics.
-
-According to \textcite{yannakoudakis2015evaluating}, \ac{QWK} is an
-ill-suited metric for the task, because it depends on trait prevalence, the
-scoring scale and the marginal distributions of labels and predictions.
-Therefore it is problematic to compare \ac{QWK} scores between different
-systems and datasets. However, since two of the cited studies are based on
-a dataset from a Kaggle competition where \ac{QWK} was the official metric,
-it has been reported.
+According to \textcite{yannakoudakis2015evaluating}, there are several
+problems with using \ac{QWK} as a metric for the task, because it depends on
+trait prevalence, the scoring scale and the marginal distributions of labels
+and predictions. Therefore it is problematic to compare \ac{QWK} scores
+between different systems and datasets. However, since two of the cited
+studies are based on a dataset from a Kaggle competition where \ac{QWK} was
+the official metric, it has been reported.
 
 
 \subsection{Reported metrics}
 
-We report the macro and micro \FI for all experiments.
-
-The metrics are reported for two different modes: The first utilizing the
-full set of classes, and the second training and evaluating on the collapsed
-classes.
+We report both the macro and micro \FI for all experiments. The metrics are
+reported for two different modes: The first utilizing the full set of
+classes, and the second training and evaluating on the collapsed classes.
 
 A third option, namely to train on the full set of classes and reduce the
 predictions to the collapsed set of classes, was also attempted, based on the
@@ -227,6 +225,11 @@ that performs the best is the one using character \ngrams.
     LogReg Char&         $0.221$  &         $0.317$  &         $0.399$  &         $0.602$ \\
     LogReg POS &         $0.188$  &         $0.276$  &         $0.344$  &         $0.585$ \\
     LogReg Mix &         $0.213$  &         $0.341$  &         $0.342$  &         $0.585$ \\
+    \midrule
+    LinReg BOW &         $0.205$  &         $0.301$  &         $0.355$  &         $0.569$ \\
+    LinReg Char&         $0.142$  &         $0.195$  &         $0.244$  &         $0.390$ \\
+    LinReg POS &         $0.215$  &         $0.252$  &         $0.376$  &         $0.553$ \\
+    LinReg Mix &         $0.265$  &         $0.309$  &         $0.393$  &         $0.634$ \\
     \midrule
     % $BEGIN autotable baseline-accuracies
     % $META models-per-row=2 columns-per-model=macrof1,microf1

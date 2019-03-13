@@ -1,8 +1,9 @@
 import argparse
 from typing import Iterable, Optional
 
+import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
-import sklearn.linear_model
+from sklearn.linear_model import LogisticRegression, LinearRegression
 
 from masterthesis.features.build_features import (
     bag_of_words, filename_iter, iterate_mixed_pos_docs, iterate_pos_docs
@@ -28,6 +29,7 @@ def mixed_pos_line_iter(split) -> Iterable[str]:
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('kind', choices={'word', 'char', 'pos', 'mixed'}, default='bow')
+    parser.add_argument('algorithm', choices={'classifier', 'regression'}, default='classifier')
     parser.add_argument('--round-cefr', action='store_true')
     return parser.parse_args()
 
@@ -77,10 +79,19 @@ def main():
     dev_y = [labels.index(c) for c in dev_meta.cefr]
 
     print("Fitting classifier ...")
-    clf = sklearn.linear_model.LogisticRegression(solver='lbfgs', multi_class='multinomial')
+    if args.algorithm == 'classifier':
+        clf = LogisticRegression(solver='lbfgs', multi_class='multinomial')
+    elif args.algorithm == 'regression':
+        clf = LinearRegression()
+
     clf.fit(train_x, train_y)
 
     predictions = clf.predict(dev_x)
+    if args.algorithm == 'regression':
+        print(predictions)
+        predictions = np.clip(np.floor(predictions + 0.5), 0, max(train_y))
+        print(predictions)
+        
     report(dev_y, predictions, labels)
     save_results('linear_baseline', None, None, dev_y, predictions)
 

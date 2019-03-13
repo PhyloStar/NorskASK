@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr
 import seaborn as sns
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, mean_absolute_error, mean_squared_error
 sns.set()
 
 
@@ -76,19 +76,20 @@ def main():
             print('Could not find gold and pred for file %s' % results_file)
             continue
         data['filename'].append(results_file.name)
+        data['n_class'].append(max(max(gold), max(pred)) + 1)
+
         data['pearson'].append(pearsonr(gold, pred)[0])
         data['spearman'].append(spearmanr(gold, pred)[0])
         data['macro F1'].append(f1_score(gold, pred, average='macro'))
         data['micro F1'].append(f1_score(gold, pred, average='micro'))
         data['weighted F1'].append(f1_score(gold, pred, average='weighted'))
-        data['n_class'].append(max(max(gold), max(pred)) + 1)
-        mse = sum((a - b) ** 2 for a, b in zip(gold, pred)) / len(gold)
-        rmse = sqrt(mse)
+        rmse = sqrt(mean_squared_error(gold, pred))
         data['RMSE'].append(rmse)
-        mae = sum(abs(a - b) for a, b in zip(gold, pred)) / len(gold)
-        data['MAE'].append(mae)
+        data['MAE'].append(mean_absolute_error(gold, pred))
         data['macro MAE'].append(macro_mae(gold, pred))
+        data['macro RMSE'].append(macro_rmse(gold, pred))
     df = pd.DataFrame.from_dict(data)
+    df.to_csv('metrics.csv', index=False)
     print('== All labels ==')
     lim_df = df[df.n_class == 7].dropna()
     corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr()
