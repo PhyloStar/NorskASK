@@ -14,7 +14,8 @@ from keras.utils import to_categorical
 import numpy as np
 
 from masterthesis.features.build_features import (
-    make_pos2i, make_w2i, pos_to_sequences, words_to_sequences
+    make_pos2i, make_w2i, pos_to_sequences, words_to_sequences,
+    mixed_pos_to_sequences, make_mixed_pos2i
 )
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.layers import (
@@ -46,7 +47,7 @@ def parse_args():
     parser.add_argument('--lr', type=float)
     parser.add_argument('--rnn-cell', choices={'gru', 'lstm'})
     parser.add_argument('--rnn-dim', type=int)
-    parser.set_defaults(batch_size=32, decay_rate=0.9, dropout_rate=0.5, embed_dim=50, epochs=50,
+    parser.set_defaults(batch_size=32, decay_rate=0.9, dropout_rate=0.5, embed_dim=100, epochs=50,
                         lr=1e-3, rnn_cell='lstm', rnn_dim=300, vocab_size=4000, pool_method='mean')
     return parser.parse_args()
 
@@ -65,10 +66,10 @@ def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool) -> Layer:
 
 def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
                 embed_dim: int, rnn_dim: int, dropout_rate: float,
-                bidirectional: bool, pool_strategy: str, static_embs: bool, rnn_cell: str,
+                bidirectional: bool, pool_method: str, static_embs: bool, rnn_cell: str,
                 num_pos: int = 0):
-    # The attention mechanism does not support masked inputs
-    mask_zero = pool_strategy != 'attention'
+    # Only the global average pooling supports masked input
+    mask_zero = pool_method == 'mean'
 
     input_layer_args = InputLayerArgs(
         num_pos=num_pos, mask_zero=mask_zero, embed_dim=embed_dim, pos_embed_dim=POS_EMB_DIM,
@@ -81,7 +82,7 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
 
     dropout = Dropout(dropout_rate)(rnn)
 
-    if pool_strategy == 'attention':
+    if pool_method == 'attention':
         units = 2 * rnn_dim if bidirectional else rnn_dim
         # compute importance for each step
         attention = TimeDistributed(Dense(1, activation='tanh'))(dropout)
@@ -94,12 +95,12 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
         sent_representation = Multiply()([dropout, attention])
         pooled = Lambda(lambda xin: K.sum(xin, axis=1),
                         name=REPRESENTATION_LAYER)(sent_representation)
-    elif pool_strategy == 'mean':
+    elif pool_method == 'mean':
         pooled = GlobalAveragePooling1D(name=REPRESENTATION_LAYER)(dropout)
-    elif pool_strategy == 'max':
+    elif pool_method == 'max':
         pooled = GlobalMaxPooling1D(name=REPRESENTATION_LAYER)(dropout)
     else:
-        raise ValueError('Unrecognized pooling strategy: ' + pool_strategy)
+        raise ValueError('Unrecognized pooling strategy: ' + pool_method)
 
     outputs = [Dense(n_c, activation='softmax', name=name)(pooled)
                for name, n_c in zip([OUTPUT_NAME, AUX_OUTPUT_NAME], num_classes)]
@@ -111,21 +112,26 @@ def main():
     train = load_split('train', round_cefr=args.round_cefr)
     dev = load_split('dev', round_cefr=args.round_cefr)
 
-    vocab_size = args.vocab_size
-    w2i = make_w2i(vocab_size)
-    train_x, dev_x = words_to_sequences(SEQ_LEN, ['train', 'dev'], w2i)
-
     target_col = 'lang' if args.nli else 'cefr'
     labels = sorted(train[target_col].unique())
 
-    if args.include_pos:
-        pos2i = make_pos2i()
-        num_pos = len(pos2i)
-        train_pos, dev_pos = pos_to_sequences(SEQ_LEN, ['train', 'dev'], pos2i)
-        train_x = [train_x, train_pos]
-        dev_x = [dev_x, dev_pos]
-    else:
+    if args.mixed_pos:
+        t2i = make_mixed_pos2i()
+        train_x, dev_x = mixed_pos_to_sequences(SEQ_LEN, ['train', 'dev'], t2i)
+        vocab_size = len(t2i)
         num_pos = 0
+    else:
+        vocab_size = args.vocab_size
+        w2i = make_w2i(vocab_size)
+        train_x, dev_x = words_to_sequences(SEQ_LEN, ['train', 'dev'], w2i)
+        if args.include_pos:
+            pos2i = make_pos2i()
+            num_pos = len(pos2i)
+            train_pos, dev_pos = pos_to_sequences(SEQ_LEN, ['train', 'dev'], pos2i)
+            train_x = [train_x, train_pos]
+            dev_x = [dev_x, dev_pos]
+        else:
+            num_pos = 0
 
     train_y = [to_categorical([labels.index(c) for c in train[target_col]])]
     dev_y = [to_categorical([labels.index(c) for c in dev[target_col]])]
@@ -147,7 +153,7 @@ def main():
     model = build_model(
         vocab_size=vocab_size, sequence_len=SEQ_LEN, num_classes=num_classes,
         embed_dim=args.embed_dim, rnn_dim=args.rnn_dim, dropout_rate=args.dropout_rate,
-        bidirectional=args.bidirectional, pool_strategy=args.pool_strategy,
+        bidirectional=args.bidirectional, pool_method=args.pool_method,
         static_embs=args.static_embs, rnn_cell=args.rnn_cell, num_pos=num_pos)
     model.summary()
 

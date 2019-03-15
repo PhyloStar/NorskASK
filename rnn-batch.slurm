@@ -41,41 +41,45 @@ embdim50="--vectors models/vectors/127-small.pkl"
 embdim100="--vectors models/vectors/127-small.pkl"
 
 case $SLURM_ARRAY_TASK_ID in
-	1) args="" ;;
-	2) args="--round-cefr" ;;
-	3) args="--bidirectional" ;;
-	4) args="--bidirectional --round-cefr" ;;
-	5) args="--attention" ;;
-	6) args="--attention --round-cefr" ;;
+	1) args="--pool-method mean" ;;
+	2) args="--pool-method max" ;;
+	3) args="--pool-method attention" ;;
+	4) args="--include-pos --pool-method mean" ;;
+	5) args="--include-pos --pool-method max" ;;
+	6) args="--include-pos --pool-method attention" ;;
+	7) args="--mixed-pos --pool-method mean" ;;
+	8) args="--mixed-pos --pool-method max" ;;
+	9) args="--mixed-pos --pool-method attention" ;;
 
-	7) args="$embdim50" ;;
-	8) args="$embdim50 --round-cefr" ;;
-	9) args="$embdim50 --bidirectional" ;;
-	10) args="$embdim50 --bidirectional --round-cefr" ;;
-	11) args="$embdim50 --attention" ;;
-	12) args="$embdim50 --attention --round-cefr" ;;
+	10) args="--bidirectional --pool-method mean" ;;
+	11) args="--bidirectional --pool-method max" ;;
+	12) args="--bidirectional --pool-method attention" ;;
+	13) args="--bidirectional --include-pos --pool-method mean" ;;
+	14) args="--bidirectional --include-pos --pool-method max" ;;
+	15) args="--bidirectional --include-pos --pool-method attention" ;;
+	16) args="--bidirectional --mixed-pos --pool-method mean" ;;
+	17) args="--bidirectional --mixed-pos --pool-method max" ;;
+	18) args="--bidirectional --mixed-pos --pool-method attention" ;;
 
-	13) args="$embdim100" ;;
-	14) args="$embdim100 --round-cefr" ;;
-	15) args="$embdim100 --bidirectional" ;;
-	16) args="$embdim100 --bidirectional --round-cefr" ;;
-	17) args="$embdim100 --attention" ;;
-	18) args="$embdim100 --attention --round-cefr" ;;
+	19) args="$embdim100 --pool-method mean" ;;
+	20) args="$embdim100 --pool-method max" ;;
+	21) args="$embdim100 --pool-method attention" ;;
+	22) args="$embdim100 --include-pos --pool-method mean" ;;
+	23) args="$embdim100 --include-pos --pool-method max" ;;
+	24) args="$embdim100 --include-pos --pool-method attention" ;;
+	25) args="$embdim100 --mixed-pos --pool-method mean" ;;
+	26) args="$embdim100 --mixed-pos --pool-method max" ;;
+	27) args="$embdim100 --mixed-pos --pool-method attention" ;;
 
-	19) args="--attention --rnn-cell gru" ;;
-	20) args="--attention --rnn-cell gru --round-cefr" ;;
-	21) args="$embdim50 --attention --rnn-cell gru" ;;
-	22) args="$embdim50 --attention --rnn-cell gru --round-cefr" ;;
- 
-	23) args="$embdim50 --static-embs --attention" ;;
-	24) args="$embdim50 --static-embs --attention --round-cefr" ;;
-	25) args="$embdim100 --static-embs --attention" ;;
-	26) args="$embdim100 --static-embs --attention --round-cefr" ;;
-
-	27) args="--include-pos --attention" ;;
-	28) args="--include-pos --attention --round-cefr" ;;
-	29) args="$embdim50 --include-pos --attention" ;;
-	30) args="$embdim50 --include-pos --attention --round-cefr" ;;
+	28) args="$embdim100 --bidirectional --pool-method mean" ;;
+	29) args="$embdim100 --bidirectional --pool-method max" ;;
+	30) args="$embdim100 --bidirectional --pool-method attention" ;;
+	31) args="$embdim100 --bidirectional --include-pos --pool-method mean" ;;
+	32) args="$embdim100 --bidirectional --include-pos --pool-method max" ;;
+	33) args="$embdim100 --bidirectional --include-pos --pool-method attention" ;;
+	34) args="$embdim100 --bidirectional --mixed-pos --pool-method mean" ;;
+	35) args="$embdim100 --bidirectional --mixed-pos --pool-method max" ;;
+	36) args="$embdim100 --bidirectional --mixed-pos --pool-method attention" ;;
 
 	# Run script with arguments if not an array job
 	'') args="" ;;
