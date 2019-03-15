@@ -299,7 +299,8 @@ tokens in our training set that occur at least 5 times.
 
 The RNN results are split into two tables. Table \ref{tab:lstm-results} contains
 the results for models with \ac{LSTM} cells, while table \ref{tab:gru-results}
-contains the results for models with \ac{GRU} cells.
+contains the results for models with \ac{GRU} cells. The mixed input format
+is not applicable when using pre-trained embeddings.
 
 \begin{table}
   \centering
@@ -310,50 +311,63 @@ contains the results for models with \ac{GRU} cells.
     \cmidrule(lr){4-5}
     Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
     \midrule
-              \multicolumn{5}{c}{50 dimensional, randomly initialized embeddings} \\
+              \multicolumn{5}{c}{Random init, unidirectional RNN} \\
     \midrule
     % $BEGIN autotable lstm-results
     % $META models-per-row=2 columns-per-model=macrof1,microf1
-    % $ROW 1:           rnn-26285652_1       rnn-26285653_1
-    % $ROW 2:           rnn-26285652_2       rnn-26285653_2
-    % $ROW 3:           rnn-26285652_3       rnn-26285653_3
-    % $ROW 4:           rnn-26285652_4       rnn-26285653_4
-    % $ROW 5:           rnn-26285652_5       rnn-26285653_5
-    % $ROW 6:           rnn-26285652_6       rnn-26285653_6
-    % $ROW 7:           rnn-26285652_7       rnn-26285653_7
-    % $ROW 8:           rnn-26285652_8       rnn-26285653_8
-    % $ROW 9:           rnn-26285652_9       rnn-26285653_9
+    % $ROW Mean:        rnn-26285652_1       rnn-26285653_1
+    % $ROW Max:         rnn-26285652_2       rnn-26285653_2
+    % $ROW Attn:        rnn-26285652_3       rnn-26285653_3
+    % $ROW +POS Mean:   rnn-26285652_4       rnn-26285653_4
+    % $ROW +POS Max:    rnn-26285652_5       rnn-26285653_5
+    % $ROW +POS Attn:   rnn-26285652_6       rnn-26285653_6
+    % $ROW Mix Mean:    rnn-26285652_7       rnn-26285653_7
+    % $ROW Mix Max:     rnn-26285652_8       rnn-26285653_8
+    % $ROW Mix Attn:    rnn-26285652_9       rnn-26285653_9
     % \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
-    % $ROW 10:          rnn-26285652_10      rnn-26285653_10
-    % $ROW 11:          rnn-26285652_11      rnn-26285653_11
-    % $ROW 12:          rnn-26285652_12      rnn-26285653_12
-    % $ROW 13:          rnn-26285652_13      rnn-26285653_13
-    % $ROW 14:          rnn-26285652_14      rnn-26285653_14
-    % $ROW 15:          rnn-26285652_15      rnn-26285653_15
-    % $ROW 16:          rnn-26285652_16      rnn-26285653_16
-    % $ROW 17:          rnn-26285652_17      rnn-26285653_17
-    % $ROW 18:          rnn-26285652_18      rnn-26285653_18
+    % $ROW Mean:        rnn-26285652_10      rnn-26285653_10
+    % $ROW Max:         rnn-26285652_11      rnn-26285653_11
+    % $ROW Attn:        rnn-26285652_12      rnn-26285653_12
+    % $ROW +POS Mean:   rnn-26285652_13      rnn-26285653_13
+    % $ROW +POS Max:    rnn-26285652_14      rnn-26285653_14
+    % $ROW +POS Attn:   rnn-26285652_15      rnn-26285653_15
+    % $ROW Mix Mean:    rnn-26285652_16      rnn-26285653_16
+    % $ROW Mix Max:     rnn-26285652_17      rnn-26285653_17
+    % $ROW Mix Attn:    rnn-26285652_18      rnn-26285653_18
     % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
-    % $ROW 19:          rnn-26285652_19      rnn-26285653_19
-    % $ROW 20:          rnn-26285652_20      rnn-26285653_20
-    % $ROW 21:          rnn-26285652_21      rnn-26285653_21
-    % $ROW 22:          rnn-26285652_22      rnn-26285653_22
-    % $ROW 23:          rnn-26285652_23      rnn-26285653_23
-    % $ROW 24:          rnn-26285652_24      rnn-26285653_24
-    % $ROW 25:          rnn-26285652_25      rnn-26285653_25
-    % $ROW 26:          rnn-26285652_26      rnn-26285653_26
-    % $ROW 27:          rnn-26285652_27      rnn-26285653_27
+    % %$ROW Mean:       rnn-26287006_19      rnn-26287007_19
+    % %$ROW Max:        rnn-26287006_20      rnn-26287007_20
+    % %$ROW Attn:       rnn-26287006_21      rnn-26287007_21
+    % %$ROW +POS Mean:  rnn-26287006_22      rnn-26287007_22
+    % %$ROW +POS Max:   rnn-26287006_23      rnn-26287007_23
+    % %$ROW +POS Attn:  rnn-26287006_24      rnn-26287007_24
     % \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
-    % $ROW 28:          rnn-26285652_28      rnn-26285653_28
-    % $ROW 29:          rnn-26285652_29      rnn-26285653_29
-    % $ROW 30:          rnn-26285652_30      rnn-26285653_30
-    % $ROW 31:          rnn-26285652_31      rnn-26285653_31
-    % $ROW 32:          rnn-26285652_32      rnn-26285653_32
-    % $ROW 33:          rnn-26285652_33      rnn-26285653_33
-    % $ROW 34:          rnn-26285652_34      rnn-26285653_34
-    % $ROW 35:          rnn-26285652_35      rnn-26285653_35
-    % $ROW 36:          rnn-26285652_36      rnn-26285653_36
+    % %$ROW Mean:          rnn-26287006_25      rnn-26287007_25
+    % %$ROW Max:          rnn-26287006_26      rnn-26287007_26
+    % %$ROW Attn:          rnn-26287006_27      rnn-26287007_27
+    % %$ROW +POS Mean:          rnn-26287006_28      rnn-26287007_28
+    % %$ROW +POS Max:          rnn-26287006_29      rnn-26287007_29
+    % %$ROW +POS Attn:          rnn-26287006_30      rnn-26287007_30
     % $END autotable
+    Mean & $0.265$ & $0.382$ & $0.455$ & $0.675$ \\
+    Max & $0.301$ & $0.366$ & $0.562$ & $0.577$ \\
+    Attn & $0.240$ & $0.358$ & $0.651$ & $0.748$ \\
+    +POS Mean & $0.311$ & $0.415$ & $0.458$ & $0.691$ \\
+    +POS Max & $\mathbf{0.362}$ & $0.374$ & $0.449$ & $0.659$ \\
+    +POS Attn & $0.258$ & $0.374$ & $0.527$ & $0.756$ \\
+    Mix Mean & $0.220$ & $0.333$ & $0.384$ & $0.634$ \\
+    Mix Max & $0.221$ & $0.374$ & $0.420$ & $0.650$ \\
+    Mix Attn & $0.244$ & $0.431$ & $0.485$ & $0.748$ \\
+    \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
+    Mean & $0.343$ & $0.350$ & $0.493$ & $0.715$ \\
+    Max & $0.262$ & $0.358$ & $0.606$ & $0.724$ \\
+    Attn & $0.288$ & $\mathbf{0.472}$ & $\mathbf{0.674}$ & $0.724$ \\
+    +POS Mean & $0.271$ & $0.358$ & $0.485$ & $0.732$ \\
+    +POS Max & $0.338$ & $0.382$ & $0.465$ & $0.683$ \\
+    +POS Attn & $0.277$ & $0.415$ & $0.548$ & $\mathbf{0.772}$ \\
+    Mix Mean & $0.215$ & $0.341$ & $0.414$ & $0.634$ \\
+    Mix Max & $0.242$ & $0.366$ & $0.465$ & $0.675$ \\
+    Mix Attn & $0.267$ & $0.390$ & $0.480$ & $0.740$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of LSTM classifiers on AES}
@@ -373,46 +387,59 @@ contains the results for models with \ac{GRU} cells.
     \midrule
     % $BEGIN autotable gru-results
     % $META models-per-row=2 columns-per-model=macrof1,microf1
-    % $ROW 1:           rnn-26285656_1       rnn-26285657_1
-    % $ROW 2:           rnn-26285656_2       rnn-26285657_2
-    % $ROW 3:           rnn-26285656_3       rnn-26285657_3
-    % $ROW 4:           rnn-26285656_4       rnn-26285657_4
-    % $ROW 5:           rnn-26285656_5       rnn-26285657_5
-    % $ROW 6:           rnn-26285656_6       rnn-26285657_6
-    % $ROW 7:           rnn-26285656_7       rnn-26285657_7
-    % $ROW 8:           rnn-26285656_8       rnn-26285657_8
-    % $ROW 9:           rnn-26285656_9       rnn-26285657_9
+    % $ROW Mean:           rnn-26285656_1       rnn-26285657_1
+    % $ROW Max:           rnn-26285656_2       rnn-26285657_2
+    % $ROW Attn:           rnn-26285656_3       rnn-26285657_3
+    % $ROW +POS Mean:           rnn-26285656_4       rnn-26285657_4
+    % $ROW +POS Max:           rnn-26285656_5       rnn-26285657_5
+    % $ROW +POS Attn:           rnn-26285656_6       rnn-26285657_6
+    % $ROW Mix Mean:           rnn-26285656_7       rnn-26285657_7
+    % $ROW Mix Max:           rnn-26285656_8       rnn-26285657_8
+    % $ROW Mix Attn:           rnn-26285656_9       rnn-26285657_9
     % \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
-    % $ROW 10:          rnn-26285656_10      rnn-26285657_10
-    % $ROW 11:          rnn-26285656_11      rnn-26285657_11
-    % $ROW 12:          rnn-26285656_12      rnn-26285657_12
-    % $ROW 13:          rnn-26285656_13      rnn-26285657_13
-    % $ROW 14:          rnn-26285656_14      rnn-26285657_14
-    % $ROW 15:          rnn-26285656_15      rnn-26285657_15
-    % $ROW 16:          rnn-26285656_16      rnn-26285657_16
-    % $ROW 17:          rnn-26285656_17      rnn-26285657_17
-    % $ROW 18:          rnn-26285656_18      rnn-26285657_18
+    % $ROW Mean:          rnn-26285656_10      rnn-26285657_10
+    % $ROW Max:          rnn-26285656_11      rnn-26285657_11
+    % $ROW Attn:          rnn-26285656_12      rnn-26285657_12
+    % $ROW +POS Mean:          rnn-26285656_13      rnn-26285657_13
+    % $ROW +POS Max:          rnn-26285656_14      rnn-26285657_14
+    % $ROW +POS Attn:          rnn-26285656_15      rnn-26285657_15
+    % $ROW Mix Mean:          rnn-26285656_16      rnn-26285657_16
+    % $ROW Mix Max:          rnn-26285656_17      rnn-26285657_17
+    % $ROW Mix Attn:          rnn-26285656_18      rnn-26285657_18
     % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
-    % $ROW 19:          rnn-26285656_19      rnn-26285657_19
-    % $ROW 20:          rnn-26285656_20      rnn-26285657_20
-    % $ROW 21:          rnn-26285656_21      rnn-26285657_21
-    % $ROW 22:          rnn-26285656_22      rnn-26285657_22
-    % $ROW 23:          rnn-26285656_23      rnn-26285657_23
-    % $ROW 24:          rnn-26285656_24      rnn-26285657_24
-    % $ROW 25:          rnn-26285656_25      rnn-26285657_25
-    % $ROW 26:          rnn-26285656_26      rnn-26285657_26
-    % $ROW 27:          rnn-26285656_27      rnn-26285657_27
+    % %$ROW Mean:          rnn-26287008_19      rnn-26287009_19
+    % %$ROW Max:          rnn-26287008_20      rnn-26287009_20
+    % %$ROW Attn:          rnn-26287008_21      rnn-26287009_21
+    % %$ROW +POS Mean:          rnn-26287008_22      rnn-26287009_22
+    % %$ROW +POS Max:          rnn-26287008_23      rnn-26287009_23
+    % %$ROW +POS Attn:          rnn-26287008_24      rnn-26287009_24
     % \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
-    % $ROW 28:          rnn-26285656_28      rnn-26285657_28
-    % $ROW 29:          rnn-26285656_29      rnn-26285657_29
-    % $ROW 30:          rnn-26285656_30      rnn-26285657_30
-    % $ROW 31:          rnn-26285656_31      rnn-26285657_31
-    % $ROW 32:          rnn-26285656_32      rnn-26285657_32
-    % $ROW 33:          rnn-26285656_33      rnn-26285657_33
-    % $ROW 34:          rnn-26285656_34      rnn-26285657_34
-    % $ROW 35:          rnn-26285656_35      rnn-26285657_35
-    % $ROW 36:          rnn-26285656_36      rnn-26285657_36
+    % %$ROW Mean:          rnn-26287008_25      rnn-26287009_25
+    % %$ROW Max:          rnn-26287008_26      rnn-26287009_26
+    % %$ROW Attn:          rnn-26287008_27      rnn-26287009_27
+    % %$ROW +POS Mean:          rnn-26287008_28      rnn-26287009_28
+    % %$ROW +POS Max:          rnn-26287008_29      rnn-26287009_29
+    % %$ROW +POS Attn:          rnn-26287008_30      rnn-26287009_30
     % $END autotable
+    Mean & $0.293$ & $0.431$ & $0.433$ & $0.650$ \\
+    Max & $0.301$ & $0.325$ & $\mathbf{0.668}$ & $0.732$ \\
+    Attn & $0.307$ & $0.439$ & $0.536$ & $\mathbf{0.789}$ \\
+    +POS Mean & $0.277$ & $0.407$ & $0.445$ & $0.683$ \\
+    +POS Max & $0.344$ & $0.366$ & $0.439$ & $0.650$ \\
+    +POS Attn & $0.308$ & $\mathbf{0.463}$ & $0.535$ & $0.772$ \\
+    Mix Mean & $0.241$ & $0.398$ & $0.398$ & $0.593$ \\
+    Mix Max & $0.272$ & $0.415$ & $0.445$ & $0.707$ \\
+    Mix Attn & $0.242$ & $0.431$ & $0.498$ & $0.724$ \\
+    \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
+    Mean & $0.301$ & $0.398$ & $0.473$ & $0.675$ \\
+    Max & $0.278$ & $0.301$ & $0.612$ & $0.707$ \\
+    Attn & $0.334$ & $0.439$ & $0.492$ & $0.780$ \\
+    +POS Mean & $0.281$ & $0.398$ & $0.492$ & $0.683$ \\
+    +POS Max & $0.318$ & $0.382$ & $0.448$ & $0.667$ \\
+    +POS Attn & $\mathbf{0.366}$ & $0.390$ & $0.521$ & $0.740$ \\
+    Mix Mean & $0.250$ & $0.358$ & $0.416$ & $0.626$ \\
+    Mix Max & $0.259$ & $0.407$ & $0.442$ & $0.683$ \\
+    Mix Attn & $0.315$ & $0.415$ & $0.510$ & $0.618$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of GRU classifiers on AES}
@@ -493,6 +520,15 @@ attention model that was best, but a bidirectional LSTM.
   \label{tab:rnn-nli-results}
 \end{table}
 
+
+\section{Visualization}
+
+We attempt to use different visualization methods in order to extract
+insights about the workings of our models.
+
+
+\subsection{Attention}
+
 The attention model allows us to visualize the weights the network gives to
 each token in a document. In figures
 \ref{fig:h0186-nli-attention}--\ref{fig:s0621-nli-attention} we see up to 300
@@ -504,7 +540,23 @@ special token ``UNK''. The attention values do not seem easily interpretable,
 as there are lexical and grammatical errors both in the red and the blue
 sections.
 
-Looking for cues as to what features are picked up by the model. \todo{expand analysis}
+In the text by an English speaker (fig. \ref{fig:h0189-nli-attention}), one
+of the words in a red segment is ``diet'', which the English version of the
+intended word (`diett' in Norwegian). The similarity of the words may be a
+reason that the writer chose a native form. This is an example of a mistake
+that could reveal the writer's \ac{L1}. However, even though this word is
+part of a red segment (high attention values), it is not at all certain that
+the model actually used it as a clue. The model does not have access to an
+English dictionary, so unless the substitution of this very word was a common
+pattern among English speakers among our texts, it would have no way to know
+that it is actually an English word. Second, `diet' is actually a word form
+in Norwegian, meaning `suckle.\textsc{past}'. This is of course a word that
+does not fit the context at all.
+
+In the Vietnamese speaker's text (fig. \ref{fig:s0180-nli-attention}), the
+word Vietnam appears three times. Two of the occurrences are in high-attention
+segments. This should be a very informative word, as it is likely that when
+someone mentions a country in this context, it is their country of origin.
 
 \begin{figure}
   \centering
@@ -540,7 +592,7 @@ Looking for cues as to what features are picked up by the model. \todo{expand an
 \todo{Visualize UPOS tags}
 
 
-\section{Visualization of latent space}
+\subsection{Latent space}
 
 We can use dimensionality reduction methods such as $t$-SNE in order to see
 if the intermediate representation of documents prior to the final
