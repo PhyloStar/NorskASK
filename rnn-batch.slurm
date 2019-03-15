@@ -38,7 +38,7 @@ chkfile "results" "models"
 cmd="python -m masterthesis.models.rnn"
 
 embdim50="--vectors models/vectors/127-small.pkl"
-embdim100="--vectors models/vectors/127-small.pkl"
+embdim100="--vectors models/vectors/120-small.pkl"
 
 case $SLURM_ARRAY_TASK_ID in
 	1) args="--pool-method mean" ;;
@@ -67,19 +67,13 @@ case $SLURM_ARRAY_TASK_ID in
 	22) args="$embdim100 --include-pos --pool-method mean" ;;
 	23) args="$embdim100 --include-pos --pool-method max" ;;
 	24) args="$embdim100 --include-pos --pool-method attention" ;;
-	25) args="$embdim100 --mixed-pos --pool-method mean" ;;
-	26) args="$embdim100 --mixed-pos --pool-method max" ;;
-	27) args="$embdim100 --mixed-pos --pool-method attention" ;;
 
-	28) args="$embdim100 --bidirectional --pool-method mean" ;;
-	29) args="$embdim100 --bidirectional --pool-method max" ;;
-	30) args="$embdim100 --bidirectional --pool-method attention" ;;
-	31) args="$embdim100 --bidirectional --include-pos --pool-method mean" ;;
-	32) args="$embdim100 --bidirectional --include-pos --pool-method max" ;;
-	33) args="$embdim100 --bidirectional --include-pos --pool-method attention" ;;
-	34) args="$embdim100 --bidirectional --mixed-pos --pool-method mean" ;;
-	35) args="$embdim100 --bidirectional --mixed-pos --pool-method max" ;;
-	36) args="$embdim100 --bidirectional --mixed-pos --pool-method attention" ;;
+	25) args="$embdim100 --bidirectional --pool-method mean" ;;
+	26) args="$embdim100 --bidirectional --pool-method max" ;;
+	27) args="$embdim100 --bidirectional --pool-method attention" ;;
+	28) args="$embdim100 --bidirectional --include-pos --pool-method mean" ;;
+	29) args="$embdim100 --bidirectional --include-pos --pool-method max" ;;
+	30) args="$embdim100 --bidirectional --include-pos --pool-method attention" ;;
 
 	# Run script with arguments if not an array job
 	'') args="" ;;

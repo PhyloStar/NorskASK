@@ -297,11 +297,9 @@ tokens in our training set that occur at least 5 times.
 
 \subsection{Results}
 
-Results for four different models are shown in table \ref{tab:rnn-results}.
-Except where noted, hyperparameters match \textcite{taghipour16}. The
-\emph{Attention} models do not use masking, while \emph{Mean/Time} and
-\emph{BiLSTM} do. \todo{Always use pre-trained embeddings when repeating the
-experiments?}
+The RNN results are split into two tables. Table \ref{tab:lstm-results} contains
+the results for models with \ac{LSTM} cells, while table \ref{tab:gru-results}
+contains the results for models with \ac{GRU} cells.
 
 \begin{table}
   \centering
@@ -314,73 +312,111 @@ experiments?}
     \midrule
               \multicolumn{5}{c}{50 dimensional, randomly initialized embeddings} \\
     \midrule
-    % $BEGIN autotable rnn-results
+    % $BEGIN autotable lstm-results
     % $META models-per-row=2 columns-per-model=macrof1,microf1
-    % $ROW Mean/Time:          taghipour_ng-2019-01-15_20-50-06      taghipour_ng-2019-01-15_20-46-42
-    % $ROW BiLSTM   :          taghipour_ng-2019-01-22_12-58-00      taghipour_ng-2019-01-22_13-01-44
-    % $ROW Attention:          rnn-25832764                          rnn-25832765
-    % \midrule
-    % \multicolumn{5}{c}{50 dimensional, pre-trained embeddings, w/ fine tuning} \\
-    % \midrule
-    % $ROW Mean/Time:          rnn-25832746                          rnn-25832747
-    % $ROW BiLSTM   :          rnn-25832748                          rnn-25832749
-    % $ROW Attention:          taghipour_ng-2019-01-24_19-16-41      taghipour_ng-2019-01-24_21-23-34
-    % \midrule
-    % \multicolumn{5}{c}{100 dimensional, pre-trained embeddings, w/ fine tuning} \\
-    % \midrule
-    % $ROW Mean/Time:          rnn-25832716                          rnn-25832717
-    % $ROW BiLSTM   :          rnn-25831870                          rnn-25831871
-    % $ROW Attention:          rnn-25832718                          rnn-25832719
-    % \midrule
-    % \multicolumn{5}{c}{GRU cells with attention} \\
-    % \midrule
-    % $ROW Rnd. init:          rnn-25858207                          rnn-25858208
-    % $ROW Pre train:          rnn-25858209                          rnn-25858211
-    % \midrule
-    % \multicolumn{5}{c}{LSTM + Attention with pre-trained, static embeddings} \\
-    % \midrule
-    % $ROW 50 dim   :          rnn-25858349                          rnn-25858350
-    % $ROW 100 dim  :          rnn-25858483                          rnn-25858494
-    % \midrule
-    % \multicolumn{5}{c}{POS included with input} \\
-    % \midrule
-    % $ROW Rnd. init:          rnn-25985449                          rnn-25985450
-    % $ROW Pre train:          rnn-25985451                          rnn-25985452
+    % $ROW 1:           rnn-26285652_1       rnn-26285653_1
+    % $ROW 2:           rnn-26285652_2       rnn-26285653_2
+    % $ROW 3:           rnn-26285652_3       rnn-26285653_3
+    % $ROW 4:           rnn-26285652_4       rnn-26285653_4
+    % $ROW 5:           rnn-26285652_5       rnn-26285653_5
+    % $ROW 6:           rnn-26285652_6       rnn-26285653_6
+    % $ROW 7:           rnn-26285652_7       rnn-26285653_7
+    % $ROW 8:           rnn-26285652_8       rnn-26285653_8
+    % $ROW 9:           rnn-26285652_9       rnn-26285653_9
+    % \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
+    % $ROW 10:          rnn-26285652_10      rnn-26285653_10
+    % $ROW 11:          rnn-26285652_11      rnn-26285653_11
+    % $ROW 12:          rnn-26285652_12      rnn-26285653_12
+    % $ROW 13:          rnn-26285652_13      rnn-26285653_13
+    % $ROW 14:          rnn-26285652_14      rnn-26285653_14
+    % $ROW 15:          rnn-26285652_15      rnn-26285653_15
+    % $ROW 16:          rnn-26285652_16      rnn-26285653_16
+    % $ROW 17:          rnn-26285652_17      rnn-26285653_17
+    % $ROW 18:          rnn-26285652_18      rnn-26285653_18
+    % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
+    % $ROW 19:          rnn-26285652_19      rnn-26285653_19
+    % $ROW 20:          rnn-26285652_20      rnn-26285653_20
+    % $ROW 21:          rnn-26285652_21      rnn-26285653_21
+    % $ROW 22:          rnn-26285652_22      rnn-26285653_22
+    % $ROW 23:          rnn-26285652_23      rnn-26285653_23
+    % $ROW 24:          rnn-26285652_24      rnn-26285653_24
+    % $ROW 25:          rnn-26285652_25      rnn-26285653_25
+    % $ROW 26:          rnn-26285652_26      rnn-26285653_26
+    % $ROW 27:          rnn-26285652_27      rnn-26285653_27
+    % \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
+    % $ROW 28:          rnn-26285652_28      rnn-26285653_28
+    % $ROW 29:          rnn-26285652_29      rnn-26285653_29
+    % $ROW 30:          rnn-26285652_30      rnn-26285653_30
+    % $ROW 31:          rnn-26285652_31      rnn-26285653_31
+    % $ROW 32:          rnn-26285652_32      rnn-26285653_32
+    % $ROW 33:          rnn-26285652_33      rnn-26285653_33
+    % $ROW 34:          rnn-26285652_34      rnn-26285653_34
+    % $ROW 35:          rnn-26285652_35      rnn-26285653_35
+    % $ROW 36:          rnn-26285652_36      rnn-26285653_36
     % $END autotable
-    Mean/Time & $0.280$ & $0.382$ & $0.461$ & $0.699$ \\
-    BiLSTM & $0.286$ & $0.398$ & $0.485$ & $0.683$ \\
-    Attention & $0.244$ & $0.423$ & $0.559$ & $0.780$ \\
-    \midrule
-    \multicolumn{5}{c}{50 dimensional, pre-trained embeddings, w/ fine tuning} \\
-    \midrule
-    Mean/Time & $0.285$ & $0.415$ & $0.466$ & $0.659$ \\
-    BiLSTM & $0.257$ & $0.374$ & $0.447$ & $0.691$ \\
-    Attention & $0.303$ & $0.423$ & $0.558$ & $\mathbf{0.805}$ \\
-    \midrule
-    \multicolumn{5}{c}{100 dimensional, pre-trained embeddings, w/ fine tuning} \\
-    \midrule
-    Mean/Time & $0.271$ & $0.390$ & $0.496$ & $0.724$ \\
-    BiLSTM & $0.301$ & $0.350$ & $0.456$ & $0.683$ \\
-    Attention & $0.288$ & $0.398$ & $0.538$ & $0.797$ \\
-    \midrule
-    \multicolumn{5}{c}{GRU cells with attention} \\
-    \midrule
-    Rnd. init & $0.299$ & $0.431$ & $0.533$ & $0.764$ \\
-    Pre train & $\mathbf{0.354}$ & $0.390$ & $0.493$ & $0.724$ \\
-    \midrule
-    \multicolumn{5}{c}{LSTM + Attention with pre-trained, static embeddings} \\
-    \midrule
-    50 dim & $0.261$ & $\mathbf{0.488}$ & $0.511$ & $0.772$ \\
-    100 dim & $0.271$ & $0.472$ & $0.491$ & $0.707$ \\
-    \midrule
-    \multicolumn{5}{c}{POS included with input} \\
-    \midrule
-    Rnd. init & $0.261$ & $0.366$ & $0.552$ & $0.780$ \\
-    Pre train & $0.277$ & $0.407$ & $\mathbf{0.624}$ & $0.756$ \\
     \bottomrule
   \end{tabular}
-  \caption{\FI scores of RNN classifiers on AES}
-  \label{tab:rnn-results}
+  \caption{\FI scores of LSTM classifiers on AES}
+  \label{tab:lstm-results}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrrr}
+    \toprule
+            & \multicolumn{2}{c}{All labels} & \multicolumn{2}{c}{Collapsed labels} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
+    \midrule
+              \multicolumn{5}{c}{50 dimensional, randomly initialized embeddings} \\
+    \midrule
+    % $BEGIN autotable gru-results
+    % $META models-per-row=2 columns-per-model=macrof1,microf1
+    % $ROW 1:           rnn-26285656_1       rnn-26285657_1
+    % $ROW 2:           rnn-26285656_2       rnn-26285657_2
+    % $ROW 3:           rnn-26285656_3       rnn-26285657_3
+    % $ROW 4:           rnn-26285656_4       rnn-26285657_4
+    % $ROW 5:           rnn-26285656_5       rnn-26285657_5
+    % $ROW 6:           rnn-26285656_6       rnn-26285657_6
+    % $ROW 7:           rnn-26285656_7       rnn-26285657_7
+    % $ROW 8:           rnn-26285656_8       rnn-26285657_8
+    % $ROW 9:           rnn-26285656_9       rnn-26285657_9
+    % \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
+    % $ROW 10:          rnn-26285656_10      rnn-26285657_10
+    % $ROW 11:          rnn-26285656_11      rnn-26285657_11
+    % $ROW 12:          rnn-26285656_12      rnn-26285657_12
+    % $ROW 13:          rnn-26285656_13      rnn-26285657_13
+    % $ROW 14:          rnn-26285656_14      rnn-26285657_14
+    % $ROW 15:          rnn-26285656_15      rnn-26285657_15
+    % $ROW 16:          rnn-26285656_16      rnn-26285657_16
+    % $ROW 17:          rnn-26285656_17      rnn-26285657_17
+    % $ROW 18:          rnn-26285656_18      rnn-26285657_18
+    % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
+    % $ROW 19:          rnn-26285656_19      rnn-26285657_19
+    % $ROW 20:          rnn-26285656_20      rnn-26285657_20
+    % $ROW 21:          rnn-26285656_21      rnn-26285657_21
+    % $ROW 22:          rnn-26285656_22      rnn-26285657_22
+    % $ROW 23:          rnn-26285656_23      rnn-26285657_23
+    % $ROW 24:          rnn-26285656_24      rnn-26285657_24
+    % $ROW 25:          rnn-26285656_25      rnn-26285657_25
+    % $ROW 26:          rnn-26285656_26      rnn-26285657_26
+    % $ROW 27:          rnn-26285656_27      rnn-26285657_27
+    % \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
+    % $ROW 28:          rnn-26285656_28      rnn-26285657_28
+    % $ROW 29:          rnn-26285656_29      rnn-26285657_29
+    % $ROW 30:          rnn-26285656_30      rnn-26285657_30
+    % $ROW 31:          rnn-26285656_31      rnn-26285657_31
+    % $ROW 32:          rnn-26285656_32      rnn-26285657_32
+    % $ROW 33:          rnn-26285656_33      rnn-26285657_33
+    % $ROW 34:          rnn-26285656_34      rnn-26285657_34
+    % $ROW 35:          rnn-26285656_35      rnn-26285657_35
+    % $ROW 36:          rnn-26285656_36      rnn-26285657_36
+    % $END autotable
+    \bottomrule
+  \end{tabular}
+  \caption{\FI scores of GRU classifiers on AES}
+  \label{tab:gru-results}
 \end{table}
 
 We find that the best performing models all use the attention mechanism.
