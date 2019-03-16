@@ -335,25 +335,25 @@ is not applicable when using pre-trained embeddings.
     % $ROW Mix Max:     rnn-26285652_17      rnn-26285653_17
     % $ROW Mix Attn:    rnn-26285652_18      rnn-26285653_18
     % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
-    % %$ROW Mean:       rnn-26287006_19      rnn-26287007_19
-    % %$ROW Max:        rnn-26287006_20      rnn-26287007_20
-    % %$ROW Attn:       rnn-26287006_21      rnn-26287007_21
-    % %$ROW +POS Mean:  rnn-26287006_22      rnn-26287007_22
-    % %$ROW +POS Max:   rnn-26287006_23      rnn-26287007_23
-    % %$ROW +POS Attn:  rnn-26287006_24      rnn-26287007_24
+    % $ROW Mean:       rnn-26287006_19      rnn-26287007_19
+    % $ROW Max:        rnn-26287006_20      rnn-26287007_20
+    % $ROW Attn:       rnn-26287006_21      rnn-26287007_21
+    % $ROW +POS Mean:  rnn-26287006_22      rnn-26287007_22
+    % $ROW +POS Max:   rnn-26287006_23      rnn-26287007_23
+    % $ROW +POS Attn:  rnn-26287006_24      rnn-26287007_24
     % \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
-    % %$ROW Mean:          rnn-26287006_25      rnn-26287007_25
-    % %$ROW Max:          rnn-26287006_26      rnn-26287007_26
-    % %$ROW Attn:          rnn-26287006_27      rnn-26287007_27
-    % %$ROW +POS Mean:          rnn-26287006_28      rnn-26287007_28
-    % %$ROW +POS Max:          rnn-26287006_29      rnn-26287007_29
-    % %$ROW +POS Attn:          rnn-26287006_30      rnn-26287007_30
+    % $ROW Mean:          rnn-26287006_25      rnn-26287007_25
+    % $ROW Max:          rnn-26287006_26      rnn-26287007_26
+    % $ROW Attn:          rnn-26287006_27      rnn-26287007_27
+    % $ROW +POS Mean:          rnn-26287006_28      rnn-26287007_28
+    % $ROW +POS Max:          rnn-26287006_29      rnn-26287007_29
+    % $ROW +POS Attn:          rnn-26287006_30      rnn-26287007_30
     % $END autotable
     Mean & $0.265$ & $0.382$ & $0.455$ & $0.675$ \\
     Max & $0.301$ & $0.366$ & $0.562$ & $0.577$ \\
     Attn & $0.240$ & $0.358$ & $0.651$ & $0.748$ \\
     +POS Mean & $0.311$ & $0.415$ & $0.458$ & $0.691$ \\
-    +POS Max & $\mathbf{0.362}$ & $0.374$ & $0.449$ & $0.659$ \\
+    +POS Max & $0.362$ & $0.374$ & $0.449$ & $0.659$ \\
     +POS Attn & $0.258$ & $0.374$ & $0.527$ & $0.756$ \\
     Mix Mean & $0.220$ & $0.333$ & $0.384$ & $0.634$ \\
     Mix Max & $0.221$ & $0.374$ & $0.420$ & $0.650$ \\
@@ -368,6 +368,20 @@ is not applicable when using pre-trained embeddings.
     Mix Mean & $0.215$ & $0.341$ & $0.414$ & $0.634$ \\
     Mix Max & $0.242$ & $0.366$ & $0.465$ & $0.675$ \\
     Mix Attn & $0.267$ & $0.390$ & $0.480$ & $0.740$ \\
+    \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
+    Mean & $0.291$ & $0.415$ & $0.469$ & $0.675$ \\
+    Max & $0.334$ & $0.398$ & $0.450$ & $0.659$ \\
+    Attn & $0.358$ & $0.325$ & $0.660$ & $0.732$ \\
+    +POS Mean & $0.302$ & $0.423$ & $0.462$ & $0.699$ \\
+    +POS Max & $0.353$ & $0.431$ & $0.615$ & $0.732$ \\
+    +POS Attn & $0.325$ & $0.415$ & $0.595$ & $0.732$ \\
+    \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
+    Mean & $0.270$ & $0.366$ & $0.464$ & $0.675$ \\
+    Max & $0.357$ & $0.350$ & $0.495$ & $0.748$ \\
+    Attn & $\mathbf{0.392}$ & $0.350$ & $0.584$ & $0.707$ \\
+    +POS Mean & $0.263$ & $0.341$ & $0.472$ & $0.650$ \\
+    +POS Max & $0.353$ & $0.455$ & $0.495$ & $0.740$ \\
+    +POS Attn & $0.297$ & $0.439$ & $0.637$ & $\mathbf{0.772}$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of LSTM classifiers on AES}
@@ -407,26 +421,26 @@ is not applicable when using pre-trained embeddings.
     % $ROW Mix Max:          rnn-26285656_17      rnn-26285657_17
     % $ROW Mix Attn:          rnn-26285656_18      rnn-26285657_18
     % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
-    % %$ROW Mean:          rnn-26287008_19      rnn-26287009_19
-    % %$ROW Max:          rnn-26287008_20      rnn-26287009_20
-    % %$ROW Attn:          rnn-26287008_21      rnn-26287009_21
-    % %$ROW +POS Mean:          rnn-26287008_22      rnn-26287009_22
-    % %$ROW +POS Max:          rnn-26287008_23      rnn-26287009_23
-    % %$ROW +POS Attn:          rnn-26287008_24      rnn-26287009_24
+    % $ROW Mean:          rnn-26287008_19      rnn-26287009_19
+    % $ROW Max:          rnn-26287008_20      rnn-26287009_20
+    % $ROW Attn:          rnn-26287008_21      rnn-26287009_21
+    % $ROW +POS Mean:          rnn-26287008_22      rnn-26287009_22
+    % $ROW +POS Max:          rnn-26287008_23      rnn-26287009_23
+    % $ROW +POS Attn:          rnn-26287008_24      rnn-26287009_24
     % \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
-    % %$ROW Mean:          rnn-26287008_25      rnn-26287009_25
-    % %$ROW Max:          rnn-26287008_26      rnn-26287009_26
-    % %$ROW Attn:          rnn-26287008_27      rnn-26287009_27
-    % %$ROW +POS Mean:          rnn-26287008_28      rnn-26287009_28
-    % %$ROW +POS Max:          rnn-26287008_29      rnn-26287009_29
-    % %$ROW +POS Attn:          rnn-26287008_30      rnn-26287009_30
+    % $ROW Mean:          rnn-26287008_25      rnn-26287009_25
+    % $ROW Max:          rnn-26287008_26      rnn-26287009_26
+    % $ROW Attn:          rnn-26287008_27      rnn-26287009_27
+    % $ROW +POS Mean:          rnn-26287008_28      rnn-26287009_28
+    % $ROW +POS Max:          rnn-26287008_29      rnn-26287009_29
+    % $ROW +POS Attn:          rnn-26287008_30      rnn-26287009_30
     % $END autotable
     Mean & $0.293$ & $0.431$ & $0.433$ & $0.650$ \\
     Max & $0.301$ & $0.325$ & $\mathbf{0.668}$ & $0.732$ \\
-    Attn & $0.307$ & $0.439$ & $0.536$ & $\mathbf{0.789}$ \\
+    Attn & $0.307$ & $0.439$ & $0.536$ & $0.789$ \\
     +POS Mean & $0.277$ & $0.407$ & $0.445$ & $0.683$ \\
     +POS Max & $0.344$ & $0.366$ & $0.439$ & $0.650$ \\
-    +POS Attn & $0.308$ & $\mathbf{0.463}$ & $0.535$ & $0.772$ \\
+    +POS Attn & $0.308$ & $0.463$ & $0.535$ & $0.772$ \\
     Mix Mean & $0.241$ & $0.398$ & $0.398$ & $0.593$ \\
     Mix Max & $0.272$ & $0.415$ & $0.445$ & $0.707$ \\
     Mix Attn & $0.242$ & $0.431$ & $0.498$ & $0.724$ \\
@@ -436,10 +450,24 @@ is not applicable when using pre-trained embeddings.
     Attn & $0.334$ & $0.439$ & $0.492$ & $0.780$ \\
     +POS Mean & $0.281$ & $0.398$ & $0.492$ & $0.683$ \\
     +POS Max & $0.318$ & $0.382$ & $0.448$ & $0.667$ \\
-    +POS Attn & $\mathbf{0.366}$ & $0.390$ & $0.521$ & $0.740$ \\
+    +POS Attn & $0.366$ & $0.390$ & $0.521$ & $0.740$ \\
     Mix Mean & $0.250$ & $0.358$ & $0.416$ & $0.626$ \\
     Mix Max & $0.259$ & $0.407$ & $0.442$ & $0.683$ \\
     Mix Attn & $0.315$ & $0.415$ & $0.510$ & $0.618$ \\
+    \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
+    Mean & $0.240$ & $0.374$ & $0.462$ & $0.699$ \\
+    Max & $0.274$ & $0.382$ & $0.439$ & $0.715$ \\
+    Attn & $0.281$ & $0.439$ & $0.524$ & $0.772$ \\
+    +POS Mean & $0.271$ & $0.358$ & $0.446$ & $0.699$ \\
+    +POS Max & $\mathbf{0.406}$ & $0.407$ & $0.449$ & $0.691$ \\
+    +POS Attn & $0.300$ & $0.439$ & $0.509$ & $0.732$ \\
+    \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
+    Mean & $0.293$ & $0.350$ & $0.482$ & $0.715$ \\
+    Max & $0.253$ & $0.382$ & $0.460$ & $0.659$ \\
+    Attn & $0.345$ & $\mathbf{0.496}$ & $0.543$ & $\mathbf{0.797}$ \\
+    +POS Mean & $0.304$ & $0.333$ & $0.459$ & $0.675$ \\
+    +POS Max & $0.271$ & $0.366$ & $0.480$ & $0.650$ \\
+    +POS Attn & $0.321$ & $0.415$ & $0.513$ & $0.756$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of GRU classifiers on AES}
