@@ -35,11 +35,12 @@ tokens. These values are all close to each other, and we decided to settle on
 700 tokens since it is a round number close to all values we examined.
 
 As a consequence of the unequal distributions of length between the two test
-levels, the documents that are truncated are mainly from the AL test. This
-could be problematic if the 
-
-
-\subsection{Pre-trained embeddings}
+levels, the documents that are truncated are mainly from the AL test. It is
+not optimal that this truncation only happens to documents from one test level
+when the two test levels are seen to have different distributions of the
+classes we predict. But even if truncation did not happen, a model might be
+able to discern the test levels just by document length, since we do not hide
+the document length from the model. \todo{rewrite}
 
 We experimented with randomly initialized word embedding vectors trained from
 scratch, as well as initializing the vectors with pre-trained embeddings.
@@ -184,7 +185,7 @@ maximum $L_2$ norm of 3.
     \includegraphics{cnn-confusion}
     \caption{Confusion matrix on validation set, raw counts and normalized.}
   \end{subfigure}
-  \caption{CNN with UPOS as side input, using pre-trained, static embedings.}
+  \caption{CNN with UPOS as side input, using pre-trained, static embeddings.}
   \label{fig:cnn-training}
 \end{figure}
 
@@ -250,7 +251,7 @@ than the sigmoid function.
 We also experimented with a different type of gated \ac{RNN} cell, the
 \ac{GRU}. This variant of \ac{RNN} is slightly simpler than the \ac{LSTM},
 featuring only two gates. However, it is still designed to be able to
-propagate the error gradient over a larger number of timesteps, like
+propagate the error gradient over a larger number of time steps, like
 \ac{LSTM}. In this way the architecture is supposed to mitigate the problem
 of vanishing or exploding gradients. The equations defining \ac{LSTM}
 \ac{GRU} cells are listed in chapter \ref{ch:background}, equations
@@ -259,33 +260,32 @@ of vanishing or exploding gradients. The equations defining \ac{LSTM}
 
 \subsection{Variants}
 
-We attempt two different methods of combining the sequence of hidden states
+We attempt three different methods of combining the sequence of hidden states
 from the \ac{RNN} into a feature vector. The simplest approach is \emph{mean
-over time}, where we use the elementwise average of elements in hidden states
-across the time dimension as our feature vector. The mean over time layer is
-used in two of the experiments. Once with a \ac{RNN} processing the essay
-from top to bottom, and once on top of a bidirectional RNN.
+over time}, where we use as our feature vector the element-wise average of
+hidden states across the time dimension.
 
 The bidirectional model (BiRNN) is constructed by running two \acp{RNN} over
 the same input, but in the opposite order. The output from the BiRNN layer is
-a sequence of vectors where, for each timestep $j$, the vector is the
-concatenation of two vectors $[s_f;s_b]$ where $s_f$ at timestep $j$ is the
+a sequence of vectors where, for each time step $j$, the vector is the
+concatenation of two vectors $[s_f;s_b]$ where $s_f$ at time step $j$ is the
 output from the forwards \ac{RNN} after processing the inputs $(x_1, x_2,
 \ldots, x_j)$ and $s_b$ the output from the backwards \ac{RNN} after
 processing the inputs $(x_m, x_{m-1}, \ldots, x_j)$, where $m$ is the total
-number of timesteps. The BiRNN should therefore be able to extract context on
-both sides of a input timestep.
+number of time steps. The BiRNN should therefore be able to extract context on
+both sides of a input time step.
 
-\todo{Mean of the final state}
+The second method is similar to the first, except that the averaging operation
+is replaced by a max operation. We refer to this as the \emph{max over time}.
 
-The other method is an attention layer, which differs from the mean over
-time layer in that timesteps are weighted by an attention mechanism: a
-single-layer neural network computes a value between -1 and 1 for each
-timestep. These values are normalized by a softmax layer and then used to
-compute the weighted average. Since each timestep contributes to the final
+The final method is an attention layer, which differs from the mean over
+time layer in that time steps are weighted by an attention mechanism: a
+single-layer neural network computes a value between -1 and 1 for eac
+time step. These values are normalized by a softmax layer and then used to
+compute the weighted average. Since each time step contributes to the final
 representation in differing amounts, the mechanism should be able in theory
 to focus on crucial information by choosing weights such as to disregard
-uninformative timesteps, improving performance. The attention mechanism is
+uninformative time steps, improving performance. The attention mechanism is
 trained along with the rest of the network.
 
 All the models have a hidden state vector of size 300 in the \ac{RNN}. The
@@ -474,9 +474,16 @@ is not applicable when using pre-trained embeddings.
   \label{tab:gru-results}
 \end{table}
 
-We find that the best performing models all use the attention mechanism.
-Keep in mind that the stopping criterion is the macro \FI score, and thus
-the micro \FI score is to be considered a side effect of the macro \FI.
+
+We find that the best performing models all use the attention mechanism. Keep
+in mind that the stopping criterion is the macro \FI score, and thus the
+micro \FI score is to be considered a side effect of the macro \FI. In
+addition there is considerable variance in results between different training
+runs of the same model. It is therefore hard to select a single model as the
+clear winner. However, it is very unlikely that the best scores would all be
+from attention based models by mere chance, and it therefore seems reasonable
+to conclude that an attention model is a better choice for the task than mean
+over time and max over time.
 
 
 \subsection{Training behaviour}
@@ -561,7 +568,7 @@ The attention model allows us to visualize the weights the network gives to
 each token in a document. In figures
 \ref{fig:h0186-nli-attention}--\ref{fig:s0621-nli-attention} we see up to 300
 tokens of texts from four different documents in the dev set for which the L1
-was correctly predicted by an attention model. Red tokens indicate timesteps
+was correctly predicted by an attention model. Red tokens indicate time steps
 that were given higher weight by the attention model, and blue tokens ones
 that were given low weights. Out of vocabulary tokens are replaced by the
 special token ``UNK''. The attention values do not seem easily interpretable,

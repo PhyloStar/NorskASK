@@ -36,3 +36,4 @@ thesis/Doc/
 
 *.egg-info/
 *.h5
+metrics.csv

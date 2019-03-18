@@ -96,6 +96,14 @@ def main():
     sns.heatmap(corr_matrix, center=0, mask=get_corr_mask(len(corr_matrix)), annot=True, fmt='.3f')
     plt.tight_layout()
     plt.show()
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    sns.regplot('macro F1', 'micro F1', data=lim_df, ax=ax1)
+    ax1.set_title('Pearson corr. = %.3f, p = %.4f'
+                  % pearsonr(lim_df['macro F1'], lim_df['micro F1']))
+    sns.regplot('macro F1', 'macro MAE', data=lim_df, ax=ax2)
+    ax2.set_title('Pearson corr. = %.3f, p = %.4f'
+                  % pearsonr(lim_df['macro F1'], lim_df['macro MAE']))
+    plt.show()
     print('\nTop Pearson:')
     print(lim_df.sort_values('pearson', ascending=False)
                 .loc[:, ['filename', 'pearson']]
@@ -118,6 +126,14 @@ def main():
     lim_df = df[df.n_class == 4].dropna()
     corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr()
     sns.heatmap(corr_matrix, center=0, mask=get_corr_mask(len(corr_matrix)), annot=True, fmt='.3f')
+    plt.show()
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    sns.regplot('macro F1', 'micro F1', data=lim_df, ax=ax1)
+    ax1.set_title('Pearson corr. = %.3f, p = %.4f'
+                  % pearsonr(lim_df['macro F1'], lim_df['micro F1']))
+    sns.regplot('macro F1', 'macro MAE', data=lim_df, ax=ax2)
+    ax2.set_title('Pearson corr. = %.3f, p = %.4f'
+                  % pearsonr(lim_df['macro F1'], lim_df['macro MAE']))
     plt.show()
     print('\nTop Pearson:')
     print(lim_df.sort_values('pearson', ascending=False)
