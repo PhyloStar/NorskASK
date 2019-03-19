@@ -20,6 +20,8 @@ performance across the board. The effect of the auxiliary task weight seems
 less clear on the micro \FI, but remember that in our setup, the micro \FI is
 a side effect of the highest macro \FI seen during training.
 
+\todo{embeddings 100 dim instead of 50?}
+
 \begin{table}
   \centering
   \begin{tabular}{lrrrr}
@@ -162,7 +164,9 @@ Spearman's ranked correlation coefficient ($0.768$).
 \section{Stability}
 
 By training the model several times with different random seeds, we can see
-how much the final results vary.
+how much the final results vary. Running 
+
+0.268 0.341
 
 
 \section{Correlation of metrics}

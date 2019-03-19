@@ -36,19 +36,23 @@ tokens. These values are all close to each other, and we decided to settle on
 
 As a consequence of the unequal distributions of length between the two test
 levels, the documents that are truncated are mainly from the AL test. It is
-not optimal that this truncation only happens to documents from one test level
-when the two test levels are seen to have different distributions of the
-classes we predict. But even if truncation did not happen, a model might be
-able to discern the test levels just by document length, since we do not hide
-the document length from the model. \todo{rewrite}
+not optimal that this truncation only happens to documents from one test
+level when the two test levels are seen to have different distributions of
+the classes we predict. But even if truncation did not happen, a model might
+be able to discern the test levels just by document length, since we do not
+hide the document length from the model. \todo{rewrite}
+
+
+\subsection{Pre-trained embeddings}
 
 We experimented with randomly initialized word embedding vectors trained from
-scratch, as well as initializing the vectors with pre-trained embeddings.
-We know that our corpus contains tokens with spelling mistakes, which are
-likely to be absent in any pre-trained vector model. We therefore sought out
+scratch, as well as initializing the vectors with pre-trained embeddings. We
+know that our corpus contains tokens with spelling mistakes, which are likely
+to be absent in any pre-trained vector model. We therefore sought out
 pre-trained models using the FastText algorithm, which lets us compute
-vectors for words that do not have separate entries in the model, basing
-the vector on the word's constituent character \ngrams.
+vectors even for words that do not have separate entries in the model, in
+which case the model creates a vector based on the word's constituent
+character \ngrams.
 
 In our case, we used a selection of models trained on a large Norwegian
 corpus, the combination of Norsk aviskorpus (The Norwegian Newspaper Corpus)
@@ -59,6 +63,12 @@ supercomputer cluster \autocite{murhaf2017repository}. We use three models
 trained on this corpus using the fastText algorithm, differing only in the
 dimension of embeddings. They were trained using skipgram and window size 5, 
 and lemmatization has not been applied to the corpora.
+
+We can superficially confirm the usefulness of fastText embeddings by looking
+at vector similarities. For instance, the token `kjokoladet' is a misspelt
+version of `sjokolade' (chocolate), and it is closest in the embedding space
+to `sjokolade'. Curiously, it is also closer to `potetgul' than `potetgull'
+(potato crisps), and the former is a misspelling.
 
 Our training data only contains 20,766 unique tokens, which is less than 1\%
 of the full vocabulary of the models. Loading the full pre-trained model
@@ -75,9 +85,18 @@ embeddings from any other model such as Word2vec, or even randomly
 initialized embeddings, since the FastText network is not incorporated into
 our models.
 
-When using pre-trained embeddings, we ran some experiments keeping the
-embeddings static, and in some other experiments we further fine-tuned the
-embeddings using training signals from the task.
+Two common variations on training a neural model with pre-trained word
+embeddings are using dynamic embeddings, where the embedding vectors are
+updated by gradient descent as part of training the entire network, and
+static embeddings, where the embedding vectors are kept constant while other
+weights in the network are updated. Additional variations are also found in
+literature, for example the multi-channel approach seen in
+\textcite{kim2014convolutional} where two embedding layers, one static and
+one dynamic, are run in parallel.
+
+We will use both static and dynamic embeddings in our experiments, but not in
+a multi-channel setup. For RNN experiments, we will limit our experiments to
+dynamic word embeddings only.
 
 
 \subsection{Multi-channel input}
@@ -91,8 +110,8 @@ use smaller vectors for POS tags.
 
 To create the input to the core part of our network, we concatenate the word
 and POS embeddings into a single vector. For instance, if we use word
-embeddings of size 50 and POS embeddings of size 10, the next layer will
-receive vectors of size 60.
+embeddings of size 100 and POS embeddings of size 10, the next layer will
+receive vectors of size 110.
 
 
 \section{Convolutional neural networks}
@@ -205,10 +224,10 @@ classes `A2', `B2/C1' and `C1', the smallest classes in the validation set.
 
 A \ac{LSTM} \ac{RNN} was implemented based on the architecture described in
 \textcite{taghipour16}. Several changes to their architecture were made in
-order to accommodate our data. For instance, \citeauthor{taghipour16} modelled
-the task as a regression problem, their output layer consisting of a single
-node with a value constrained to (0, 1) by the sigmoid function. This layer
-was replaced with a softmax layer similar to the \acp{MLP} in section
+order to accommodate our data. For instance, \citeauthor{taghipour16}
+modelled the task as a regression problem, their output layer consisting of a
+single node with a value constrained to $(0,1)$ by the sigmoid function. This
+layer was replaced with a softmax layer similar to the \acp{MLP} in section
 \ref{subsec:mlp}.
 
 We then chose a loss function to be compatible with a multi-class softmax
@@ -235,7 +254,7 @@ used, and the author utilized both multi-class prediction and regression at
 different points.
 
 The embedding layer in \textcite{taghipour16} was initialized with
-pre-trained embeddings of size 50. We experiment with different sizes of
+pre-trained embeddings of size 100. We experiment with different sizes of
 embeddings, as well as random vs. pre-trained initialization.
 
 Unlike our corpus, ASK, the ASAP dataset used by \citeauthor{taghipour16}
@@ -272,11 +291,12 @@ concatenation of two vectors $[s_f;s_b]$ where $s_f$ at time step $j$ is the
 output from the forwards \ac{RNN} after processing the inputs $(x_1, x_2,
 \ldots, x_j)$ and $s_b$ the output from the backwards \ac{RNN} after
 processing the inputs $(x_m, x_{m-1}, \ldots, x_j)$, where $m$ is the total
-number of time steps. The BiRNN should therefore be able to extract context on
-both sides of a input time step.
+number of time steps. The BiRNN should therefore be able to extract context
+on both sides of a input time step.
 
-The second method is similar to the first, except that the averaging operation
-is replaced by a max operation. We refer to this as the \emph{max over time}.
+The second method is similar to the first, except that the averaging
+operation is replaced by a max operation. We refer to this as the \emph{max
+over time}.
 
 The final method is an attention layer, which differs from the mean over
 time layer in that time steps are weighted by an attention mechanism: a
@@ -297,10 +317,10 @@ tokens in our training set that occur at least 5 times.
 
 \subsection{Results}
 
-The RNN results are split into two tables. Table \ref{tab:lstm-results} contains
-the results for models with \ac{LSTM} cells, while table \ref{tab:gru-results}
-contains the results for models with \ac{GRU} cells. The mixed input format
-is not applicable when using pre-trained embeddings.
+The RNN results are split into two tables. Table \ref{tab:lstm-results}
+contains the results for models with \ac{LSTM} cells, while table
+\ref{tab:gru-results} contains the results for models with \ac{GRU} cells.
+The mixed input format is not applicable when using pre-trained embeddings.
 
 \begin{table}
   \centering
@@ -335,19 +355,19 @@ is not applicable when using pre-trained embeddings.
     % $ROW Mix Max:     rnn-26285652_17      rnn-26285653_17
     % $ROW Mix Attn:    rnn-26285652_18      rnn-26285653_18
     % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
-    % $ROW Mean:       rnn-26287006_19      rnn-26287007_19
-    % $ROW Max:        rnn-26287006_20      rnn-26287007_20
-    % $ROW Attn:       rnn-26287006_21      rnn-26287007_21
-    % $ROW +POS Mean:  rnn-26287006_22      rnn-26287007_22
-    % $ROW +POS Max:   rnn-26287006_23      rnn-26287007_23
-    % $ROW +POS Attn:  rnn-26287006_24      rnn-26287007_24
+    % $ROW Mean:        rnn-26287006_19      rnn-26287007_19
+    % $ROW Max:         rnn-26287006_20      rnn-26287007_20
+    % $ROW Attn:        rnn-26287006_21      rnn-26287007_21
+    % $ROW +POS Mean:   rnn-26287006_22      rnn-26287007_22
+    % $ROW +POS Max:    rnn-26287006_23      rnn-26287007_23
+    % $ROW +POS Attn:   rnn-26287006_24      rnn-26287007_24
     % \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
-    % $ROW Mean:          rnn-26287006_25      rnn-26287007_25
-    % $ROW Max:          rnn-26287006_26      rnn-26287007_26
-    % $ROW Attn:          rnn-26287006_27      rnn-26287007_27
-    % $ROW +POS Mean:          rnn-26287006_28      rnn-26287007_28
-    % $ROW +POS Max:          rnn-26287006_29      rnn-26287007_29
-    % $ROW +POS Attn:          rnn-26287006_30      rnn-26287007_30
+    % $ROW Mean:        rnn-26287006_25      rnn-26287007_25
+    % $ROW Max:         rnn-26287006_26      rnn-26287007_26
+    % $ROW Attn:        rnn-26287006_27      rnn-26287007_27
+    % $ROW +POS Mean:   rnn-26287006_28      rnn-26287007_28
+    % $ROW +POS Max:    rnn-26287006_29      rnn-26287007_29
+    % $ROW +POS Attn:   rnn-26287006_30      rnn-26287007_30
     % $END autotable
     Mean & $0.265$ & $0.382$ & $0.455$ & $0.675$ \\
     Max & $0.301$ & $0.366$ & $0.562$ & $0.577$ \\
@@ -401,39 +421,39 @@ is not applicable when using pre-trained embeddings.
     \midrule
     % $BEGIN autotable gru-results
     % $META models-per-row=2 columns-per-model=macrof1,microf1
-    % $ROW Mean:           rnn-26285656_1       rnn-26285657_1
-    % $ROW Max:           rnn-26285656_2       rnn-26285657_2
-    % $ROW Attn:           rnn-26285656_3       rnn-26285657_3
-    % $ROW +POS Mean:           rnn-26285656_4       rnn-26285657_4
-    % $ROW +POS Max:           rnn-26285656_5       rnn-26285657_5
-    % $ROW +POS Attn:           rnn-26285656_6       rnn-26285657_6
-    % $ROW Mix Mean:           rnn-26285656_7       rnn-26285657_7
-    % $ROW Mix Max:           rnn-26285656_8       rnn-26285657_8
-    % $ROW Mix Attn:           rnn-26285656_9       rnn-26285657_9
+    % $ROW Mean:        rnn-26285656_1       rnn-26285657_1
+    % $ROW Max:         rnn-26285656_2       rnn-26285657_2
+    % $ROW Attn:        rnn-26285656_3       rnn-26285657_3
+    % $ROW +POS Mean:   rnn-26285656_4       rnn-26285657_4
+    % $ROW +POS Max:    rnn-26285656_5       rnn-26285657_5
+    % $ROW +POS Attn:   rnn-26285656_6       rnn-26285657_6
+    % $ROW Mix Mean:    rnn-26285656_7       rnn-26285657_7
+    % $ROW Mix Max:     rnn-26285656_8       rnn-26285657_8
+    % $ROW Mix Attn:    rnn-26285656_9       rnn-26285657_9
     % \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
-    % $ROW Mean:          rnn-26285656_10      rnn-26285657_10
-    % $ROW Max:          rnn-26285656_11      rnn-26285657_11
-    % $ROW Attn:          rnn-26285656_12      rnn-26285657_12
-    % $ROW +POS Mean:          rnn-26285656_13      rnn-26285657_13
-    % $ROW +POS Max:          rnn-26285656_14      rnn-26285657_14
-    % $ROW +POS Attn:          rnn-26285656_15      rnn-26285657_15
-    % $ROW Mix Mean:          rnn-26285656_16      rnn-26285657_16
-    % $ROW Mix Max:          rnn-26285656_17      rnn-26285657_17
-    % $ROW Mix Attn:          rnn-26285656_18      rnn-26285657_18
+    % $ROW Mean:        rnn-26285656_10      rnn-26285657_10
+    % $ROW Max:         rnn-26285656_11      rnn-26285657_11
+    % $ROW Attn:        rnn-26285656_12      rnn-26285657_12
+    % $ROW +POS Mean:   rnn-26285656_13      rnn-26285657_13
+    % $ROW +POS Max:    rnn-26285656_14      rnn-26285657_14
+    % $ROW +POS Attn:   rnn-26285656_15      rnn-26285657_15
+    % $ROW Mix Mean:    rnn-26285656_16      rnn-26285657_16
+    % $ROW Mix Max:     rnn-26285656_17      rnn-26285657_17
+    % $ROW Mix Attn:    rnn-26285656_18      rnn-26285657_18
     % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
-    % $ROW Mean:          rnn-26287008_19      rnn-26287009_19
-    % $ROW Max:          rnn-26287008_20      rnn-26287009_20
-    % $ROW Attn:          rnn-26287008_21      rnn-26287009_21
-    % $ROW +POS Mean:          rnn-26287008_22      rnn-26287009_22
-    % $ROW +POS Max:          rnn-26287008_23      rnn-26287009_23
-    % $ROW +POS Attn:          rnn-26287008_24      rnn-26287009_24
+    % $ROW Mean:        rnn-26287008_19      rnn-26287009_19
+    % $ROW Max:         rnn-26287008_20      rnn-26287009_20
+    % $ROW Attn:        rnn-26287008_21      rnn-26287009_21
+    % $ROW +POS Mean:   rnn-26287008_22      rnn-26287009_22
+    % $ROW +POS Max:    rnn-26287008_23      rnn-26287009_23
+    % $ROW +POS Attn:   rnn-26287008_24      rnn-26287009_24
     % \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
-    % $ROW Mean:          rnn-26287008_25      rnn-26287009_25
-    % $ROW Max:          rnn-26287008_26      rnn-26287009_26
-    % $ROW Attn:          rnn-26287008_27      rnn-26287009_27
-    % $ROW +POS Mean:          rnn-26287008_28      rnn-26287009_28
-    % $ROW +POS Max:          rnn-26287008_29      rnn-26287009_29
-    % $ROW +POS Attn:          rnn-26287008_30      rnn-26287009_30
+    % $ROW Mean:        rnn-26287008_25      rnn-26287009_25
+    % $ROW Max:         rnn-26287008_26      rnn-26287009_26
+    % $ROW Attn:        rnn-26287008_27      rnn-26287009_27
+    % $ROW +POS Mean:   rnn-26287008_28      rnn-26287009_28
+    % $ROW +POS Max:    rnn-26287008_29      rnn-26287009_29
+    % $ROW +POS Attn:   rnn-26287008_30      rnn-26287009_30
     % $END autotable
     Mean & $0.293$ & $0.431$ & $0.433$ & $0.650$ \\
     Max & $0.301$ & $0.325$ & $\mathbf{0.668}$ & $0.732$ \\
@@ -589,9 +609,16 @@ in Norwegian, meaning `suckle.\textsc{past}'. This is of course a word that
 does not fit the context at all.
 
 In the Vietnamese speaker's text (fig. \ref{fig:s0180-nli-attention}), the
-word Vietnam appears three times. Two of the occurrences are in high-attention
-segments. This should be a very informative word, as it is likely that when
-someone mentions a country in this context, it is their country of origin.
+word Vietnam appears three times. Two of the occurrences are in
+high-attention segments. This should be a very informative word, as it is
+likely that when someone mentions a country in this context, it is their
+country of origin.
+
+In the Somali speaker's text (fig. \ref{fig:s0621-nli-attention}), we see
+several typical features of learner language, such as mistakes in agreement:
+`en stort rekke hus' should be `et stort rekkehus'. Using a personal pronoun
+where there should be a possessive determiner: `faren oss var rik' should be
+`faren vår var rik'.
 
 \begin{figure}
   \centering
@@ -632,11 +659,17 @@ someone mentions a country in this context, it is their country of origin.
 We can use dimensionality reduction methods such as $t$-SNE in order to see
 if the intermediate representation of documents prior to the final
 classification layer positions documents that should be similar close to each
-other.
+other. In figure \ref{fig:cefr-t-sne} we have taken the documents in the dev
+set and computed these representations using a \ac{CNN}, then run them through
+the $t$-SNE algorithm in order to reduce them two two dimensions while still
+maintaining a measure of nearbyness. It can be seen that the document space
+is split into two clusters, one with generally lower CEFR scores than the
+other. However there is no visible structure on a finer level than that.
+\todo{use recent model}
 
 \begin{figure}
   \centering
-  % \includegraphics[width=\textwidth]{cefr-t-sne}
+  \includegraphics{cefr-t-sne}
   \caption{$t$-SNE plot of the vector representations of documents}
   \label{fig:cefr-t-sne}
 \end{figure}

@@ -14,7 +14,8 @@ We will also look at a selection of datasets of learner language that have
 been used for these tasks previously.
 
 Unless otherwise noted, the plots in the thesis (including heatmaps and box
-plots) are generated using the Matplotlib Python library \autocite{matplotlib}.
+plots) are generated using the Python libraries Matplotlib
+\autocite{matplotlib} and Seaborn \autocite{seaborn}.
 
 
 \section{Tasks and machine learning}
@@ -125,26 +126,26 @@ values to be interpreted as a probability distribution.
 
 \subsection{Convolutional neural networks}
 
-\acp{CNN} can exploit local patterns in the input,
-unlike the \ac{MLP}, which has no way to identify elements of the input layer as
-being ``close'' to each other in any sort of measure. \acp{CNN} use convolutional
-layers to make these local relationships explicit.
+\acp{CNN} can exploit local patterns in the input, unlike the \ac{MLP}, which
+has no way to identify elements of the input layer as being ``close'' to each
+other in any sort of measure. \acp{CNN} use convolutional layers to make
+these local relationships explicit.
 
 \acp{CNN} are widely employed in image processing models, using
 two-di\-men\-sional convolutional layers. These models can often get very
 deep, using a number of convolutional layers at different levels in the
 network, interspersed with pooling or downsampling layers.
 
-There are also \ac{NLP} applications where \acp{CNN} can be employed. Unlike images,
-data in \ac{NLP} is usually sequential or one-dimensional, but it may be converted
-into two dimensions, for example by replacing each word by an embedding
-vector.
+There are also \ac{NLP} applications where \acp{CNN} can be employed. Unlike
+images, data in \ac{NLP} is usually sequential or one-dimensional, but it may
+be converted into two dimensions, for example by replacing each word by an
+embedding vector.
 
 
 \subsection{Recurrent neural networks}
 
-\acp{RNN} are suited to sequential data. They make have an
-internal \emph{state} that is passed between time steps. A benefit of \acp{RNN} is
+\acp{RNN} are suited to sequential data. They make have an internal
+\emph{state} that is passed between time steps. A benefit of \acp{RNN} is
 that they can accept input of any length and also produce sequential output
 of any length. This in contrast to feed-forward neural networks, which take a
 fixed-length vector as their input.
@@ -202,12 +203,12 @@ commonly the sigmoid (Eq. \ref{eq:sigmoid}) or hard sigmoid (Eq.
 
 \subsection{Natural language features}
 
-For applications of machine learning in \ac{NLP}, we often want to use the words
-in a document as features. However, the vast number of different words in a
-language can lead to inefficient use of memory and computing power if the
-words are represented naively, for instance with a one-hot vector encoding
-with the vector having the number of dimensions equal to the size of the
-lexicon. It is therefore useful to map words to a lower-dimensional
+For applications of machine learning in \ac{NLP}, we often want to use the
+words in a document as features. However, the vast number of different words
+in a language can lead to inefficient use of memory and computing power if
+the words are represented naively, for instance with a one-hot vector
+encoding with the vector having the number of dimensions equal to the size of
+the lexicon. It is therefore useful to map words to a lower-dimensional
 representation, known as an \emph{embedding}.
 
 \sloppy Training embeddings rely on the distributional hypothesis, namely
@@ -494,8 +495,8 @@ their essay was assessed to. The proficiency levels are specific for the
 corpus and correspond to low, medium and high proficiency, without reference
 to external frameworks such as \ac{CEFR}. The represented language
 backgrounds are Arabic, Chinese, French, German, Hindi, Italian, Japanese,
-Korean, Spanish, Telugu, and Turkish. The datasets for the \ac{NLI} shared tasks
-in 2013 and 2017 (the written essays) were extracted from TOEFL11.
+Korean, Spanish, Telugu, and Turkish. The datasets for the \ac{NLI} shared
+tasks in 2013 and 2017 (the written essays) were extracted from TOEFL11.
 
 The corpus contains 1100 essays per L1, in total 12,100 essays. The average
 word count for the essays is 348, so in total the corpus contains more than

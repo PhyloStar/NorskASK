@@ -111,15 +111,16 @@ Analysis of the data set was carried out in order to find correlations
 between different metadata. Knowing that the documents stem from two
 different language tests that measure different levels of proficiency, the
 data set was split in two using the \emph{Test level} label, and then broken
-down by language and proficiency again. Figure \ref{fig:testlevel-lang-vs-cefr}
-shows that the test levels have different distributions of proficiency. Note
-also that two language groups are underrepresented at the B2 test level
-(\emph{AL test}), namely Somali and Vietnamese, which have seven and five
-essays in the B2 test level, respectively. All other combinations of L1 and
-test level contain exactly 100 essays. This partly explains the low average
-proficiency of Somali and Vietnamese speakers apparent in figure
-\ref{fig:lang-vs-cefr}. The difference compared to the other language groups is
-not as salient when looking only at the B1 test level (\emph{IL test}) data.
+down by language and proficiency again. Figure
+\ref{fig:testlevel-lang-vs-cefr} shows that the test levels have different
+distributions of proficiency. Note also that two language groups are
+underrepresented at the B2 test level (\emph{AL test}), namely Somali and
+Vietnamese, which have seven and five essays in the B2 test level,
+respectively. All other combinations of L1 and test level contain exactly 100
+essays. This partly explains the low average proficiency of Somali and
+Vietnamese speakers apparent in figure \ref{fig:lang-vs-cefr}. The difference
+compared to the other language groups is not as salient when looking only at
+the B1 test level (\emph{IL test}) data.
 
 \begin{table}
   \centering
@@ -178,9 +179,9 @@ studies such as \textcite{vajjala17}. To see the relationship between these
 variables in ASK, we again break down the data into the two test levels. One
 group, \emph{B2/C1} CEFR score within \emph{IL test}, was excluded due to
 having fewer than ten documents. Looking at figure
-\ref{fig:testlevel-lengths-per-cefr}, two relations are apparent. Essays in the
-\emph{AL test} test level are generally longer than in \emph{IL test}, and
-within each test level the higher scoring essays are generally longer.
+\ref{fig:testlevel-lengths-per-cefr}, two relations are apparent. Essays in
+the \emph{AL test} test level are generally longer than in \emph{IL test},
+and within each test level the higher scoring essays are generally longer.
 Also, outliers are generally on the long side.
 
 Note that even for the same CEFR score, the essays from the higher test level
@@ -199,9 +200,9 @@ bottom 25\% are excluded} between IL and AL test level.
 At the start of the project, the dataset was split into a training,
 development and test set in a 8:1:1 proportion. Ideally, the train and test
 sets would have the same distribution of classes, but the limited amount of
-data made this more difficult. As can be seen from figure \ref{fig:lang-vs-cefr},
-15 of the combinations language vs. proficiency label consist of only three
-or fewer documents.
+data made this more difficult. As can be seen from figure
+\ref{fig:lang-vs-cefr}, 15 of the combinations language vs. proficiency label
+consist of only three or fewer documents.
 
 Moreover, we wanted each split to consist of text topics not present in the
 other splits. The reason for this to prevent a model from learning a bias for

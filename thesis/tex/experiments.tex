@@ -30,6 +30,15 @@ Dependencies (UD) tagset, referred to as UPOS. The original tags in the ASK
 corpus are from the Oslo-Bergen tagger's own tagset \autocite{oslobergen}.
 
 
+\section{Classification versus regression}
+
+\ac{AES} can be modelled both as a classification task and as a regression
+task, and both are seen in previous work. They can be transformed into one
+another: Discrete scores can be given a numeric value, and numeric scores or
+a continuous regression output can be discretized into a number of bins. The
+former transformation is used in \textcite{vajjala17}.
+\todo{tie together this and next section}
+
 \section{Metrics}
 
 The \FI score for a single class is the harmonic mean of the precision and
@@ -117,18 +126,18 @@ count vectors to the 10,000 most common tokens.
 \subsubsection*{Character \ngrams}
 
 Documents are represented by count vectors where each entry represents a
-\ngram of characters. Some examples of character \ngrams are \textlangle
-eg␣\textrangle, \textlangle␣i␣\textrangle\xspace or \textlangle si\textrangle. For
-the linear model, all \ngrams with $n\in \{1,2,3\}$ were used, and for the
-neural models the 10,000 most commonly occurring \ngrams with $n\in \{2,3,4\}$
-were used.
+\ngram of characters. Some examples of character \ngrams are
+$\langle$eg␣$\rangle$, $\langle$␣i␣$\rangle$ or $\langle$si$\rangle$. For the
+linear model, all \ngrams with $n\in \{1,2,3\}$ were used, and for the neural
+models the 10,000 most commonly occurring \ngrams with $n\in \{2,3,4\}$ were
+used.
 
 \subsubsection*{POS \ngrams}
 
 Documents are represented by count vectors where each entry represents a
-\ngram of POS tags. Some examples of POS \ngrams are \textlangle NOUN
-NOUN\textrangle, \textlangle PRON AUX PRON\textrangle or \textlangle SCONJ
-ADJ\textrangle. For the linear model, all \ngrams with $n\in \{1,2,3\}$ were
+\ngram of POS tags. Some examples of POS \ngrams are $\langle$NOUN
+NOUN$\rangle$, $\langle$PRON AUX PRON$\rangle$ or $\langle$SCONJ
+ADJ$\rangle$. For the linear model, all \ngrams with $n\in \{1,2,3\}$ were
 used, and for the neural models the 10,000 most commonly occurring \ngrams
 with $n\in \{2,3,4\}$ were used.
 
@@ -251,13 +260,30 @@ that performs the best is the one using character \ngrams.
   \label{tab:baseline-accuracies}
 \end{table}
 
-All results are seen in table \ref{tab:baseline-accuracies}.
-The part of speech \ngrams performed best overall, having the highest \FI score
-for the full label set, both for macro and micro average. On the collapsed set
-of labels, the part of speech \ngrams had the highest macro \FI score, but were
-beat in micro \FI by the character \ngrams.
+All results are seen in table \ref{tab:baseline-accuracies}. For the linear
+models, the performance of classification compared to regression seems to be
+dependent on the input representation. For character \ngram inputs, the
+logistic regression classifier outperforms linear regression by far. However,
+for the mixed UPOS input, the regression model takes the edge and achieves
+several of the highest \FI scores for linear models. 
 
-Confusion matrices from MLP Mix:
+However, our \acp{MLP} gave the best results overall. For the full set of
+classes, character \ngrams gave the best results, followed by POS \ngrams.
+For the collapsed classes, POS \ngrams outperformed character \ngrams by a
+small margin. Interestingly, the input representation that yielded the best
+scores in our linear models, mixed UPOS, did not give good results with the
+\acp{MLP} at all. This may indicate that the neural model is able to extract
+higher-level features that model the interaction between several low-level
+\ngram features.
+
+In order to examine the classification behaviour closer, we present the
+confusion matrices from MLP Mix in figures \ref{fig:mlp-mixed-conf} and
+\ref{fig:mlp-mixed-conf-round}. We want predictions to lie on the diagonal of
+the matrix. However, due to the ordinal nature of the classes, we also want
+eventual misclassifications to lie close to the diagonal, as would indicate a
+small magnitude of misclassification. Conversely, we do not want any
+predictions in the upper right and lower left corners, as they represent
+misclassifications of the greatest magnitude.
 
 \begin{figure}
   \centering

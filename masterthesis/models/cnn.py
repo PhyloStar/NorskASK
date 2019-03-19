@@ -55,7 +55,7 @@ def parse_args():
     add_seq_common_args(parser)
     parser.add_argument('--constraint', type=positive_float)
     parser.add_argument('--windows', '-w', type=int_list)
-    parser.set_defaults(batch_size=32, doc_length=700, embed_dim=50, epochs=50, vocab_size=4000,
+    parser.set_defaults(batch_size=32, doc_length=700, embed_dim=50, epochs=50, vocab_size=20000,
                         windows=[3, 4, 5])
     return parser.parse_args()
 

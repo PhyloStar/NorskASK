@@ -269,13 +269,16 @@ def get_file_name(name: str) -> str:
     return name + '-' + timestamp
 
 
-def save_model(name: str, model, w2i):
+def save_model(name: str, model, w2i, pos2i=None):
     if not MODEL_DIR.is_dir():
         MODEL_DIR.mkdir()
     model.save(str(MODEL_DIR / (name + '_model.h5')))
     if w2i is not None:
         w2i_file = MODEL_DIR / (name + '_model_w2i.pkl')
         pickle.dump(w2i, w2i_file.open('wb'))
+    if pos2i is not None:
+        pos2i_file = MODEL_DIR / (name + '_model_pos2i.pkl')
+        pickle.dump(pos2i, pos2i_file.open('wb'))
 
 
 def get_stopwords() -> Set[str]:
