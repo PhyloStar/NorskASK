@@ -3,15 +3,23 @@ from collections import Counter, defaultdict
 from math import sqrt
 from pathlib import Path
 import pickle
+<<<<<<< HEAD
 from typing import Any, DefaultDict, Iterable, List
+=======
+import sys
+from typing import List
+>>>>>>> seaborn import guards
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr
-import seaborn as sns
 from sklearn.metrics import f1_score, mean_absolute_error, mean_squared_error
-sns.set()
+try:
+    import seaborn as sns
+    sns.set()
+except ImportError:
+    pass
 
 
 def macro_rmse(true, pred):
@@ -32,34 +40,8 @@ def macro_mae(true, pred):
     return sum(maes) / len(maes)  # Macro average
 
 
-def pi_k(a: List[int], b: List[int]) -> float:
-    n_a = len(a)
-    n_b = len(b)
-    count_a = Counter(a)
-    count_b = Counter(b)
-    ks = list(range(min(a + b), max(a + b)))
-    pis = []
-    for k in ks:
-        pis.append((count_a[k] / n_a + count_b[k] / n_b) / 2)
-    num_classes = len(pis)
-    ac = (1 / (num_classes - 1)) * sum(p * (1 - p) for p in pis)
-    return ac
-
-
-def parse_args() -> argparse.Namespace:
-    """Parse command line arguments"""
-    parser = argparse.ArgumentParser()
-    parser.add_argument('files', nargs='+')
-    return parser.parse_args()
-
-
-def get_corr_mask(n: int):
-    mask = np.ones((n, n), dtype=bool)
-    return np.triu(mask, 1)
-
-
-def files_to_dataframe(files: Iterable[str]) -> pd.DataFrame:
-    data = defaultdict(list)  # type: DefaultDict[str, Any]
+def files_to_dataframe(files):
+    data = defaultdict(list)
     for filename in files:
         results_file = Path(filename)
         try:
@@ -88,6 +70,32 @@ def files_to_dataframe(files: Iterable[str]) -> pd.DataFrame:
         data['macro MAE'].append(macro_mae(gold, pred))
         data['macro RMSE'].append(macro_rmse(gold, pred))
     return pd.DataFrame.from_dict(data)
+
+
+def pi_k(a: List[int], b: List[int]) -> float:
+    n_a = len(a)
+    n_b = len(b)
+    count_a = Counter(a)
+    count_b = Counter(b)
+    ks = list(range(min(a + b), max(a + b)))
+    pis = []
+    for k in ks:
+        pis.append((count_a[k] / n_a + count_b[k] / n_b) / 2)
+    num_classes = len(pis)
+    ac = (1 / (num_classes - 1)) * sum(p * (1 - p) for p in pis)
+    return ac
+
+
+def parse_args() -> argparse.Namespace:
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('files', nargs='+')
+    return parser.parse_args()
+
+
+def get_corr_mask(n: int):
+    mask = np.ones((n, n), dtype=bool)
+    return np.triu(mask, 1)
 
 
 def print_top_by_metric(data: pd.DataFrame, metrics: Iterable[str], n: int = 5) -> None:
@@ -123,18 +131,20 @@ def main():
     print('== All labels ==')
     lim_df = df[df.n_class == 7].dropna()
     print_top_by_metric(lim_df, ['spearman', 'RMSE', 'MAE'])
-    plot_corrs(lim_df)
-    plt.show()
-    plot_regs(lim_df)
-    plt.show()
+    if 'seaborn' in sys.modules:
+        plot_corrs(lim_df)
+        plt.show()
+        plot_regs(lim_df)
+        plt.show()
 
     print('== Collapsed labels ==')
     lim_df = df[df.n_class == 4].dropna()
     print_top_by_metric(lim_df, ['spearman', 'RMSE', 'MAE'])
-    plot_corrs(lim_df)
-    plt.show()
-    plot_regs(lim_df)
-    plt.show()
+    if 'seaborn' in sys.modules:
+        plot_corrs(lim_df)
+        plt.show()
+        plot_regs(lim_df)
+        plt.show()
 
 
 if __name__ == '__main__':
