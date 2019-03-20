@@ -3,12 +3,8 @@ from collections import Counter, defaultdict
 from math import sqrt
 from pathlib import Path
 import pickle
-<<<<<<< HEAD
-from typing import Any, DefaultDict, Iterable, List
-=======
 import sys
-from typing import List
->>>>>>> seaborn import guards
+from typing import Any, DefaultDict, Iterable, List
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -40,8 +36,25 @@ def macro_mae(true, pred):
     return sum(maes) / len(maes)  # Macro average
 
 
+def get_type(name):
+    if name.startswith('rnn') or name.startswith('taghipour'):
+        return 'RNN'
+    elif name.startswith('cnn'):
+        return 'CNN'
+    elif name.startswith('mlp'):
+        return 'MLP'
+    elif name.startswith('linear_logreg'):
+        return 'LogReg'
+    elif name.startswith('linear_svc'):
+        return 'SVC'
+    elif name.startswith('linear_svr'):
+        return 'SVR'
+    print('UNKOWN TYPE ' + name)
+    return 'UNK'
+
+
 def files_to_dataframe(files):
-    data = defaultdict(list)
+    data = defaultdict(list)  # type: DefaultDict[str, Any]
     for filename in files:
         results_file = Path(filename)
         try:
@@ -69,6 +82,7 @@ def files_to_dataframe(files):
         data['MAE'].append(mean_absolute_error(gold, pred))
         data['macro MAE'].append(macro_mae(gold, pred))
         data['macro RMSE'].append(macro_rmse(gold, pred))
+        data['type'].append(get_type(results_file.stem))
     return pd.DataFrame.from_dict(data)
 
 
@@ -100,8 +114,9 @@ def get_corr_mask(n: int):
 
 def print_top_by_metric(data: pd.DataFrame, metrics: Iterable[str], n: int = 5) -> None:
     for metric in metrics:
+        ascending = metric in {'MAE', 'RMSE', 'macro MAE', 'macro RMSE'}
         print('\nTop %s:' % metric)
-        print(data.sort_values(metric, ascending=False)
+        print(data.sort_values(metric, ascending=ascending)
                   .loc[:, ['filename', metric]]
                   .head(n))
 
@@ -114,10 +129,14 @@ def plot_corrs(data: pd.DataFrame):
 
 def plot_regs(data: pd.DataFrame):
     fig, (ax1, ax2) = plt.subplots(1, 2)
-    sns.regplot('macro F1', 'micro F1', data=data, ax=ax1)
+
+    sns.regplot('macro F1', 'micro F1', data=data, ax=ax1, scatter=False, truncate=True)
+    sns.scatterplot('macro F1', 'micro F1', data=data, hue='type', ax=ax1)
     ax1.set_title('Pearson corr. = %.3f, p = %.4f'
                   % pearsonr(data['macro F1'], data['micro F1']))
-    sns.regplot('macro F1', 'macro MAE', data=data, ax=ax2)
+
+    sns.regplot('macro F1', 'macro MAE', data=data, ax=ax2, scatter=False, truncate=True)
+    sns.scatterplot('macro F1', 'macro MAE', data=data, hue='type', ax=ax2)
     ax2.set_title('Pearson corr. = %.3f, p = %.4f'
                   % pearsonr(data['macro F1'], data['macro MAE']))
     plt.tight_layout()

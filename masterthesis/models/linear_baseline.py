@@ -29,8 +29,8 @@ def mixed_pos_line_iter(split) -> Iterable[str]:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('kind', choices={'bow', 'char', 'pos', 'mix'}, default='bow')
-    parser.add_argument('algorithm', choices={'logreg', 'svc', 'svr'}, default='logreg')
+    parser.add_argument('--kind', choices={'bow', 'char', 'pos', 'mix'}, default='bow')
+    parser.add_argument('--algorithm', choices={'logreg', 'svc', 'svr'}, default='logreg')
     parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--nli', action='store_true')
     return parser.parse_args()
@@ -44,7 +44,7 @@ def preprocess(kind: str, max_features: Optional[int], train_meta, dev_meta):
         train_x = vectorizer.fit_transform(pos_line_iter('train'))
         dev_x = vectorizer.transform(pos_line_iter('dev'))
         num_features = len(vectorizer.vocabulary_)
-    elif kind == 'mixed':
+    elif kind == 'mix':
         vectorizer = CountVectorizer(
             lowercase=False, token_pattern=r"[^\s]+",
             ngram_range=(1, 3), max_features=max_features)
@@ -56,7 +56,7 @@ def preprocess(kind: str, max_features: Optional[int], train_meta, dev_meta):
             'train', analyzer='char', ngram_range=(1, 3), max_features=max_features)
         dev_x = vectorizer.transform(filename_iter(dev_meta))
         num_features = len(vectorizer.vocabulary_)
-    elif kind == 'word':
+    elif kind == 'bow':
         train_x, vectorizer = bag_of_words(
             'train', max_features=max_features,
             token_pattern=r"[^\s]+", lowercase=False)
@@ -91,10 +91,8 @@ def main():
     clf.fit(train_x, train_y)
 
     predictions = clf.predict(dev_x)
-    if args.algorithm == 'regression':
-        print(predictions)
+    if args.algorithm == 'svr':
         predictions = np.clip(np.floor(predictions + 0.5), 0, max(train_y))
-        print(predictions)
 
     report(dev_y, predictions, labels)
 
@@ -103,7 +101,7 @@ def main():
     else:
         name = 'linear_' + args.algorithm
     name = get_file_name(name)
-    save_results(name, dict(args), None, dev_y, predictions)
+    save_results(name, args.__dict__, None, dev_y, predictions)
 
 
 if __name__ == '__main__':

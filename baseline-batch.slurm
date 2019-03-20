@@ -23,39 +23,41 @@ if [ -n "${SLURM_JOB_NODELIST}" ]; then
     cp $SUBMITDIR/models/stopwords/* $SCRATCH/models/stopwords/
 
     cd $SCRATCH
+
+	module purge
+	module use -a /projects/nlpl/software/modulefiles/
+	module load \
+		nlpl-python-candy/201902/3.5 \
+		nlpl-gensim/3.7.0/3.5 \
+		nlpl-tensorflow/1.11
+
+	chkfile "results" "models"
 fi
 set +o errexit
 
-module purge
-module use -a /projects/nlpl/software/modulefiles/
-module load \
-	nlpl-python-candy/201902/3.5 \
-	nlpl-gensim/3.7.0/3.5 \
-	nlpl-tensorflow/1.11
-
-chkfile "results" "models"
-
 mlp="python -m masterthesis.models.mlp"
 linear="python -m masterthesis.models.linear_baseline"
-logreg="$linear logreg"
-svc="$linear svc"
-svr="$linear svr"
+logreg="$linear --algorithm logreg"
+svc="$linear --algorithm svc"
+svr="$linear --algorithm svr"
+
+echo $SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 
 case $SLURM_ARRAY_TASK_ID in
-	1) cmd="$logreg bow" ;;
-	2) cmd="$logreg char" ;;
-	3) cmd="$logreg pos" ;;
-	4) cmd="$logreg mix" ;;
+	1) cmd="$logreg --kind bow" ;;
+	2) cmd="$logreg --kind char" ;;
+	3) cmd="$logreg --kind pos" ;;
+	4) cmd="$logreg --kind mix" ;;
     
-	5) cmd="$svc bow" ;;
-	6) cmd="$svc char" ;;
-	7) cmd="$svc pos" ;;
-	8) cmd="$svc mix" ;;
+	5) cmd="$svc --kind bow" ;;
+	6) cmd="$svc --kind char" ;;
+	7) cmd="$svc --kind pos" ;;
+	8) cmd="$svc --kind mix" ;;
 
-	9) cmd="$svr bow" ;;
-	10) cmd="$svr char" ;;
-	11) cmd="$svr pos" ;;
-	12) cmd="$svr mix" ;;
+	9) cmd="$svr --kind bow" ;;
+	10) cmd="$svr --kind char" ;;
+	11) cmd="$svr --kind pos" ;;
+	12) cmd="$svr --kind mix" ;;
 
 	13) cmd="$mlp bow" ;;
 	14) cmd="$mlp char" ;;

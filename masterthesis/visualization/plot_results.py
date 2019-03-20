@@ -75,16 +75,6 @@ def main():
 
     print_config(results.config)
 
-    fig, axes = plt.subplots(2, 2)
-    fig.set_size_inches(5, 4)
-    plt.tight_layout()
-    ax1 = plt.subplot(223)
-    ax2 = plt.subplot(221, sharex=ax1)
-    if results.config.get('multi', False):
-        multi_task_plot_history(history, ax1, ax2)
-    else:
-        plot_history(history, ax1, ax2)
-
     if args.nli or results.config.get('nli', False):
         labels = LANG_LABELS
     elif max(true) > 4:
@@ -92,13 +82,27 @@ def main():
     else:
         labels = ROUND_CEFR_LABELS
 
-    ax3 = plt.subplot(222)
-    report(true, pred, labels, normalize=False, ax=ax3)
-    ax3.set(ylabel='Gold class')
-    ax4 = plt.subplot(224)
+    if history is None:
+        report(true, pred, labels, normalize=False)
+        heatmap_ax = plt.gca()
+    else:
+        fig, axes = plt.subplots(2, 2)
+        fig.set_size_inches(5, 4)
+        plt.tight_layout()
+        ax1 = plt.subplot(223)
+        ax2 = plt.subplot(221, sharex=ax1)
+        if results.config.get('multi', False):
+            multi_task_plot_history(history, ax1, ax2)
+        else:
+            plot_history(history, ax1, ax2)
+
+        ax3 = plt.subplot(222)
+        report(true, pred, labels, normalize=False, ax=ax3)
+        ax3.set(ylabel='Gold class')
+        heatmap_ax = plt.subplot(224)
     conf_matrix = confusion_matrix(true, pred)
-    heatmap(conf_matrix, labels, labels, normalize=True, ax=ax4)
-    ax4.set(xlabel='Predicted class', ylabel='Gold class')
+    heatmap(conf_matrix, labels, labels, normalize=True, ax=heatmap_ax)
+    heatmap_ax.set(xlabel='Predicted class', ylabel='Gold class')
     plt.show()
 
 

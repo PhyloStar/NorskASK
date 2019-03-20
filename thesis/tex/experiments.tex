@@ -237,30 +237,40 @@ that performs the best is the one using character \ngrams.
     \midrule
     % $BEGIN autotable baseline-accuracies
     % $META models-per-row=2 columns-per-model=macrof1,microf1
-    % $ROW LogReg BOW:
-    % $ROW LogReg Char:
-    % $ROW LogReg POS:
-    % $ROW LogReg Mix:
+    % $ROW LogReg BOW: linear_logreg-1337_1 linear_logreg-1338_1
+    % $ROW LogReg Char: linear_logreg-1337_2 linear_logreg-1338_2
+    % $ROW LogReg POS: linear_logreg-1337_3 linear_logreg-1338_3
+    % $ROW LogReg Mix: linear_logreg-1337_4 linear_logreg-1338_4
     % \midrule
-    % $ROW SVC BOW:
-    % $ROW SVC Char:
-    % $ROW SVC POS:
-    % $ROW SVC Mix:
+    % $ROW SVC BOW: linear_svc-1337_5 linear_svc-1338_5
+    % $ROW SVC Char: linear_svc-1337_6 linear_svc-1338_6
+    % $ROW SVC POS: linear_svc-1337_7 linear_svc-1338_7
+    % $ROW SVC Mix: linear_svc-1337_8 linear_svc-1338_8
     % \midrule
-    % $ROW SVR BOW:
-    % $ROW SVR Char:
-    % $ROW SVR POS:
-    % $ROW SVR Mix:
+    % $ROW SVR BOW: linear_svr-1337_9 linear_svr-1338_9
+    % $ROW SVR Char: linear_svr-1337_10 linear_svr-1338_10
+    % $ROW SVR POS: linear_svr-1337_11 linear_svr-1338_11
+    % $ROW SVR Mix: linear_svr-1337_12 linear_svr-1338_12
     % \midrule
-    % $ROW MLP BOW:    mlp_word-03-01_11-53-35    mlp_word-03-01_11-55-36
-    % $ROW MLP Char:   mlp_char-03-01_11-57-23    mlp_char-03-01_11-59-00
-    % $ROW MLP POS:    mlp_pos-03-01_12-00-44     mlp_pos-03-01_12-02-31
-    % $ROW MLP Mix:    mlp_mixed-02-20_14-45-16   mlp_mixed-02-22_13-43-37
+    % %$ROW MLP BOW:    mlp_word-03-01_11-53-35    mlp_word-03-01_11-55-36
+    % %$ROW MLP Char:   mlp_char-03-01_11-57-23    mlp_char-03-01_11-59-00
+    % %$ROW MLP POS:    mlp_pos-03-01_12-00-44     mlp_pos-03-01_12-02-31
+    % %$ROW MLP Mix:    mlp_mixed-02-20_14-45-16   mlp_mixed-02-22_13-43-37
     % $END autotable
-    MLP BOW & $0.209$ & $0.366$ & $0.392$ & $0.642$ \\
-    MLP Char & $0.281$ & $\mathbf{0.472}$ & $0.423$ & $0.659$ \\
-    MLP POS & $0.245$ & $0.366$ & $0.439$ & $\mathbf{0.691}$ \\
-    MLP Mix & $0.239$ & $0.398$ & $0.384$ & $0.667$ \\
+    LogReg BOW & $0.199$ & $0.317$ & $0.384$ & $0.626$ \\
+    LogReg Char & $0.221$ & $0.317$ & $0.399$ & $0.602$ \\
+    LogReg POS & $0.190$ & $0.301$ & $0.312$ & $0.569$ \\
+    LogReg Mix & $0.213$ & $0.341$ & $0.337$ & $0.577$ \\
+    \midrule
+    SVC BOW & $0.210$ & $0.317$ & $0.391$ & $0.610$ \\
+    SVC Char & $0.189$ & $0.293$ & $0.347$ & $0.537$ \\
+    SVC POS & $0.157$ & $0.244$ & $0.336$ & $0.618$ \\
+    SVC Mix & $0.215$ & $0.350$ & $0.319$ & $0.585$ \\
+    \midrule
+    SVR BOW & $\mathbf{0.444}$ & $\mathbf{0.415}$ & $0.429$ & $\mathbf{0.659}$ \\
+    SVR Char & $0.252$ & $0.317$ & $0.440$ & $0.602$ \\
+    SVR POS & $0.334$ & $0.358$ & $\mathbf{0.476}$ & $0.593$ \\
+    SVR Mix & $0.312$ & $0.350$ & $0.441$ & $\mathbf{0.659}$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of different classifiers}
@@ -273,6 +283,7 @@ dependent on the input representation. For character \ngram inputs, the
 logistic regression classifier outperforms linear regression by far. However,
 for the mixed UPOS input, the regression model takes the edge and achieves
 several of the highest \FI scores for linear models. 
+\todo{rewrite}
 
 However, our \acp{MLP} gave the best results overall. For the full set of
 classes, character \ngrams gave the best results, followed by POS \ngrams.
