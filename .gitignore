@@ -37,3 +37,5 @@ thesis/Doc/
 *.egg-info/
 *.h5
 metrics.csv
+sync-results.sh
+notes.txt

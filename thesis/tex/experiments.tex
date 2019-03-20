@@ -253,10 +253,10 @@ that performs the best is the one using character \ngrams.
     % $ROW SVR POS: linear_svr-1337_11 linear_svr-1338_11
     % $ROW SVR Mix: linear_svr-1337_12 linear_svr-1338_12
     % \midrule
-    % %$ROW MLP BOW:    mlp_word-03-01_11-53-35    mlp_word-03-01_11-55-36
-    % %$ROW MLP Char:   mlp_char-03-01_11-57-23    mlp_char-03-01_11-59-00
-    % %$ROW MLP POS:    mlp_pos-03-01_12-00-44     mlp_pos-03-01_12-02-31
-    % %$ROW MLP Mix:    mlp_mixed-02-20_14-45-16   mlp_mixed-02-22_13-43-37
+    % $ROW MLP BOW:    mlp_word-03-01_11-53-35    mlp_word-03-01_11-55-36
+    % $ROW MLP Char:   mlp_char-03-01_11-57-23    mlp_char-03-01_11-59-00
+    % $ROW MLP POS:    mlp_pos-03-01_12-00-44     mlp_pos-03-01_12-02-31
+    % $ROW MLP Mix:    mlp_mixed-02-20_14-45-16   mlp_mixed-02-22_13-43-37
     % $END autotable
     LogReg BOW & $0.199$ & $0.317$ & $0.384$ & $0.626$ \\
     LogReg Char & $0.221$ & $0.317$ & $0.399$ & $0.602$ \\
@@ -268,10 +268,15 @@ that performs the best is the one using character \ngrams.
     SVC POS & $0.157$ & $0.244$ & $0.336$ & $0.618$ \\
     SVC Mix & $0.215$ & $0.350$ & $0.319$ & $0.585$ \\
     \midrule
-    SVR BOW & $\mathbf{0.444}$ & $\mathbf{0.415}$ & $0.429$ & $\mathbf{0.659}$ \\
+    SVR BOW & $\mathbf{0.444}$ & $0.415$ & $0.429$ & $0.659$ \\
     SVR Char & $0.252$ & $0.317$ & $0.440$ & $0.602$ \\
     SVR POS & $0.334$ & $0.358$ & $\mathbf{0.476}$ & $0.593$ \\
-    SVR Mix & $0.312$ & $0.350$ & $0.441$ & $\mathbf{0.659}$ \\
+    SVR Mix & $0.312$ & $0.350$ & $0.441$ & $0.659$ \\
+    \midrule
+    MLP BOW & $0.209$ & $0.366$ & $0.392$ & $0.642$ \\
+    MLP Char & $0.281$ & $\mathbf{0.472}$ & $0.423$ & $0.659$ \\
+    MLP POS & $0.245$ & $0.366$ & $0.439$ & $\mathbf{0.691}$ \\
+    MLP Mix & $0.239$ & $0.398$ & $0.384$ & $0.667$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of different classifiers}
@@ -279,14 +284,10 @@ that performs the best is the one using character \ngrams.
 \end{table}
 
 All results are seen in table \ref{tab:baseline-accuracies}. For the linear
-models, the performance of classification compared to regression seems to be
-dependent on the input representation. For character \ngram inputs, the
-logistic regression classifier outperforms linear regression by far. However,
-for the mixed UPOS input, the regression model takes the edge and achieves
-several of the highest \FI scores for linear models. 
-\todo{rewrite}
+models, the support vector regressor clearly outperforms the classifiers.
 
-However, our \acp{MLP} gave the best results overall. For the full set of
+\todo{this was written before SVR was so good}
+However, our \acp{MLP} had the best accuracies. For the full set of
 classes, character \ngrams gave the best results, followed by POS \ngrams.
 For the collapsed classes, POS \ngrams outperformed character \ngrams by a
 small margin. Interestingly, the input representation that yielded the best

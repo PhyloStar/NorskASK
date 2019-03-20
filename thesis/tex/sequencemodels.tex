@@ -44,6 +44,7 @@ hide the document length from the model. \todo{rewrite}
 
 
 \subsection{Pre-trained embeddings}
+\ref{subseq:fasttext}
 
 We experimented with randomly initialized word embedding vectors trained from
 scratch, as well as initializing the vectors with pre-trained embeddings. We
@@ -247,53 +248,34 @@ prompts. Since the scores are numeric values over different ranges, modelling
 the task as a regression problem made it sufficient to normalize the numeric
 scores to a common interval before training.
 
-\todo{remainder of section unstructured}
-Generally for \ac{AES}, modelling the task as multi-class prediction is
-common, and is used in \textcite{vajjala18universalCEFR}. In
-\textcite{vajjala17}, two different datasets with different properties were
-used, and the author utilized both multi-class prediction and regression at
-different points.
-
-The embedding layer in \textcite{taghipour16} was initialized with
-pre-trained embeddings of size 100. We experiment with different sizes of
-embeddings, as well as random vs. pre-trained initialization.
-
 Unlike our corpus, ASK, the ASAP dataset used by \citeauthor{taghipour16}
 contained essays that were not necessarily written in a second language. Our
 data is not split into different parts based on the prompt. There are two
 different test levels in ASK, but these are not distinguished in training.
 
-Note that the activation function for the gates in gated RNNs in Keras by
-default is the \emph{Hard sigmoid} activation function (ref. eq.
-\ref{eq:hardsigmoid}), chosen because it is computationally more efficient
-than the sigmoid function.
-
-We also experimented with a different type of gated \ac{RNN} cell, the
-\ac{GRU}. This variant of \ac{RNN} is slightly simpler than the \ac{LSTM},
-featuring only two gates. However, it is still designed to be able to
-propagate the error gradient over a larger number of time steps, like
-\ac{LSTM}. In this way the architecture is supposed to mitigate the problem
-of vanishing or exploding gradients. The equations defining \ac{LSTM}
-\ac{GRU} cells are listed in chapter \ref{ch:background}, equations
-\ref{eq:lstm} and \ref{eq:gru}.
+\todo{remainder of section unstructured} Generally for \ac{AES}, modelling
+the task as multi-class prediction is common, and is used in
+\textcite{vajjala18universalCEFR}. In \textcite{vajjala17}, two different
+datasets with different properties were used, and the author utilized both
+multi-class prediction and regression at different points. The embedding
+layer in \textcite{taghipour16} was initialized with pre-trained embeddings
+of size 100.
 
 
 \subsection{Variants}
+
+We create \acp{RNN} with two different types of gated \ac{RNN} cell, the
+\ac{LSTM} and the \ac{GRU}. The concept of gated cells is explained in
+section \ref{seq:rnn}, along with the equations defining the gated cells. In
+Keras, the default activation function for the gates in gated RNNs is the
+\emph{Hard sigmoid} activation function (ref. eq. \ref{eq:hardsigmoid}),
+chosen because it is computationally more efficient than the sigmoid
+function.
 
 We attempt three different methods of combining the sequence of hidden states
 from the \ac{RNN} into a feature vector. The simplest approach is \emph{mean
 over time}, where we use as our feature vector the element-wise average of
 hidden states across the time dimension.
-
-The bidirectional model (BiRNN) is constructed by running two \acp{RNN} over
-the same input, but in the opposite order. The output from the BiRNN layer is
-a sequence of vectors where, for each time step $j$, the vector is the
-concatenation of two vectors $[s_f;s_b]$ where $s_f$ at time step $j$ is the
-output from the forwards \ac{RNN} after processing the inputs $(x_1, x_2,
-\ldots, x_j)$ and $s_b$ the output from the backwards \ac{RNN} after
-processing the inputs $(x_m, x_{m-1}, \ldots, x_j)$, where $m$ is the total
-number of time steps. The BiRNN should therefore be able to extract context
-on both sides of a input time step.
 
 The second method is similar to the first, except that the averaging
 operation is replaced by a max operation. We refer to this as the \emph{max
@@ -309,11 +291,22 @@ to focus on crucial information by choosing weights such as to disregard
 uninformative time steps, improving performance. The attention mechanism is
 trained along with the rest of the network.
 
-All the models have a hidden state vector of size 300 in the \ac{RNN}. The
-vocabulary was limited to the 4,000 most common words, the same vocabulary
-size as is used in \textcite{taghipour16}. In our dataset, this is nearly
-equivalent to using all tokens that occur at least 5 times: There are 4,031
-tokens in our training set that occur at least 5 times.
+The bidirectional models (BiRNN) are constructed by running two \acp{RNN} over
+the same input, but in the opposite order. The output from the BiRNN layer is
+a sequence of vectors where, for each time step $j$, the vector is the
+concatenation of two vectors $[s_f;s_b]$ where $s_f$ at time step $j$ is the
+output from the forwards \ac{RNN} after processing the inputs $(x_1, x_2,
+\ldots, x_j)$ and $s_b$ the output from the backwards \ac{RNN} after
+processing the inputs $(x_m, x_{m-1}, \ldots, x_j)$, where $m$ is the total
+number of time steps. The BiRNN should therefore be able to extract context
+on both sides of a input time step.
+
+All the models have a hidden state vector of size 300 in unidirectional
+\acp{RNN}, and 600 in BiRNNs (300 in each direction). We use almost all
+tokens in the training set as our lexicon, giving a vocabulary size of
+20,000. Embeddings are initialized randomly or using vectors from the
+fastText model described in section \ref{subseq:fasttext}, and trained as
+part of the network.
 
 
 \subsection{Results}

@@ -13,8 +13,8 @@ the specific tasks of automated scoring and native language identification.
 We will also look at a selection of datasets of learner language that have
 been used for these tasks previously.
 
-Unless otherwise noted, the plots in the thesis (including heatmaps and box
-plots) are generated using the Python libraries Matplotlib
+Unless otherwise noted, the plots in the thesis, including heatmaps and box
+plots, are generated using the Python libraries Matplotlib
 \autocite{matplotlib} and Seaborn \autocite{seaborn}.
 
 
@@ -143,6 +143,7 @@ embedding vector.
 
 
 \subsection{Recurrent neural networks}
+\label{seq:rnn}
 
 \acp{RNN} are suited to sequential data. They make have an internal
 \emph{state} that is passed between time steps. A benefit of \acp{RNN} is
@@ -156,7 +157,10 @@ diverge because of multiplication across many time steps. This is known as
 the \emph{vanishing} and \emph{exploding gradients problem}, respectively.
 Mitigation techniques include replacing the units of the network with what's
 known as \emph{gated units}, that are especially designed to address these
-problems. \acp{GRU} and \acp{LSTM} are widely used gated units in RNNs.
+problems. \acp{GRU} and \acp{LSTM} are widely used gated units in RNNs. The
+`gates' in these network are what enables the cell to keep information in
+working memory over longer spans of time without succumbing to the problem of
+vanishing or exploding gradients.
 
 The equations in \ref{eq:lstm} define the LSTM cell. It computes three gates
 named $i$, $f$ and $o$, which are vectors with values between 0 and 1. The
