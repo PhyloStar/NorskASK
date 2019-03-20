@@ -3,7 +3,7 @@ from collections import Counter, defaultdict
 from math import sqrt
 from pathlib import Path
 import pickle
-from typing import List
+from typing import Any, DefaultDict, Iterable, List
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -58,10 +58,9 @@ def get_corr_mask(n: int):
     return np.triu(mask, 1)
 
 
-def main():
-    args = parse_args()
-    data = defaultdict(list)
-    for filename in args.files:
+def files_to_dataframe(files: Iterable[str]) -> pd.DataFrame:
+    data = defaultdict(list)  # type: DefaultDict[str, Any]
+    for filename in files:
         results_file = Path(filename)
         try:
             res = pickle.load(results_file.open('rb'))
@@ -88,69 +87,53 @@ def main():
         data['MAE'].append(mean_absolute_error(gold, pred))
         data['macro MAE'].append(macro_mae(gold, pred))
         data['macro RMSE'].append(macro_rmse(gold, pred))
-    df = pd.DataFrame.from_dict(data)
-    df.to_csv('metrics.csv', index=False)
-    print('== All labels ==')
-    lim_df = df[df.n_class == 7].dropna()
-    corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr()
+    return pd.DataFrame.from_dict(data)
+
+
+def print_top_by_metric(data: pd.DataFrame, metrics: Iterable[str], n: int = 5) -> None:
+    for metric in metrics:
+        print('\nTop %s:' % metric)
+        print(data.sort_values(metric, ascending=False)
+                  .loc[:, ['filename', metric]]
+                  .head(n))
+
+
+def plot_corrs(data: pd.DataFrame):
+    corr_matrix = data.drop(columns=['filename', 'n_class']).corr()
     sns.heatmap(corr_matrix, center=0, mask=get_corr_mask(len(corr_matrix)), annot=True, fmt='.3f')
     plt.tight_layout()
-    plt.show()
+
+
+def plot_regs(data: pd.DataFrame):
     fig, (ax1, ax2) = plt.subplots(1, 2)
-    sns.regplot('macro F1', 'micro F1', data=lim_df, ax=ax1)
+    sns.regplot('macro F1', 'micro F1', data=data, ax=ax1)
     ax1.set_title('Pearson corr. = %.3f, p = %.4f'
-                  % pearsonr(lim_df['macro F1'], lim_df['micro F1']))
-    sns.regplot('macro F1', 'macro MAE', data=lim_df, ax=ax2)
+                  % pearsonr(data['macro F1'], data['micro F1']))
+    sns.regplot('macro F1', 'macro MAE', data=data, ax=ax2)
     ax2.set_title('Pearson corr. = %.3f, p = %.4f'
-                  % pearsonr(lim_df['macro F1'], lim_df['macro MAE']))
+                  % pearsonr(data['macro F1'], data['macro MAE']))
+    plt.tight_layout()
+
+
+def main():
+    args = parse_args()
+    df = files_to_dataframe(args.files)
+    df.to_csv('metrics.csv', index=False)
+
+    print('== All labels ==')
+    lim_df = df[df.n_class == 7].dropna()
+    print_top_by_metric(lim_df, ['spearman', 'RMSE', 'MAE'])
+    plot_corrs(lim_df)
     plt.show()
-    print('\nTop Pearson:')
-    print(lim_df.sort_values('pearson', ascending=False)
-                .loc[:, ['filename', 'pearson']]
-                .head(5))
-    print('\nTop Spearman:')
-    print(lim_df.sort_values('spearman', ascending=False)
-                .loc[:, ['filename', 'spearman']]
-                .head(5))
-    print('\nTop RMSE:')
-    print(lim_df.sort_values('RMSE')
-                .loc[:, ['filename', 'RMSE']]
-                .head(5))
-    print('\nTop MAE:')
-    print(lim_df.sort_values('MAE')
-                .loc[:, ['filename', 'MAE']]
-                .head(5))
+    plot_regs(lim_df)
     plt.show()
 
     print('== Collapsed labels ==')
     lim_df = df[df.n_class == 4].dropna()
-    corr_matrix = lim_df.drop(columns=['filename', 'n_class']).corr()
-    sns.heatmap(corr_matrix, center=0, mask=get_corr_mask(len(corr_matrix)), annot=True, fmt='.3f')
+    print_top_by_metric(lim_df, ['spearman', 'RMSE', 'MAE'])
+    plot_corrs(lim_df)
     plt.show()
-    fig, (ax1, ax2) = plt.subplots(1, 2)
-    sns.regplot('macro F1', 'micro F1', data=lim_df, ax=ax1)
-    ax1.set_title('Pearson corr. = %.3f, p = %.4f'
-                  % pearsonr(lim_df['macro F1'], lim_df['micro F1']))
-    sns.regplot('macro F1', 'macro MAE', data=lim_df, ax=ax2)
-    ax2.set_title('Pearson corr. = %.3f, p = %.4f'
-                  % pearsonr(lim_df['macro F1'], lim_df['macro MAE']))
-    plt.show()
-    print('\nTop Pearson:')
-    print(lim_df.sort_values('pearson', ascending=False)
-                .loc[:, ['filename', 'pearson']]
-                .head(5))
-    print('\nTop Spearman:')
-    print(lim_df.sort_values('spearman', ascending=False)
-                .loc[:, ['filename', 'spearman']]
-                .head(5))
-    print('\nTop RMSE:')
-    print(lim_df.sort_values('RMSE')
-                .loc[:, ['filename', 'RMSE']]
-                .head(5))
-    print('\nTop MAE:')
-    print(lim_df.sort_values('MAE')
-                .loc[:, ['filename', 'MAE']]
-                .head(5))
+    plot_regs(lim_df)
     plt.show()
 
 

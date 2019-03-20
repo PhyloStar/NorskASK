@@ -30,15 +30,6 @@ Dependencies (UD) tagset, referred to as UPOS. The original tags in the ASK
 corpus are from the Oslo-Bergen tagger's own tagset \autocite{oslobergen}.
 
 
-\section{Classification versus regression}
-
-\ac{AES} can be modelled both as a classification task and as a regression
-task, and both are seen in previous work. They can be transformed into one
-another: Discrete scores can be given a numeric value, and numeric scores or
-a continuous regression output can be discretized into a number of bins. The
-former transformation is used in \textcite{vajjala17}.
-\todo{tie together this and next section}
-
 \section{Metrics}
 
 The \FI score for a single class is the harmonic mean of the precision and
@@ -106,8 +97,16 @@ tags.
 
 \section{Model descriptions}
 
-Initial experiments were run using logistic regression, and \acp{MLP}, which
-are simple neural networks.
+Initial experiments were run using two linear models, logistic regression,
+and linear regression, and a neural model, a \acp{MLP}.
+
+\ac{AES} can be modelled both as a classification task and as a regression
+task, and both are seen in previous work.
+
+In order to report classification based metrics for a regression model, we
+had to transform the predicted scores, which are continuous, into discrete
+scores equivalent to the given classes. This was done 
+
 
 \subsection{Input representations}
 
@@ -167,12 +166,15 @@ transformed sequences, we extracted \ngrams in the interval $[1,3]$. The
 10,000 most commonly occurring of these were used for the neural models.
 
 
-\subsection{Logistic regression}
+\subsection{Linear models}
 
 The logistic regression model was implemented using the Python library
 Scikit-Learn \autocite{scikit-learn}. The model was instantiated with the
 `lgbfs' solver to minimize multinomial loss. No regularization was used, and
 the optimizer was set to run for a maximum of 100 iterations.
+
+The linear regression model was a support vector regressoralso chosen from Scikit-learn. The default
+parameters were used, which 
 
 
 \subsection{Multi-layer perceptron}
@@ -233,26 +235,31 @@ that performs the best is the one using character \ngrams.
     \midrule
     Majority   &  $0.040$  &  $0.163$  &  $0.127$  &  $0.341$ \\
     \midrule
-    LogReg BOW &  $0.199$  &  $0.317$  &  $0.384$  &  $0.626$ \\
-    LogReg Char&  $0.221$  &  $0.317$  &  $0.399$  &  $0.602$ \\
-    LogReg POS &  $0.188$  &  $0.276$  &  $0.344$  &  $0.585$ \\
-    LogReg Mix &  $0.213$  &  $0.341$  &  $0.342$  &  $0.585$ \\
-    \midrule
-    LinReg BOW &  $0.205$  &  $0.301$  &  $0.355$  &  $0.569$ \\
-    LinReg Char&  $0.142$  &  $0.195$  &  $0.244$  &  $0.390$ \\
-    LinReg POS &  $0.215$  &  $0.252$  &  $0.376$  &  $0.553$ \\
-    LinReg Mix &  $0.265$  &  $0.309$  &  $0.393$  &  $0.634$ \\
-    \midrule
     % $BEGIN autotable baseline-accuracies
     % $META models-per-row=2 columns-per-model=macrof1,microf1
+    % $ROW LogReg BOW:
+    % $ROW LogReg Char:
+    % $ROW LogReg POS:
+    % $ROW LogReg Mix:
+    % \midrule
+    % $ROW SVC BOW:
+    % $ROW SVC Char:
+    % $ROW SVC POS:
+    % $ROW SVC Mix:
+    % \midrule
+    % $ROW SVR BOW:
+    % $ROW SVR Char:
+    % $ROW SVR POS:
+    % $ROW SVR Mix:
+    % \midrule
     % $ROW MLP BOW:    mlp_word-03-01_11-53-35    mlp_word-03-01_11-55-36
     % $ROW MLP Char:   mlp_char-03-01_11-57-23    mlp_char-03-01_11-59-00
     % $ROW MLP POS:    mlp_pos-03-01_12-00-44     mlp_pos-03-01_12-02-31
     % $ROW MLP Mix:    mlp_mixed-02-20_14-45-16   mlp_mixed-02-22_13-43-37
     % $END autotable
     MLP BOW & $0.209$ & $0.366$ & $0.392$ & $0.642$ \\
-    MLP Char & $\mathbf{0.281}$ & $\mathbf{0.472}$ & $0.423$ & $0.659$ \\
-    MLP POS & $0.245$ & $0.366$ & $\mathbf{0.439}$ & $\mathbf{0.691}$ \\
+    MLP Char & $0.281$ & $\mathbf{0.472}$ & $0.423$ & $0.659$ \\
+    MLP POS & $0.245$ & $0.366$ & $0.439$ & $\mathbf{0.691}$ \\
     MLP Mix & $0.239$ & $0.398$ & $0.384$ & $0.667$ \\
     \bottomrule
   \end{tabular}

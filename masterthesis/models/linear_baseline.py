@@ -3,14 +3,15 @@ from typing import Iterable, Optional
 
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC, LinearSVR
 
 from masterthesis.features.build_features import (
     bag_of_words, filename_iter, iterate_mixed_pos_docs, iterate_pos_docs
 )
 from masterthesis.models.report import report
 from masterthesis.results import save_results
-from masterthesis.utils import DATA_DIR, load_split
+from masterthesis.utils import DATA_DIR, get_file_name, load_split
 
 
 conll_folder = DATA_DIR / 'conll'
@@ -28,9 +29,10 @@ def mixed_pos_line_iter(split) -> Iterable[str]:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('kind', choices={'word', 'char', 'pos', 'mixed'}, default='bow')
-    parser.add_argument('algorithm', choices={'classifier', 'regression'}, default='classifier')
+    parser.add_argument('kind', choices={'bow', 'char', 'pos', 'mix'}, default='bow')
+    parser.add_argument('algorithm', choices={'logreg', 'svc', 'svr'}, default='logreg')
     parser.add_argument('--round-cefr', action='store_true')
+    parser.add_argument('--nli', action='store_true')
     return parser.parse_args()
 
 
@@ -79,10 +81,12 @@ def main():
     dev_y = [labels.index(c) for c in dev_meta.cefr]
 
     print("Fitting classifier ...")
-    if args.algorithm == 'classifier':
+    if args.algorithm == 'logreg':
         clf = LogisticRegression(solver='lbfgs', multi_class='multinomial')
-    elif args.algorithm == 'regression':
-        clf = LinearRegression()
+    elif args.algorithm == 'svc':
+        clf = LinearSVC()
+    elif args.algorithm == 'svr':
+        clf = LinearSVR()
 
     clf.fit(train_x, train_y)
 
@@ -91,9 +95,15 @@ def main():
         print(predictions)
         predictions = np.clip(np.floor(predictions + 0.5), 0, max(train_y))
         print(predictions)
-        
+
     report(dev_y, predictions, labels)
-    save_results('linear_baseline', None, None, dev_y, predictions)
+
+    if args.nli:
+        name = 'linear_%s_nli' % args.algorithm
+    else:
+        name = 'linear_' + args.algorithm
+    name = get_file_name(name)
+    save_results(name, dict(args), None, dev_y, predictions)
 
 
 if __name__ == '__main__':

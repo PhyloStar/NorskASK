@@ -174,8 +174,8 @@ commonly the sigmoid (Eq. \ref{eq:sigmoid}) or hard sigmoid (Eq.
   \end{cases}
 \end{equation}
 
-\begin{equation} \label{eq:lstm}
-  \begin{aligned}
+\begin{gather} \label{eq:lstm}
+  \begin{split}
   s_j = R_{\text{LSTM}}(s_{j-1}, x_j) &= [c_j;h_j] \\
                            c_j &= f \odot c_{j-1} + i \odot z \\
                            h_j &= o \odot \tanh(c_j) \\
@@ -183,22 +183,29 @@ commonly the sigmoid (Eq. \ref{eq:sigmoid}) or hard sigmoid (Eq.
                              f &= \sigma(x_j W^{xf} + h_{j-1} W^{hf} + b_f) \\
                              o &= \sigma(x_j W^{xo} + h_{j-1} W^{ho} + b_o) \\
                              z &= \tanh(x_j W^{xz} + h_{j-1} W^{hz} + b_z) \\
-                             \\[1\jot]
-                 O_{\text{LSTM}}(s_j) &= h_j
-  \end{aligned}
-\end{equation}
-\todo{Should vectors/matrices use bold font?}
+                 O_{\text{LSTM}}(s_j) &= h_j \\
+  \end{split}
+  \\
+  s_j\in \mathbb{R}^{2d_h}, x_i\in \mathbb{R}^{d_x},
+  \left\{c_j, h_j, i, f, o, z, b_{\circ}\right\}\subseteq \mathbb{R}^{d_h},
+  W^{x\circ}\in \mathbb{R}^{d_x\times d_h},
+  W^{h\circ}\in \mathbb{R}^{d_h\times d_h} \notag
+\end{gather}
 
-\begin{equation} \label{eq:gru}
-  \begin{aligned}
+\begin{gather} \label{eq:gru}
+  \begin{split}
   s_j = R_{\text{GRU}}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot {\tilde s}_j \\
-                            z &= \sigma(x_j W^{xz} + h_{j-1} W^{sz} + b_f) \\
-                            r &= \sigma(x_j W^{xr} + h_{j-1} W^{sr} + b_i) \\
+                            z &= \sigma(x_j W^{xz} + h_{j-1} W^{sz} + b_z) \\
+                            r &= \sigma(x_j W^{xr} + h_{j-1} W^{sr} + b_r) \\
                  {\tilde s}_j &= \tanh(x_j W^{xs} + (r \odot s{j-1}) W^{sg} + b_z) \\
-  \\[1\jot]
-                 O_{\text{GRU}}(s_j) &= s_j
-  \end{aligned}
-\end{equation}
+                 O_{\text{GRU}}(s_j) &= s_j \\
+  \end{split}
+  \\
+  x_i\in \mathbb{R}^{d_x},
+  \left\{s_j, {\tilde s}_j, z, r, b_{\circ}\right\} \subseteq \mathbb{R}^{d_s},
+  W^{x\circ}\in \mathbb{R}^{d_x\times d_s},
+  W^{s\circ}\in \mathbb{R}^{d_s\times d_s} \notag
+\end{gather}
 
 
 \subsection{Natural language features}
