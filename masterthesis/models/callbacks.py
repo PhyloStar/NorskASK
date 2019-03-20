@@ -29,6 +29,7 @@ class F1Metrics(Callback):
             val_predict = val_predict[0]
         _val_f1 = f1_metric(self.dev_y, val_predict, self.average)
         self.val_f1s.append(_val_f1)
+        logs['val_f1'] = _val_f1
         if _val_f1 > self.best_f1:
             print("Epoch %d: val_f1 improved from %f to %f: saving weights as %s" %
                   (epoch + 1, self.best_f1, _val_f1, self.weights_path))

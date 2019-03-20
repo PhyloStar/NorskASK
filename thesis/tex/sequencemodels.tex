@@ -222,20 +222,21 @@ classes `A2', `B2/C1' and `C1', the smallest classes in the validation set.
 
 \section{Recurrent neural networks}
 
-A \ac{LSTM} \ac{RNN} was implemented based on the architecture described in
-\textcite{taghipour16}. Several changes to their architecture were made in
-order to accommodate our data. For instance, \citeauthor{taghipour16}
-modelled the task as a regression problem, their output layer consisting of a
-single node with a value constrained to $(0,1)$ by the sigmoid function. This
-layer was replaced with a softmax layer similar to the \acp{MLP} in section
-\ref{subsec:mlp}.
+Several \ac{RNN} models were implemented based on the architecture described in
+\textcite{taghipour16}. Changes to their architecture were made in
+order to accommodate our data. For instance, \citeauthor{taghipour16} modelled
+the task as a regression problem, their output layer consisting of a single
+node with a value constrained to $(0,1)$ by the sigmoid function. This layer
+was replaced with a softmax layer similar to the \acp{MLP} in section
+\ref{subsec:mlp} and the \acp{CNN} earlier in this chapter.
 
-We then chose a loss function to be compatible with a multi-class softmax
-output. Like above, we used categorical cross-entropy (equation
-\ref{eq:crossentropy}). A different evaluation metric was also needed because
-we are treating the task as multi-class prediction. We are reporting macro
-and micro \FI as before. We do not use the \ac{QWK} metric used by
-\citeauthor{taghipour16}.
+Having replaced the output layer, we also used a different loss function,
+since it needed to be suited for multi-class output. As before, we used
+categorical cross-entropy (equation \ref{eq:crossentropy}). A different
+evaluation metric was also needed because we are treating the task as
+multi-class prediction. We are reporting macro and micro \FI as before. Refer
+to section \ref{metrics-discussion} for the discussion of different metrics
+for the task.
 
 The formulation of the \ac{AES} task as a regression problem by
 \citeauthor{taghipour16} was partly a constraint stemming from the Kaggle
@@ -494,22 +495,21 @@ The mixed input format is not applicable when using pre-trained embeddings.
   \label{tab:gru-results}
 \end{table}
 
-
-We find that the best performing models all use the attention mechanism. Keep
-in mind that the stopping criterion is the macro \FI score, and thus the
-micro \FI score is to be considered a side effect of the macro \FI. In
-addition there is considerable variance in results between different training
-runs of the same model. It is therefore hard to select a single model as the
-clear winner. However, it is very unlikely that the best scores would all be
-from attention based models by mere chance, and it therefore seems reasonable
-to conclude that an attention model is a better choice for the task than mean
-over time and max over time.
+We find that many of the best performing models all use the attention
+mechanism. Keep in mind that the stopping criterion is the macro \FI score,
+and thus the micro \FI score is to be considered a side effect of the macro
+\FI. In addition there is considerable variance in results between different
+training runs of the same model. It is therefore hard to select a single
+model as the clear winner. However, it is very unlikely that the best scores
+would all be from attention based models by mere chance, and it therefore
+seems reasonable to conclude that an attention model is a better choice for
+the task than mean over time and max over time.
 
 
 \subsection{Training behaviour}
 
 \begin{figure}
-  % rnn-25858209
+  % rnn-26287008_27
   \begin{subfigure}{\linewidth}
     \centering
     \includegraphics{rnn-training}
@@ -520,18 +520,24 @@ over time and max over time.
     \includegraphics{rnn-confusion}
     \caption{Confusion matrix on validation set, raw counts and normalized.}
   \end{subfigure}
-  \caption{RNN with GRU cells, attention mechanism, and pre-trained embeddings
-           of dimension 50, fine-tuned.}
+  \caption{BiRNN with GRU cells, attention mechanism, and pre-trained
+           embeddings of dimension 100, fine-tuned.}
   \label{fig:rnn-training}
 \end{figure}
 
-We see the training and classification of the best RNN model in figure
-\ref{fig:rnn-training}, namely the GRU cell with pre-trained, fine-tuned
-embeddings and an attention mechanism. It is plain to see that the model
-overfits while the validation performance fluctuates. The validation metrics
-seem to fluctuate more than they did with the CNN model in fig
-\ref{fig:cnn-training}. However, the training accuracy seems to increase
-slower, and does not quite reach 100\% in the course of 50 epochs.
+We see the training and classification of one of the best RNN model in figure
+\ref{fig:rnn-training}, a GRU cell with pre-trained, fine-tuned embeddings
+and an attention mechanism. The plot of the loss shows that the training loss
+decreases in the course of training while the validation loss increases
+dramatically. The plot of accuracy over time shows that the validation
+accuracy fluctuates around 40\%. While these aspects shows the model
+overfitting the training data, the performance on validation data was still
+good.
+
+Compared to the training plot of the CNN model in figure
+\ref{fig:cnn-training}, it seems that the RNN metrics fluctuate much more,
+especially on validation data. However, the training accuracy seems to
+increase slower, and does not get as close 100\% in the course of 50 epochs.
 
 
 \section{Native language identification}

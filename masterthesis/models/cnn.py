@@ -141,10 +141,6 @@ def main():
     if args.vectors:
         init_pretrained_embs(model, args.vectors, w2i)
 
-    loss_weights = {
-        AUX_OUTPUT_NAME: args.aux_loss_weight,
-        OUTPUT_NAME: 1.0 - args.aux_loss_weight
-    }
     optimizer = 'adam'
     model.compile(optimizer, 'categorical_crossentropy',
                   loss_weights=loss_weights, metrics=['accuracy'])
