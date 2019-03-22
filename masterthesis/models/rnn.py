@@ -5,7 +5,7 @@ from typing import Iterable
 
 from keras import backend as K
 from keras.layers import (
-    Activation, Bidirectional, Dense, Dropout, Flatten, GRU, GlobalMaxPooling1D, Lambda,
+    Activation, Bidirectional, Dense, Dropout, Flatten, GlobalMaxPooling1D, GRU, Lambda,
     Layer, LSTM, Multiply, Permute, RepeatVector, TimeDistributed
 )
 from keras.models import Model
@@ -14,19 +14,19 @@ from keras.utils import to_categorical
 import numpy as np
 
 from masterthesis.features.build_features import (
-    make_pos2i, make_w2i, pos_to_sequences, words_to_sequences,
-    mixed_pos_to_sequences, make_mixed_pos2i
+    make_mixed_pos2i, make_pos2i, make_w2i, mixed_pos_to_sequences,
+    pos_to_sequences, words_to_sequences
 )
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.layers import (
     build_inputs_and_embeddings, GlobalAveragePooling1D, InputLayerArgs
 )
 from masterthesis.models.report import multi_task_report, report
-from masterthesis.models.utils import init_pretrained_embs, add_common_args, add_seq_common_args
+from masterthesis.models.utils import add_common_args, add_seq_common_args, init_pretrained_embs
 from masterthesis.results import save_results
 from masterthesis.utils import (
     ATTENTION_LAYER, AUX_OUTPUT_NAME, get_file_name, load_split, OUTPUT_NAME,
-    REPRESENTATION_LAYER, safe_plt as plt, save_model
+    REPRESENTATION_LAYER, safe_plt as plt, save_model, set_reproducible
 )
 
 SEQ_LEN = 700  # 95th percentile of documents
@@ -109,6 +109,9 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
 
 def main():
     args = parse_args()
+
+    set_reproducible()
+
     train = load_split('train', round_cefr=args.round_cefr)
     dev = load_split('dev', round_cefr=args.round_cefr)
 
@@ -137,7 +140,8 @@ def main():
     dev_y = [to_categorical([labels.index(c) for c in dev[target_col]])]
     num_classes = [len(labels)]
 
-    if args.multi:
+    multi_task = args.aux_loss_weight > 0
+    if multi_task:
         assert not args.nli, "Both NLI and multi-task specified"
         lang_labels = sorted(train.lang.unique())
         train_y.append(to_categorical([lang_labels.index(l) for l in train.lang]))
@@ -176,7 +180,7 @@ def main():
     os.remove(weights_path)
 
     true = np.argmax(dev_y[0], axis=1)
-    if args.multi:
+    if multi_task:
         predictions = model.predict(dev_x)[0]
         pred = np.argmax(predictions, axis=1)
         multi_task_report(history.history, true, pred, labels)
@@ -187,7 +191,7 @@ def main():
 
     if args.nli:
         name = 'rnn-nli'
-    elif args.multi:
+    elif multi_task:
         name = 'rnn-multi'
     else:
         name = 'rnn'

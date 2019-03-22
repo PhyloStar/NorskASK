@@ -19,7 +19,7 @@ from masterthesis.models.utils import add_common_args
 from masterthesis.results import save_results
 from masterthesis.utils import (
     AUX_OUTPUT_NAME, DATA_DIR, get_file_name, load_split, OUTPUT_NAME, REPRESENTATION_LAYER,
-    safe_plt as plt, save_model
+    safe_plt as plt, save_model, set_reproducible
 )
 
 
@@ -89,6 +89,9 @@ def preprocess(kind: str, max_features: int, train_meta, dev_meta):
 
 def main():
     args = parse_args()
+
+    set_reproducible()
+
     train_meta = load_split('train', round_cefr=args.round_cefr)
     dev_meta = load_split('dev', round_cefr=args.round_cefr)
 
@@ -100,7 +103,8 @@ def main():
     dev_y = [to_categorical([cefr_labels.index(c) for c in dev_meta.cefr])]
     num_classes = [len(cefr_labels)]
 
-    if args.multi:
+    multi_task = args.aux_loss_weight > 0
+    if multi_task:
         lang_labels = sorted(train_meta.lang.unique())
         train_y.append(to_categorical([lang_labels.index(l) for l in train_meta.lang]))
         dev_y.append(to_categorical([lang_labels.index(l) for l in dev_meta.lang]))
@@ -134,7 +138,7 @@ def main():
     os.remove(weights_path)
 
     true = np.argmax(dev_y[0], axis=1)
-    if args.multi:
+    if multi_task:
         predictions = model.predict(dev_x)[0]
         pred = np.argmax(predictions, axis=1)
         multi_task_report(history.history, true, pred, cefr_labels)

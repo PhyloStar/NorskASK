@@ -21,7 +21,7 @@ from masterthesis.models.utils import add_common_args, add_seq_common_args, init
 from masterthesis.results import save_results
 from masterthesis.utils import (
     AUX_OUTPUT_NAME, get_file_name, load_split, OUTPUT_NAME, REPRESENTATION_LAYER,
-    safe_plt as plt, save_model
+    safe_plt as plt, save_model, set_reproducible
 )
 
 POS_EMB_DIM = 10
@@ -92,6 +92,9 @@ def build_model(vocab_size: int, sequence_length: int, num_classes: Iterable[int
 
 def main():
     args = parse_args()
+
+    set_reproducible()
+
     seq_length = args.doc_length
     train = load_split('train', round_cefr=args.round_cefr)
     dev = load_split('dev', round_cefr=args.round_cefr)
@@ -120,7 +123,8 @@ def main():
     dev_y = [to_categorical([labels.index(c) for c in dev[target_col]])]
     num_classes = [len(labels)]
 
-    if args.multi:
+    multi_task = args.aux_loss_weight > 0
+    if multi_task:
         assert not args.nli, "Both NLI and multi-task specified"
         lang_labels = sorted(train.lang.unique())
         train_y.append(to_categorical([lang_labels.index(l) for l in train.lang]))
@@ -156,7 +160,7 @@ def main():
     os.remove(weights_path)
 
     true = np.argmax(dev_y[0], axis=1)
-    if args.multi:
+    if multi_task:
         predictions = model.predict(dev_x)[0]
         pred = np.argmax(predictions, axis=1)
         multi_task_report(history.history, true, pred, labels)
@@ -167,7 +171,7 @@ def main():
 
     if args.nli:
         name = 'cnn-nli'
-    elif args.multi:
+    elif multi_task:
         name = 'cnn-multi'
     else:
         name = 'cnn'
