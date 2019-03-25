@@ -311,3 +311,7 @@ def set_reproducible() -> None:
     tf.set_random_seed(350)
     sess = tf.Session(graph=tf.get_default_graph(), config=session_conf)
     K.set_session(sess)
+
+
+def rescale_regression_results(predictions, highest_class):
+    return np.clip(np.floor(predictions * highest_class + 0.5), 0, highest_class).astype(int)

@@ -2,6 +2,8 @@ from keras.callbacks import Callback
 import numpy as np
 from sklearn.metrics import f1_score
 
+from masterthesis.utils import rescale_regression_results
+
 
 class F1Metrics(Callback):
     def __init__(self, dev_x, dev_y, weights_path, average='macro'):
@@ -14,6 +16,9 @@ class F1Metrics(Callback):
         self.dev_x = dev_x
         self.weights_path = weights_path
         self.average = average
+        if self.dev_y.ndim == 1:
+            self.highest_class = max(dev_y)
+            print('F1 callback : highest class %d' % self.highest_class)
 
     def on_train_begin(self, logs=None):
         if logs is None:
@@ -27,6 +32,9 @@ class F1Metrics(Callback):
         val_predict = self.model.predict(self.dev_x)
         if self.multi:
             val_predict = val_predict[0]
+        if val_predict.shape[1] == 1:
+            # Regression
+            val_predict = rescale_regression_results(val_predict, self.highest_class).ravel()
         _val_f1 = f1_metric(self.dev_y, val_predict, self.average)
         self.val_f1s.append(_val_f1)
         logs['val_f1'] = _val_f1
@@ -41,7 +49,8 @@ class F1Metrics(Callback):
 
 
 def f1_metric(gold, predicted, average='macro'):
-    gold_id = np.argmax(gold, axis=1)
-    pred_id = np.argmax(predicted, axis=1)
-
-    return f1_score(gold_id, pred_id, average=average)
+    if gold.ndim == 2:
+        gold = np.argmax(gold, axis=1)
+    if predicted.ndim == 2:
+        predicted = np.argmax(predicted, axis=1)
+    return f1_score(gold, predicted, average=average)

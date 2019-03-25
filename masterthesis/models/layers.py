@@ -1,8 +1,8 @@
 from typing import NamedTuple
 
 from keras import backend as K
-from keras.layers.pooling import _GlobalPooling1D
 from keras.layers import Concatenate, Embedding, Input
+from keras.layers.pooling import _GlobalPooling1D
 
 from masterthesis.utils import EMB_LAYER_NAME
 

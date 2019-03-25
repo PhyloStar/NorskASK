@@ -19,7 +19,7 @@ from masterthesis.models.utils import add_common_args
 from masterthesis.results import save_results
 from masterthesis.utils import (
     AUX_OUTPUT_NAME, DATA_DIR, get_file_name, load_split, OUTPUT_NAME, REPRESENTATION_LAYER,
-    safe_plt as plt, save_model, set_reproducible
+    rescale_regression_results, safe_plt as plt, save_model, set_reproducible
 )
 
 
@@ -32,17 +32,24 @@ def parse_args():
     parser.add_argument('featuretype', choices={'pos', 'bow', 'char', 'mix'})
     parser.add_argument('--lr', type=float, default=2e-4)
     parser.add_argument('--max-features', type=int, default=10000)
+    parser.add_argument('--classification', action='store_true')
     return parser.parse_args()
 
 
-def build_model(vocab_size: int, num_classes: Sequence[int]):
+def build_model(vocab_size: int, num_classes: Sequence[int], do_classification: bool):
     input_ = Input((vocab_size,))
-    hidden_1 = Dense(256, activation='relu')(input_)
+    hidden_1 = Dense(100, activation='relu')(input_)
     dropout_1 = Dropout(0.5)(hidden_1)
     hidden_2 = Dense(256, activation='relu', name=REPRESENTATION_LAYER)(dropout_1)
     dropout_2 = Dropout(0.5)(hidden_2)
-    outputs = [Dense(n_c, activation='softmax', name=name)(dropout_2)
-               for name, n_c in zip([OUTPUT_NAME, AUX_OUTPUT_NAME], num_classes)]
+    if do_classification:
+        output = Dense(num_classes[0], activation='softmax', name=OUTPUT_NAME)(dropout_2)
+    else:
+        output = Dense(1, activation='sigmoid', name=OUTPUT_NAME)(dropout_2)
+    outputs = [output]
+    if len(num_classes) > 1:
+        aux_out = Dense(num_classes[1], activation='softmax', name=AUX_OUTPUT_NAME)(dropout_2)
+        outputs.append(aux_out)
     return Model(inputs=[input_], outputs=outputs)
 
 
@@ -92,6 +99,7 @@ def main():
 
     set_reproducible()
 
+    do_classification = args.classification
     train_meta = load_split('train', round_cefr=args.round_cefr)
     dev_meta = load_split('dev', round_cefr=args.round_cefr)
 
@@ -99,9 +107,21 @@ def main():
     train_x, dev_x, num_features = preprocess(kind, args.max_features, train_meta, dev_meta)
 
     cefr_labels = sorted(train_meta.cefr.unique())
-    train_y = [to_categorical([cefr_labels.index(c) for c in train_meta.cefr])]
-    dev_y = [to_categorical([cefr_labels.index(c) for c in dev_meta.cefr])]
     num_classes = [len(cefr_labels)]
+
+    train_target_scores = np.array([cefr_labels.index(c) for c in train_meta.cefr])
+    dev_target_scores = np.array([cefr_labels.index(c) for c in dev_meta.cefr])
+
+    if do_classification:
+        train_y = to_categorical(train_target_scores)
+        dev_y = to_categorical(dev_target_scores)
+    else:  # Regression
+        highest_class = max(train_target_scores)
+        train_y = np.array(train_target_scores) / highest_class
+        dev_y = np.array(dev_target_scores) / highest_class
+
+    train_y = [train_y]
+    dev_y = [dev_y]
 
     multi_task = args.aux_loss_weight > 0
     if multi_task:
@@ -119,17 +139,26 @@ def main():
     print(num_classes)
     print(num_features)
 
-    model = build_model(num_features, num_classes)
+    model = build_model(num_features, num_classes, do_classification)
     model.summary()
+    if do_classification:
+        optimizer = Adam(lr=args.lr)
+        loss = 'categorical_crossentropy'
+        metrics = ['accuracy']
+    else:
+        optimizer = 'rmsprop'
+        loss = 'mean_squared_error'
+        metrics = ['mae']
     model.compile(
-        optimizer=Adam(lr=args.lr),
-        loss='categorical_crossentropy',
+        optimizer=optimizer,
+        loss=loss,
         loss_weights=loss_weights,
-        metrics=['accuracy'])
+        metrics=metrics)
 
     # Context manager fails on Windows (can't open an open file again)
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
-    callbacks = [F1Metrics(dev_x, dev_y, weights_path)]
+    val_y = dev_y if do_classification else dev_target_scores
+    callbacks = [F1Metrics(dev_x, val_y, weights_path)]
     history = model.fit(
         train_x, train_y, epochs=args.epochs, callbacks=callbacks, validation_data=(dev_x, dev_y),
         verbose=2)
@@ -137,14 +166,19 @@ def main():
     os.close(temp_handle)
     os.remove(weights_path)
 
-    true = np.argmax(dev_y[0], axis=1)
+    true = dev_target_scores
     if multi_task:
         predictions = model.predict(dev_x)[0]
-        pred = np.argmax(predictions, axis=1)
-        multi_task_report(history.history, true, pred, cefr_labels)
     else:
         predictions = model.predict(dev_x)
+    if do_classification:
         pred = np.argmax(predictions, axis=1)
+    else:
+        # Round to integers and clip to score range
+        pred = rescale_regression_results(predictions, highest_class)
+    if args.multi:
+        multi_task_report(history.history, true, pred, cefr_labels)
+    else:
         report(true, pred, cefr_labels)
 
     plt.show()
