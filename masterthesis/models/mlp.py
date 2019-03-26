@@ -30,9 +30,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     add_common_args(parser)
     parser.add_argument('featuretype', choices={'pos', 'bow', 'char', 'mix'})
-    parser.add_argument('--lr', type=float, default=2e-4)
     parser.add_argument('--max-features', type=int, default=20000)
-    parser.add_argument('--classification', action='store_true')
     return parser.parse_args()
 
 

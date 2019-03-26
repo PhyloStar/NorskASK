@@ -35,10 +35,12 @@ def init_pretrained_embs(model: Model, vector_path: Path, w2i) -> None:
 def add_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument('--aux-loss-weight', type=float, default=0)
     parser.add_argument('--batch-size', '-b', type=int)
+    parser.add_argument('--classification', action='store_true')
     parser.add_argument('--epochs', '-e', type=int, default=50)
     parser.add_argument('--nli', action='store_true')
     parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--save-model', action='store_true')
+    parser.add_argument('--lr', type=float, default=2e-4)
 
 
 def add_seq_common_args(parser: argparse.ArgumentParser) -> None:
