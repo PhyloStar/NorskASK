@@ -31,25 +31,25 @@ def parse_args():
     add_common_args(parser)
     parser.add_argument('featuretype', choices={'pos', 'bow', 'char', 'mix'})
     parser.add_argument('--lr', type=float, default=2e-4)
-    parser.add_argument('--max-features', type=int, default=10000)
+    parser.add_argument('--max-features', type=int, default=20000)
     parser.add_argument('--classification', action='store_true')
     return parser.parse_args()
 
 
-def build_model(vocab_size: int, num_classes: Sequence[int], do_classification: bool):
+def build_model(vocab_size: int, output_units: Sequence[int], do_classification: bool):
     input_ = Input((vocab_size,))
+
     hidden_1 = Dense(100, activation='relu')(input_)
     dropout_1 = Dropout(0.5)(hidden_1)
-    hidden_2 = Dense(256, activation='relu', name=REPRESENTATION_LAYER)(dropout_1)
+    hidden_2 = Dense(300, activation='relu', name=REPRESENTATION_LAYER)(dropout_1)
     dropout_2 = Dropout(0.5)(hidden_2)
-    if do_classification:
-        output = Dense(num_classes[0], activation='softmax', name=OUTPUT_NAME)(dropout_2)
-    else:
-        output = Dense(1, activation='sigmoid', name=OUTPUT_NAME)(dropout_2)
-    outputs = [output]
-    if len(num_classes) > 1:
-        aux_out = Dense(num_classes[1], activation='softmax', name=AUX_OUTPUT_NAME)(dropout_2)
+
+    activation = 'softmax' if do_classification else 'sigmoid'
+    outputs = [Dense(output_units[0], activation=activation, name=OUTPUT_NAME)(dropout_2)]
+    if len(output_units) > 1:
+        aux_out = Dense(output_units[1], activation='softmax', name=AUX_OUTPUT_NAME)(dropout_2)
         outputs.append(aux_out)
+
     return Model(inputs=[input_], outputs=outputs)
 
 
@@ -107,18 +107,19 @@ def main():
     train_x, dev_x, num_features = preprocess(kind, args.max_features, train_meta, dev_meta)
 
     cefr_labels = sorted(train_meta.cefr.unique())
-    num_classes = [len(cefr_labels)]
 
-    train_target_scores = np.array([cefr_labels.index(c) for c in train_meta.cefr])
-    dev_target_scores = np.array([cefr_labels.index(c) for c in dev_meta.cefr])
+    train_target_scores = np.array([cefr_labels.index(c) for c in train_meta.cefr], dtype=int)
+    dev_target_scores = np.array([cefr_labels.index(c) for c in dev_meta.cefr], dtype=int)
 
     if do_classification:
         train_y = to_categorical(train_target_scores)
         dev_y = to_categorical(dev_target_scores)
+        output_units = [len(cefr_labels)]
     else:  # Regression
         highest_class = max(train_target_scores)
         train_y = np.array(train_target_scores) / highest_class
         dev_y = np.array(dev_target_scores) / highest_class
+        output_units = [1]
 
     train_y = [train_y]
     dev_y = [dev_y]
@@ -128,7 +129,7 @@ def main():
         lang_labels = sorted(train_meta.lang.unique())
         train_y.append(to_categorical([lang_labels.index(l) for l in train_meta.lang]))
         dev_y.append(to_categorical([lang_labels.index(l) for l in dev_meta.lang]))
-        num_classes.append(len(lang_labels))
+        output_units.append(len(lang_labels))
         loss_weights = {
             AUX_OUTPUT_NAME: args.aux_loss_weight,
             OUTPUT_NAME: 1.0 - args.aux_loss_weight
@@ -136,10 +137,7 @@ def main():
     else:
         loss_weights = None
 
-    print(num_classes)
-    print(num_features)
-
-    model = build_model(num_features, num_classes, do_classification)
+    model = build_model(num_features, output_units, do_classification)
     model.summary()
     if do_classification:
         optimizer = Adam(lr=args.lr)
@@ -157,7 +155,7 @@ def main():
 
     # Context manager fails on Windows (can't open an open file again)
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
-    val_y = dev_y if do_classification else dev_target_scores
+    val_y = dev_y if do_classification else [dev_target_scores]
     callbacks = [F1Metrics(dev_x, val_y, weights_path)]
     history = model.fit(
         train_x, train_y, epochs=args.epochs, callbacks=callbacks, validation_data=(dev_x, dev_y),
@@ -176,7 +174,7 @@ def main():
     else:
         # Round to integers and clip to score range
         pred = rescale_regression_results(predictions, highest_class)
-    if args.multi:
+    if multi_task:
         multi_task_report(history.history, true, pred, cefr_labels)
     else:
         report(true, pred, cefr_labels)

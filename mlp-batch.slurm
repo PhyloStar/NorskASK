@@ -40,14 +40,23 @@ chkfile "results" "models"
 cmd="python -m masterthesis.models.mlp"
 
 case $SLURM_ARRAY_TASK_ID in
-	1) args="word" ;;
-	2) args="word --round-cefr" ;;
+	1) args="bow" ;;
+	2) args="bow --round-cefr" ;;
 	3) args="char" ;;
 	4) args="char --round-cefr" ;;
 	5) args="pos" ;;
 	6) args="pos --round-cefr" ;;
 	7) args="mixed" ;;
 	8) args="mixed --round-cefr" ;;
+
+	9) args="bow --classification" ;;
+	10) args="bow --round-cefr --classification" ;;
+	11) args="char --classification" ;;
+	12) args="char --round-cefr --classification" ;;
+	13) args="pos --classification" ;;
+	14) args="pos --round-cefr --classification" ;;
+	15) args="mixed --classification" ;;
+	16) args="mixed --round-cefr --classification" ;;
 
 	# Run script with arguments if not an array job
 	'') args="" ;;

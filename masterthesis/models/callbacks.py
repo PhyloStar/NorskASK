@@ -7,18 +7,17 @@ from masterthesis.utils import rescale_regression_results
 
 class F1Metrics(Callback):
     def __init__(self, dev_x, dev_y, weights_path, average='macro'):
+        super().__init__()
         if isinstance(dev_y, list):
             self.dev_y = dev_y[0]
-            self.multi = len(dev_y) > 1
         else:
             self.dev_y = dev_y
-            self.multi = False
         self.dev_x = dev_x
         self.weights_path = weights_path
         self.average = average
         if self.dev_y.ndim == 1:
-            self.highest_class = max(dev_y)
-            print('F1 callback : highest class %d' % self.highest_class)
+            self.highest_class = self.dev_y.max()
+        self.multi = None
 
     def on_train_begin(self, logs=None):
         if logs is None:
@@ -29,8 +28,11 @@ class F1Metrics(Callback):
     def on_epoch_end(self, epoch, logs=None):
         if logs is None:
             logs = {}
+
+        self.multi = self.multi or len(self.model.outputs) > 1
         val_predict = self.model.predict(self.dev_x)
         if self.multi:
+            assert isinstance(list, val_predict)
             val_predict = val_predict[0]
         if val_predict.shape[1] == 1:
             # Regression

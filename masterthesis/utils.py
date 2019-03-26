@@ -29,6 +29,8 @@ try:
 except ImportError:
     pass
 
+RANDOM_SEED = 350
+
 safe_plt = plt
 
 conll_cols = ['ID', 'FORM', 'LEMMA', 'UPOS', 'XPOS', 'FEATS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']
@@ -295,10 +297,10 @@ def set_reproducible() -> None:
     """Fix random seeds and disable multithreading in order to guarantee reproducible results."""
     # The below is necessary for starting Numpy generated random numbers
     # in a well-defined initial state.
-    np.random.seed(350)
+    np.random.seed(RANDOM_SEED)
     # The below is necessary for starting core Python generated random numbers
     # in a well-defined state.
-    random.seed(350)
+    random.seed(RANDOM_SEED)
     # Force TensorFlow to use single thread.
     # Multiple threads are a potential source of non-reproducible results.
     # For further details, see: https://stackoverflow.com/questions/42022950/
@@ -308,7 +310,7 @@ def set_reproducible() -> None:
     # in the TensorFlow backend have a well-defined initial state.
     # For further details, see:
     # https://www.tensorflow.org/api_docs/python/tf/set_random_seed
-    tf.set_random_seed(350)
+    tf.set_random_seed(RANDOM_SEED)
     sess = tf.Session(graph=tf.get_default_graph(), config=session_conf)
     K.set_session(sess)
 
