@@ -173,7 +173,7 @@ def main():
         pred = np.argmax(predictions, axis=1)
     else:
         # Round to integers and clip to score range
-        pred = rescale_regression_results(predictions, highest_class)
+        pred = rescale_regression_results(predictions, highest_class).ravel()
     if multi_task:
         multi_task_report(history.history, true, pred, cefr_labels)
     else:

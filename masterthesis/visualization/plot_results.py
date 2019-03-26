@@ -58,10 +58,18 @@ def plot_history(history, ax1, ax2):
     ax1.legend()
     ax1.set(xlabel='Epoch', ylabel='Loss')
 
-    ax2.plot(xs, history['acc'], label='training'),
-    ax2.plot(xs, history['val_acc'], label='validation')
-    ax2.legend()
-    ax2.set(xlabel='Epoch', ylabel='Accuracy')
+    if 'acc' in history:
+        ax2.plot(xs, history['acc'], label='training'),
+        ax2.plot(xs, history['val_acc'], label='validation')
+        ax2.legend()
+        ax2.set(xlabel='Epoch', ylabel='Accuracy')
+    elif 'val_f1' in history:
+        ax2.plot(xs, history['val_f1'], label='validation', color='C1')
+        ax2.legend()
+        ax2.set(xlabel='Epoch', ylabel='F1 score')
+    else:
+        print('Available keys in history:')
+        print(list(history.keys()))
 
 
 def main():
@@ -103,6 +111,7 @@ def main():
     conf_matrix = confusion_matrix(true, pred)
     heatmap(conf_matrix, labels, labels, normalize=True, ax=heatmap_ax)
     heatmap_ax.set(xlabel='Predicted class', ylabel='Gold class')
+    plt.tight_layout()
     plt.show()
 
 

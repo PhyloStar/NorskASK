@@ -253,10 +253,15 @@ that performs the best is the one using character \ngrams.
     % $ROW SVR POS: linear_svr-1337_11 linear_svr-1338_11
     % $ROW SVR Mix: linear_svr-1337_12 linear_svr-1338_12
     % \midrule
-    % $ROW MLP BOW:    mlp_word-03-01_11-53-35    mlp_word-03-01_11-55-36
-    % $ROW MLP Char:   mlp_char-03-01_11-57-23    mlp_char-03-01_11-59-00
-    % $ROW MLP POS:    mlp_pos-03-01_12-00-44     mlp_pos-03-01_12-02-31
-    % $ROW MLP Mix:    mlp_mixed-02-20_14-45-16   mlp_mixed-02-22_13-43-37
+    % $ROW MLP BOW:    mlp_bow-26436597_13 mlp_bow-26436607_13
+    % $ROW MLP Char:   mlp_char-26436597_14 mlp_char-26436607_14
+    % $ROW MLP POS:    mlp_pos-26436597_15 mlp_pos-26436607_15
+    % $ROW MLP Mix:    mlp_mix-26436597_16 mlp_mix-26436607_16
+    % \midrule
+    % $ROW MLPR BOW:    mlp_bow-26436597_17 mlp_bow-26436607_17
+    % $ROW MLPR Char:   mlp_char-26436597_18 mlp_char-26436607_18
+    % $ROW MLPR POS:    mlp_pos-26436597_19 mlp_pos-26436607_19
+    % $ROW MLPR Mix:    mlp_mix-26436597_20 mlp_mix-26436607_20
     % $END autotable
     LogReg BOW & $0.199$ & $0.317$ & $0.384$ & $0.626$ \\
     LogReg Char & $0.221$ & $0.317$ & $0.399$ & $0.602$ \\
@@ -273,10 +278,15 @@ that performs the best is the one using character \ngrams.
     SVR POS & $0.334$ & $0.358$ & $\mathbf{0.476}$ & $0.593$ \\
     SVR Mix & $0.312$ & $0.350$ & $0.441$ & $0.659$ \\
     \midrule
-    MLP BOW & $0.209$ & $0.366$ & $0.392$ & $0.642$ \\
-    MLP Char & $0.281$ & $\mathbf{0.472}$ & $0.423$ & $0.659$ \\
-    MLP POS & $0.245$ & $0.366$ & $0.439$ & $\mathbf{0.691}$ \\
-    MLP Mix & $0.239$ & $0.398$ & $0.384$ & $0.667$ \\
+    MLP BOW & $0.252$ & $0.398$ & $0.382$ & $0.659$ \\
+    MLP Char & $0.264$ & $0.415$ & $0.417$ & $0.675$ \\
+    MLP POS & $0.237$ & $0.407$ & $0.393$ & $0.642$ \\
+    MLP Mix & $0.232$ & $0.398$ & $0.353$ & $0.659$ \\
+    \midrule
+    MLPR BOW & $0.246$ & $0.341$ & $0.458$ & $\mathbf{0.715}$ \\
+    MLPR Char & $0.286$ & $0.341$ & $0.468$ & $0.707$ \\
+    MLPR POS & $0.273$ & $0.390$ & $0.418$ & $0.699$ \\
+    MLPR Mix & $0.252$ & $\mathbf{0.423}$ & $0.440$ & $0.650$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of different classifiers}

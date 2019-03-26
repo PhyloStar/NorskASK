@@ -4,7 +4,7 @@ from math import sqrt
 from pathlib import Path
 import pickle
 import sys
-from typing import Any, DefaultDict, Iterable, List
+from typing import Any, DefaultDict, Iterable, List  # noqa: F401
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -65,7 +65,7 @@ def files_to_dataframe(files):
             continue
         try:
             gold = res.true
-            pred = res.predictions
+            pred = res.predictions.ravel()
         except AttributeError:
             print('Could not find gold and pred for file %s' % results_file)
             continue
