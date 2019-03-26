@@ -9,7 +9,7 @@
 
 # Increase this number when you really need parallel computing 
 # (don't set it to more than 6 or 8 cores):
-#SBATCH --ntasks-per-node 4
+#SBATCH --ntasks-per-node 1
 
 export CUDA_VISIBLE_DEVICES=""
 export PYTHONHASHSEED=0
@@ -62,10 +62,15 @@ case $SLURM_ARRAY_TASK_ID in
 	11) cmd="$svr --kind pos" ;;
 	12) cmd="$svr --kind mix" ;;
 
-	13) cmd="$mlp bow" ;;
-	14) cmd="$mlp char" ;;
-	15) cmd="$mlp pos" ;;
-	16) cmd="$mlp mix" ;;
+	13) cmd="$mlp bow --classification" ;;
+	14) cmd="$mlp char --classification" ;;
+	15) cmd="$mlp pos --classification" ;;
+	16) cmd="$mlp mix --classification" ;;
+
+	17) cmd="$mlp bow" ;;
+	18) cmd="$mlp char" ;;
+	19) cmd="$mlp pos" ;;
+	20) cmd="$mlp mix" ;;
 
 	# Run script with arguments if not an array job
 	'') cmd=$mlp ;;
