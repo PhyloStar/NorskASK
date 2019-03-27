@@ -62,15 +62,20 @@ case $SLURM_ARRAY_TASK_ID in
 	11) cmd="$svr --kind pos" ;;
 	12) cmd="$svr --kind mix" ;;
 
-	13) cmd="$mlp bow --classification" ;;
-	14) cmd="$mlp char --classification" ;;
-	15) cmd="$mlp pos --classification" ;;
-	16) cmd="$mlp mix --classification" ;;
+	13) cmd="$mlp bow --method classification" ;;
+	14) cmd="$mlp char --method classification" ;;
+	15) cmd="$mlp pos --method classification" ;;
+	16) cmd="$mlp mix --method classification" ;;
 
-	17) cmd="$mlp bow" ;;
-	18) cmd="$mlp char" ;;
-	19) cmd="$mlp pos" ;;
-	20) cmd="$mlp mix" ;;
+	17) cmd="$mlp bow --method regression" ;;
+	18) cmd="$mlp char --method regression" ;;
+	19) cmd="$mlp pos --method regression" ;;
+	20) cmd="$mlp mix --method regression" ;;
+
+	21) cmd="$mlp bow --method ranked" ;;
+	22) cmd="$mlp char --method ranked" ;;
+	23) cmd="$mlp pos --method ranked" ;;
+	24) cmd="$mlp mix --method ranked" ;;
 
 	# Run script with arguments if not an array job
 	'') cmd=$mlp ;;

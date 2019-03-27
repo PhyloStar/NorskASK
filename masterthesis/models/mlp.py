@@ -3,6 +3,7 @@ import os
 import tempfile
 from typing import Iterable, Sequence
 
+import keras.backend as K
 from keras.layers import Dense, Dropout, Input
 from keras.models import Model
 from keras.optimizers import Adam
@@ -15,7 +16,9 @@ from masterthesis.features.build_features import (
 )
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import multi_task_report, report
-from masterthesis.models.utils import add_common_args
+from masterthesis.models.utils import (
+    add_common_args, get_targets_and_output_units, ranked_accuracy, ranked_prediction
+)
 from masterthesis.results import save_results
 from masterthesis.utils import (
     AUX_OUTPUT_NAME, DATA_DIR, get_file_name, load_split, OUTPUT_NAME, REPRESENTATION_LAYER,
@@ -92,12 +95,30 @@ def preprocess(kind: str, max_features: int, train_meta, dev_meta):
     return train_x, dev_x, num_features
 
 
+def get_compile_args(method, lr):
+    if method == 'classification':
+        optimizer = Adam(lr=lr)
+        loss = 'categorical_crossentropy'
+        metrics = ['accuracy']
+    elif method == 'ranked':
+        optimizer = Adam(lr=lr)
+        loss = 'mean_squared_error'
+        metrics = [ranked_accuracy]
+    elif method == 'regression':
+        optimizer = 'rmsprop'
+        loss = 'mean_squared_error'
+        metrics = ['mae']
+    else:
+        raise ValueError('Unknown method')
+    return optimizer, loss, metrics
+
+
 def main():
     args = parse_args()
 
     set_reproducible()
+    do_classification = args.method == 'classification'
 
-    do_classification = args.classification
     train_meta = load_split('train', round_cefr=args.round_cefr)
     dev_meta = load_split('dev', round_cefr=args.round_cefr)
 
@@ -109,15 +130,8 @@ def main():
     train_target_scores = np.array([cefr_labels.index(c) for c in train_meta.cefr], dtype=int)
     dev_target_scores = np.array([cefr_labels.index(c) for c in dev_meta.cefr], dtype=int)
 
-    if do_classification:
-        train_y = to_categorical(train_target_scores)
-        dev_y = to_categorical(dev_target_scores)
-        output_units = [len(cefr_labels)]
-    else:  # Regression
-        highest_class = max(train_target_scores)
-        train_y = np.array(train_target_scores) / highest_class
-        dev_y = np.array(dev_target_scores) / highest_class
-        output_units = [1]
+    train_y, dev_y, output_units = get_targets_and_output_units(
+        train_target_scores, dev_target_scores, args.method)
 
     train_y = [train_y]
     dev_y = [dev_y]
@@ -137,24 +151,13 @@ def main():
 
     model = build_model(num_features, output_units, do_classification)
     model.summary()
-    if do_classification:
-        optimizer = Adam(lr=args.lr)
-        loss = 'categorical_crossentropy'
-        metrics = ['accuracy']
-    else:
-        optimizer = 'rmsprop'
-        loss = 'mean_squared_error'
-        metrics = ['mae']
-    model.compile(
-        optimizer=optimizer,
-        loss=loss,
-        loss_weights=loss_weights,
-        metrics=metrics)
+    optimizer, loss, metrics = get_compile_args(args.method, args.lr)
+    model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics)
 
     # Context manager fails on Windows (can't open an open file again)
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
-    val_y = dev_y if do_classification else [dev_target_scores]
-    callbacks = [F1Metrics(dev_x, val_y, weights_path)]
+    val_y = dev_target_scores
+    callbacks = [F1Metrics(dev_x, val_y, weights_path, ranked=args.method == 'ranked')]
     history = model.fit(
         train_x, train_y, epochs=args.epochs, callbacks=callbacks, validation_data=(dev_x, dev_y),
         verbose=2)
@@ -167,11 +170,14 @@ def main():
         predictions = model.predict(dev_x)[0]
     else:
         predictions = model.predict(dev_x)
-    if do_classification:
+    if args.method == 'classification':
         pred = np.argmax(predictions, axis=1)
-    else:
+    elif args.method == 'regression':
         # Round to integers and clip to score range
+        highest_class = train_target_scores.max()
         pred = rescale_regression_results(predictions, highest_class).ravel()
+    elif args.method == 'ranked':
+        pred = K.eval(ranked_prediction(predictions))
     if multi_task:
         multi_task_report(history.history, true, pred, cefr_labels)
     else:
