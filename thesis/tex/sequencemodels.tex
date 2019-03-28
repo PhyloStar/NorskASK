@@ -66,10 +66,12 @@ dimension of embeddings. They were trained using skipgram and window size 5,
 and lemmatization has not been applied to the corpora.
 
 We can superficially confirm the usefulness of fastText embeddings by looking
-at vector similarities. For instance, the token `kjokoladet' is a misspelt
-version of `sjokolade' (chocolate), and it is closest in the embedding space
-to `sjokolade'. Curiously, it is also closer to `potetgul' than `potetgull'
-(potato crisps), and the former is a misspelling.
+at vector similarities. We use the Python library Gensim \autocite{gensim} to
+load vector models and look up word similarities. For instance, the token
+`kjokoladet' is a misspelt version of `sjokolade' (chocolate), and it is
+closest in the embedding space to `sjokolade'. Curiously, it is also closer
+to `potetgul' than `potetgull' (potato crisps), and the former is a
+misspelling.
 
 Our training data only contains 20,766 unique tokens, which is less than 1\%
 of the full vocabulary of the models. Loading the full pre-trained model
@@ -661,7 +663,7 @@ classification layer positions documents that should be similar close to each
 other. In figure \ref{fig:cefr-t-sne} we have taken the documents in the dev
 set and computed these representations using a \ac{CNN}, then run them through
 the $t$-SNE algorithm in order to reduce them two two dimensions while still
-maintaining a measure of nearbyness. It can be seen that the document space
+maintaining a measure of distance. It can be seen that the document space
 is split into two clusters, one with generally lower CEFR scores than the
 other. However there is no visible structure on a finer level than that.
 \todo{use recent model}

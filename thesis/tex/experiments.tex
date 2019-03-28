@@ -34,13 +34,18 @@ corpus are from the Oslo-Bergen tagger's own tagset \autocite{oslobergen}.
 \label{metrics-discussion}
 
 The \FI score for a single class is the harmonic mean of the precision and
-recall. It can also be expressed as a function of true positives ($TP$),
-false negatives ($FN$), and false positives ($FP$), as in equation
-\ref{eq:fi}.
+recall (Eq. \ref{eq:precision}). It can also be expressed as a function of
+true positives ($TP$), false negatives ($FN$), and false positives ($FP$), as
+in equation \ref{eq:fscore}.
 
-\begin{equation}\label{eq:fi}
-  F_1 = {\frac{2\cdot TP}{2\cdot TP + FN + FP}}
-\end{equation}
+\begin{gather}
+  \begin{aligned}\label{eq:precision}
+    precision = \frac{TP}{TP + FP} \qquad recall = \frac{TP}{TP + FN}
+  \end{aligned}
+  \\[2ex]
+  F_1 = 2\cdot\frac{precision\cdot recall}{precision+recall}
+      = {\frac{2\cdot TP}{2\cdot TP + FN + FP}}\label{eq:fscore}
+\end{gather}
 
 In a multi-class prediction setup, there are several ways to combine the
 classes' individual \FI scores into a single metric. There is the micro
@@ -98,15 +103,29 @@ tags.
 
 \section{Model descriptions}
 
-Initial experiments were run using two linear models, logistic regression,
-and linear regression, and a neural model, a \acp{MLP}.
+Initial experiments were run using linear models, logistic regression,
+and linear regression, and neural models following the \acp{MLP} architecture.
+
+
+\subsection{Classification versus regression}
 
 \ac{AES} can be modelled both as a classification task and as a regression
 task, and both are seen in previous work.
 
-In order to report classification based metrics for a regression model, we
-had to transform the predicted scores, which are continuous, into discrete
-scores equivalent to the given classes. This was done 
+A disadvantage with using regression for the AES task is that while we know the
+correct order of classes, it is not obvious that the distance between adjacent
+classes is always equal. For instance, we cannot know if the jump from CEFR
+score `A2/B1' to 'B1' is just as big as `B1' to `B1/B2'. However, we need to
+implicitly decide this when we transform the labels into numeric values for
+regression.
+
+This challenge of quantifying distance between classes does not apply to the
+classification approach, but it comes with another problem. Multi-class
+classification does not consider any ordering of classes, which is an
+intrinsic property of the classes for AES.
+
+A third class of analysis called \emph{ordinal regression} or \emph{ranking
+learning} is intended for predicting an ordinal variable, such as CEFR scores.
 
 
 \subsection{Input representations}
@@ -162,40 +181,7 @@ Example \ref{ex:mixed-pos} shows a sentence fragment with the original series
 of tokens, the sequence of mixed function words and UPOS tags it is
 transformed into, as well as a translation into English.
 
-We used the same set of stop words as \citeauthor{malmasi15}. From these
-transformed sequences, we extracted \ngrams in the interval $[1,3]$. The
-10,000 most commonly occurring of these were used for the neural models.
-
-
-\subsection{Linear models}
-
-The logistic regression model was implemented using the Python library
-Scikit-Learn \autocite{scikit-learn}. The model was instantiated with the
-`lgbfs' solver to minimize multinomial loss. No regularization was used, and
-the optimizer was set to run for a maximum of 100 iterations.
-
-The linear regression model was a support vector regressoralso chosen from Scikit-learn. The default
-parameters were used, which 
-
-
-\subsection{Multi-layer perceptron}
-\label{subsec:mlp}
-
-The MLP models were implementing in Keras \autocite{keras} and run on the
-TensorFlow backend \autocite{tensorflow}. All the models the have an input
-layer with 10,000 dimensions, then two fully connected layers of size 256.
-The fully connected layers use \ac{ReLU} activation and dropout
-regularization with a dropout rate of 50\%. At the end, there is an output
-layer with softmax activation and 7 or 4 dimensions, depending on whether we
-run with collapsed labels or not.
-
-The model was trained using the Adam optimization algorithm
-\autocite{kingma2014adam} to minimize the categorical cross-entropy loss
-(equation \ref{eq:crossentropy}). The learning rate was set to $2\cdot
-10^{-4}$.
-
-
-The new \ngram features add a certain sensitivity to local order of features.
+The \ngram features add a certain sensitivity to local order of features.
 Many character \ngrams will represent entities smaller than a word, but may
 indicate common spelling mistakes. \ac{POS} and Mixed POS \ngrams, on the
 other hand, might be able to represent syntactic features. Spelling and
@@ -204,6 +190,85 @@ methods that rely on manual feature engineering have included domain specific
 features designed to capture spelling and syntax, as for instance in
 \textcite{vajjala17}.
 
+We used the same set of stop words as \citeauthor{malmasi15}. From these
+transformed sequences, we extracted \ngrams in the interval $[1,3]$. The
+20,000 most commonly occurring of these were used for the neural models.
+
+
+\subsection{Linear models}
+\label{subsec:linear}
+
+The logistic regression model was implemented using the Python library
+Scikit-Learn \autocite{scikit-learn}. The model was instantiated with the
+`lgbfs' solver to minimize multinomial loss. No regularization was used, and
+the optimizer was set to run for a maximum of 100 iterations.
+
+The linear regression model was a support vector regressor
+also chosen from Scikit-learn. The default
+parameters were used, which 
+
+In order to report classification based metrics for a regression model, we
+had to transform the predicted scores, which are continuous, into discrete
+scores equivalent to the given classes. This was by rounding the raw
+regression score to the nearest integer and clipping the result to be in the
+range of the highest and lowest classes.
+
+
+\subsection{Multi-layer perceptron}
+\label{subsec:mlp}
+
+The MLP models were implementing in Keras \autocite{keras} and run on the
+TensorFlow backend \autocite{tensorflow}. All the models the have an input
+layer with 20,000 dimensions, followed by two fully connected layers with 100
+and 300 nodes, respectively. The fully connected layers use \ac{ReLU}
+activation and dropout regularization with a dropout rate of 50\%.
+
+The output layer varies depending on the method used. For multi-class
+prediction, we use an output layer with softmax activation and 7 or 4
+dimensions, depending on whether we run with collapsed labels or not. The
+multi-class model was trained by minimizing the categorical cross-entropy
+loss (Eq. \ref{eq:crossentropy}).
+
+For regression, our output layer contains a single node with sigmoid
+activation. The regression model is trained by minimizing the mean squared
+error loss against gold labels normalized to the interval $[0, 1]$. This is
+in line with the method for neural network regression used by
+\textcite{taghipour16}. For evaluating the predictions, the output is scaled
+by the value of the highest label and transformed into categorical values
+using the method described in subsection \ref{subsec:linear}.
+
+The codomain of sigmoid function is centered around 0.5 and maps to the
+central labels. The highest and lowest labels get a smaller share of the
+space.
+
+For ordinal regression, we implemented a neural model for ordinal regression
+following a modified version of the method in \textcite{cheng2008neural}.
+Gold labels are represented as a vectors of size $C-1$ where the elements are
+filled with ones from left to right such that: The lowest class is all zeros.
+The next class is a single one in the leftmost position and zeros in the
+remaining positions. The next class has two ones in the two leftmost
+positions, continuing to the highest class which is represented by a vector
+of only ones. In the original paper, \citeauthor{cheng2008neural} used
+vectors of size $C$. However, we only need $C-1$ elements to represent the
+thresholds between classes.
+
+The output layer of our neural network has size $C-1$ and uses elementwise
+sigmoid activation to constrain the values of elements to the interval
+$(0,1)$. At train time, we minimize the mean square error between the gold
+labels and output.
+
+At predict time, we apply a rounding function to the output vectors such that
+we get a vector of only ones and zeros. The resulting vector may be any
+sequence of ones and zeros, even those not conforming to our rule for
+representing classes, i.e. there might be a one to the right of a zero. We
+then select the predicted class by taking the index of the first zero element
+of this vector, or the highest class if all elements are one.
+
+The multi-class and ordinal regression neural networks were trained using the
+Adam optimization algorithm \autocite{kingma2014adam} with a learning rate of
+$2\cdot 10^{-4}$. The neural regressor was trained with the RMSProp
+optimization algorithm.
+
 
 \section{Results}
 
@@ -211,19 +276,9 @@ Two different sets of output labels are used in the experiments: The original
 seven CEFR labels, and a collapsed set where the intermediate classes, such
 as ``A2/B1'', are rounded up to the nearest canonical class, i.e. the CEFR
 label after the slash. This results in only four different labels: ``A2'',
-``B1'', ``B2'' and ``C1''.
-
-As a simple baseline, we consider the majority class classifier. The majority
-class in the training set is ``B1'', whether we consider the full class set
-or the collapsed set. A majority classifier gets an accuracy of 18.7\% on the
-test set using non-collapsed labels. With the collapsed labels, the accuracy
-on the test set is 34.1\%. The macro \FI scores are much lower, as the
-majority class classifier predicts no samples for any other classes.
-
-Moving to a linear model, a logistic regression classifier using only
-bag-of-word features achieves an accuracy of 28.5\% on the dev set without
-collapsed labels and 58.5\% with collapsed labels. However, the linear model
-that performs the best is the one using character \ngrams.
+``B1'', ``B2'' and ``C1''. All macro and micro \FI scores for the classifiers
+described in this chapter, for both the full and collapsed sets of classes,
+are found in table \ref{tab:baseline-accuracies}.
 
 \begin{table}
   \centering
@@ -258,10 +313,15 @@ that performs the best is the one using character \ngrams.
     % $ROW MLP POS:    mlp_pos-26436597_15 mlp_pos-26436607_15
     % $ROW MLP Mix:    mlp_mix-26436597_16 mlp_mix-26436607_16
     % \midrule
-    % $ROW MLPR BOW:    mlp_bow-26436597_17 mlp_bow-26436607_17
-    % $ROW MLPR Char:   mlp_char-26436597_18 mlp_char-26436607_18
-    % $ROW MLPR POS:    mlp_pos-26436597_19 mlp_pos-26436607_19
-    % $ROW MLPR Mix:    mlp_mix-26436597_20 mlp_mix-26436607_20
+    % $ROW MLP Reg BOW:    mlp_bow-26436597_17  mlp_bow-26436607_17
+    % $ROW MLP Reg Char:   mlp_char-26436597_18 mlp_char-26436607_18
+    % $ROW MLP Reg POS:    mlp_pos-26436597_19  mlp_pos-26436607_19
+    % $ROW MLP Reg Mix:    mlp_mix-26436597_20  mlp_mix-26436607_20
+    % \midrule
+    % $ROW MLP Rank BOW:   mlp_bow-26449272_21  mlp_bow-26449273_21
+    % $ROW MLP Rank Char:  mlp_char-26449272_22 mlp_char-26449273_22
+    % $ROW MLP Rank POS:   mlp_pos-26449272_23  mlp_pos-26449273_23
+    % $ROW MLP Rank Mix:   mlp_mix-26449272_24  mlp_mix-26449273_24
     % $END autotable
     LogReg BOW & $0.199$ & $0.317$ & $0.384$ & $0.626$ \\
     LogReg Char & $0.221$ & $0.317$ & $0.399$ & $0.602$ \\
@@ -283,20 +343,54 @@ that performs the best is the one using character \ngrams.
     MLP POS & $0.237$ & $0.407$ & $0.393$ & $0.642$ \\
     MLP Mix & $0.232$ & $0.398$ & $0.353$ & $0.659$ \\
     \midrule
-    MLPR BOW & $0.246$ & $0.341$ & $0.458$ & $\mathbf{0.715}$ \\
-    MLPR Char & $0.286$ & $0.341$ & $0.468$ & $0.707$ \\
-    MLPR POS & $0.273$ & $0.390$ & $0.418$ & $0.699$ \\
-    MLPR Mix & $0.252$ & $\mathbf{0.423}$ & $0.440$ & $0.650$ \\
+    MLP Reg BOW & $0.246$ & $0.341$ & $0.458$ & $\mathbf{0.715}$ \\
+    MLP Reg Char & $0.286$ & $0.341$ & $0.468$ & $0.707$ \\
+    MLP Reg POS & $0.273$ & $0.390$ & $0.418$ & $0.699$ \\
+    MLP Reg Mix & $0.252$ & $0.423$ & $0.440$ & $0.650$ \\
+    \midrule
+    MLP Rank BOW & $0.276$ & $0.398$ & $0.408$ & $0.707$ \\
+    MLP Rank Char & $0.330$ & $\mathbf{0.480}$ & $0.395$ & $0.634$ \\
+    MLP Rank POS & $0.251$ & $0.382$ & $0.420$ & $0.667$ \\
+    MLP Rank Mix & $0.235$ & $0.366$ & $0.403$ & $0.634$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of different classifiers}
   \label{tab:baseline-accuracies}
 \end{table}
 
-All results are seen in table \ref{tab:baseline-accuracies}. For the linear
-models, the support vector regressor clearly outperforms the classifiers.
+As a simple baseline, we consider the majority class classifier. The majority
+class in the training set is ``B1'', both with the full class set of labels
+and with the collapsed set. The macro \FI scores for the majority classifier
+are very low, as the majority class classifier predicts no samples for any
+classes except the majority, and thus the \FI score for all other classes is
+zero\footnote{Technically, the precision is undefined when there are no
+predictions for the class, but it is commonly set to 0 in this case.}.
 
-\todo{this was written before SVR was so good}
+
+\subsection{Linear models}
+
+Moving to a linear model, a logistic regression classifier (LogReg) using
+bag-of-words features achieves a macro \FI score of 19.9\% on the dev set
+without collapsed labels and 38.4\% with collapsed labels, and thus beats the
+majority classifier by a large margin. However, the classifier performs
+better using another input representation than bag-of-words. Character
+\ngrams yields the highest macro \FI scores using a logistic regression
+classifier, 22.1\% and 39.9\% for all classes and collapsed classes,
+respectively.
+
+The \ac{SVM} classifier, referred to as SVC in the table, performs around the
+same level as the LogReg classifier. Its highest macro \FI scores, 21.5\% and
+39.9\%, are lower than for LogReg.
+
+The \ac{SVM} regressor, referred to as SVR, improves on all macro \FI scores
+from the linear classifiers, and also has the highest micro \FI scores of all
+the linear models. Using bag-of-words input, the model yields a macro \FI of
+44.4\% on the full set of labels. For the collapsed set of labels, the highest
+macro \FI, 47.6\%, comes from POS \ngram features.
+
+
+\subsection{Neural networks}
+
 However, our \acp{MLP} had the best accuracies. For the full set of
 classes, character \ngrams gave the best results, followed by POS \ngrams.
 For the collapsed classes, POS \ngrams outperformed character \ngrams by a
