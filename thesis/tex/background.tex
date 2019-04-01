@@ -308,14 +308,15 @@ frames, semantic supersenses, named entity recognition, ontological types for
 senses and Multi-Perspective Question Answering.
 
 They used an auxiliary task called \textsc{FreqBin}, whose objective is to
-predict the log frequency of a word, discretized into a number of bins. This
-study tried a new binning strategy which improved the utility of
-\textsc{FreqBin} as an auxiliary task compared with previously examined
-strategies. While the previous variants took the logarithm of the token's
-frequency in a chosen base and rounded down to the nearest integer, the new
-strategy ranked all tokens by frequency grouped them into labels by a given
-quantile. In the study, they used $k=5$, yielding 5 \textsc{FreqBin} labels
-with the same number of examples each.
+predict the frequency of a word, where frequency value is made discrete by
+assigning it to one of a finite a number of bins. This study tried a new
+binning strategy which improved the utility of \textsc{FreqBin} as an
+auxiliary task compared with previously examined strategies. While the
+previous variants took the logarithm of the token's frequency in a chosen
+base and rounded down to the nearest integer, the new strategy ranked all
+tokens by frequency grouped them into labels by a given quantile. In the
+study, they used $k=5$, yielding 5 \textsc{FreqBin} labels with the same
+number of examples each.
 
 
 \section{Learner language}
@@ -527,4 +528,4 @@ documents are marked on a proficiency scale from 1 to 40.
 
 The thesis will be focused on training an automated essay scoring model on
 Norwegian data using multi-task learning. Native language identification is
-one of possibly more auxiliary tasks that will be attepted.
+one of possibly more auxiliary tasks that will be attempted.

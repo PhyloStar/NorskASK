@@ -4,17 +4,19 @@ We will first perform some experiments using some simple models. These will
 both serve as demonstrations that learning is feasible, and as baselines to
 which we will compare results using more complex models. In addition, we are
 comparing the performance of different kinds of input. We use both tokens,
-character \ngrams and \ac{POS} \ngrams as inputs.
+character \ngrams, mixed POS and function word \ngrams, and \ac{POS} \ngrams
+as inputs.
 
 
 \section{Preprocessing}
 
 The data files in the ASK corpus are in \ac{XML} format, and contain
 information about tags, mistakes and corrections, paragraphs, sentences and
-more. These files were transformed into several other formats during the
-process. First, they were converted to plain text files, stripped of all tags
-or correction labels. The text files have one sentence per line, consisting
-of space-separated tokens, and an empty line separating paragraphs.
+more. These files were transformed into several other formats during
+preprocessing. First, they were converted to plain text files, stripped of
+all tags or correction labels. The text files have one sentence per line,
+consisting of space-separated tokens, and an empty line separating
+paragraphs.
 
 These raw text files were then sent through the UDPipe pipeline
 \autocite{udpipe:2017} for tagging and dependency parsing. The UDPipe project
@@ -23,11 +25,13 @@ models. All documents were transformed by the REST \ac{API} using what was at
 the time of writing the newest Norwegian bokmål (nb) model
 available\footnote{\texttt{norwegian-bokmaal-ud-2.3-181115}}.
 
-The pipeline accepts raw text files as input, where each sentence is put on a
-separate line. The output from UDPipe is in the CoNLL file format, with a
-single token per line. UDPipe tags the documents using the Universal
-Dependencies (UD) tagset, referred to as UPOS. The original tags in the ASK
-corpus are from the Oslo-Bergen tagger's own tagset \autocite{oslobergen}.
+The pipeline accepts different input formats, including raw text files on
+this format. We used the tokenization from the ASK corpus and not the
+tokenization algorithm built into UDPipe. The output from UDPipe is on the
+CoNLL file format, with a single token per line. UDPipe tags the documents
+using the Universal Dependencies (UD) tagset, referred to as UPOS. The
+original tags in the ASK corpus are from the Oslo-Bergen tagger's own tagset
+\autocite{oslobergen}, and these were not used in any of our experiments.
 
 
 \section{Metrics}
@@ -49,18 +53,23 @@ in equation \ref{eq:fscore}.
 
 In a multi-class prediction setup, there are several ways to combine the
 classes' individual \FI scores into a single metric. There is the micro
-average \FI, which in our case is equivalent to accuracy, since all samples
-have exactly one true label. Accuracy is the proportion of samples where the
-gold labels and predicted labels are the same. Then there is the macro
-average, which is the unweighted average of \FI scores for all classes.
+average \FI, which is equal to accuracy in the case where all samples have
+exactly one true label. Since this is the case for our data, we will
+sometimes refer to micro \FI or accuracy interchangeably. Accuracy is the
+proportion of samples where the gold labels and predicted labels are the
+same.
 
-When the distribution of classes is uneven, a macro average will give
-proportionally more weight on samples from small classes, and less weight to
-all samples in classes with large support. A model with a high micro \FI and
-a low macro \FI indicates that it is good at classifying examples from the
-most frequent classes, but performs worse on classes with low support. In
-addition, the weighted \FI is a weighted average where each class is weighted
-proportionally to its prevalence.
+Then there is the macro average, which is the unweighted average of \FI
+scores for all classes. When the distribution of classes is uneven, a macro
+average will give proportionally more weight on samples from small classes,
+and less weight to all samples in classes with large support. A model with a
+high micro \FI and a low macro \FI indicates that it is good at classifying
+examples from the most frequent classes, but performs worse on classes with
+low support.
+
+In addition to macro and micro average, the weighted \FI is a weighted
+average where each class is weighted proportionally to its share of the
+complete dataset.
 
 \FI scores previously reported in \ac{AES} literature include Micro \FI score
 in \textcite{vajjala17}, and weighted \FI in
@@ -78,12 +87,13 @@ than a prediction of `A2/B1' for the same sample, and this can be taken into
 account by some metrics.
 
 According to \textcite{yannakoudakis2015evaluating}, there are several
-problems with using \ac{QWK} as a metric for the task, because it depends on
-trait prevalence, the scoring scale and the marginal distributions of labels
-and predictions. Therefore it is problematic to compare \ac{QWK} scores
-between different systems and datasets. However, since two of the cited
-studies are based on a dataset from a Kaggle competition where \ac{QWK} was
-the official metric, it has been reported.
+problems with using \ac{QWK} as a metric for the \ac{AES} task, because it
+depends on trait prevalence, the scoring scale and the marginal distributions
+of labels and predictions. Therefore it is problematic to compare \ac{QWK}
+scores between different systems and datasets. However, since two of the
+cited studies are based on a dataset from a Kaggle competition where \ac{QWK}
+was the official metric, the authors of the studies have chosen to report
+this metric, either alone or in conjunction with other metrics.
 
 
 \subsection{Reported metrics}
@@ -199,19 +209,22 @@ transformed sequences, we extracted \ngrams in the interval $[1,3]$. The
 \label{subsec:linear}
 
 The logistic regression model was implemented using the Python library
-Scikit-Learn \autocite{scikit-learn}. The model was instantiated with the
+scikit-Learn \autocite{scikit-learn}. The model was instantiated with the
 `lgbfs' solver to minimize multinomial loss. No regularization was used, and
 the optimizer was set to run for a maximum of 100 iterations.
 
-The linear regression model was a support vector regressor
-also chosen from Scikit-learn. The default
-parameters were used, which 
+The linear regression model was a support vector regressor also chosen from
+scikit-learn. The default parameters were used, which are epsilon-insensitive
+loss with $\epsilon=0$, a penalty parameter of $1$, and a tolerance of
+$10^{-4}$ for the stopping criteria.
 
 In order to report classification based metrics for a regression model, we
 had to transform the predicted scores, which are continuous, into discrete
 scores equivalent to the given classes. This was by rounding the raw
-regression score to the nearest integer and clipping the result to be in the
-range of the highest and lowest classes.
+regression scores to the nearest integer. The output from the support vector
+regression model is not constrained to any interval, making it necessary to
+additionally clip the output values to the range of scores: $[0,6]$ in our
+full set of labels and $[0,3]$ in the collapsed set.
 
 
 \subsection{Multi-layer perceptron}
@@ -237,7 +250,7 @@ in line with the method for neural network regression used by
 by the value of the highest label and transformed into categorical values
 using the method described in subsection \ref{subsec:linear}.
 
-The codomain of sigmoid function is centered around 0.5 and maps to the
+The co-domain of the sigmoid function is centred around 0.5 and maps to the
 central labels. The highest and lowest labels get a smaller share of the
 space.
 
@@ -267,7 +280,7 @@ of this vector, or the highest class if all elements are one.
 The multi-class and ordinal regression neural networks were trained using the
 Adam optimization algorithm \autocite{kingma2014adam} with a learning rate of
 $2\cdot 10^{-4}$. The neural regressor was trained with the RMSProp
-optimization algorithm.
+optimization algorithm using the default learning rate of $10^{-3}$.
 
 
 \section{Results}
@@ -391,34 +404,33 @@ macro \FI, 47.6\%, comes from POS \ngram features.
 
 \subsection{Neural networks}
 
-However, our \acp{MLP} had the best accuracies. For the full set of
-classes, character \ngrams gave the best results, followed by POS \ngrams.
-For the collapsed classes, POS \ngrams outperformed character \ngrams by a
-small margin. Interestingly, the input representation that yielded the best
-scores in our linear models, mixed UPOS, did not give good results with the
-\acp{MLP} at all. This may indicate that the neural model is able to extract
-higher-level features that model the interaction between several low-level
-\ngram features.
+The \ac{MLP} classifier is referred to in table \ref{tab:baseline-accuracies}
+as MLP. The network with a single node regression output is called MLP Reg,
+and the ordinal regression model is called MLP Rank.
+
+For all the different input representations, the \ac{MLP} classifier is
+outperformed in terms of macro \FI by one or both of the other two neural
+models.
 
 In order to examine the classification behaviour closer, we present the
-confusion matrices from MLP Mix in figures \ref{fig:mlp-mixed-conf} and
-\ref{fig:mlp-mixed-conf-round}. We want predictions to lie on the diagonal of
-the matrix. However, due to the ordinal nature of the classes, we also want
-eventual misclassifications to lie close to the diagonal, as would indicate a
-small magnitude of misclassification. Conversely, we do not want any
-predictions in the upper right and lower left corners, as they represent
-misclassifications of the greatest magnitude.
+confusion matrices from the ordinal regression MLP in figures
+\ref{fig:mlp-char-rank} and \ref{fig:mlp-char-rank-round}. We want
+predictions to lie on the diagonal of the matrix. However, due to the ordinal
+nature of the classes, we also want eventual mis-classifications to lie close
+to the diagonal, which would indicate a small magnitude of misclassification.
+Conversely, we do not want any predictions in the upper right and lower left
+corners, as they represent mis-classifications of the greatest magnitude.
 
 \begin{figure}
   \centering
-  \includegraphics{mlp-mixed-conf}
+  \includegraphics{mlp-char-rank}
   \caption{Confusion matrix for MLP Mix}
-  \label{fig:mlp-mixed-conf}
+  \label{fig:mlp-char-rank}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics{mlp-mixed-conf-round}
+  \includegraphics{mlp-char-rank-round}
   \caption{Confusion matrix for MLP Mix on collapsed labels}
-  \label{fig:mlp-mixed-conf-round}
+  \label{fig:mlp-char-rank-round}
 \end{figure}

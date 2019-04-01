@@ -6,6 +6,7 @@ data is also described.
 
 \section{Data set}
 
+% cspell:disable
 The ASK corpus (\emph{andrespråkskorpus}) was presented in 2006
 \autocite{tenfjord06}. The corpus contains Norwegian learner essays from two
 different language tests: \emph{Språkprøven i norsk for voksne innvandrere}
@@ -14,6 +15,7 @@ B2 levels, respectively. Following the naming in
 \textcite{carlsen2012proficiency}, we will refer to these tests as the
 \emph{IL test} (Intermediate Level, ``Språkprøven'') and the \emph{AL test}
 (Advanced Level, ``Høyere nivå'').
+% cspell:enable
 
 \begin{table}
   \centering
@@ -128,6 +130,7 @@ the B1 test level (\emph{IL test}) data.
     \toprule
     Topic                    & AL test & IL test & Total \\
     \midrule
+    % cspell:disable
     telefon                  &      37 &      64 &   101 \\
     bolig                    &       0 &      83 &    83 \\
     familie helse vekt       &      59 &       0 &    59 \\
@@ -138,6 +141,7 @@ the B1 test level (\emph{IL test}) data.
     barn                     &       3 &      32 &    35 \\
     kultur norge             &       0 &      34 &    34 \\
     media                    &       0 &      31 &    31 \\
+    % cspell:enable
     \bottomrule
   \end{tabular}
   \caption{Number of texts in each test level for top 10 topics}
@@ -160,12 +164,14 @@ documents for a topic in \emph{AL test} is 5 (mean $9.8$), while it is 11 in
 \emph{IL test} (mean $18.4$). This also explains the overrepresentation of
 \emph{IL test} in the table of top ten topics.
 
+% cspell:disable
 It has been observed that some topics in the diagram consist of several
 sub-topics (for instance, ``natur norge'' consists of ``natur'' and
 ``norge''). However, the number of individual sub-topics is 62, still quite
 large. However, they seem to be more evenly distributed across essays. The
 median number of documents for a sub-topic, for both test levels, is 25 (mean
 $34.8$). 13 sub-topics are only represented in 5 or fewer documents.
+% cspell:enable
 
 \begin{figure}
   \centering
@@ -225,6 +231,7 @@ the proficiency and language distributions against the entire corpus.
     \toprule
     Topics in development set &       Topics in test set \\
     \midrule
+    % cspell:disable
          idrett/sport kultur &       geografi norge folk \\
                 organisasjon &               innvandring \\
                   opplevelse & innvandring politikk valg \\
@@ -243,18 +250,21 @@ the proficiency and language distributions against the entire corpus.
       litteratur dikt venner &                  religion \\
                              &               helse organ \\
                              &             folk følelser \\
+    % cspell:enable
     \bottomrule
   \end{tabular}
   \caption{The topics chosen to be in each of the development and test sets}
   \label{tab:topics-in-split}
 \end{table}
 
+% cspell:disable
 The split in terms of the topics can be seen in table \ref{tab:topics-in-split}.
 The dev and test sets contain 123 texts each. The topic variable has values
 which are sets of keywords, and therefore there is still topical overlap
 between splits. For example, ``økonomi'' (economy) and ``økonomi holdning''
 (economy attitude) are considered separate values and assigned to different
 splits, even though both topics include the economy keyword.
+% cspell:enable
 
 \begin{figure}
   \centering

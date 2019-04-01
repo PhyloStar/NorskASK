@@ -1,32 +1,33 @@
 \chapter{Sequence models}
 
 Next, we will implement models which take the ordering of tokens into
-account. This includes \acp{CNN} and \acp{RNN}. In \ac{NLP}, \acp{CNN} can be
-considered as a ``\ngram extractor'', which looks at a window of tokens.
+account. These includes \acp{CNN} and \acp{RNN}. In \ac{NLP}, \acp{CNN} can
+be considered as a ``\ngram extractor'', which looks at a window of tokens.
 However, unlike the count vector approach used above, the CNN extracts
 ``soft'' \ngrams, utilizing the ability of word embeddings to share
 statistical strength between words, and outputting a real-valued number
 instead of a boolean yes/no value or an integer count.
 
-\acp{RNN} are theoretically able to detect long range patterns, which seems
-like it would be useful for the tasks at hand. For instance, the ability to
-connect different sections of a text and refer back to things that have been
-mentioned before can be considered a part of language proficiency.
+\acp{RNN} are theoretically able to detect long range patterns, which is
+useful for the tasks at hand. For instance, the ability to connect different
+sections of a text and refer back to things that have been mentioned before
+can be considered a part of language proficiency.
 
 
 \section{Experimental setup}
 
-Certain aspects of setup are shared between experiments using \ac{CNN} and
-\ac{RNN} models.
+Certain aspects of setup are different from the models in the previous
+chapter, but shared between \ac{CNN} and \ac{RNN} models. These aspects are
+described in this section.
 
 
 \subsection{Input length}
 
 The models in this chapter take as input a document of a predetermined
-length. We therefore needed to set a fixed number of tokens such that shorter
+length. We therefore need to set a fixed number of tokens such that shorter
 documents were padded to this length, and longer documents truncated. In
 order to decide this, we examined the distribution of document lengths in the
-training set. All subsequent values are rounded to the nearest integer.
+training set. All the subsequent values are rounded to the nearest integer.
 First, we found the 95th percentile of document lengths, which turned out to
 be 701 tokens. Then, we computed the value $Q_2 + 1.5 \cdot (Q_3 - Q_1)$, or
 the median plus 1.5 times the interquartile range, which gives 693 tokens.
@@ -35,12 +36,13 @@ tokens. These values are all close to each other, and we decided to settle on
 700 tokens since it is a round number close to all values we examined.
 
 As a consequence of the unequal distributions of length between the two test
-levels, the documents that are truncated are mainly from the AL test. It is
-not optimal that this truncation only happens to documents from one test
-level when the two test levels are seen to have different distributions of
-the classes we predict. But even if truncation did not happen, a model might
-be able to discern the test levels just by document length, since we do not
-hide the document length from the model. \todo{rewrite}
+levels, the documents that are truncated are mainly from the advanced level
+test. It is not optimal that this truncation only happens to documents from
+one test level when the two test levels are seen to have different
+distributions of the classes we predict. But even if truncation did not
+happen, a model might be able to discern the test levels just by document
+length, since we do not hide the document length from the model.
+\todo{rewrite}
 
 
 \subsection{Pre-trained embeddings}
@@ -61,11 +63,11 @@ and NoWaC (Norwegian Web As Corpus) \autocite{stadsnes2018}. These vector
 models are very large, containing vectors for more than 2,500,000 words. The
 models are stored in a repository that is available online and on the Abel
 supercomputer cluster \autocite{murhaf2017repository}. We use three models
-trained on this corpus using the fastText algorithm, differing only in the
+trained on this corpus using the FastText algorithm, differing only in the
 dimension of embeddings. They were trained using skipgram and window size 5, 
 and lemmatization has not been applied to the corpora.
 
-We can superficially confirm the usefulness of fastText embeddings by looking
+We can superficially confirm the usefulness of FastText embeddings by looking
 at vector similarities. We use the Python library Gensim \autocite{gensim} to
 load vector models and look up word similarities. For instance, the token
 `kjokoladet' is a misspelt version of `sjokolade' (chocolate), and it is
@@ -104,12 +106,12 @@ dynamic word embeddings only.
 
 \subsection{Multi-channel input}
 
-For some of our experiments we use both word tokens and their POS tags as
+In some of our experiments we use both word tokens and their POS tags as
 input at the same time. To do this we include two separate embedding matrices
 in our network, one for words and one for POS tags. These embedding matrices
-do not need to have the same dimensions, and because the number of
-different POS tags is very low compared to the number of different words, we
-use smaller vectors for POS tags.
+do not have to be of the same dimensions, and since the number of different
+POS tags is very low compared to the number of different words, we use
+smaller vectors for POS tags.
 
 To create the input to the core part of our network, we concatenate the word
 and POS embeddings into a single vector. For instance, if we use word
@@ -136,14 +138,14 @@ pooled along the time axis. This selects the highest output each filter
 computed across all windows in the document. In practice, three pooling
 operations are included in the computational graph, one for each filter bank.
 This is a technical consideration, necessary because of the different window
-sizes. The pooled vectors for each of the filter banks are concatenated into
-a single vector. This vector has as many elements as there are filters in all
-the filter banks combined.
+sizes.
 
-The vector post-pooling is a vector representation of the entire document,
-and is fed to a final softmax layer to produce a classification output.
-During training, we apply dropout to this final weight layer as a
-regularization method.
+The pooled vectors for each of the filter banks are concatenated into a
+single vector, representing the document as a whole. This vector has as many
+elements as there are filters in all the filter banks combined. This
+representation vector is fed to a final softmax layer to produce a
+classification output. During training, we apply dropout to this final weight
+layer as a regularization method.
 
 
 \subsection{Results}
@@ -274,14 +276,24 @@ Keras, the default activation function for the gates in gated RNNs is the
 chosen because it is computationally more efficient than the sigmoid
 function.
 
-We attempt three different methods of combining the sequence of hidden states
-from the \ac{RNN} into a feature vector. The simplest approach is \emph{mean
-over time}, where we use as our feature vector the element-wise average of
-hidden states across the time dimension.
+We attempted three different methods of combining the sequence of hidden
+states from the \ac{RNN} into a feature vector. The simplest approach is
+\emph{mean over time}, where we apply element-wise averaging to the RNN output
+across the time dimension. This means that the first element of the
+representation vector is the average of the first element of the RNN output
+across time, and similarly for the second element, etc.
+
+\[
+  \mathrm{mean o/ time}(x_i) = \sum_{t=0}^T o_{t_i}
+\]
 
 The second method is similar to the first, except that the averaging
 operation is replaced by a max operation. We refer to this as the \emph{max
 over time}.
+
+\[
+  \mathrm{max o/ time}(x_i) = \max_{t=0}^T o_{t_i}
+\]
 
 The final method is an attention layer, which differs from the mean over
 time layer in that time steps are weighted by an attention mechanism: a
@@ -311,7 +323,7 @@ fastText model described in section \ref{subseq:fasttext}, and trained as
 part of the network.
 
 
-\subsection{Results}
+\section{Results}
 
 The RNN results are split into two tables. Table \ref{tab:lstm-results}
 contains the results for models with \ac{LSTM} cells, while table
@@ -333,7 +345,7 @@ The mixed input format is not applicable when using pre-trained embeddings.
     % $META models-per-row=2 columns-per-model=macrof1,microf1
     % $ROW Mean:        rnn-26285652_1       rnn-26285653_1
     % $ROW Max:         rnn-26285652_2       rnn-26285653_2
-    % $ROW Attn:        rnn-26285652_3       rnn-26285653_3
+    % $ROW Attn.:        rnn-26285652_3       rnn-26285653_3
     % $ROW +POS Mean:   rnn-26285652_4       rnn-26285653_4
     % $ROW +POS Max:    rnn-26285652_5       rnn-26285653_5
     % $ROW +POS Attn:   rnn-26285652_6       rnn-26285653_6
@@ -491,14 +503,32 @@ The mixed input format is not applicable when using pre-trained embeddings.
 \end{table}
 
 We find that many of the best performing models all use the attention
-mechanism. Keep in mind that the stopping criterion is the macro \FI score,
-and thus the micro \FI score is to be considered a side effect of the macro
-\FI. In addition there is considerable variance in results between different
-training runs of the same model. It is therefore hard to select a single
-model as the clear winner. However, it is very unlikely that the best scores
-would all be from attention based models by mere chance, and it therefore
-seems reasonable to conclude that an attention model is a better choice for
-the task than mean over time and max over time.
+mechanism. Since the stopping criterion for our neural networks is the macro
+\FI score, and the micro \FI score is to be considered a side effect of the
+macro \FI. In addition there is considerable variance in results between
+different training runs of the same model. It is therefore hard to select a
+single model as the clear winner. However, it is very unlikely that the best
+scores would all be from attention based models by mere chance, and it
+therefore seems reasonable to conclude that an attention model is a better
+choice for the task than mean over time and max over time.
+
+
+\subsection{The effect of hyperparameters}
+
+We choose four different hyperparameters and examine the effect each of them
+has on the predictions of the networks.
+
+
+\subsubsection*{Bidirectional RNN}
+
+
+\subsubsection*{LSTM versus GRU}
+
+
+\subsubsection*{Initialization of embeddings}
+
+
+\subsubsection*{UPOS tags}
 
 
 \subsection{Training behaviour}
@@ -615,11 +645,13 @@ high-attention segments. This should be a very informative word, as it is
 likely that when someone mentions a country in this context, it is their
 country of origin.
 
+% cspell:disable
 In the Somali speaker's text (fig. \ref{fig:s0621-nli-attention}), we see
 several typical features of learner language, such as mistakes in agreement:
 `en stort rekke hus' should be `et stort rekkehus'. Using a personal pronoun
 where there should be a possessive determiner: `faren oss var rik' should be
 `faren vår var rik'.
+% cspell:enable
 
 \begin{figure}
   \centering
