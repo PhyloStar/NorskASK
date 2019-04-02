@@ -138,6 +138,8 @@ def main():
     labels = sorted(train_meta[target_col].unique())
 
     train_x, dev_x, num_pos, w2i = get_sequence_input_reps(args)
+    args.vocab_size = len(w2i)
+    print("Vocabulary size is {}".format(args.vocab_size))
 
     train_target_scores = np.array([labels.index(c) for c in train_meta[target_col]], dtype=int)
     dev_target_scores = np.array([labels.index(c) for c in dev_meta[target_col]], dtype=int)
