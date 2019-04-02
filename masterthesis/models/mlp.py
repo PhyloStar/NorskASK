@@ -37,7 +37,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def build_model(vocab_size: int, output_units: Sequence[int], do_classification: bool):
+def build_model(vocab_size: int, output_units: Sequence[int], classification: bool):
     input_ = Input((vocab_size,))
 
     hidden_1 = Dense(100, activation='relu')(input_)
@@ -45,7 +45,7 @@ def build_model(vocab_size: int, output_units: Sequence[int], do_classification:
     hidden_2 = Dense(300, activation='relu', name=REPRESENTATION_LAYER)(dropout_1)
     dropout_2 = Dropout(0.5)(hidden_2)
 
-    activation = 'softmax' if do_classification else 'sigmoid'
+    activation = 'softmax' if classification else 'sigmoid'
     outputs = [Dense(output_units[0], activation=activation, name=OUTPUT_NAME)(dropout_2)]
     if len(output_units) > 1:
         aux_out = Dense(output_units[1], activation='softmax', name=AUX_OUTPUT_NAME)(dropout_2)

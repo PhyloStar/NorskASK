@@ -1,7 +1,7 @@
 import argparse
 import os
 import tempfile
-from typing import Iterable, Union  # noqa: F401
+from typing import Iterable, Sequence, Union  # noqa: F401
 
 from keras import backend as K
 from keras.layers import (
@@ -62,10 +62,10 @@ def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool) -> Layer:
     return rnn_factory
 
 
-def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
+def build_model(vocab_size: int, sequence_len: int, output_units: Sequence[int],
                 embed_dim: int, rnn_dim: int, dropout_rate: float,
                 bidirectional: bool, pool_method: str, static_embs: bool, rnn_cell: str,
-                num_pos: int = 0):
+                num_pos: int = 0, classification: bool = False):
     # Only the global average pooling supports masked input
     mask_zero = pool_method == 'mean'
 
@@ -100,8 +100,11 @@ def build_model(vocab_size: int, sequence_len: int, num_classes: Iterable[int],
     else:
         raise ValueError('Unrecognized pooling strategy: ' + pool_method)
 
-    outputs = [Dense(n_c, activation='softmax', name=name)(pooled)
-               for name, n_c in zip([OUTPUT_NAME, AUX_OUTPUT_NAME], num_classes)]
+    activation = 'softmax' if classification else 'sigmoid'
+    outputs = [Dense(output_units[0], activation=activation, name=OUTPUT_NAME)(pooled)]
+    if len(output_units) > 1:
+        aux_out = Dense(output_units[1], activation='softmax', name=AUX_OUTPUT_NAME)(pooled)
+        outputs.append(aux_out)
     return Model(inputs=inputs, outputs=outputs)
 
 
@@ -136,12 +139,9 @@ def main():
 
     train_x, dev_x, num_pos, w2i = get_sequence_input_reps(args)
 
-    train_y = [to_categorical([labels.index(c) for c in train_meta[target_col]])]
-    dev_y = [to_categorical([labels.index(c) for c in dev_meta[target_col]])]
-    num_classes = [len(labels)]
-
     train_target_scores = np.array([labels.index(c) for c in train_meta[target_col]], dtype=int)
     dev_target_scores = np.array([labels.index(c) for c in dev_meta[target_col]], dtype=int)
+    del target_col
 
     train_y, dev_y, output_units = get_targets_and_output_units(
         train_target_scores, dev_target_scores, args.method)
@@ -152,7 +152,7 @@ def main():
         lang_labels = sorted(train_meta.lang.unique())
         train_y.append(to_categorical([lang_labels.index(l) for l in train_meta.lang]))
         dev_y.append(to_categorical([lang_labels.index(l) for l in dev_meta.lang]))
-        num_classes.append(len(lang_labels))
+        output_units.append(len(lang_labels))
         loss_weights = {
             AUX_OUTPUT_NAME: args.aux_loss_weight,
             OUTPUT_NAME: 1.0 - args.aux_loss_weight
@@ -164,7 +164,8 @@ def main():
         vocab_size=args.vocab_size, sequence_len=args.doc_length, num_classes=output_units,
         embed_dim=args.embed_dim, rnn_dim=args.rnn_dim, dropout_rate=args.dropout_rate,
         bidirectional=args.bidirectional, pool_method=args.pool_method,
-        static_embs=args.static_embs, rnn_cell=args.rnn_cell, num_pos=num_pos)
+        static_embs=args.static_embs, rnn_cell=args.rnn_cell, num_pos=num_pos,
+        classification=args.method == 'classification')
     model.summary()
 
     if args.vectors:

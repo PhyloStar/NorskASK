@@ -64,7 +64,7 @@ def parse_args():
 def build_model(vocab_size: int, sequence_length: int, output_units: Sequence[int], embed_dim: int,
                 windows: Iterable[int], num_pos: int = 0,
                 constraint: Optional[float] = None, static_embs: bool = False,
-                do_classification: bool = False) -> Model:
+                classification: bool = False) -> Model:
     """Build CNN model."""
     input_layer_args = InputLayerArgs(
         num_pos=num_pos, mask_zero=False, embed_dim=embed_dim, pos_embed_dim=POS_EMB_DIM,
@@ -84,7 +84,7 @@ def build_model(vocab_size: int, sequence_length: int, output_units: Sequence[in
     dropout_layer = Dropout(0.5)(merged)
 
     kernel_constraint = constraint and max_norm(constraint)
-    activation = 'softmax' if do_classification else 'sigmoid'
+    activation = 'softmax' if classification else 'sigmoid'
     outputs = [Dense(output_units[0], activation=activation,
                      kernel_constraint=kernel_constraint, name=OUTPUT_NAME)(dropout_layer)]
     if len(output_units) > 1:
@@ -124,7 +124,6 @@ def main():
     args = parse_args()
 
     set_reproducible()
-    do_classification = args.method == 'classification'
 
     train_meta = load_split('train', round_cefr=args.round_cefr)
     dev_meta = load_split('dev', round_cefr=args.round_cefr)
@@ -156,9 +155,10 @@ def main():
         loss_weights = None
     del train_meta, dev_meta
 
-    model = build_model(args.vocab_size, args.doc_length, output_units, args.embed_dim,
-                        windows=args.windows, num_pos=num_pos, constraint=args.constraint,
-                        static_embs=args.static_embs, do_classification=do_classification)
+    model = build_model(
+        args.vocab_size, args.doc_length, output_units, args.embed_dim, windows=args.windows,
+        num_pos=num_pos, constraint=args.constraint, static_embs=args.static_embs,
+        classification=args.method == 'classification')
     model.summary()
 
     if args.vectors:
