@@ -166,25 +166,47 @@ maximum $L_2$ norm of 3.
     \cmidrule(lr){4-5}
     Model     & Macro \FI        & Micro \FI        & Macro \FI        & Micro \FI \\
     \midrule
+
+    \multicolumn{5}{c}{Randomly initialized embeddings} \\
     % $BEGIN autotable cnn-results
     % $META models-per-row=2 columns-per-model=macrof1,microf1
-    % $ROW Words:       cnn-26092298_01   cnn-26092298_02
-    % $ROW Words+PTD:   cnn-26092298_03   cnn-26092298_04
-    % $ROW Words+PTS:   cnn-26094553_05   cnn-26094553_06
-    % $ROW +POS:        cnn-26092298_07   cnn-26092298_08
-    % $ROW +POS+PTD:    cnn-26092298_09   cnn-26092298_10
-    % $ROW +POS+PTS:    cnn-26094553_11   cnn-26094553_12
-    % $ROW Mix:         cnn-26093545_13   cnn-26093545_14
-    % $ROW Mix 234:     cnn-26093545_15   cnn-26093545_16
+    % $ROW CNN:             cnn-26515464_1   cnn-26515464_1
+    % $ROW CNN+POS:         cnn-26515464_2   cnn-26515464_2
+    % $ROW CNN Mix:         cnn-26515464_3   cnn-26515464_3
+    % $ROW CNN Reg:         cnn-26515464_4   cnn-26515464_4
+    % $ROW CNN Reg+POS:     cnn-26515464_5   cnn-26515464_5
+    % $ROW CNN Reg Mix:     cnn-26515464_6   cnn-26515464_6
+    % $ROW CNN Rank:        cnn-26515464_7   cnn-26515464_7
+    % $ROW CNN Rank+POS:    cnn-26515464_8   cnn-26515464_8
+    % $ROW CNN Rank Mix:    cnn-26515464_9   cnn-26515464_9
+    %\midrule
+    %\multicolumn{5}{c}{Pre-trained, fine tuned embeddings} \\
+    %\midrule
+    % $ROW CNN:             cnn-26515464_10   cnn-26515464_10
+    % $ROW CNN+POS:         cnn-26515464_11   cnn-26515464_11
+    % $ROW CNN Reg:         cnn-26515464_13   cnn-26515464_13
+    % $ROW CNN Reg+POS:     cnn-26515464_14   cnn-26515464_14
+    % $ROW CNN Rank:        cnn-26515464_16   cnn-26515464_16
+    % $ROW CNN Rank+POS:    cnn-26515464_17   cnn-26515464_17
     % $END autotable
-    Words & $0.226$ & $0.415$ & $0.397$ & $0.748$ \\
-    Words+PTD & $0.238$ & $0.390$ & $0.375$ & $0.707$ \\
-    Words+PTS & $0.235$ & $0.382$ & $\mathbf{0.404}$ & $0.699$ \\
-    +POS & $0.228$ & $0.390$ & $0.402$ & $\mathbf{0.756}$ \\
-    +POS+PTD & $0.229$ & $0.415$ & $0.388$ & $0.732$ \\
-    +POS+PTS & $\mathbf{0.255}$ & $\mathbf{0.447}$ & $0.393$ & $0.740$ \\
-    Mix & $0.244$ & $0.415$ & $0.358$ & $0.675$ \\
-    Mix 234 & $0.239$ & $0.407$ & $0.401$ & $\mathbf{0.756}$ \\
+    CNN & $0.168$ & $\mathbf{0.398}$ & $0.168$ & $\mathbf{0.398}$ \\
+    CNN+POS & $0.146$ & $0.374$ & $0.146$ & $0.374$ \\
+    CNN Mix & $0.201$ & $\mathbf{0.398}$ & $0.201$ & $\mathbf{0.398}$ \\
+    CNN Reg & $0.230$ & $0.382$ & $0.230$ & $0.382$ \\
+    CNN Reg+POS & $0.236$ & $0.341$ & $0.236$ & $0.341$ \\
+    CNN Reg Mix & $\mathbf{0.258}$ & $\mathbf{0.398}$ & $\mathbf{0.258}$ & $\mathbf{0.398}$ \\
+    CNN Rank & $0.177$ & $0.374$ & $0.177$ & $0.374$ \\
+    CNN Rank+POS & $0.187$ & $0.382$ & $0.187$ & $0.382$ \\
+    CNN Rank Mix & $0.231$ & $0.382$ & $0.231$ & $0.382$ \\
+    \midrule
+    \multicolumn{5}{c}{Pre-trained, fine tuned embeddings} \\
+    \midrule
+    CNN & $0.208$ & $0.382$ & $0.208$ & $0.382$ \\
+    CNN+POS & $0.161$ & $0.366$ & $0.161$ & $0.366$ \\
+    CNN Reg & $0.242$ & $0.341$ & $0.242$ & $0.341$ \\
+    CNN Reg+POS & $0.232$ & $0.366$ & $0.232$ & $0.366$ \\
+    CNN Rank & $0.198$ & $0.350$ & $0.198$ & $0.350$ \\
+    CNN Rank+POS & $0.181$ & $0.325$ & $0.181$ & $0.325$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of CNN classifiers on AES. +POS: Multi-channel input with
@@ -278,38 +300,41 @@ function.
 
 We attempted three different methods of combining the sequence of hidden
 states from the \ac{RNN} into a feature vector. The simplest approach is
-\emph{mean over time}, where we apply element-wise averaging to the RNN output
-across the time dimension. This means that the first element of the
-representation vector is the average of the first element of the RNN output
-across time, and similarly for the second element, etc.
+\emph{mean over time}, where we apply element-wise, unweighted averaging to
+the RNN output across the time dimension. This means that the first element
+of the representation vector is the average of the first element of the RNN
+output across time, and similarly for the second element, etc.
 
 \[
-  \mathrm{mean o/ time}(x_i) = \sum_{t=0}^T o_{t_i}
+  \mathrm{mean/time}(x_i) = \sum_{t=0}^T o_{t,i}
 \]
+
+where $T$ is the total number of time steps, and $o_{t,i}$ means the output of
+the RNN at time step $t$ and index $i$.
 
 The second method is similar to the first, except that the averaging
 operation is replaced by a max operation. We refer to this as the \emph{max
 over time}.
 
 \[
-  \mathrm{max o/ time}(x_i) = \max_{t=0}^T o_{t_i}
+  \mathrm{max/time}(x_i) = \max_{t=0}^T o_{t,i}
 \]
 
-The final method is an attention layer, which differs from the mean over
-time layer in that time steps are weighted by an attention mechanism: a
-single-layer neural network computes a value between -1 and 1 for eac
-time step. These values are normalized by a softmax layer and then used to
-compute the weighted average. Since each time step contributes to the final
+The final method we used is an attention layer, which differs from the mean
+over time layer in that time steps are weighted by an attention mechanism: a
+single-layer neural network computes a value between -1 and 1 for each time
+step. These values are normalized by a softmax layer and then used to compute
+the weighted average. Since each time step contributes to the final
 representation in differing amounts, the mechanism should be able in theory
 to focus on crucial information by choosing weights such as to disregard
 uninformative time steps, improving performance. The attention mechanism is
 trained along with the rest of the network.
 
-The bidirectional models (BiRNN) are constructed by running two \acp{RNN} over
-the same input, but in the opposite order. The output from the BiRNN layer is
-a sequence of vectors where, for each time step $j$, the vector is the
-concatenation of two vectors $[s_f;s_b]$ where $s_f$ at time step $j$ is the
-output from the forwards \ac{RNN} after processing the inputs $(x_1, x_2,
+The bidirectional models (BiRNN) are constructed by running two \acp{RNN}
+over the same input, but in opposite directions. The output from the BiRNN
+layer is a sequence of vectors where, for each time step $j$, the vector is
+the concatenation of two vectors $[s_f;s_b]$ where $s_f$ at time step $j$ is
+the output from the forwards \ac{RNN} after processing the inputs $(x_1, x_2,
 \ldots, x_j)$ and $s_b$ the output from the backwards \ac{RNN} after
 processing the inputs $(x_m, x_{m-1}, \ldots, x_j)$, where $m$ is the total
 number of time steps. The BiRNN should therefore be able to extract context
