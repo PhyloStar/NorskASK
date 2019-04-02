@@ -244,15 +244,22 @@ loss (Eq. \ref{eq:crossentropy}).
 
 For regression, our output layer contains a single node with sigmoid
 activation. The regression model is trained by minimizing the mean squared
-error loss against gold labels normalized to the interval $[0, 1]$. This is
-in line with the method for neural network regression used by
-\textcite{taghipour16}. For evaluating the predictions, the output is scaled
-by the value of the highest label and transformed into categorical values
-using the method described in subsection \ref{subsec:linear}.
+error loss against gold labels normalized to the interval $[0, 1]$.
+Normalization is a scaling operation such that the lowest class maps to 0,
+the highest class to 1, and all classes are evenly spaced. This is in line
+with the method for neural network regression used by \textcite{taghipour16}.
+For evaluating the predictions, the output is scaled back using the value of
+the highest label and transformed into categorical values using the method
+described in subsection \ref{subsec:linear}.
 
-The co-domain of the sigmoid function is centred around 0.5 and maps to the
-central labels. The highest and lowest labels get a smaller share of the
-space.
+Because the sigmoid function is nonlinear, values that are evenly spaced in
+its output are not evenly spaced in the input. The sigmoid function is
+steepest in the region around zero, where its value is close to 0.5. A
+consequence of this is that when we map the classes to the range of the
+sigmoid function, the central classes correspond to a smaller set of input
+values than the peripheral classes. In fact, the lowest and highest classes
+correspond to an unbounded set of input values. Regardless, we will see that
+the model struggles mostly to predict the peripheral classes.
 
 For ordinal regression, we implemented a neural model for ordinal regression
 following a modified version of the method in \textcite{cheng2008neural}.

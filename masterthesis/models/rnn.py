@@ -46,7 +46,7 @@ def parse_args():
     parser.add_argument('--rnn-cell', choices={'gru', 'lstm'})
     parser.add_argument('--rnn-dim', type=int)
     parser.set_defaults(batch_size=32, decay_rate=0.9, dropout_rate=0.5, embed_dim=100, epochs=50,
-                        lr=1e-3, rnn_cell='lstm', rnn_dim=300, vocab_size=4000, pool_method='mean')
+                        lr=1e-3, rnn_cell='lstm', rnn_dim=300, vocab_size=None, pool_method='mean')
     return parser.parse_args()
 
 
