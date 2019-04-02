@@ -8,6 +8,10 @@ from keras.utils import to_categorical
 import numpy as np
 from tqdm import tqdm
 
+from masterthesis.features.build_features import (
+    make_mixed_pos2i, make_pos2i, make_w2i, mixed_pos_to_sequences, pos_to_sequences,
+    words_to_sequences
+)
 from masterthesis.gensim_utils import load_embeddings
 from masterthesis.utils import EMB_LAYER_NAME
 
@@ -70,23 +74,23 @@ def ranked_accuracy(y_true, y_pred):
     return K.mean(K.equal(true, pred))
 
 
-def get_targets_and_output_units(train_target_scores, dev_target_scores, method):
+def get_targets_and_output_units(train_targets, dev_targets, method: str):
     if method == 'classification':
-        train_y = to_categorical(train_target_scores)
-        dev_y = to_categorical(dev_target_scores)
-        output_units = [train_target_scores.max() + 1]
+        train_y = to_categorical(train_targets)
+        dev_y = to_categorical(dev_targets)
+        output_units = [train_targets.max() + 1]
     elif method == 'regression':
-        highest_class = max(train_target_scores)
-        train_y = np.array(train_target_scores) / highest_class
-        dev_y = np.array(dev_target_scores) / highest_class
+        highest_class = max(train_targets)
+        train_y = np.array(train_targets) / highest_class
+        dev_y = np.array(dev_targets) / highest_class
         output_units = [1]
     elif method == 'ranked':
-        train_y = to_ranked_rep(train_target_scores)
-        dev_y = to_ranked_rep(dev_target_scores)
-        output_units = [train_target_scores.max()]
+        train_y = to_ranked_rep(train_targets)
+        dev_y = to_ranked_rep(dev_targets)
+        output_units = [train_targets.max()]
     else:
         raise ValueError('Unknown method %r' % method)
-    return train_y, dev_y, output_units
+    return [train_y], [dev_y], output_units
 
 
 def to_ranked_rep(targets):
@@ -97,3 +101,23 @@ def to_ranked_rep(targets):
     for row, v in enumerate(targets):
         rep[row, :v] = 1
     return rep
+
+
+def get_sequence_input_reps(args):
+    if args.mixed_pos:
+        w2i = make_mixed_pos2i()
+        train_x, dev_x = mixed_pos_to_sequences(args.doc_length, ['train', 'dev'], w2i)
+        args.vocab_size = len(w2i)
+        num_pos = 0
+    else:
+        w2i = make_w2i(args.vocab_size)
+        train_x, dev_x = words_to_sequences(args.doc_length, ['train', 'dev'], w2i)
+        if args.include_pos:
+            pos2i = make_pos2i()
+            num_pos = len(pos2i)
+            train_pos, dev_pos = pos_to_sequences(args.doc_length, ['train', 'dev'], pos2i)
+            train_x = [train_x, train_pos]
+            dev_x = [dev_x, dev_pos]
+        else:
+            num_pos = 0
+    return train_x, dev_x, num_pos, w2i

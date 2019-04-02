@@ -1,6 +1,6 @@
 from itertools import chain
 from pathlib import Path
-from typing import Callable, Iterable, List, Mapping
+from typing import Callable, Dict, Iterable, List, Optional, Mapping
 try:
     from typing import Counter
 except ImportError:
@@ -97,37 +97,34 @@ def filename_iter(meta, suffix='txt') -> Iterable[str]:
         yield str((data_folder / suffix / filename).with_suffix('.' + suffix))
 
 
-def make_w2i(vocab_size):
+def _make_any2i(tokens_by_rank: Iterable[str]) -> Dict[str, int]:
+    any2i = {'__PAD__': 0, '__UNK__': 1}
+    for rank, token in enumerate(tokens_by_rank, start=2):
+        any2i[token] = rank
+    return any2i
+
+
+def make_w2i(vocab_size: Optional[int]) -> Dict[str, int]:
     print('Counting tokens ...')
     tokens = Counter(tqdm.tqdm(iterate_tokens('train')))
-    most_common = (token for (token, __) in tokens.most_common())
-
-    w2i = {'__PAD__': 0, '__UNK__': 1}
-    for rank, token in zip(range(2, vocab_size), most_common):
-        w2i[token] = rank
-    return w2i
+    # If vocab_size is not None, make room for __PAD__ and __UNK__
+    vocab_size = vocab_size and vocab_size - 2
+    most_common = (token for (token, __) in tokens.most_common(vocab_size))
+    return _make_any2i(most_common)
 
 
-def make_pos2i():
+def make_pos2i() -> Dict[str, int]:
     print('Counting POS tags ...')
     tokens = Counter(tqdm.tqdm(iterate_pos_tags('train')))
     most_common = (token for (token, __) in tokens.most_common())
-
-    w2i = {'__PAD__': 0, '__UNK__': 1}
-    for rank, token in zip(range(2, len(tokens) + 2), most_common):
-        w2i[token] = rank
-    return w2i
+    return _make_any2i(most_common)
 
 
-def make_mixed_pos2i():
+def make_mixed_pos2i() -> Dict[str, int]:
     print('Counting mixed POS tags ...')
     tokens = Counter(tqdm.tqdm(iterate_mixed_pos_tags('train')))
     most_common = (token for (token, __) in tokens.most_common())
-
-    w2i = {'__PAD__': 0, '__UNK__': 1}
-    for rank, token in zip(range(2, len(tokens) + 2), most_common):
-        w2i[token] = rank
-    return w2i
+    return _make_any2i(most_common)
 
 
 def _x_to_sequences(seq_len: int,

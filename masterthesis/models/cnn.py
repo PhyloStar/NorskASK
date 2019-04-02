@@ -2,8 +2,9 @@ import argparse
 from math import isfinite
 import os
 import tempfile
-from typing import Iterable, List, Optional, Sequence
+from typing import Callable, Iterable, List, Optional, Sequence, Union  # noqa: F401
 
+import keras.backend as K
 from keras.constraints import max_norm
 from keras.layers import Concatenate, Conv1D, Dense, Dropout, GlobalMaxPooling1D
 from keras.models import Model
@@ -11,14 +12,13 @@ from keras.optimizers import Adam
 from keras.utils import to_categorical
 import numpy as np
 
-from masterthesis.features.build_features import (
-    make_mixed_pos2i, make_pos2i, make_w2i, mixed_pos_to_sequences, pos_to_sequences,
-    words_to_sequences
-)
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.layers import build_inputs_and_embeddings, InputLayerArgs
 from masterthesis.models.report import multi_task_report, report
-from masterthesis.models.utils import add_common_args, add_seq_common_args, init_pretrained_embs
+from masterthesis.models.utils import (
+    add_common_args, add_seq_common_args, get_sequence_input_reps, get_targets_and_output_units,
+    init_pretrained_embs, ranked_prediction, ranked_accuracy
+)
 from masterthesis.results import save_results
 from masterthesis.utils import (
     AUX_OUTPUT_NAME, get_file_name, load_split, OUTPUT_NAME, REPRESENTATION_LAYER,
@@ -94,58 +94,59 @@ def build_model(vocab_size: int, sequence_length: int, output_units: Sequence[in
     return Model(inputs=inputs, outputs=outputs)
 
 
+def get_name(nli: bool, multi_task: bool) -> str:
+    if nli:
+        return 'cnn-nli'
+    elif multi_task:
+        return 'cnn-multi'
+    return 'cnn'
+
+
+def get_compile_args(method: str, lr: float):
+    if method == 'classification':
+        optimizer = Adam(lr=lr)
+        loss = 'categorical_crossentropy'
+        metrics = ['accuracy']  # type: List[Union[str, Callable]]
+    elif method == 'ranked':
+        optimizer = Adam(lr=lr)
+        loss = 'mean_squared_error'
+        metrics = [ranked_accuracy]
+    elif method == 'regression':
+        optimizer = 'rmsprop'
+        loss = 'mean_squared_error'
+        metrics = ['mae']
+    else:
+        raise ValueError('Unknown method')
+    return optimizer, loss, metrics
+
+
 def main():
     args = parse_args()
 
     set_reproducible()
+    do_classification = args.method == 'classification'
 
-    do_classification = args.classification
-    seq_length = args.doc_length
-    train = load_split('train', round_cefr=args.round_cefr)
-    dev = load_split('dev', round_cefr=args.round_cefr)
+    train_meta = load_split('train', round_cefr=args.round_cefr)
+    dev_meta = load_split('dev', round_cefr=args.round_cefr)
 
     target_col = 'lang' if args.nli else 'cefr'
-    labels = sorted(train[target_col].unique())
+    labels = sorted(train_meta[target_col].unique())
 
-    if args.mixed_pos:
-        t2i = make_mixed_pos2i()
-        train_x, dev_x = mixed_pos_to_sequences(seq_length, ['train', 'dev'], t2i)
-        args.vocab_size = len(t2i)
-        num_pos = 0
-    else:
-        w2i = make_w2i(args.vocab_size)
-        train_x, dev_x = words_to_sequences(seq_length, ['train', 'dev'], w2i)
-        if args.include_pos:
-            pos2i = make_pos2i()
-            num_pos = len(pos2i)
-            train_pos, dev_pos = pos_to_sequences(seq_length, ['train', 'dev'], pos2i)
-            train_x = [train_x, train_pos]
-            dev_x = [dev_x, dev_pos]
-        else:
-            num_pos = 0
+    train_x, dev_x, num_pos, w2i = get_sequence_input_reps(args)
 
-    train_target_scores = np.array([labels.index(c) for c in train[target_col]], dtype=int)
-    dev_target_scores = np.array([labels.index(c) for c in dev[target_col]], dtype=int)
+    train_target_scores = np.array([labels.index(c) for c in train_meta[target_col]], dtype=int)
+    dev_target_scores = np.array([labels.index(c) for c in dev_meta[target_col]], dtype=int)
+    del target_col
 
-    if do_classification:
-        train_y = to_categorical(train_target_scores)
-        dev_y = to_categorical(dev_target_scores)
-        output_units = [len(labels)]
-    else:  # Regression
-        highest_class = max(train_target_scores)
-        train_y = np.array(train_target_scores) / highest_class
-        dev_y = np.array(dev_target_scores) / highest_class
-        output_units = [1]
-
-    train_y = [train_y]
-    dev_y = [dev_y]
+    train_y, dev_y, output_units = get_targets_and_output_units(
+        train_target_scores, dev_target_scores, args.method)
 
     multi_task = args.aux_loss_weight > 0
     if multi_task:
         assert not args.nli, "Both NLI and multi-task specified"
-        lang_labels = sorted(train.lang.unique())
-        train_y.append(to_categorical([lang_labels.index(l) for l in train.lang]))
-        dev_y.append(to_categorical([lang_labels.index(l) for l in dev.lang]))
+        lang_labels = sorted(train_meta.lang.unique())
+        train_y.append(to_categorical([lang_labels.index(l) for l in train_meta.lang]))
+        dev_y.append(to_categorical([lang_labels.index(l) for l in dev_meta.lang]))
         output_units.append(len(lang_labels))
         loss_weights = {
             AUX_OUTPUT_NAME: args.aux_loss_weight,
@@ -153,8 +154,9 @@ def main():
         }
     else:
         loss_weights = None
+    del train_meta, dev_meta
 
-    model = build_model(args.vocab_size, seq_length, output_units, args.embed_dim,
+    model = build_model(args.vocab_size, args.doc_length, output_units, args.embed_dim,
                         windows=args.windows, num_pos=num_pos, constraint=args.constraint,
                         static_embs=args.static_embs, do_classification=do_classification)
     model.summary()
@@ -162,11 +164,12 @@ def main():
     if args.vectors:
         init_pretrained_embs(model, args.vectors, w2i)
 
-    compile_model(model, do_classification, args.lr, loss_weights)
+    optimizer, loss, metrics = get_compile_args(args.method, args.lr)
+    model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics)
 
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
-    val_y = dev_y if do_classification else [dev_target_scores]
-    callbacks = [F1Metrics(dev_x, val_y, weights_path)]
+    val_y = dev_target_scores
+    callbacks = [F1Metrics(dev_x, val_y, weights_path, ranked=args.method == 'ranked')]
     history = model.fit(
         train_x, train_y, epochs=args.epochs, batch_size=args.batch_size,
         callbacks=callbacks, validation_data=(dev_x, dev_y),
@@ -180,11 +183,14 @@ def main():
         predictions = model.predict(dev_x)[0]
     else:
         predictions = model.predict(dev_x)
-    if do_classification:
+    if args.method == 'classification':
         pred = np.argmax(predictions, axis=1)
-    else:
+    elif args.method == 'regression':
         # Round to integers and clip to score range
+        highest_class = train_target_scores.max()
         pred = rescale_regression_results(predictions, highest_class).ravel()
+    elif args.method == 'ranked':
+        pred = K.eval(ranked_prediction(predictions))
     if multi_task:
         multi_task_report(history.history, true, pred, labels)
     else:
@@ -199,30 +205,6 @@ def main():
     save_results(name, args.__dict__, history.history, true, pred)
 
     plt.show()
-
-
-def get_name(nli: bool, multi_task: bool) -> str:
-    if nli:
-        return 'cnn-nli'
-    elif multi_task:
-        return 'cnn-multi'
-    return 'cnn'
-
-
-def compile_model(model: Model, classification: bool, lr: float, loss_weights):
-    if classification:
-        optimizer = Adam(lr=lr)
-        loss = 'categorical_crossentropy'
-        metrics = ['accuracy']
-    else:
-        optimizer = 'rmsprop'
-        loss = 'mean_squared_error'
-        metrics = ['mae']
-    model.compile(
-        optimizer=optimizer,
-        loss=loss,
-        loss_weights=loss_weights,
-        metrics=metrics)
 
 
 if __name__ == '__main__':

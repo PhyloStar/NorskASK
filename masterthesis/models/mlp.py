@@ -1,7 +1,7 @@
 import argparse
 import os
 import tempfile
-from typing import Iterable, Sequence
+from typing import Callable, Iterable, List, Sequence, Union  # noqa: F401
 
 import keras.backend as K
 from keras.layers import Dense, Dropout, Input
@@ -95,11 +95,11 @@ def preprocess(kind: str, max_features: int, train_meta, dev_meta):
     return train_x, dev_x, num_features
 
 
-def get_compile_args(method, lr):
+def get_compile_args(method: str, lr: float):
     if method == 'classification':
         optimizer = Adam(lr=lr)
         loss = 'categorical_crossentropy'
-        metrics = ['accuracy']
+        metrics = ['accuracy']  # type: List[Union[str, Callable]]
     elif method == 'ranked':
         optimizer = Adam(lr=lr)
         loss = 'mean_squared_error'
@@ -125,19 +125,18 @@ def main():
     kind = args.featuretype
     train_x, dev_x, num_features = preprocess(kind, args.max_features, train_meta, dev_meta)
 
-    cefr_labels = sorted(train_meta.cefr.unique())
+    target_col = 'lang' if args.nli else 'cefr'
+    labels = sorted(train_meta[target_col].unique())
 
-    train_target_scores = np.array([cefr_labels.index(c) for c in train_meta.cefr], dtype=int)
-    dev_target_scores = np.array([cefr_labels.index(c) for c in dev_meta.cefr], dtype=int)
+    train_target_scores = np.array([labels.index(c) for c in train_meta[target_col]], dtype=int)
+    dev_target_scores = np.array([labels.index(c) for c in dev_meta[target_col]], dtype=int)
 
     train_y, dev_y, output_units = get_targets_and_output_units(
         train_target_scores, dev_target_scores, args.method)
 
-    train_y = [train_y]
-    dev_y = [dev_y]
-
     multi_task = args.aux_loss_weight > 0
     if multi_task:
+        assert not args.nli, "Both NLI and multi-task specified"
         lang_labels = sorted(train_meta.lang.unique())
         train_y.append(to_categorical([lang_labels.index(l) for l in train_meta.lang]))
         dev_y.append(to_categorical([lang_labels.index(l) for l in dev_meta.lang]))
@@ -148,9 +147,11 @@ def main():
         }
     else:
         loss_weights = None
+    del train_meta, dev_meta
 
     model = build_model(num_features, output_units, do_classification)
     model.summary()
+
     optimizer, loss, metrics = get_compile_args(args.method, args.lr)
     model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics)
 
@@ -159,7 +160,8 @@ def main():
     val_y = dev_target_scores
     callbacks = [F1Metrics(dev_x, val_y, weights_path, ranked=args.method == 'ranked')]
     history = model.fit(
-        train_x, train_y, epochs=args.epochs, callbacks=callbacks, validation_data=(dev_x, dev_y),
+        train_x, train_y, epochs=args.epochs, batch_size=args.batch_size,
+        callbacks=callbacks, validation_data=(dev_x, dev_y),
         verbose=2)
     model.load_weights(weights_path)
     os.close(temp_handle)
@@ -179,9 +181,9 @@ def main():
     elif args.method == 'ranked':
         pred = K.eval(ranked_prediction(predictions))
     if multi_task:
-        multi_task_report(history.history, true, pred, cefr_labels)
+        multi_task_report(history.history, true, pred, labels)
     else:
-        report(true, pred, cefr_labels)
+        report(true, pred, labels)
 
     plt.show()
 

@@ -124,17 +124,19 @@ values to be interpreted as a probability distribution.
   \mathrm{softmax}(x)_i = \frac{\exp{x_i}}{\sum_{j=1}^{m}\exp{x_j}}
 \end{equation}
 
+
 \subsection{Convolutional neural networks}
 
-\acp{CNN} can exploit local patterns in the input, unlike the \ac{MLP}, which
-has no way to identify elements of the input layer as being ``close'' to each
-other in any sort of measure. \acp{CNN} use convolutional layers to make
-these local relationships explicit.
-
 \acp{CNN} are widely employed in image processing models, using
-two-di\-men\-sional convolutional layers. These models can often get very
+two-dimensional convolutional layers. These models can often get very
 deep, using a number of convolutional layers at different levels in the
-network, interspersed with pooling or downsampling layers.
+network, interspersed with pooling, also known as downsampling, layers.
+
+\acp{CNN} can exploit local patterns in the input, unlike the \ac{MLP}, which
+has no notion of distance between different elements of the input. For data
+where there exists a meaningful notion of distance, the \ac{CNN} can be
+employed in order to take advantage of local patterns. \acp{CNN} use
+convolutional layers to make these local relationships explicit.
 
 There are also \ac{NLP} applications where \acp{CNN} can be employed. Unlike
 images, data in \ac{NLP} is usually sequential or one-dimensional, but it may
