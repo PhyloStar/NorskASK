@@ -1,8 +1,8 @@
 \chapter{Multi-task learning}
 
-So far we have considered \ac{AES} and \ac{NLI} as independent tasks and run
-separate experiments. We will now try to train models to predict both tasks
-simultaneously.
+So far we have considered \ac{AES} and \ac{NLI} as independent tasks and
+performed experiments on both tasks separately. We will now try to train
+models to predict both tasks simultaneously.
 
 In table \ref{tab:multitask-results}, we see the results of running some of
 the most successful models from the previous chapter in a multi-task setting,
@@ -20,7 +20,8 @@ performance across the board. The effect of the auxiliary task weight seems
 less clear on the micro \FI, but remember that in our setup, the micro \FI is
 a side effect of the highest macro \FI seen during training.
 
-\todo{embeddings 100 dim instead of 50?}
+\todo{embeddings 100 dim instead of 50}
+\todo{graph effect on metrics}
 
 \begin{table}
   \centering
@@ -164,9 +165,12 @@ Spearman's ranked correlation coefficient ($0.768$).
 \section{Stability}
 
 By training the model several times with different random seeds, we can see
-how much the final results vary. Running 
-
-0.268 0.341
+how much the final results vary. Running a single model ten times with
+different random seed gave macro \FI scores in the range from $0.268$ to
+$0.341$. The variance of results makes it impossible to conclude which model
+is actually the best, as long as we only have the results from a single
+training and evaluation run. By running each experiment many times, we could
+get a more robust estimate of the true expected performance of the model.
 
 
 \section{Correlation of metrics}

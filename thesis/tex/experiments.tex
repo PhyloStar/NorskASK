@@ -290,6 +290,25 @@ $2\cdot 10^{-4}$. The neural regressor was trained with the RMSProp
 optimization algorithm using the default learning rate of $10^{-3}$.
 
 
+\subsection{Controlling randomness}
+
+We took several measures to ensure reproducible results from our experiments.
+One was to fix the seeds to the random seeds in Python and associated libraries
+used for the experiments. Since the software uses pseudo-random generators,
+the same seed will always yield the same sequence of numbers when a program
+is run again. In addition to the random number generators, Python can use a
+configured seed value to compute hashes of strings and other values. Without a
+way to control the Python hash seed, the mapping of e.g. word tokens to indices
+would be different on each run.
+
+Second, we disabled parallel execution in the computation graphs underlying
+the neural models. Parallel execution is a source of non-determinism, because
+there is no guarantee that sub-computations will always finish in the same order,
+and because floating point numbers have limited precision, adding the same
+numbers in a different order can give small rounding errors which can compound
+over time.
+
+
 \section{Results}
 
 Two different sets of output labels are used in the experiments: The original

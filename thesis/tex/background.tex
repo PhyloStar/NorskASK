@@ -205,7 +205,7 @@ commonly the sigmoid (Eq. \ref{eq:sigmoid}) or hard sigmoid (Eq.
   s_j = R_{\text{GRU}}(s_{j-1}, x_j) &= (1 - z) \odot s_{j-1} + z \odot {\tilde s}_j \\
                             z &= \sigma(x_j W^{xz} + h_{j-1} W^{sz} + b_z) \\
                             r &= \sigma(x_j W^{xr} + h_{j-1} W^{sr} + b_r) \\
-                 {\tilde s}_j &= \tanh(x_j W^{xs} + (r \odot s{j-1}) W^{sg} + b_z) \\
+                 {\tilde s}_j &= \tanh(x_j W^{xs} + (r \odot s_{j-1}) W^{sg} + b_z) \\
           O_{\text{GRU}}(s_j) &= s_j
   \end{split}
   \\[2ex]
