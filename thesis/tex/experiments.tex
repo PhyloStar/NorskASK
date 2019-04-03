@@ -374,7 +374,10 @@ are found in table \ref{tab:baseline-accuracies}.
     MLP Rank Mix & $0.235$ & $0.366$ & $0.403$ & $0.634$ \\
     \bottomrule
   \end{tabular}
-  \caption{\FI scores of different classifiers}
+  \caption[\FI scores of linear and neural classifiers]{
+    \FI scores of various classifiers. LogReg is logistic regression, SVC is
+    support vector classification, SVR is support vector regression.
+  }
   \label{tab:baseline-accuracies}
 \end{table}
 
@@ -431,13 +434,13 @@ corners, as they represent mis-classifications of the greatest magnitude.
 \begin{figure}
   \centering
   \includegraphics{mlp-char-rank}
-  \caption{Confusion matrix for MLP Mix}
+  \caption{Confusion matrix for MLP Rank Char}
   \label{fig:mlp-char-rank}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics{mlp-char-rank-round}
-  \caption{Confusion matrix for MLP Mix on collapsed labels}
+  \caption{Confusion matrix for MLP Rank Char, collapsed labels}
   \label{fig:mlp-char-rank-round}
 \end{figure}

@@ -1,3 +1,5 @@
+import logging
+
 import keras.backend as K
 from keras.callbacks import Callback
 import numpy as np
@@ -5,6 +7,8 @@ from sklearn.metrics import f1_score
 
 from masterthesis.models.utils import ranked_prediction
 from masterthesis.utils import rescale_regression_results
+
+logger = logging.getLogger(__name__)
 
 
 class F1Metrics(Callback):
@@ -42,6 +46,7 @@ class F1Metrics(Callback):
             val_predict = rescale_regression_results(val_predict, self.highest_class).ravel()
         if self.ranked:
             val_predict = K.eval(ranked_prediction(val_predict))
+        logger.debug('Transformed predict\n%r', val_predict[:5])
         _val_f1 = f1_metric(self.dev_y, val_predict, self.average)
         self.val_f1s.append(_val_f1)
         logs['val_f1'] = _val_f1
@@ -60,4 +65,6 @@ def f1_metric(gold, predicted, average='macro'):
         gold = np.argmax(gold, axis=1)
     if predicted.ndim == 2:
         predicted = np.argmax(predicted, axis=1)
+    logger.debug('Gold for F1\n%r', gold[:15])
+    logger.debug('Predict for F1\n%r', predicted[:15])
     return f1_score(gold, predicted, average=average)

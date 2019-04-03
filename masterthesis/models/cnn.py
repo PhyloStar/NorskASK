@@ -1,5 +1,6 @@
 import argparse
 from math import isfinite
+import logging
 import os
 import tempfile
 from typing import Callable, Iterable, List, Optional, Sequence, Union  # noqa: F401
@@ -26,6 +27,7 @@ from masterthesis.utils import (
 )
 
 POS_EMB_DIM = 10
+logger = logging.getLogger(__name__)
 
 
 def int_list(strlist: str) -> List[int]:
@@ -58,7 +60,10 @@ def parse_args():
     parser.add_argument('--windows', '-w', type=int_list)
     parser.set_defaults(batch_size=32, doc_length=700, embed_dim=100, epochs=50, vocab_size=None,
                         windows=[3, 4, 5])
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+    return args
 
 
 def build_model(vocab_size: int, sequence_length: int, output_units: Sequence[int], embed_dim: int,
@@ -168,6 +173,9 @@ def main():
 
     optimizer, loss, metrics = get_compile_args(args.method, args.lr)
     model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics)
+
+    logger.debug("Train y\n%r", train_y[0][:5])
+    logger.debug("Model config\n%r", model.get_config())
 
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
     val_y = dev_target_scores
