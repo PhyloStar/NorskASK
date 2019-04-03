@@ -103,6 +103,13 @@ We will use both static and dynamic embeddings in our experiments, but not in
 a multi-channel setup. For RNN experiments, we will limit our experiments to
 dynamic word embeddings only.
 
+Experiments using mixed UPOS tags as input will not use pre-trained
+embeddings. This is because of two reasons. First, we do not have any
+pre-trained embeddings for UPOS tags. Second, the pre-trained word embeddings
+for function words that occur in the mixed UPOS tag representation are
+trained in the context of content words, and we therefore do not expect them
+to have much utility in the context of UPOS tags.
+
 
 \subsection{Multi-channel input}
 
@@ -179,9 +186,7 @@ maximum $L_2$ norm of 3.
     % $ROW CNN Rank:        cnn-26515464_7    cnn-26518498_7
     % $ROW CNN Rank+POS:    cnn-26515464_8    cnn-26518498_8
     % $ROW CNN Rank Mix:    cnn-26515464_9    cnn-26518498_9
-    %\midrule
-    %\multicolumn{5}{c}{Pre-trained, fine tuned embeddings} \\
-    %\midrule
+    %\midrule \multicolumn{5}{c}{Pre-trained, fine tuned embeddings} \\ \midrule
     % $ROW CNN:             cnn-26515464_10   cnn-26518498_10
     % $ROW CNN+POS:         cnn-26515464_11   cnn-26518498_11
     % $ROW CNN Reg:         cnn-26515464_13   cnn-26518498_12
@@ -220,31 +225,33 @@ maximum $L_2$ norm of 3.
 \subsection{Training behaviour}
 
 \begin{figure}
-  % cnn-26094553_11
+  % cnn-26515464_6
   \begin{subfigure}{\linewidth}
     \centering
     \includegraphics{cnn-training}
-    \caption{Training and validation loss and accuracy over 50 epochs of training.}
+    \caption{Training and validation loss and validation F1 over 50 epochs of training.}
   \end{subfigure}
   \begin{subfigure}{\linewidth}
     \centering
     \includegraphics{cnn-confusion}
     \caption{Confusion matrix on validation set, raw counts and normalized.}
   \end{subfigure}
-  \caption{CNN with UPOS as side input, using pre-trained, static embeddings.}
+  \caption[Training behaviour of CNN regression]{
+    CNN regressor with mixed UPOS tags as input.
+  }
   \label{fig:cnn-training}
 \end{figure}
 
 Figure \ref{fig:cnn-training} shows that how the training and validation
 metrics evolve in the course of training, as well as the confusion matrix of
-the final model. The validation metrics plateau after approximately 20
-epochs, after which any improvement is eclipsed by small, seemingly random
-fluctuations. The training metrics keep improving, suggesting that the model
-is memorizing the data rather than discovering general features. When
-training stops after 50 epochs, the training accuracy is almost at 100\%.
+the final model. While the training loss quickly converges to a very low
+value, the validation loss fluctuates around a much higher loss, indicating
+overfitting. The plot of validation macro \FI also shows large fluctuations.
 
 The confusion matrix reveals that the final model has no predictions for the
-classes `A2', `B2/C1' and `C1', the smallest classes in the validation set.
+classes `A2', and `C1', the peripheral classes which are also the smallest in
+the validation set. Classes without predictions contribute to a low macro \FI
+score.
 
 
 \section{Recurrent neural networks}
@@ -306,7 +313,7 @@ of the representation vector is the average of the first element of the RNN
 output across time, and similarly for the second element, etc.
 
 \[
-  \mathrm{mean/time}(x_i) = \sum_{t=0}^T o_{t,i}
+  \mathrm{mean/time}(x_i) = \frac{1}{T}\sum_{t=0}^T o_{t,i}
 \]
 
 where $T$ is the total number of time steps, and $o_{t,i}$ means the output of
