@@ -18,7 +18,7 @@ from masterthesis.utils import (
 )
 
 sns.set(style='white', context='paper')
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig()
 
 
 class MockKeyedVectors:
@@ -38,7 +38,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--model', type=Path)
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--split', choices={'train', 'dev', 'test'}, default='dev')
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.debug:
+        logging.getLogger(None).setLevel(logging.DEBUG)
+    return args
 
 
 def get_fingerprints(embeddings: Path, filenames: Iterable[str]) -> np.ndarray:

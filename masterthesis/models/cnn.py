@@ -27,6 +27,7 @@ from masterthesis.utils import (
 )
 
 POS_EMB_DIM = 10
+logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
@@ -62,7 +63,7 @@ def parse_args():
                         windows=[3, 4, 5])
     args = parser.parse_args()
     if args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
+        logging.getLogger(None).setLevel(logging.DEBUG)
     return args
 
 

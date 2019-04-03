@@ -161,58 +161,58 @@ maximum $L_2$ norm of 3.
   \centering
   \begin{tabular}{lrrrr}
     \toprule
-            & \multicolumn{2}{c}{All labels}       & \multicolumn{2}{c}{Collapsed labels} \\
+      & \multicolumn{2}{c}{All labels}   & \multicolumn{2}{c}{Collapsed labels} \\
     \cmidrule(lr){2-3}
     \cmidrule(lr){4-5}
-    Model     & Macro \FI        & Micro \FI        & Macro \FI        & Micro \FI \\
+    Model   & Macro \FI   & Micro \FI   & Macro \FI   & Micro \FI \\
     \midrule
-
     \multicolumn{5}{c}{Randomly initialized embeddings} \\
+    \midrule
     % $BEGIN autotable cnn-results
     % $META models-per-row=2 columns-per-model=macrof1,microf1
-    % $ROW CNN:             cnn-26515464_1   cnn-26515464_1
-    % $ROW CNN+POS:         cnn-26515464_2   cnn-26515464_2
-    % $ROW CNN Mix:         cnn-26515464_3   cnn-26515464_3
-    % $ROW CNN Reg:         cnn-26515464_4   cnn-26515464_4
-    % $ROW CNN Reg+POS:     cnn-26515464_5   cnn-26515464_5
-    % $ROW CNN Reg Mix:     cnn-26515464_6   cnn-26515464_6
-    % $ROW CNN Rank:        cnn-26515464_7   cnn-26515464_7
-    % $ROW CNN Rank+POS:    cnn-26515464_8   cnn-26515464_8
-    % $ROW CNN Rank Mix:    cnn-26515464_9   cnn-26515464_9
+    % $ROW CNN:             cnn-26515464_1    cnn-26518498_1
+    % $ROW CNN+POS:         cnn-26515464_2    cnn-26518498_2
+    % $ROW CNN Mix:         cnn-26515464_3    cnn-26518498_3
+    % $ROW CNN Reg:         cnn-26515464_4    cnn-26518498_4
+    % $ROW CNN Reg+POS:     cnn-26515464_5    cnn-26518498_5
+    % $ROW CNN Reg Mix:     cnn-26515464_6    cnn-26518498_6
+    % $ROW CNN Rank:        cnn-26515464_7    cnn-26518498_7
+    % $ROW CNN Rank+POS:    cnn-26515464_8    cnn-26518498_8
+    % $ROW CNN Rank Mix:    cnn-26515464_9    cnn-26518498_9
     %\midrule
     %\multicolumn{5}{c}{Pre-trained, fine tuned embeddings} \\
     %\midrule
-    % $ROW CNN:             cnn-26515464_10   cnn-26515464_10
-    % $ROW CNN+POS:         cnn-26515464_11   cnn-26515464_11
-    % $ROW CNN Reg:         cnn-26515464_13   cnn-26515464_13
-    % $ROW CNN Reg+POS:     cnn-26515464_14   cnn-26515464_14
-    % $ROW CNN Rank:        cnn-26515464_16   cnn-26515464_16
-    % $ROW CNN Rank+POS:    cnn-26515464_17   cnn-26515464_17
+    % $ROW CNN:             cnn-26515464_10   cnn-26518498_10
+    % $ROW CNN+POS:         cnn-26515464_11   cnn-26518498_11
+    % $ROW CNN Reg:         cnn-26515464_13   cnn-26518498_12
+    % $ROW CNN Reg+POS:     cnn-26515464_14   cnn-26518498_13
+    % $ROW CNN Rank:        cnn-26515464_16   cnn-26518498_14
+    % $ROW CNN Rank+POS:    cnn-26515464_17   cnn-26518498_15
     % $END autotable
-    CNN & $0.168$ & $\mathbf{0.398}$ & $0.168$ & $\mathbf{0.398}$ \\
-    CNN+POS & $0.146$ & $0.374$ & $0.146$ & $0.374$ \\
-    CNN Mix & $0.201$ & $\mathbf{0.398}$ & $0.201$ & $\mathbf{0.398}$ \\
-    CNN Reg & $0.230$ & $0.382$ & $0.230$ & $0.382$ \\
-    CNN Reg+POS & $0.236$ & $0.341$ & $0.236$ & $0.341$ \\
-    CNN Reg Mix & $\mathbf{0.258}$ & $\mathbf{0.398}$ & $\mathbf{0.258}$ & $\mathbf{0.398}$ \\
-    CNN Rank & $0.177$ & $0.374$ & $0.177$ & $0.374$ \\
-    CNN Rank+POS & $0.187$ & $0.382$ & $0.187$ & $0.382$ \\
-    CNN Rank Mix & $0.231$ & $0.382$ & $0.231$ & $0.382$ \\
+    CNN & $0.168$ & $\mathbf{0.398}$ & $0.388$ & $0.732$ \\
+    CNN+POS & $0.146$ & $0.374$ & $0.398$ & $0.748$ \\
+    CNN Mix & $0.201$ & $\mathbf{0.398}$ & $0.383$ & $0.724$ \\
+    CNN Reg & $0.230$ & $0.382$ & $0.439$ & $0.724$ \\
+    CNN Reg+POS & $0.236$ & $0.341$ & $0.383$ & $0.724$ \\
+    CNN Reg Mix & $\mathbf{0.258}$ & $\mathbf{0.398}$ & $0.412$ & $0.642$ \\
+    CNN Rank & $0.177$ & $0.374$ & $0.392$ & $0.740$ \\
+    CNN Rank+POS & $0.187$ & $0.382$ & $0.397$ & $0.748$ \\
+    CNN Rank Mix & $0.231$ & $0.382$ & $0.379$ & $0.715$ \\
     \midrule
     \multicolumn{5}{c}{Pre-trained, fine tuned embeddings} \\
     \midrule
-    CNN & $0.208$ & $0.382$ & $0.208$ & $0.382$ \\
-    CNN+POS & $0.161$ & $0.366$ & $0.161$ & $0.366$ \\
-    CNN Reg & $0.242$ & $0.341$ & $0.242$ & $0.341$ \\
-    CNN Reg+POS & $0.232$ & $0.366$ & $0.232$ & $0.366$ \\
-    CNN Rank & $0.198$ & $0.350$ & $0.198$ & $0.350$ \\
-    CNN Rank+POS & $0.181$ & $0.325$ & $0.181$ & $0.325$ \\
+    CNN & $0.208$ & $0.382$ & $0.384$ & $0.724$ \\
+    CNN+POS & $0.161$ & $0.366$ & $0.402$ & $\mathbf{0.756}$ \\
+    CNN Reg & $0.242$ & $0.341$ & $\mathbf{0.463}$ & $0.724$ \\
+    CNN Reg+POS & $0.232$ & $0.366$ & $0.411$ & $0.715$ \\
+    CNN Rank & $0.198$ & $0.350$ & $0.384$ & $0.724$ \\
+    CNN Rank+POS & $0.181$ & $0.325$ & $0.401$ & $\mathbf{0.756}$ \\
     \bottomrule
   \end{tabular}
-  \caption{\FI scores of CNN classifiers on AES. +POS: Multi-channel input with
-           both words and POS tags. +PTD: Pre-trained word embeddings, further
-           fine-tuning. +PTS: Pre-trained word embeddings kept static. 234:
-           filter sizes 2, 3 and 4.}
+  \caption[\FI scores of CNN classifiers on AES.]{
+    \FI scores of CNN classifiers on AES. +POS: Multi-channel input with
+    both words and UPOS tags. Reg: Regression model. Rank: Ordinal regression.
+  }
   \label{tab:cnn-results}
 \end{table}
 

@@ -10,7 +10,7 @@ import tqdm
 from masterthesis.features.build_features import iterate_tokens
 from masterthesis.gensim_utils import load_fasttext_embeddings
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig()
 
 
 def parse_args() -> argparse.Namespace:
@@ -18,7 +18,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('input', type=Path)
     parser.add_argument('outputdir', type=Path)
     parser.add_argument('--outputname', type=str)
-    return parser.parse_args()
+    parser.add_argument('--verbose', action='store_true')
+    args = parser.parse_args()
+    if args.verbose:
+        logging.getLogger(None).setLevel(logging.DEBUG)
+    return args
 
 
 def main():
