@@ -42,7 +42,6 @@ def parse_args():
     parser.add_argument('--decay-rate', type=float)
     parser.add_argument('--dropout-rate', type=float)
     parser.add_argument('--fasttext', action="store_true", help='Initialize embeddings')
-    parser.add_argument('--lr', type=float)
     parser.add_argument('--rnn-cell', choices={'gru', 'lstm'})
     parser.add_argument('--rnn-dim', type=int)
     parser.set_defaults(batch_size=32, decay_rate=0.9, dropout_rate=0.5, embed_dim=100, epochs=50,
@@ -163,7 +162,7 @@ def main():
         loss_weights = None
 
     model = build_model(
-        vocab_size=args.vocab_size, sequence_len=args.doc_length, num_classes=output_units,
+        vocab_size=args.vocab_size, sequence_len=args.doc_length, output_units=output_units,
         embed_dim=args.embed_dim, rnn_dim=args.rnn_dim, dropout_rate=args.dropout_rate,
         bidirectional=args.bidirectional, pool_method=args.pool_method,
         static_embs=args.static_embs, rnn_cell=args.rnn_cell, num_pos=num_pos,
@@ -177,7 +176,7 @@ def main():
     model.compile(optimizer, 'categorical_crossentropy',
                   loss_weights=loss_weights, metrics=['accuracy'])
 
-    optimizer, loss, metrics = get_compile_args(args.method, args.lr)
+    optimizer, loss, metrics = get_compile_args(args)
     model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics)
 
     # Context manager fails on Windows (can't open an open file again)

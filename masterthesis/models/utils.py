@@ -52,7 +52,7 @@ def add_common_args(parser: argparse.ArgumentParser) -> None:
 
 
 def add_seq_common_args(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument('--doc-length', '-l', type=int)
+    parser.add_argument('--doc-length', '-l', type=int, default=700)
     parser.add_argument('--embed-dim', type=int)
     parser.add_argument('--include-pos', action='store_true')
     parser.add_argument('--mixed-pos', action='store_true')
