@@ -125,6 +125,14 @@ def get_compile_args(args):
     return optimizer, loss, metrics
 
 
+def get_predictions(model: Model, x, multi_task: bool) -> np.ndarray:
+    """Return only the first set of predictions if multi-task setup."""
+    predictions = model.predict(x)
+    if multi_task:
+        return predictions[0]
+    return predictions
+
+
 def main():
     args = parse_args()
 
@@ -191,11 +199,8 @@ def main():
     os.close(temp_handle)
     os.remove(weights_path)
 
+    predictions = get_predictions(model, multi_task)
     true = dev_target_scores
-    if multi_task:
-        predictions = model.predict(dev_x)[0]
-    else:
-        predictions = model.predict(dev_x)
     if args.method == 'classification':
         pred = np.argmax(predictions, axis=1)
     elif args.method == 'regression':
