@@ -17,11 +17,7 @@ class Results:
         self.git_revision = git_rev
 
 
-def save_results(script_name: str,
-                 config: Dict[str, Any],
-                 history,
-                 true,
-                 predictions):
+def save_results(script_name: str, config: Dict[str, Any], history, true, predictions):
     try:
         result = subprocess.run(GIT_CMD, stdout=subprocess.PIPE)
         git_rev = result.stdout.decode().strip()

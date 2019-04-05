@@ -21,7 +21,7 @@ except ImportError:
 def macro_rmse(true, pred):
     groups = defaultdict(list)
     for t, p in zip(true, pred):
-        groups[t].append((t - p) ** 2)
+        groups[t].append((t - p)**2)
     rmses = []
     for group in groups.values():
         rmses.append(sqrt(sum(group) / len(group)))
@@ -116,9 +116,7 @@ def print_top_by_metric(data: pd.DataFrame, metrics: Iterable[str], n: int = 5) 
     for metric in metrics:
         ascending = metric in {'MAE', 'RMSE', 'macro MAE', 'macro RMSE'}
         print('\nTop %s:' % metric)
-        print(data.sort_values(metric, ascending=ascending)
-                  .loc[:, ['filename', metric]]
-                  .head(n))
+        print(data.sort_values(metric, ascending=ascending).loc[:, ['filename', metric]].head(n))
 
 
 def plot_corrs(data: pd.DataFrame):
@@ -132,13 +130,11 @@ def plot_regs(data: pd.DataFrame):
 
     sns.regplot('macro F1', 'micro F1', data=data, ax=ax1, scatter=False, truncate=True)
     sns.scatterplot('macro F1', 'micro F1', data=data, hue='type', ax=ax1)
-    ax1.set_title('Pearson corr. = %.3f, p = %.4f'
-                  % pearsonr(data['macro F1'], data['micro F1']))
+    ax1.set_title('Pearson corr. = %.3f, p = %.4f' % pearsonr(data['macro F1'], data['micro F1']))
 
     sns.regplot('macro F1', 'macro MAE', data=data, ax=ax2, scatter=False, truncate=True)
     sns.scatterplot('macro F1', 'macro MAE', data=data, hue='type', ax=ax2)
-    ax2.set_title('Pearson corr. = %.3f, p = %.4f'
-                  % pearsonr(data['macro F1'], data['macro MAE']))
+    ax2.set_title('Pearson corr. = %.3f, p = %.4f' % pearsonr(data['macro F1'], data['macro MAE']))
     plt.tight_layout()
 
 

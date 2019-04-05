@@ -5,8 +5,8 @@ from typing import Iterable, Sequence, Union  # noqa: F401
 
 from keras import backend as K
 from keras.layers import (
-    Activation, Bidirectional, Dense, Dropout, Flatten, GlobalMaxPooling1D, GRU, Lambda,
-    Layer, LSTM, Multiply, Permute, RepeatVector, TimeDistributed
+    Activation, Bidirectional, Dense, Dropout, Flatten, GlobalMaxPooling1D, GRU, Lambda, Layer,
+    LSTM, Multiply, Permute, RepeatVector, TimeDistributed
 )
 from keras.models import Model
 from keras.optimizers import RMSprop
@@ -24,8 +24,8 @@ from masterthesis.models.utils import (
 )
 from masterthesis.results import save_results
 from masterthesis.utils import (
-    ATTENTION_LAYER, AUX_OUTPUT_NAME, get_file_name, load_split, OUTPUT_NAME,
-    REPRESENTATION_LAYER, rescale_regression_results, safe_plt as plt, save_model, set_reproducible
+    ATTENTION_LAYER, AUX_OUTPUT_NAME, get_file_name, load_split, OUTPUT_NAME, REPRESENTATION_LAYER,
+    rescale_regression_results, safe_plt as plt, save_model, set_reproducible
 )
 
 INPUT_DROPOUT = 0.5
@@ -44,8 +44,18 @@ def parse_args():
     parser.add_argument('--fasttext', action="store_true", help='Initialize embeddings')
     parser.add_argument('--rnn-cell', choices={'gru', 'lstm'})
     parser.add_argument('--rnn-dim', type=int)
-    parser.set_defaults(batch_size=32, decay_rate=0.9, dropout_rate=0.5, embed_dim=100, epochs=50,
-                        lr=1e-3, rnn_cell='lstm', rnn_dim=300, vocab_size=None, pool_method='mean')
+    parser.set_defaults(
+        batch_size=32,
+        decay_rate=0.9,
+        dropout_rate=0.5,
+        embed_dim=100,
+        epochs=50,
+        lr=1e-3,
+        rnn_cell='lstm',
+        rnn_dim=300,
+        vocab_size=None,
+        pool_method='mean'
+    )
     return parser.parse_args()
 
 
@@ -54,23 +64,39 @@ def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool) -> Layer:
         cell_factory = LSTM
     elif rnn_cell == 'gru':
         cell_factory = GRU
-    rnn_factory = cell_factory(rnn_dim, return_sequences=True, dropout=INPUT_DROPOUT,
-                               recurrent_dropout=RECURRENT_DROPOUT)
+    rnn_factory = cell_factory(
+        rnn_dim, return_sequences=True, dropout=INPUT_DROPOUT, recurrent_dropout=RECURRENT_DROPOUT
+    )
     if bidirectional:
         rnn_factory = Bidirectional(rnn_factory)
     return rnn_factory
 
 
-def build_model(vocab_size: int, sequence_len: int, output_units: Sequence[int],
-                embed_dim: int, rnn_dim: int, dropout_rate: float,
-                bidirectional: bool, pool_method: str, static_embs: bool, rnn_cell: str,
-                num_pos: int = 0, classification: bool = False):
+def build_model(
+    vocab_size: int,
+    sequence_len: int,
+    output_units: Sequence[int],
+    embed_dim: int,
+    rnn_dim: int,
+    dropout_rate: float,
+    bidirectional: bool,
+    pool_method: str,
+    static_embs: bool,
+    rnn_cell: str,
+    num_pos: int = 0,
+    classification: bool = False
+):
     # Only the global average pooling supports masked input
     mask_zero = pool_method == 'mean'
 
     input_layer_args = InputLayerArgs(
-        num_pos=num_pos, mask_zero=mask_zero, embed_dim=embed_dim, pos_embed_dim=POS_EMB_DIM,
-        vocab_size=vocab_size, sequence_len=sequence_len, static_embeddings=static_embs
+        num_pos=num_pos,
+        mask_zero=mask_zero,
+        embed_dim=embed_dim,
+        pos_embed_dim=POS_EMB_DIM,
+        vocab_size=vocab_size,
+        sequence_len=sequence_len,
+        static_embeddings=static_embs
     )
     inputs, embedding_layer = build_inputs_and_embeddings(input_layer_args)
 
@@ -90,8 +116,9 @@ def build_model(vocab_size: int, sequence_len: int, output_units: Sequence[int],
 
         # apply the attention
         sent_representation = Multiply()([dropout, attention])
-        pooled = Lambda(lambda xin: K.sum(xin, axis=1),
-                        name=REPRESENTATION_LAYER)(sent_representation)
+        pooled = Lambda(
+            lambda xin: K.sum(xin, axis=1), name=REPRESENTATION_LAYER
+        )(sent_representation)
     elif pool_method == 'mean':
         pooled = GlobalAveragePooling1D(name=REPRESENTATION_LAYER)(dropout)
     elif pool_method == 'max':
@@ -153,7 +180,8 @@ def main():
     del target_col
 
     train_y, dev_y, output_units = get_targets_and_output_units(
-        train_target_scores, dev_target_scores, args.method)
+        train_target_scores, dev_target_scores, args.method
+    )
 
     multi_task = args.aux_loss_weight > 0
     if multi_task:
@@ -170,19 +198,28 @@ def main():
         loss_weights = None
 
     model = build_model(
-        vocab_size=args.vocab_size, sequence_len=args.doc_length, output_units=output_units,
-        embed_dim=args.embed_dim, rnn_dim=args.rnn_dim, dropout_rate=args.dropout_rate,
-        bidirectional=args.bidirectional, pool_method=args.pool_method,
-        static_embs=args.static_embs, rnn_cell=args.rnn_cell, num_pos=num_pos,
-        classification=args.method == 'classification')
+        vocab_size=args.vocab_size,
+        sequence_len=args.doc_length,
+        output_units=output_units,
+        embed_dim=args.embed_dim,
+        rnn_dim=args.rnn_dim,
+        dropout_rate=args.dropout_rate,
+        bidirectional=args.bidirectional,
+        pool_method=args.pool_method,
+        static_embs=args.static_embs,
+        rnn_cell=args.rnn_cell,
+        num_pos=num_pos,
+        classification=args.method == 'classification'
+    )
     model.summary()
 
     if args.vectors:
         init_pretrained_embs(model, args.vectors, w2i)
 
     optimizer = RMSprop(lr=args.lr, rho=args.decay_rate)
-    model.compile(optimizer, 'categorical_crossentropy',
-                  loss_weights=loss_weights, metrics=['accuracy'])
+    model.compile(
+        optimizer, 'categorical_crossentropy', loss_weights=loss_weights, metrics=['accuracy']
+    )
 
     optimizer, loss, metrics = get_compile_args(args)
     model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics)
@@ -192,9 +229,14 @@ def main():
     val_y = dev_target_scores
     callbacks = [F1Metrics(dev_x, val_y, weights_path, ranked=args.method == 'ranked')]
     history = model.fit(
-        train_x, train_y, epochs=args.epochs, batch_size=args.batch_size,
-        callbacks=callbacks, validation_data=(dev_x, dev_y),
-        verbose=2)
+        train_x,
+        train_y,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        callbacks=callbacks,
+        validation_data=(dev_x, dev_y),
+        verbose=2
+    )
     model.load_weights(weights_path)
     os.close(temp_handle)
     os.remove(weights_path)

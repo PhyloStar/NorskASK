@@ -84,27 +84,25 @@ class GlobalAveragePooling1D(_GlobalPooling1D):
 
 
 InputLayerArgs = NamedTuple(
-    'InputLayerArgs',
-    [
-        ('vocab_size', int),
-        ('sequence_len', int),
-        ('embed_dim', int),
-        ('pos_embed_dim', int),
-        ('mask_zero', bool),
-        ('static_embeddings', bool),
-        ('num_pos', int)
+    'InputLayerArgs', [
+        ('vocab_size', int), ('sequence_len', int), ('embed_dim', int), ('pos_embed_dim', int),
+        ('mask_zero', bool), ('static_embeddings', bool), ('num_pos', int)
     ]
 )
 
 
 def build_inputs_and_embeddings(args: InputLayerArgs):
     trainable_embeddings = not args.static_embeddings
-    word_input_layer = Input((args.sequence_len,))
+    word_input_layer = Input((args.sequence_len, ))
     word_embedding_layer = Embedding(
-        args.vocab_size, args.embed_dim, mask_zero=args.mask_zero, name=EMB_LAYER_NAME,
-        trainable=trainable_embeddings)(word_input_layer)
+        args.vocab_size,
+        args.embed_dim,
+        mask_zero=args.mask_zero,
+        name=EMB_LAYER_NAME,
+        trainable=trainable_embeddings
+    )(word_input_layer)
     if args.num_pos > 0:
-        pos_input_layer = Input((args.sequence_len,))
+        pos_input_layer = Input((args.sequence_len, ))
         pos_embedding_layer = Embedding(args.num_pos, args.pos_embed_dim)(pos_input_layer)
         embedding_layer = Concatenate()([word_embedding_layer, pos_embedding_layer])
         inputs = [word_input_layer, pos_input_layer]

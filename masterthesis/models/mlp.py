@@ -25,7 +25,6 @@ from masterthesis.utils import (
     rescale_regression_results, safe_plt as plt, save_model, set_reproducible
 )
 
-
 conll_folder = DATA_DIR / 'conll'
 
 
@@ -38,7 +37,7 @@ def parse_args():
 
 
 def build_model(vocab_size: int, output_units: Sequence[int], classification: bool):
-    input_ = Input((vocab_size,))
+    input_ = Input((vocab_size, ))
 
     hidden_1 = Dense(100, activation='relu')(input_)
     dropout_1 = Dropout(0.5)(hidden_1)
@@ -67,27 +66,32 @@ def mixed_pos_line_iter(split) -> Iterable[str]:
 def preprocess(kind: str, max_features: int, train_meta, dev_meta):
     if kind == 'pos':
         vectorizer = CountVectorizer(
-            lowercase=False, token_pattern=r"[^\s]+",
-            ngram_range=(2, 4), max_features=max_features)
+            lowercase=False, token_pattern=r"[^\s]+", ngram_range=(2, 4), max_features=max_features
+        )
         train_x = vectorizer.fit_transform(pos_line_iter('train'))
         dev_x = vectorizer.transform(pos_line_iter('dev'))
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'mix':
         vectorizer = CountVectorizer(
-            lowercase=False, token_pattern=r"[^\s]+",
-            ngram_range=(1, 3), max_features=max_features)
+            lowercase=False, token_pattern=r"[^\s]+", ngram_range=(1, 3), max_features=max_features
+        )
         train_x = vectorizer.fit_transform(mixed_pos_line_iter('train'))
         dev_x = vectorizer.transform(mixed_pos_line_iter('dev'))
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'char':
         train_x, vectorizer = bag_of_words(
-            'train', analyzer='char',
-            ngram_range=(2, 4), max_features=max_features, lowercase=False)
+            'train',
+            analyzer='char',
+            ngram_range=(2, 4),
+            max_features=max_features,
+            lowercase=False
+        )
         dev_x = vectorizer.transform(filename_iter(dev_meta))
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'bow':
         train_x, vectorizer = bag_of_words(
-            'train', token_pattern=r"[^\s]+", max_features=max_features, lowercase=False)
+            'train', token_pattern=r"[^\s]+", max_features=max_features, lowercase=False
+        )
         dev_x = vectorizer.transform(filename_iter(dev_meta))
         num_features = len(vectorizer.vocabulary_)
     else:
@@ -132,7 +136,8 @@ def main():
     dev_target_scores = np.array([labels.index(c) for c in dev_meta[target_col]], dtype=int)
 
     train_y, dev_y, output_units = get_targets_and_output_units(
-        train_target_scores, dev_target_scores, args.method)
+        train_target_scores, dev_target_scores, args.method
+    )
 
     multi_task = args.aux_loss_weight > 0
     if multi_task:
@@ -160,9 +165,14 @@ def main():
     val_y = dev_target_scores
     callbacks = [F1Metrics(dev_x, val_y, weights_path, ranked=args.method == 'ranked')]
     history = model.fit(
-        train_x, train_y, epochs=args.epochs, batch_size=args.batch_size,
-        callbacks=callbacks, validation_data=(dev_x, dev_y),
-        verbose=2)
+        train_x,
+        train_y,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        callbacks=callbacks,
+        validation_data=(dev_x, dev_y),
+        verbose=2
+    )
     model.load_weights(weights_path)
     os.close(temp_handle)
     os.remove(weights_path)

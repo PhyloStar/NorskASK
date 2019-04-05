@@ -9,7 +9,6 @@ from sklearn.metrics import f1_score
 
 from masterthesis.utils import RESULTS_DIR
 
-
 Row = NamedTuple('Row', [('name', str)])
 
 

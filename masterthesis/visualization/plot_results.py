@@ -8,8 +8,8 @@ from sklearn.metrics import confusion_matrix
 from masterthesis.models.report import report
 from masterthesis.results import Results  # noqa: F401
 from masterthesis.utils import (
-    AUX_OUTPUT_NAME, CEFR_LABELS, heatmap, LANG_LABELS, OUTPUT_NAME,
-    ROUND_CEFR_LABELS, safe_plt as plt
+    AUX_OUTPUT_NAME, CEFR_LABELS, heatmap, LANG_LABELS, OUTPUT_NAME, ROUND_CEFR_LABELS, safe_plt as
+    plt
 )
 
 

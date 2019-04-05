@@ -35,7 +35,6 @@ safe_plt = plt
 
 conll_cols = ['ID', 'FORM', 'LEMMA', 'UPOS', 'XPOS', 'FEATS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']
 
-
 iso639_3 = dict(
     engelsk='eng',
     polsk='pol',
@@ -64,13 +63,15 @@ EMB_LAYER_NAME = 'embedding_layer'
 OUTPUT_NAME = 'output'
 AUX_OUTPUT_NAME = 'aux_output'
 
-
 if 'seaborn' in sys.modules:
-    def heatmap(values: np.ndarray,
-                xticks: Sequence[str],
-                yticks: Sequence[str],
-                normalize: bool = False,
-                ax: Optional[plt.Axes] = None) -> None:
+
+    def heatmap(
+        values: np.ndarray,
+        xticks: Sequence[str],
+        yticks: Sequence[str],
+        normalize: bool = False,
+        ax: Optional[plt.Axes] = None
+    ) -> None:
         """Plot a 2D array as a heatmap with overlayed values.
 
         Args:
@@ -90,16 +91,20 @@ if 'seaborn' in sys.modules:
             cbar = False
             vmin = None
             vmax = None
-        ax = sns.heatmap(values, square=True, annot=annot, fmt='.2g',
-                         ax=ax, cbar=cbar, vmin=vmin, vmax=vmax)
+        ax = sns.heatmap(
+            values, square=True, annot=annot, fmt='.2g', ax=ax, cbar=cbar, vmin=vmin, vmax=vmax
+        )
         ax.set_xticklabels(xticks)
         ax.set_yticklabels(yticks, rotation=0)
 else:
-    def heatmap(values: np.ndarray,
-                xticks: Sequence[str],
-                yticks: Sequence[str],
-                normalize: bool = False,
-                ax: Optional[plt.Axes] = None) -> None:
+
+    def heatmap(
+        values: np.ndarray,
+        xticks: Sequence[str],
+        yticks: Sequence[str],
+        normalize: bool = False,
+        ax: Optional[plt.Axes] = None
+    ) -> None:
         """Plot a 2D array as a heatmap with overlayed values.
 
         Args:
@@ -128,9 +133,14 @@ else:
                 label = '%.2f' % val
             else:
                 label = str(int(val))
-            ax.text(col, row, label,
-                    horizontalalignment='center',
-                    verticalalignment='center', color=color)
+            ax.text(
+                col,
+                row,
+                label,
+                horizontalalignment='center',
+                verticalalignment='center',
+                color=color
+            )
 
 
 def load_train_and_dev() -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -204,8 +214,7 @@ def document_iterator(doc: TextIO) -> Iterable[str]:
         yield next(tokens_iter)
 
 
-def conll_reader(file: Union[str, Path],
-                 cols: Sequence[str],
+def conll_reader(file: Union[str, Path], cols: Sequence[str],
                  tags: bool = False) -> Iterable[List[Tuple[str, ...]]]:
     """Iterate over sentences in a CoNLL file.
 
@@ -304,8 +313,7 @@ def set_reproducible() -> None:
     # Force TensorFlow to use single thread.
     # Multiple threads are a potential source of non-reproducible results.
     # For further details, see: https://stackoverflow.com/questions/42022950/
-    session_conf = tf.ConfigProto(intra_op_parallelism_threads=1,
-                                  inter_op_parallelism_threads=1)
+    session_conf = tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
     # The below tf.set_random_seed() will make random number generation
     # in the TensorFlow backend have a well-defined initial state.
     # For further details, see:

@@ -17,9 +17,9 @@ col_cutoff = counts.max().max() / 2
 for i, row in enumerate(counts.itertuples()):
     for j, count in enumerate(row[1:]):
         col = 'white' if count < col_cutoff else 'black'
-        plt.text(j, i, int(count),
-                 horizontalalignment='center',
-                 verticalalignment='center', color=col)
+        plt.text(
+            j, i, int(count), horizontalalignment='center', verticalalignment='center', color=col
+        )
 
 plt.ylabel('Native language')
 plt.xlabel('CEFR proficiency')

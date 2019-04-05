@@ -59,40 +59,60 @@ def parse_args():
     add_seq_common_args(parser)
     parser.add_argument('--constraint', type=positive_float)
     parser.add_argument('--windows', '-w', type=int_list)
-    parser.set_defaults(batch_size=32, embed_dim=100, epochs=50, vocab_size=None,
-                        windows=[3, 4, 5])
+    parser.set_defaults(batch_size=32, embed_dim=100, epochs=50, vocab_size=None, windows=[3, 4, 5])
     args = parser.parse_args()
     if args.verbose:
         logging.getLogger(None).setLevel(logging.DEBUG)
     return args
 
 
-def build_model(vocab_size: int, sequence_length: int, output_units: Sequence[int], embed_dim: int,
-                windows: Iterable[int], num_pos: int = 0,
-                constraint: Optional[float] = None, static_embs: bool = False,
-                classification: bool = False) -> Model:
+def build_model(
+    vocab_size: int,
+    sequence_length: int,
+    output_units: Sequence[int],
+    embed_dim: int,
+    windows: Iterable[int],
+    num_pos: int = 0,
+    constraint: Optional[float] = None,
+    static_embs: bool = False,
+    classification: bool = False
+) -> Model:
     """Build CNN model."""
     input_layer_args = InputLayerArgs(
-        num_pos=num_pos, mask_zero=False, embed_dim=embed_dim, pos_embed_dim=POS_EMB_DIM,
-        vocab_size=vocab_size, sequence_len=sequence_length, static_embeddings=static_embs
+        num_pos=num_pos,
+        mask_zero=False,
+        embed_dim=embed_dim,
+        pos_embed_dim=POS_EMB_DIM,
+        vocab_size=vocab_size,
+        sequence_len=sequence_length,
+        static_embeddings=static_embs
     )
     inputs, embedding_layer = build_inputs_and_embeddings(input_layer_args)
 
     pooled_feature_maps = []
     for kernel_size in windows:
         conv_layer = Conv1D(
-            filters=100, kernel_size=kernel_size, activation='relu')(embedding_layer)
-        pooled_feature_maps.extend([
-            # GlobalAveragePooling1D()(conv_layer),
-            GlobalMaxPooling1D()(conv_layer)
-        ])
+            filters=100, kernel_size=kernel_size, activation='relu'
+        )(embedding_layer)
+        pooled_feature_maps.extend(
+            [
+                # GlobalAveragePooling1D()(conv_layer),
+                GlobalMaxPooling1D()(conv_layer)
+            ]
+        )
     merged = Concatenate(name=REPRESENTATION_LAYER)(pooled_feature_maps)
     dropout_layer = Dropout(0.5)(merged)
 
     kernel_constraint = constraint and max_norm(constraint)
     activation = 'softmax' if classification else 'sigmoid'
-    outputs = [Dense(output_units[0], activation=activation,
-                     kernel_constraint=kernel_constraint, name=OUTPUT_NAME)(dropout_layer)]
+    outputs = [
+        Dense(
+            output_units[0],
+            activation=activation,
+            kernel_constraint=kernel_constraint,
+            name=OUTPUT_NAME
+        )(dropout_layer)
+    ]
     if len(output_units) > 1:
         aux_out = Dense(output_units[1], activation='softmax', name=AUX_OUTPUT_NAME)(dropout_layer)
         outputs.append(aux_out)
@@ -146,7 +166,8 @@ def main():
     del target_col
 
     train_y, dev_y, output_units = get_targets_and_output_units(
-        train_target_scores, dev_target_scores, args.method)
+        train_target_scores, dev_target_scores, args.method
+    )
 
     multi_task = args.aux_loss_weight > 0
     if multi_task:
@@ -164,9 +185,16 @@ def main():
     del train_meta, dev_meta
 
     model = build_model(
-        args.vocab_size, args.doc_length, output_units, args.embed_dim, windows=args.windows,
-        num_pos=num_pos, constraint=args.constraint, static_embs=args.static_embs,
-        classification=args.method == 'classification')
+        args.vocab_size,
+        args.doc_length,
+        output_units,
+        args.embed_dim,
+        windows=args.windows,
+        num_pos=num_pos,
+        constraint=args.constraint,
+        static_embs=args.static_embs,
+        classification=args.method == 'classification'
+    )
     model.summary()
 
     if args.vectors:
@@ -182,9 +210,14 @@ def main():
     val_y = dev_target_scores
     callbacks = [F1Metrics(dev_x, val_y, weights_path, ranked=args.method == 'ranked')]
     history = model.fit(
-        train_x, train_y, epochs=args.epochs, batch_size=args.batch_size,
-        callbacks=callbacks, validation_data=(dev_x, dev_y),
-        verbose=2)
+        train_x,
+        train_y,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        callbacks=callbacks,
+        validation_data=(dev_x, dev_y),
+        verbose=2
+    )
     model.load_weights(weights_path)
     os.close(temp_handle)
     os.remove(weights_path)

@@ -37,12 +37,14 @@ def evaluate_candidate(df, sample_topics, topics, overall_cefr, overall_lang):
     test_topics = set(topics[sample_topics == 2])
     test_set = topics_to_df(df, test_topics)
 
-    entropies = np.array([
-        entropy(cefr_distribution(dev_set), overall_cefr),
-        entropy(cefr_distribution(test_set), overall_cefr),
-        entropy(lang_distribution(dev_set), overall_lang),
-        entropy(lang_distribution(test_set), overall_lang)
-    ])
+    entropies = np.array(
+        [
+            entropy(cefr_distribution(dev_set), overall_cefr),
+            entropy(cefr_distribution(test_set), overall_cefr),
+            entropy(lang_distribution(dev_set), overall_lang),
+            entropy(lang_distribution(test_set), overall_lang)
+        ]
+    )
 
     sample_sizes = (len(dev_set), len(test_set))
     sample_size_penalty = (abs(len(dev_set) - 121) + abs(len(test_set) - 121)) / 121
@@ -52,7 +54,7 @@ def evaluate_candidate(df, sample_topics, topics, overall_cefr, overall_lang):
         'test_topics': test_topics,
         'entropies': entropies,
         'sample_sizes': sample_sizes,
-        'penalty': np.sum(entropies ** 2) + sample_size_penalty
+        'penalty': np.sum(entropies**2) + sample_size_penalty
     }
 
 
@@ -89,17 +91,19 @@ def mutate(individual):
 
 
 def evolution(df, topics, overall_cefr, overall_lang):
-    evaluate_f = partial(evaluate_candidate, df=df, topics=topics,
-                         overall_cefr=overall_cefr, overall_lang=overall_lang)
+    evaluate_f = partial(
+        evaluate_candidate,
+        df=df,
+        topics=topics,
+        overall_cefr=overall_cefr,
+        overall_lang=overall_lang
+    )
     pop_size = 100
     elite_size = 20
     mutants_per_cand = pop_size // elite_size
     best_ever = None
     generations = 0
-    population = [
-        np.random.choice([0, 1, 2], len(topics), p=[.8, .1, .1])
-        for _ in range(pop_size)
-    ]
+    population = [np.random.choice([0, 1, 2], len(topics), p=[.8, .1, .1]) for _ in range(pop_size)]
     print('Starting evolution algorithm ... Ctrl-C to end')
     try:
         while True:
@@ -111,9 +115,11 @@ def evolution(df, topics, overall_cefr, overall_lang):
                 print(best_ever)
             elite_indices = np.argpartition(penalties, elite_size)[:elite_size]
             elite = [population[i] for i in elite_indices]
-            population = list(chain.from_iterable(
-                (mutate(cand) for _ in range(mutants_per_cand)) for cand in elite
-            ))
+            population = list(
+                chain.from_iterable(
+                    (mutate(cand) for _ in range(mutants_per_cand)) for cand in elite
+                )
+            )
             generations += 1
     except KeyboardInterrupt:
         print('Stopped after {} generations.'.format(generations))

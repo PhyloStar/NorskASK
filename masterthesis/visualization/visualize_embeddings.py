@@ -13,8 +13,8 @@ import tqdm
 from masterthesis.features.build_features import pos_to_sequences, words_to_sequences
 from masterthesis.gensim_utils import fingerprint, load_embeddings
 from masterthesis.utils import (
-    CEFR_LABELS, DATA_DIR, document_iterator, iso639_3, load_split,
-    REPRESENTATION_LAYER, safe_plt as plt
+    CEFR_LABELS, DATA_DIR, document_iterator, iso639_3, load_split, REPRESENTATION_LAYER, safe_plt
+    as plt
 )
 
 sns.set(style='white', context='paper')
@@ -58,16 +58,17 @@ def get_fingerprints(embeddings: Path, filenames: Iterable[str]) -> np.ndarray:
 
 def get_model_representations(model_path: Path, split: str) -> np.ndarray:
     model = load_model(str(model_path))
-    representation_model = Model(inputs=model.input,
-                                 outputs=model.get_layer(REPRESENTATION_LAYER).output)
+    representation_model = Model(
+        inputs=model.input, outputs=model.get_layer(REPRESENTATION_LAYER).output
+    )
     print(model.input)
     w2i_path = model_path.parent / (model_path.stem + '_w2i.pkl')
     w2i = pickle.load(w2i_path.open('rb'))
     pos2i_path = model_path.parent / ('pos2i.pkl')
-    (x,) = words_to_sequences(700, [split], w2i)
+    (x, ) = words_to_sequences(700, [split], w2i)
     if pos2i_path.is_file():
         pos2i = pickle.load(pos2i_path.open('rb'))
-        (x_pos,) = pos_to_sequences(700, [split], pos2i)
+        (x_pos, ) = pos_to_sequences(700, [split], pos2i)
         x = [x, x_pos]
     return representation_model.predict(x)
 
@@ -99,8 +100,16 @@ def main():
         else:
             palette = None
             hue_order = None
-        sns.scatterplot(x='x', y='y', hue=col, data=meta, ax=ax, size='num_tokens',
-                        palette=palette, hue_order=hue_order)
+        sns.scatterplot(
+            x='x',
+            y='y',
+            hue=col,
+            data=meta,
+            ax=ax,
+            size='num_tokens',
+            palette=palette,
+            hue_order=hue_order
+        )
     fig.set_size_inches(4, 3)
     plt.show()
 

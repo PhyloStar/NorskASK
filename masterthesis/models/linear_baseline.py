@@ -13,7 +13,6 @@ from masterthesis.models.report import report
 from masterthesis.results import save_results
 from masterthesis.utils import DATA_DIR, get_file_name, load_split
 
-
 conll_folder = DATA_DIR / 'conll'
 
 
@@ -39,27 +38,28 @@ def parse_args():
 def preprocess(kind: str, max_features: Optional[int], train_meta, dev_meta):
     if kind == 'pos':
         vectorizer = CountVectorizer(
-            lowercase=False, token_pattern=r"[^\s]+",
-            ngram_range=(2, 4), max_features=max_features)
+            lowercase=False, token_pattern=r"[^\s]+", ngram_range=(2, 4), max_features=max_features
+        )
         train_x = vectorizer.fit_transform(pos_line_iter('train'))
         dev_x = vectorizer.transform(pos_line_iter('dev'))
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'mix':
         vectorizer = CountVectorizer(
-            lowercase=False, token_pattern=r"[^\s]+",
-            ngram_range=(1, 3), max_features=max_features)
+            lowercase=False, token_pattern=r"[^\s]+", ngram_range=(1, 3), max_features=max_features
+        )
         train_x = vectorizer.fit_transform(mixed_pos_line_iter('train'))
         dev_x = vectorizer.transform(mixed_pos_line_iter('dev'))
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'char':
         train_x, vectorizer = bag_of_words(
-            'train', analyzer='char', ngram_range=(1, 3), max_features=max_features)
+            'train', analyzer='char', ngram_range=(1, 3), max_features=max_features
+        )
         dev_x = vectorizer.transform(filename_iter(dev_meta))
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'bow':
         train_x, vectorizer = bag_of_words(
-            'train', max_features=max_features,
-            token_pattern=r"[^\s]+", lowercase=False)
+            'train', max_features=max_features, token_pattern=r"[^\s]+", lowercase=False
+        )
         dev_x = vectorizer.transform(filename_iter(dev_meta))
         num_features = len(vectorizer.vocabulary_)
     else:
