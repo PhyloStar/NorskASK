@@ -222,6 +222,14 @@ maximum $L_2$ norm of 3.
 \end{table}
 
 
+\subsubsection{Effect of hyperparameters}
+
+Comparing the different prediction methods, namely categorical classification,
+numeric regression and ordinal regression, we see that numeric regression
+overall has the highest macro \FI scores. In the next section, where we train
+\ac{RNN} models, we will therefore stick to neural regression models only.
+
+
 \subsection{Training behaviour}
 
 \begin{figure}
@@ -248,10 +256,11 @@ the final model. While the training loss quickly converges to a very low
 value, the validation loss fluctuates around a much higher loss, indicating
 overfitting. The plot of validation macro \FI also shows large fluctuations.
 
-The confusion matrix reveals that the final model has no predictions for the
-classes `A2', and `C1', the peripheral classes which are also the smallest in
-the validation set. Classes without predictions contribute to a low macro \FI
-score.
+The confusion matrix reveals that the final model did not assign any samples
+to the classes `A2', and `C1', the peripheral classes which are also the
+smallest in the validation set. As noted in the discussion about metrics in
+the previous chapter (\ref{metrics-discussion}), classes with no predictions
+contribute to a low macro \FI score.
 
 
 \section{Recurrent neural networks}
@@ -348,11 +357,13 @@ number of time steps. The BiRNN should therefore be able to extract context
 on both sides of a input time step.
 
 All the models have a hidden state vector of size 300 in unidirectional
-\acp{RNN}, and 600 in BiRNNs (300 in each direction). We use almost all
-tokens in the training set as our lexicon, giving a vocabulary size of
-20,000. Embeddings are initialized randomly or using vectors from the
+\acp{RNN}, and 600 in BiRNNs (300 in each direction). We use all tokens in
+the training set as our lexicon, giving a vocabulary size of 20,068 (20,066
+unique tokens occurring in the training set, plus two tokens for padding and
+unknown words). Embeddings are initialized randomly or using vectors from the
 fastText model described in section \ref{subseq:fasttext}, and trained as
-part of the network.
+part of the network. BiRNNs are referred to in the tables as either BiLSTM or
+BiGRU, depending on the RNN cell used.
 
 
 \section{Results}
@@ -360,7 +371,9 @@ part of the network.
 The RNN results are split into two tables. Table \ref{tab:lstm-results}
 contains the results for models with \ac{LSTM} cells, while table
 \ref{tab:gru-results} contains the results for models with \ac{GRU} cells.
-The mixed input format is not applicable when using pre-trained embeddings.
+The mixed input format is only listed in the sections with randomly
+initialized embeddings, as it is not applicable when using pre-trained
+embeddings.
 
 \begin{table}
   \centering
@@ -371,77 +384,77 @@ The mixed input format is not applicable when using pre-trained embeddings.
     \cmidrule(lr){4-5}
     Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
     \midrule
-              \multicolumn{5}{c}{Random init, unidirectional RNN} \\
+              \multicolumn{5}{c}{Random init, unidirectional LSTM} \\
     \midrule
     % $BEGIN autotable lstm-results
     % $META models-per-row=2 columns-per-model=macrof1,microf1
-    % $ROW Mean:        rnn-26285652_1       rnn-26285653_1
-    % $ROW Max:         rnn-26285652_2       rnn-26285653_2
-    % $ROW Attn.:        rnn-26285652_3       rnn-26285653_3
-    % $ROW +POS Mean:   rnn-26285652_4       rnn-26285653_4
-    % $ROW +POS Max:    rnn-26285652_5       rnn-26285653_5
-    % $ROW +POS Attn:   rnn-26285652_6       rnn-26285653_6
-    % $ROW Mix Mean:    rnn-26285652_7       rnn-26285653_7
-    % $ROW Mix Max:     rnn-26285652_8       rnn-26285653_8
-    % $ROW Mix Attn:    rnn-26285652_9       rnn-26285653_9
-    % \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
-    % $ROW Mean:        rnn-26285652_10      rnn-26285653_10
-    % $ROW Max:         rnn-26285652_11      rnn-26285653_11
-    % $ROW Attn:        rnn-26285652_12      rnn-26285653_12
-    % $ROW +POS Mean:   rnn-26285652_13      rnn-26285653_13
-    % $ROW +POS Max:    rnn-26285652_14      rnn-26285653_14
-    % $ROW +POS Attn:   rnn-26285652_15      rnn-26285653_15
-    % $ROW Mix Mean:    rnn-26285652_16      rnn-26285653_16
-    % $ROW Mix Max:     rnn-26285652_17      rnn-26285653_17
-    % $ROW Mix Attn:    rnn-26285652_18      rnn-26285653_18
-    % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
-    % $ROW Mean:        rnn-26287006_19      rnn-26287007_19
-    % $ROW Max:         rnn-26287006_20      rnn-26287007_20
-    % $ROW Attn:        rnn-26287006_21      rnn-26287007_21
-    % $ROW +POS Mean:   rnn-26287006_22      rnn-26287007_22
-    % $ROW +POS Max:    rnn-26287006_23      rnn-26287007_23
-    % $ROW +POS Attn:   rnn-26287006_24      rnn-26287007_24
-    % \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
-    % $ROW Mean:        rnn-26287006_25      rnn-26287007_25
-    % $ROW Max:         rnn-26287006_26      rnn-26287007_26
-    % $ROW Attn:        rnn-26287006_27      rnn-26287007_27
-    % $ROW +POS Mean:   rnn-26287006_28      rnn-26287007_28
-    % $ROW +POS Max:    rnn-26287006_29      rnn-26287007_29
-    % $ROW +POS Attn:   rnn-26287006_30      rnn-26287007_30
+    % $ROW Mean:        rnn-26519203_1       rnn-26519204_1
+    % $ROW Max:         rnn-26519203_2       rnn-26519204_2
+    % $ROW Attn.:        rnn-26519203_3       rnn-26519204_3
+    % $ROW +POS Mean:   rnn-26519203_4       rnn-26519204_4
+    % $ROW +POS Max:    rnn-26519203_5       rnn-26519204_5
+    % $ROW +POS Attn:   rnn-26519203_6       rnn-26519204_6
+    % $ROW Mix Mean:    rnn-26519203_7       rnn-26519204_7
+    % $ROW Mix Max:     rnn-26519203_8       rnn-26519204_8
+    % $ROW Mix Attn:    rnn-26519203_9       rnn-26519204_9
+    % \midrule \multicolumn{5}{c}{Random init, BiLSTM} \\ \midrule
+    % $ROW Mean:        rnn-26530015_10      rnn-26530016_10
+    % $ROW Max:         rnn-26530015_11      rnn-26530016_11
+    % $ROW Attn:        rnn-26530015_12      rnn-26530016_12
+    % $ROW +POS Mean:   rnn-26530015_13      rnn-26530016_13
+    % $ROW +POS Max:    rnn-26530015_14      rnn-26530016_14
+    % $ROW +POS Attn:   rnn-26530015_15      rnn-26530016_15
+    % $ROW Mix Mean:    rnn-26530015_16      rnn-26530016_16
+    % $ROW Mix Max:     rnn-26530015_17      rnn-26530016_17
+    % $ROW Mix Attn:    rnn-26530015_18      rnn-26530016_18
+    % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional LSTM} \\ \midrule
+    % $ROW Mean:        rnn-26519203_19      rnn-26519204_19
+    % $ROW Max:         rnn-26519203_20      rnn-26519204_20
+    % $ROW Attn:        rnn-26519203_21      rnn-26519204_21
+    % $ROW +POS Mean:   rnn-26519203_22      rnn-26519204_22
+    % $ROW +POS Max:    rnn-26519203_23      rnn-26519204_23
+    % $ROW +POS Attn:   rnn-26519203_24      rnn-26519204_24
+    % \midrule \multicolumn{5}{c}{Pre-trained, BiLSTM} \\ \midrule
+    % $ROW Mean:        rnn-26530015_25      rnn-26530016_25
+    % $ROW Max:         rnn-26530015_26      rnn-26530016_26
+    % $ROW Attn:        rnn-26530015_27      rnn-26530016_27
+    % $ROW +POS Mean:   rnn-26530015_28      rnn-26530016_28
+    % $ROW +POS Max:    rnn-26530015_29      rnn-26530016_29
+    % $ROW +POS Attn:   rnn-26530015_30      rnn-26530016_30
     % $END autotable
-    Mean & $0.265$ & $0.382$ & $0.455$ & $0.675$ \\
-    Max & $0.301$ & $0.366$ & $0.562$ & $0.577$ \\
-    Attn & $0.240$ & $0.358$ & $0.651$ & $0.748$ \\
-    +POS Mean & $0.311$ & $0.415$ & $0.458$ & $0.691$ \\
-    +POS Max & $0.362$ & $0.374$ & $0.449$ & $0.659$ \\
-    +POS Attn & $0.258$ & $0.374$ & $0.527$ & $0.756$ \\
-    Mix Mean & $0.220$ & $0.333$ & $0.384$ & $0.634$ \\
-    Mix Max & $0.221$ & $0.374$ & $0.420$ & $0.650$ \\
-    Mix Attn & $0.244$ & $0.431$ & $0.485$ & $0.748$ \\
-    \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
-    Mean & $0.343$ & $0.350$ & $0.493$ & $0.715$ \\
-    Max & $0.262$ & $0.358$ & $0.606$ & $0.724$ \\
-    Attn & $0.288$ & $\mathbf{0.472}$ & $\mathbf{0.674}$ & $0.724$ \\
-    +POS Mean & $0.271$ & $0.358$ & $0.485$ & $0.732$ \\
-    +POS Max & $0.338$ & $0.382$ & $0.465$ & $0.683$ \\
-    +POS Attn & $0.277$ & $0.415$ & $0.548$ & $\mathbf{0.772}$ \\
-    Mix Mean & $0.215$ & $0.341$ & $0.414$ & $0.634$ \\
-    Mix Max & $0.242$ & $0.366$ & $0.465$ & $0.675$ \\
-    Mix Attn & $0.267$ & $0.390$ & $0.480$ & $0.740$ \\
-    \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
-    Mean & $0.291$ & $0.415$ & $0.469$ & $0.675$ \\
-    Max & $0.334$ & $0.398$ & $0.450$ & $0.659$ \\
-    Attn & $0.358$ & $0.325$ & $0.660$ & $0.732$ \\
-    +POS Mean & $0.302$ & $0.423$ & $0.462$ & $0.699$ \\
-    +POS Max & $0.353$ & $0.431$ & $0.615$ & $0.732$ \\
-    +POS Attn & $0.325$ & $0.415$ & $0.595$ & $0.732$ \\
-    \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
-    Mean & $0.270$ & $0.366$ & $0.464$ & $0.675$ \\
-    Max & $0.357$ & $0.350$ & $0.495$ & $0.748$ \\
-    Attn & $\mathbf{0.392}$ & $0.350$ & $0.584$ & $0.707$ \\
-    +POS Mean & $0.263$ & $0.341$ & $0.472$ & $0.650$ \\
-    +POS Max & $0.353$ & $0.455$ & $0.495$ & $0.740$ \\
-    +POS Attn & $0.297$ & $0.439$ & $0.637$ & $\mathbf{0.772}$ \\
+    Mean & $0.268$ & $0.398$ & $0.458$ & $0.675$ \\
+    Max & $0.235$ & $0.350$ & $0.475$ & $0.740$ \\
+    Attn. & $0.445$ & $0.431$ & $0.624$ & $0.780$ \\
+    +POS Mean & $0.251$ & $0.358$ & $0.454$ & $0.699$ \\
+    +POS Max & $0.187$ & $0.325$ & $0.435$ & $0.715$ \\
+    +POS Attn & $0.417$ & $0.390$ & $0.619$ & $0.772$ \\
+    Mix Mean & $0.230$ & $0.350$ & $0.396$ & $0.626$ \\
+    Mix Max & $0.210$ & $0.415$ & $0.398$ & $0.748$ \\
+    Mix Attn & $0.297$ & $0.431$ & $0.576$ & $0.772$ \\
+    \midrule \multicolumn{5}{c}{Random init, BiLSTM} \\ \midrule
+    Mean & $0.262$ & $0.366$ & $0.457$ & $0.699$ \\
+    Max & $0.182$ & $0.358$ & $0.485$ & $0.724$ \\
+    Attn & $\mathbf{0.448}$ & $0.447$ & $0.699$ & $0.805$ \\
+    +POS Mean & $0.337$ & $0.333$ & $0.441$ & $0.691$ \\
+    +POS Max & $0.176$ & $0.350$ & $0.460$ & $0.715$ \\
+    +POS Attn & $0.420$ & $0.407$ & $0.670$ & $0.789$ \\
+    Mix Mean & $0.220$ & $0.309$ & $0.402$ & $0.659$ \\
+    Mix Max & $0.190$ & $0.374$ & $0.400$ & $0.756$ \\
+    Mix Attn & $0.305$ & $0.447$ & $0.550$ & $0.724$ \\
+    \midrule \multicolumn{5}{c}{Pre-trained, unidirectional LSTM} \\ \midrule
+    Mean & $0.266$ & $0.374$ & $0.443$ & $0.675$ \\
+    Max & $0.181$ & $0.358$ & $0.433$ & $0.756$ \\
+    Attn & $0.410$ & $0.423$ & $0.626$ & $0.789$ \\
+    +POS Mean & $0.280$ & $0.390$ & $0.465$ & $0.691$ \\
+    +POS Max & $0.206$ & $0.415$ & $0.414$ & $0.780$ \\
+    +POS Attn & $0.370$ & $0.382$ & $0.680$ & $\mathbf{0.813}$ \\
+    \midrule \multicolumn{5}{c}{Pre-trained, BiLSTM} \\ \midrule
+    Mean & $0.263$ & $0.374$ & $0.470$ & $0.683$ \\
+    Max & $0.190$ & $0.325$ & $0.396$ & $0.748$ \\
+    Attn & $0.429$ & $\mathbf{0.463}$ & $0.638$ & $0.805$ \\
+    +POS Mean & $0.257$ & $0.350$ & $0.465$ & $0.691$ \\
+    +POS Max & $0.181$ & $0.358$ & $0.412$ & $0.715$ \\
+    +POS Attn & $0.427$ & $0.423$ & $\mathbf{0.704}$ & $0.780$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of LSTM classifiers on AES}
@@ -457,7 +470,7 @@ The mixed input format is not applicable when using pre-trained embeddings.
     \cmidrule(lr){4-5}
     Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
     \midrule
-              \multicolumn{5}{c}{50 dimensional, randomly initialized embeddings} \\
+              \multicolumn{5}{c}{Random init, unidirectional GRU} \\
     \midrule
     % $BEGIN autotable gru-results
     % $META models-per-row=2 columns-per-model=macrof1,microf1
@@ -470,7 +483,7 @@ The mixed input format is not applicable when using pre-trained embeddings.
     % $ROW Mix Mean:    rnn-26285656_7       rnn-26285657_7
     % $ROW Mix Max:     rnn-26285656_8       rnn-26285657_8
     % $ROW Mix Attn:    rnn-26285656_9       rnn-26285657_9
-    % \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
+    % \midrule \multicolumn{5}{c}{Random init, BiGRU} \\ \midrule
     % $ROW Mean:        rnn-26285656_10      rnn-26285657_10
     % $ROW Max:         rnn-26285656_11      rnn-26285657_11
     % $ROW Attn:        rnn-26285656_12      rnn-26285657_12
@@ -480,14 +493,14 @@ The mixed input format is not applicable when using pre-trained embeddings.
     % $ROW Mix Mean:    rnn-26285656_16      rnn-26285657_16
     % $ROW Mix Max:     rnn-26285656_17      rnn-26285657_17
     % $ROW Mix Attn:    rnn-26285656_18      rnn-26285657_18
-    % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
+    % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional GRU} \\ \midrule
     % $ROW Mean:        rnn-26287008_19      rnn-26287009_19
     % $ROW Max:         rnn-26287008_20      rnn-26287009_20
     % $ROW Attn:        rnn-26287008_21      rnn-26287009_21
     % $ROW +POS Mean:   rnn-26287008_22      rnn-26287009_22
     % $ROW +POS Max:    rnn-26287008_23      rnn-26287009_23
     % $ROW +POS Attn:   rnn-26287008_24      rnn-26287009_24
-    % \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
+    % \midrule \multicolumn{5}{c}{Pre-trained, BiGRU} \\ \midrule
     % $ROW Mean:        rnn-26287008_25      rnn-26287009_25
     % $ROW Max:         rnn-26287008_26      rnn-26287009_26
     % $ROW Attn:        rnn-26287008_27      rnn-26287009_27
@@ -504,7 +517,7 @@ The mixed input format is not applicable when using pre-trained embeddings.
     Mix Mean & $0.241$ & $0.398$ & $0.398$ & $0.593$ \\
     Mix Max & $0.272$ & $0.415$ & $0.445$ & $0.707$ \\
     Mix Attn & $0.242$ & $0.431$ & $0.498$ & $0.724$ \\
-    \midrule \multicolumn{5}{c}{Random init, BiRNN} \\ \midrule
+    \midrule \multicolumn{5}{c}{Random init, BiGRU} \\ \midrule
     Mean & $0.301$ & $0.398$ & $0.473$ & $0.675$ \\
     Max & $0.278$ & $0.301$ & $0.612$ & $0.707$ \\
     Attn & $0.334$ & $0.439$ & $0.492$ & $0.780$ \\
@@ -514,14 +527,14 @@ The mixed input format is not applicable when using pre-trained embeddings.
     Mix Mean & $0.250$ & $0.358$ & $0.416$ & $0.626$ \\
     Mix Max & $0.259$ & $0.407$ & $0.442$ & $0.683$ \\
     Mix Attn & $0.315$ & $0.415$ & $0.510$ & $0.618$ \\
-    \midrule \multicolumn{5}{c}{Pre-trained, unidirectional RNN} \\ \midrule
+    \midrule \multicolumn{5}{c}{Pre-trained, unidirectional GRU} \\ \midrule
     Mean & $0.240$ & $0.374$ & $0.462$ & $0.699$ \\
     Max & $0.274$ & $0.382$ & $0.439$ & $0.715$ \\
     Attn & $0.281$ & $0.439$ & $0.524$ & $0.772$ \\
     +POS Mean & $0.271$ & $0.358$ & $0.446$ & $0.699$ \\
     +POS Max & $\mathbf{0.406}$ & $0.407$ & $0.449$ & $0.691$ \\
     +POS Attn & $0.300$ & $0.439$ & $0.509$ & $0.732$ \\
-    \midrule \multicolumn{5}{c}{Pre-trained, BiRNN} \\ \midrule
+    \midrule \multicolumn{5}{c}{Pre-trained, BiGRU} \\ \midrule
     Mean & $0.293$ & $0.350$ & $0.482$ & $0.715$ \\
     Max & $0.253$ & $0.382$ & $0.460$ & $0.659$ \\
     Attn & $0.345$ & $\mathbf{0.496}$ & $0.543$ & $\mathbf{0.797}$ \\
@@ -594,12 +607,16 @@ good.
 Compared to the training plot of the CNN model in figure
 \ref{fig:cnn-training}, it seems that the RNN metrics fluctuate much more,
 especially on validation data. However, the training accuracy seems to
-increase slower, and does not get as close 100\% in the course of 50 epochs.
+increase slower, and does not get as close to 100\% in the course of 50 epochs.
 
 
 \section{Native language identification}
 
-Unlike the proficiency labels in ASK, \ac{L1}s are rather evenly distributed.
+In comparison to proficiency labels in ASK where the peripheral classes are
+very small, \acp{L1} are much more evenly distributed. There is also no natural
+ordering of \ac{L1}, making regression or ordinal regression pointless. For
+experiments in \ac{NLI} we will therefore only use networks with a softmax
+classification layer.
 
 We train the same models to classify the documents by native language. The
 performance of a \ac{CNN} model improved drastically when including \ac{POS}
@@ -642,7 +659,10 @@ attention model that was best, but a bidirectional LSTM.
 \section{Visualization}
 
 We attempt to use different visualization methods in order to extract
-insights about the workings of our models.
+insights about the workings of our models. First, we show excerpts from texts
+in the dataset, colourized according to the attention values. Then, we plot
+data points using a dimensionality reduction algorithm, and examine the plot
+for salient groupings.
 
 
 \subsection{Attention}

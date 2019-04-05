@@ -1,7 +1,7 @@
 import argparse
 import os
 import tempfile
-from typing import Iterable, Sequence, Union  # noqa: F401
+from typing import Callable, Iterable, List, Sequence, Union  # noqa: F401
 
 from keras import backend as K
 from keras.layers import (
@@ -72,41 +72,28 @@ def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool) -> Layer:
     return rnn_factory
 
 
-def build_model(
-    vocab_size: int,
-    sequence_len: int,
-    output_units: Sequence[int],
-    embed_dim: int,
-    rnn_dim: int,
-    dropout_rate: float,
-    bidirectional: bool,
-    pool_method: str,
-    static_embs: bool,
-    rnn_cell: str,
-    num_pos: int = 0,
-    classification: bool = False
-):
+def build_model(args: argparse.Namespace, output_units: Sequence[int], num_pos: int = 0):
     # Only the global average pooling supports masked input
-    mask_zero = pool_method == 'mean'
+    mask_zero = args.pool_method == 'mean'
 
     input_layer_args = InputLayerArgs(
         num_pos=num_pos,
         mask_zero=mask_zero,
-        embed_dim=embed_dim,
+        embed_dim=args.embed_dim,
         pos_embed_dim=POS_EMB_DIM,
-        vocab_size=vocab_size,
-        sequence_len=sequence_len,
-        static_embeddings=static_embs
+        vocab_size=args.vocab_size,
+        sequence_len=args.doc_length,
+        static_embeddings=args.static_embs
     )
     inputs, embedding_layer = build_inputs_and_embeddings(input_layer_args)
 
-    rnn_factory = _build_rnn(rnn_cell, rnn_dim, bidirectional)
+    rnn_factory = _build_rnn(args.rnn_cell, args.rnn_dim, args.bidirectional)
     rnn = rnn_factory(embedding_layer)
 
-    dropout = Dropout(dropout_rate)(rnn)
+    dropout = Dropout(args.dropout_rate)(rnn)
 
-    if pool_method == 'attention':
-        units = 2 * rnn_dim if bidirectional else rnn_dim
+    if args.pool_method == 'attention':
+        units = 2 * args.rnn_dim if args.bidirectional else args.rnn_dim
         # compute importance for each step
         attention = TimeDistributed(Dense(1, activation='tanh'))(dropout)
         attention = Flatten()(attention)
@@ -119,14 +106,14 @@ def build_model(
         pooled = Lambda(
             lambda xin: K.sum(xin, axis=1), name=REPRESENTATION_LAYER
         )(sent_representation)
-    elif pool_method == 'mean':
+    elif args.pool_method == 'mean':
         pooled = GlobalAveragePooling1D(name=REPRESENTATION_LAYER)(dropout)
-    elif pool_method == 'max':
+    elif args.pool_method == 'max':
         pooled = GlobalMaxPooling1D(name=REPRESENTATION_LAYER)(dropout)
     else:
-        raise ValueError('Unrecognized pooling strategy: ' + pool_method)
+        raise ValueError('Unrecognized pooling strategy: ' + args.pool_method)
 
-    activation = 'softmax' if classification else 'sigmoid'
+    activation = 'softmax' if args.method == 'classification' else 'sigmoid'
     outputs = [Dense(output_units[0], activation=activation, name=OUTPUT_NAME)(pooled)]
     if len(output_units) > 1:
         aux_out = Dense(output_units[1], activation='softmax', name=AUX_OUTPUT_NAME)(pooled)
@@ -134,7 +121,7 @@ def build_model(
     return Model(inputs=inputs, outputs=outputs)
 
 
-def get_compile_args(args):
+def get_compile_args(args: argparse.Namespace):
     if args.method == 'classification':
         optimizer = RMSprop(lr=args.lr, rho=args.decay_rate)
         loss = 'categorical_crossentropy'
@@ -197,20 +184,7 @@ def main():
     else:
         loss_weights = None
 
-    model = build_model(
-        vocab_size=args.vocab_size,
-        sequence_len=args.doc_length,
-        output_units=output_units,
-        embed_dim=args.embed_dim,
-        rnn_dim=args.rnn_dim,
-        dropout_rate=args.dropout_rate,
-        bidirectional=args.bidirectional,
-        pool_method=args.pool_method,
-        static_embs=args.static_embs,
-        rnn_cell=args.rnn_cell,
-        num_pos=num_pos,
-        classification=args.method == 'classification'
-    )
+    model = build_model(args, output_units=output_units, num_pos=num_pos)
     model.summary()
 
     if args.vectors:
