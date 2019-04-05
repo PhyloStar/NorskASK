@@ -46,31 +46,31 @@ embdim100="--vectors models/vectors/120-small.pkl"
 case $SLURM_ARRAY_TASK_ID in
 	1) args="--pool-method mean" ;;
 	2) args="--pool-method max" ;;
-	3) args="--pool-method attention" ;;
+	3) args="--pool-method attention --save-model" ;;
 	4) args="--include-pos --pool-method mean" ;;
 	5) args="--include-pos --pool-method max" ;;
-	6) args="--include-pos --pool-method attention" ;;
+	6) args="--include-pos --pool-method attention --save-model" ;;
 
 	7) args="--bidirectional --pool-method mean" ;;
 	8) args="--bidirectional --pool-method max" ;;
-	9) args="--bidirectional --pool-method attention" ;;
+	9) args="--bidirectional --pool-method attention --save-model" ;;
 	10) args="--bidirectional --include-pos --pool-method mean" ;;
 	11) args="--bidirectional --include-pos --pool-method max" ;;
-	12) args="--bidirectional --include-pos --pool-method attention" ;;
+	12) args="--bidirectional --include-pos --pool-method attention --save-model" ;;
 
 	13) args="$embdim100 --pool-method mean" ;;
 	14) args="$embdim100 --pool-method max" ;;
-	15) args="$embdim100 --pool-method attention" ;;
+	15) args="$embdim100 --pool-method attention --save-model" ;;
 	16) args="$embdim100 --include-pos --pool-method mean" ;;
 	17) args="$embdim100 --include-pos --pool-method max" ;;
-	18) args="$embdim100 --include-pos --pool-method attention" ;;
+	18) args="$embdim100 --include-pos --pool-method attention --save-model" ;;
 
 	19) args="$embdim100 --bidirectional --pool-method mean" ;;
 	20) args="$embdim100 --bidirectional --pool-method max" ;;
-	21) args="$embdim100 --bidirectional --pool-method attention" ;;
+	21) args="$embdim100 --bidirectional --pool-method attention --save-model" ;;
 	22) args="$embdim100 --bidirectional --include-pos --pool-method mean" ;;
 	23) args="$embdim100 --bidirectional --include-pos --pool-method max" ;;
-	24) args="$embdim100 --bidirectional --include-pos --pool-method attention" ;;
+	24) args="$embdim100 --bidirectional --include-pos --pool-method attention --save-model" ;;
 
 	# Run script with arguments if not an array job
 	'') args="" ;;
