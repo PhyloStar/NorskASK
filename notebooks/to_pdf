@@ -1,0 +1,5 @@
+#!/bin/bash
+
+stem=$(basename "$1" ".html")
+
+chromium-browser --headless --disable-gpu --print-to-pdf="$stem.pdf" $1
