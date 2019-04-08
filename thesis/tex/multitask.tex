@@ -20,8 +20,8 @@ performance across the board. The effect of the auxiliary task weight seems
 less clear on the micro \FI, but remember that in our setup, the micro \FI is
 a side effect of the highest macro \FI seen during training.
 
-\todo{embeddings 100 dim instead of 50}
-\todo{graph effect on metrics}
+\todo{new models}
+\todo{graph effect of loss weight on metrics}
 
 \begin{table}
   \centering
@@ -187,7 +187,10 @@ models that predict the full seven classes.
 \begin{figure}
   \centering
   \includegraphics{f1-vs-mae}
-  \caption{Macro \FI versus macro MAE. Pearson's correlation coefficient = $-0.5945$, $p < 10^{-4}$.
-           The shaded area covers a 95\% confidence interval for the line of regression.}
+  \caption[Macro \FI versus macro MAE]{
+    Macro \FI versus macro MAE. Pearson's correlation coefficient = $-0.5945$,
+    $p < 10^{-4}$. The shaded area covers a 95\% confidence interval for the
+    line of regression.
+  }
   \label{fig:f1-vs-mae}
 \end{figure}
