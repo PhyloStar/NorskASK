@@ -1,5 +1,6 @@
 import argparse
 from collections import Counter, defaultdict
+import logging
 from math import sqrt
 from pathlib import Path
 import pickle
@@ -16,6 +17,10 @@ try:
     sns.set()
 except ImportError:
     pass
+
+
+logger = logging.getLogger(__name__)
+logging.basicConfig()
 
 
 def macro_rmse(true, pred):
@@ -60,18 +65,19 @@ def files_to_dataframe(files):
         try:
             res = pickle.load(results_file.open('rb'))
         except Exception as e:
-            print(e)
-            print('Could not read file %s' % results_file)
+            logger.warn(e)
+            logger.warn('Could not read file %s' % results_file)
             continue
         try:
             gold = res.true
             pred = res.predictions.ravel()
         except AttributeError:
-            print('Could not find gold and pred for file %s' % results_file)
+            logger.warn('Could not find gold and pred for file %s' % results_file)
             continue
         data['filename'].append(results_file.name)
         data['n_class'].append(max(max(gold), max(pred)) + 1)
 
+        data['nli'].append(res.config.get('nli', False))
         data['pearson'].append(pearsonr(gold, pred)[0])
         data['spearman'].append(spearmanr(gold, pred)[0])
         data['macro F1'].append(f1_score(gold, pred, average='macro'))
@@ -120,7 +126,7 @@ def print_top_by_metric(data: pd.DataFrame, metrics: Iterable[str], n: int = 5) 
 
 
 def plot_corrs(data: pd.DataFrame):
-    corr_matrix = data.drop(columns=['filename', 'n_class']).corr()
+    corr_matrix = data.drop(columns=['filename', 'nli', 'n_class']).corr()
     sns.heatmap(corr_matrix, center=0, mask=get_corr_mask(len(corr_matrix)), annot=True, fmt='.3f')
     plt.tight_layout()
 
@@ -144,7 +150,8 @@ def main():
     df.to_csv('metrics.csv', index=False)
 
     print('== All labels ==')
-    lim_df = df[df.n_class == 7].dropna()
+    lim_df = df.query('n_class == 7 and not nli').dropna()
+    print(lim_df.head())
     print_top_by_metric(lim_df, ['spearman', 'RMSE', 'MAE'])
     if 'seaborn' in sys.modules:
         plot_corrs(lim_df)
@@ -153,7 +160,7 @@ def main():
         plt.show()
 
     print('== Collapsed labels ==')
-    lim_df = df[df.n_class == 4].dropna()
+    lim_df = df.query('n_class == 4').dropna()
     print_top_by_metric(lim_df, ['spearman', 'RMSE', 'MAE'])
     if 'seaborn' in sys.modules:
         plot_corrs(lim_df)

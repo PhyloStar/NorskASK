@@ -16,9 +16,15 @@ can be considered a part of language proficiency.
 
 \section{Experimental setup}
 
-Certain aspects of setup are different from the models in the previous
-chapter, but shared between \ac{CNN} and \ac{RNN} models. These aspects are
-described in this section.
+As in the last chapter, models are trained on the test set, and use the
+development set as validation data to decide which weights to keep. We keep
+the weights that gave the highest macro \FI score over the validation set in
+the course of training. The reported metrics are also evaluated on the
+development set.
+
+Certain aspects of setup for the new models are different from the models in
+the previous chapter, but shared between \ac{CNN} and \ac{RNN} models. These
+aspects are described in this section.
 
 
 \subsection{Input length}
@@ -37,12 +43,13 @@ tokens. These values are all close to each other, and we decided to settle on
 
 As a consequence of the unequal distributions of length between the two test
 levels, the documents that are truncated are mainly from the advanced level
-test. It is not optimal that this truncation only happens to documents from
-one test level when the two test levels are seen to have different
-distributions of the classes we predict. But even if truncation did not
-happen, a model might be able to discern the test levels just by document
-length, since we do not hide the document length from the model.
-\todo{rewrite}
+test. Thus, the presence of padding tokens at the end is a strong indicator
+of a text coming from the AL test. It is potentially problematic that this
+truncation only happens to documents from one test level, since the two test
+levels are seen to have different distributions of both CEFR scores and
+\acp{L1}. Nevertheless, even if truncation did not happen, a model might be
+able to discern the test levels just by document length, since we do not hide
+the document length from the model.
 
 
 \subsection{Pre-trained embeddings}
@@ -224,10 +231,12 @@ maximum $L_2$ norm of 3.
 
 \subsubsection{Effect of hyperparameters}
 
-Comparing the different prediction methods, namely categorical classification,
-numeric regression and ordinal regression, we see that numeric regression
-overall has the highest macro \FI scores. In the next section, where we train
-\ac{RNN} models, we will therefore stick to neural regression models only.
+Comparing the different prediction methods, namely categorical
+classification, numeric regression and ordinal regression, we see that
+numeric regression overall has the highest macro \FI scores. This is similar
+to the observations we made in the previous chapter. Based on this, we
+decided to stick to neural regression models only in the next section, where
+we train \ac{RNN} models.
 
 
 \subsection{Training behaviour}
@@ -474,73 +483,73 @@ embeddings.
     \midrule
     % $BEGIN autotable gru-results
     % $META models-per-row=2 columns-per-model=macrof1,microf1
-    % $ROW Mean:        rnn-26285656_1       rnn-26285657_1
-    % $ROW Max:         rnn-26285656_2       rnn-26285657_2
-    % $ROW Attn:        rnn-26285656_3       rnn-26285657_3
-    % $ROW +POS Mean:   rnn-26285656_4       rnn-26285657_4
-    % $ROW +POS Max:    rnn-26285656_5       rnn-26285657_5
-    % $ROW +POS Attn:   rnn-26285656_6       rnn-26285657_6
-    % $ROW Mix Mean:    rnn-26285656_7       rnn-26285657_7
-    % $ROW Mix Max:     rnn-26285656_8       rnn-26285657_8
-    % $ROW Mix Attn:    rnn-26285656_9       rnn-26285657_9
+    % $ROW Mean:        rnn-26536430_1       rnn-26536431_1
+    % $ROW Max:         rnn-26536430_2       rnn-26536431_2
+    % $ROW Attn:        rnn-26536430_3       rnn-26536431_3
+    % $ROW +POS Mean:   rnn-26536430_4       rnn-26536431_4
+    % $ROW +POS Max:    rnn-26536430_5       rnn-26536431_5
+    % $ROW +POS Attn:   rnn-26536430_6       rnn-26536431_6
+    % $ROW Mix Mean:    rnn-26536430_7       rnn-26536431_7
+    % $ROW Mix Max:     rnn-26536430_8       rnn-26536431_8
+    % $ROW Mix Attn:    rnn-26536430_9       rnn-26536431_9
     % \midrule \multicolumn{5}{c}{Random init, BiGRU} \\ \midrule
-    % $ROW Mean:        rnn-26285656_10      rnn-26285657_10
-    % $ROW Max:         rnn-26285656_11      rnn-26285657_11
-    % $ROW Attn:        rnn-26285656_12      rnn-26285657_12
-    % $ROW +POS Mean:   rnn-26285656_13      rnn-26285657_13
-    % $ROW +POS Max:    rnn-26285656_14      rnn-26285657_14
-    % $ROW +POS Attn:   rnn-26285656_15      rnn-26285657_15
-    % $ROW Mix Mean:    rnn-26285656_16      rnn-26285657_16
-    % $ROW Mix Max:     rnn-26285656_17      rnn-26285657_17
-    % $ROW Mix Attn:    rnn-26285656_18      rnn-26285657_18
+    % $ROW Mean:        rnn-26536430_10      rnn-26536431_10
+    % $ROW Max:         rnn-26536430_11      rnn-26536431_11
+    % $ROW Attn:        rnn-26536430_12      rnn-26536431_12
+    % $ROW +POS Mean:   rnn-26536430_13      rnn-26536431_13
+    % $ROW +POS Max:    rnn-26536430_14      rnn-26536431_14
+    % $ROW +POS Attn:   rnn-26536430_15      rnn-26536431_15
+    % $ROW Mix Mean:    rnn-26536430_16      rnn-26536431_16
+    % $ROW Mix Max:     rnn-26536430_17      rnn-26536431_17
+    % $ROW Mix Attn:    rnn-26536430_18      rnn-26536431_18
     % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional GRU} \\ \midrule
-    % $ROW Mean:        rnn-26287008_19      rnn-26287009_19
-    % $ROW Max:         rnn-26287008_20      rnn-26287009_20
-    % $ROW Attn:        rnn-26287008_21      rnn-26287009_21
-    % $ROW +POS Mean:   rnn-26287008_22      rnn-26287009_22
-    % $ROW +POS Max:    rnn-26287008_23      rnn-26287009_23
-    % $ROW +POS Attn:   rnn-26287008_24      rnn-26287009_24
+    % $ROW Mean:        rnn-26536430_19      rnn-26536431_19
+    % $ROW Max:         rnn-26536430_20      rnn-26536431_20
+    % $ROW Attn:        rnn-26536430_21      rnn-26536431_21
+    % $ROW +POS Mean:   rnn-26536430_22      rnn-26536431_22
+    % $ROW +POS Max:    rnn-26536430_23      rnn-26536431_23
+    % $ROW +POS Attn:   rnn-26536430_24      rnn-26536431_24
     % \midrule \multicolumn{5}{c}{Pre-trained, BiGRU} \\ \midrule
-    % $ROW Mean:        rnn-26287008_25      rnn-26287009_25
-    % $ROW Max:         rnn-26287008_26      rnn-26287009_26
-    % $ROW Attn:        rnn-26287008_27      rnn-26287009_27
-    % $ROW +POS Mean:   rnn-26287008_28      rnn-26287009_28
-    % $ROW +POS Max:    rnn-26287008_29      rnn-26287009_29
-    % $ROW +POS Attn:   rnn-26287008_30      rnn-26287009_30
+    % $ROW Mean:        rnn-26536430_25      rnn-26536431_25
+    % $ROW Max:         rnn-26536430_26      rnn-26536431_26
+    % $ROW Attn:        rnn-26536430_27      rnn-26536431_27
+    % $ROW +POS Mean:   rnn-26536430_28      rnn-26536431_28
+    % $ROW +POS Max:    rnn-26536430_29      rnn-26536431_29
+    % $ROW +POS Attn:   rnn-26536430_30      rnn-26536431_30
     % $END autotable
-    Mean & $0.293$ & $0.431$ & $0.433$ & $0.650$ \\
-    Max & $0.301$ & $0.325$ & $\mathbf{0.668}$ & $0.732$ \\
-    Attn & $0.307$ & $0.439$ & $0.536$ & $0.789$ \\
-    +POS Mean & $0.277$ & $0.407$ & $0.445$ & $0.683$ \\
-    +POS Max & $0.344$ & $0.366$ & $0.439$ & $0.650$ \\
-    +POS Attn & $0.308$ & $0.463$ & $0.535$ & $0.772$ \\
-    Mix Mean & $0.241$ & $0.398$ & $0.398$ & $0.593$ \\
-    Mix Max & $0.272$ & $0.415$ & $0.445$ & $0.707$ \\
-    Mix Attn & $0.242$ & $0.431$ & $0.498$ & $0.724$ \\
+    Mean & $0.264$ & $0.374$ & $0.455$ & $0.675$ \\
+    Max & $0.219$ & $0.325$ & $0.487$ & $0.683$ \\
+    Attn & $0.434$ & $0.431$ & $\mathbf{0.806}$ & $0.805$ \\
+    +POS Mean & $0.348$ & $0.398$ & $0.450$ & $0.642$ \\
+    +POS Max & $0.230$ & $0.374$ & $0.500$ & $0.748$ \\
+    +POS Attn & $0.434$ & $0.423$ & $0.718$ & $0.813$ \\
+    Mix Mean & $0.225$ & $0.333$ & $0.388$ & $0.634$ \\
+    Mix Max & $0.200$ & $0.398$ & $0.398$ & $0.756$ \\
+    Mix Attn & $0.302$ & $\mathbf{0.455}$ & $0.509$ & $0.780$ \\
     \midrule \multicolumn{5}{c}{Random init, BiGRU} \\ \midrule
-    Mean & $0.301$ & $0.398$ & $0.473$ & $0.675$ \\
-    Max & $0.278$ & $0.301$ & $0.612$ & $0.707$ \\
-    Attn & $0.334$ & $0.439$ & $0.492$ & $0.780$ \\
-    +POS Mean & $0.281$ & $0.398$ & $0.492$ & $0.683$ \\
-    +POS Max & $0.318$ & $0.382$ & $0.448$ & $0.667$ \\
-    +POS Attn & $0.366$ & $0.390$ & $0.521$ & $0.740$ \\
-    Mix Mean & $0.250$ & $0.358$ & $0.416$ & $0.626$ \\
-    Mix Max & $0.259$ & $0.407$ & $0.442$ & $0.683$ \\
-    Mix Attn & $0.315$ & $0.415$ & $0.510$ & $0.618$ \\
+    Mean & $0.314$ & $0.333$ & $0.444$ & $0.667$ \\
+    Max & $0.160$ & $0.325$ & $0.460$ & $0.691$ \\
+    Attn & $0.459$ & $0.447$ & $0.805$ & $0.805$ \\
+    +POS Mean & $0.373$ & $0.333$ & $0.425$ & $0.683$ \\
+    +POS Max & $0.175$ & $0.309$ & $0.503$ & $0.748$ \\
+    +POS Attn & $\mathbf{0.460}$ & $0.447$ & $0.687$ & $\mathbf{0.821}$ \\
+    Mix Mean & $0.231$ & $0.350$ & $0.395$ & $0.642$ \\
+    Mix Max & $0.200$ & $0.382$ & $0.405$ & $0.764$ \\
+    Mix Attn & $0.275$ & $\mathbf{0.455}$ & $0.617$ & $0.707$ \\
     \midrule \multicolumn{5}{c}{Pre-trained, unidirectional GRU} \\ \midrule
-    Mean & $0.240$ & $0.374$ & $0.462$ & $0.699$ \\
-    Max & $0.274$ & $0.382$ & $0.439$ & $0.715$ \\
-    Attn & $0.281$ & $0.439$ & $0.524$ & $0.772$ \\
-    +POS Mean & $0.271$ & $0.358$ & $0.446$ & $0.699$ \\
-    +POS Max & $\mathbf{0.406}$ & $0.407$ & $0.449$ & $0.691$ \\
-    +POS Attn & $0.300$ & $0.439$ & $0.509$ & $0.732$ \\
+    Mean & $0.274$ & $0.366$ & $0.463$ & $0.715$ \\
+    Max & $0.185$ & $0.350$ & $0.401$ & $0.756$ \\
+    Attn & $0.414$ & $0.431$ & $0.678$ & $0.797$ \\
+    +POS Mean & $0.282$ & $0.382$ & $0.477$ & $0.699$ \\
+    +POS Max & $0.193$ & $0.382$ & $0.405$ & $0.764$ \\
+    +POS Attn & $0.409$ & $0.423$ & $0.746$ & $0.789$ \\
     \midrule \multicolumn{5}{c}{Pre-trained, BiGRU} \\ \midrule
-    Mean & $0.293$ & $0.350$ & $0.482$ & $0.715$ \\
-    Max & $0.253$ & $0.382$ & $0.460$ & $0.659$ \\
-    Attn & $0.345$ & $\mathbf{0.496}$ & $0.543$ & $\mathbf{0.797}$ \\
-    +POS Mean & $0.304$ & $0.333$ & $0.459$ & $0.675$ \\
-    +POS Max & $0.271$ & $0.366$ & $0.480$ & $0.650$ \\
-    +POS Attn & $0.321$ & $0.415$ & $0.513$ & $0.756$ \\
+    Mean & $0.266$ & $0.390$ & $0.435$ & $0.707$ \\
+    Max & $0.187$ & $0.398$ & $0.393$ & $0.740$ \\
+    Attn & $0.454$ & $0.447$ & $0.773$ & $0.797$ \\
+    +POS Mean & $0.281$ & $0.382$ & $0.480$ & $0.724$ \\
+    +POS Max & $0.183$ & $0.341$ & $0.397$ & $0.748$ \\
+    +POS Attn & $0.433$ & $0.439$ & $0.758$ & $0.805$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of GRU classifiers on AES}
@@ -560,26 +569,52 @@ choice for the task than mean over time and max over time.
 
 \subsection{The effect of hyperparameters}
 
-We choose four different hyperparameters and examine the effect each of them
+We choose five different hyperparameters and examine the effect each of them
 has on the predictions of the networks.
-
-
-\subsubsection*{Bidirectional RNN}
 
 
 \subsubsection*{LSTM versus GRU}
 
+GRU comes out on top with somewhat higher top scores.
+
+
+\subsubsection*{Bidirectional RNN}
+
+Not very clear.
+
 
 \subsubsection*{Initialization of embeddings}
 
+The effects of initialization is not very clear, and in any case mixed.
+The best LSTM models used pre-trained embeddings, and the best GRU models
+used randomly initialized embeddings. However, the best GRU model with
+pre-trained embeddings has a higher macro \FI score than the best LSTM model,
+45.4\% and 44.8\% respectively.
+
+
+\subsubsection*{Pooling method}
+
+Attention comes out as the clear winner of the three pooling methods. It is
+the only pooling method that gives macro \FI scores above 40\% in the full
+set of classes. At the other end of the scale, max pooling performs worse
+than the other two mechanisms in almost every case. Intuitively, it seems
+reasonable that max pooling performs poorly on the task. A couple of mistakes
+should not count more towards the result than an otherwise consistent level.
+
+It can seem promising that the attention mechanism performs well, since it
+by design might be able to give more interpretable results than other neural
+methods.
+
 
 \subsubsection*{UPOS tags}
+
+Not very clear.
 
 
 \subsection{Training behaviour}
 
 \begin{figure}
-  % rnn-26287008_27
+  % rnn-26536430_15
   \begin{subfigure}{\linewidth}
     \centering
     \includegraphics{rnn-training}
@@ -590,19 +625,27 @@ has on the predictions of the networks.
     \includegraphics{rnn-confusion}
     \caption{Confusion matrix on validation set, raw counts and normalized.}
   \end{subfigure}
-  \caption{BiRNN with GRU cells, attention mechanism, and pre-trained
-           embeddings of dimension 100, fine-tuned.}
+  \caption[Training behaviour of BiGRU with attention]{
+    BiRNN with GRU cells, attention mechanism, and pre-trained
+    embeddings of dimension 100, fine-tuned.
+  }
   \label{fig:rnn-training}
 \end{figure}
 
 We see the training and classification of one of the best RNN model in figure
-\ref{fig:rnn-training}, a GRU cell with pre-trained, fine-tuned embeddings
-and an attention mechanism. The plot of the loss shows that the training loss
-decreases in the course of training while the validation loss increases
-dramatically. The plot of accuracy over time shows that the validation
-accuracy fluctuates around 40\%. While these aspects shows the model
-overfitting the training data, the performance on validation data was still
-good.
+\ref{fig:rnn-training}, a BiGRU model with randomly initialized embeddings
+using and an attention mechanism. The plot of the loss shows that the
+training loss drops quickly at the beginning and then asymptotically
+approaches zero. At the same time, the validation loss quickly converges
+around a stable value, but fluctuates somewhat. The plot of macro \FI is more
+noisy, with values fluctuating between approximately $0.2$ and $0.4$ for the
+entire training process.
+
+We see in the confusion matrix that we can identify a diagonal running from
+the top-left to the bottom-right, with zeros in the top-right and bottom-left
+corners. We see that mis-classifications are mostly close to the true value,
+with only a single prediction being more than two classes away from the gold
+label (an instance of `C1' classified as `B1/B2').
 
 Compared to the training plot of the CNN model in figure
 \ref{fig:cnn-training}, it seems that the RNN metrics fluctuate much more,
@@ -646,9 +689,63 @@ attention model that was best, but a bidirectional LSTM.
     \toprule
     Model     & Macro \FI      & Micro \FI \\
     \midrule
-    Mean/Time &         $0.379$  &         $0.390$  \\ % rnn_nli-25740792
-    BiLSTM    & $\mathbf{0.468}$ & $\mathbf{0.480}$ \\ % rnn_nli-25740786
-    Attention &         $0.423$  &         $0.407$  \\ % rnn_nli-25740789
+    % $BEGIN autotable rnn-nli
+    % $META models-per-row=1 columns-per-model=macrof1,microf1
+    % $ROW Mean:  rnn-nli-26542571_1
+    % $ROW Max:  rnn-nli-26542571_2
+    % $ROW Attn:  rnn-nli-26542571_3
+    % $ROW +POS Mean:  rnn-nli-26542571_4
+    % $ROW +POS Max:  rnn-nli-26542571_5
+    % $ROW +POS Attn:  rnn-nli-26542571_6
+    % \midrule \multicolumn{3}{c}{Random init, BiGRU} \\ \midrule
+    % $ROW Mean:  rnn-nli-26542571_7
+    % $ROW Max:  rnn-nli-26542571_8
+    % $ROW Attn:  rnn-nli-26542571_9
+    % $ROW +POS Mean:  rnn-nli-26542571_10
+    % $ROW +POS Max:  rnn-nli-26542571_11
+    % $ROW +POS Attn:  rnn-nli-26542571_12
+    % \midrule \multicolumn{3}{c}{Pre-trained, unidirectional GRU} \\ \midrule
+    % $ROW Mean:  rnn-nli-26542571_13
+    % $ROW Max:  rnn-nli-26542571_14
+    % $ROW Attn:  rnn-nli-26542571_15
+    % $ROW +POS Mean:  rnn-nli-26542571_16
+    % $ROW +POS Max:  rnn-nli-26542571_17
+    % $ROW +POS Attn:  rnn-nli-26542571_18
+    % \midrule \multicolumn{3}{c}{Pre-trained, BiGRU} \\ \midrule
+    % $ROW Mean:  rnn-nli-26542571_19
+    % $ROW Max:  rnn-nli-26542571_20
+    % $ROW Attn:  rnn-nli-26542571_21
+    % $ROW +POS Mean:  rnn-nli-26542571_22
+    % $ROW +POS Max:  rnn-nli-26542571_23
+    % $ROW +POS Attn:  rnn-nli-26542571_24
+    % $END autotable
+    Mean & $0.466$ & $0.480$ \\
+    Max & $0.376$ & $0.374$ \\
+    Attn & $0.450$ & $0.472$ \\
+    +POS Mean & $0.395$ & $0.398$ \\
+    +POS Max & $0.346$ & $0.350$ \\
+    +POS Attn & $0.412$ & $0.439$ \\
+    \midrule \multicolumn{3}{c}{Random init, BiGRU} \\ \midrule
+    Mean & $0.471$ & $0.496$ \\
+    Max & $0.359$ & $0.382$ \\
+    Attn & $0.487$ & $0.463$ \\
+    +POS Mean & $0.410$ & $0.423$ \\
+    +POS Max & $0.396$ & $0.415$ \\
+    +POS Attn & $0.480$ & $0.504$ \\
+    \midrule \multicolumn{3}{c}{Pre-trained, unidirectional GRU} \\ \midrule
+    Mean & $0.460$ & $0.463$ \\
+    Max & $0.397$ & $0.398$ \\
+    Attn & $0.469$ & $0.504$ \\
+    +POS Mean & $\mathbf{0.526}$ & $0.528$ \\
+    +POS Max & $0.440$ & $0.480$ \\
+    +POS Attn & $0.444$ & $0.480$ \\
+    \midrule \multicolumn{3}{c}{Pre-trained, BiGRU} \\ \midrule
+    Mean & $0.520$ & $\mathbf{0.537}$ \\
+    Max & $0.401$ & $0.390$ \\
+    Attn & $0.447$ & $0.480$ \\
+    +POS Mean & $0.467$ & $0.480$ \\
+    +POS Max & $0.406$ & $0.431$ \\
+    +POS Attn & $0.454$ & $0.463$ \\
     \bottomrule
   \end{tabular}
   \caption{\FI scores of RNN classifiers on NLI}
@@ -669,74 +766,65 @@ for salient groupings.
 
 The attention model allows us to visualize the weights the network gives to
 each token in a document. In figures
-\ref{fig:h0186-nli-attention}--\ref{fig:s0621-nli-attention} we see up to 300
-tokens of texts from four different documents in the dev set for which the L1
-was correctly predicted by an attention model. Red tokens indicate time steps
+\ref{fig:eng-attention}--\ref{fig:vie-attention} we see up to 300 tokens of
+texts from four different documents in the dev set for which the L1 was
+correctly predicted by an attention model. Red tokens indicate time steps
 that were given higher weight by the attention model, and blue tokens ones
 that were given low weights. Out of vocabulary tokens are replaced by the
-special token ``UNK''. The attention values do not seem easily interpretable,
-as there are lexical and grammatical errors both in the red and the blue
-sections.
+special token ``UNK''.
 
-In the text by an English speaker (fig. \ref{fig:h0189-nli-attention}), one
-of the words in a red segment is ``diet'', which the English version of the
-intended word (`diett' in Norwegian). The similarity of the words may be a
-reason that the writer chose a native form. This is an example of a mistake
-that could reveal the writer's \ac{L1}. However, even though this word is
-part of a red segment (high attention values), it is not at all certain that
-the model actually used it as a clue. The model does not have access to an
-English dictionary, so unless the substitution of this very word was a common
-pattern among English speakers among our texts, it would have no way to know
-that it is actually an English word. Second, `diet' is actually a word form
-in Norwegian, meaning `suckle.\textsc{past}'. This is of course a word that
-does not fit the context at all.
+The attention values do not seem easily interpretable. There is no obvious
+pattern to what kind of segments get high and low attention. Lexical and
+grammatical errors that are typical of learner language occur both in the
+high-attention and the low-attention regions. Even individual words that
+provide very strong hints to \ac{L1} seem to be ignored by the model, as we
+will see in the Vietnamese example below.
 
-In the Vietnamese speaker's text (fig. \ref{fig:s0180-nli-attention}), the
-word Vietnam appears three times. Two of the occurrences are in
-high-attention segments. This should be a very informative word, as it is
+The Russian speaker's text (fig. \ref{fig:rus-attention}) is almost entirely
+high-attention in this excerpt. There is a section of low-attention, around
+three sentences long, in the middle of the excerpt.
+
+In the Somali speaker's text (fig. \ref{fig:som-attention}), most of the text
+has low attention, except for shorter segments with high attention. However, the
+attention is not highest on the most obvious mistakes.
+
+In the Vietnamese speaker's text (fig. \ref{fig:vie-attention}), the word
+Vietnam appears three times. This should be a very informative word, as it is
 likely that when someone mentions a country in this context, it is their
-country of origin.
-
-% cspell:disable
-In the Somali speaker's text (fig. \ref{fig:s0621-nli-attention}), we see
-several typical features of learner language, such as mistakes in agreement:
-`en stort rekke hus' should be `et stort rekkehus'. Using a personal pronoun
-where there should be a possessive determiner: `faren oss var rik' should be
-`faren vår var rik'.
-% cspell:enable
+country of origin. Two of the occurrences have low attention, and one (on the
+second-to-last line) has high attention. 
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{h0186-nli-attention}
-  \caption{Attention values of NLI classifier on excerpt from ASK text h0186.
-           L1 is Russian, CEFR score B2}
-  \label{fig:h0186-nli-attention}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\textwidth]{h0189-nli-attention}
+  \includegraphics[width=\textwidth]{h0169-eng}
   \caption{Attention values of NLI classifier on excerpt from ASK text h0189.
-           L1 is English, CEFR score C1}
-  \label{fig:h0189-nli-attention}
+           L1 is English, CEFR score B2}
+  \label{fig:eng-attention}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{s0180-nli-attention}
-  \caption{Attention values of NLI classifier on excerpt from ASK text s0180.
-           L1 is Vietnamese, CEFR score A2/B1}
-  \label{fig:s0180-nli-attention}
+  \includegraphics[width=\textwidth]{h0185-rus}
+  \caption{Attention values of NLI classifier on excerpt from ASK text h0186.
+           L1 is Russian, CEFR score B1/B2}
+  \label{fig:rus-attention}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{s0621-nli-attention}
+  \includegraphics[width=\textwidth]{s0546-som}
   \caption{Attention values of NLI classifier on full ASK text s0621.
-           L1 is Somali, CEFR score A2/B1}
-  \label{fig:s0621-nli-attention}
+           L1 is Somali, CEFR score A2}
+  \label{fig:som-attention}
 \end{figure}
-\todo{Visualize UPOS tags}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{s0628-vie}
+  \caption{Attention values of NLI classifier on excerpt from ASK text s0180.
+           L1 is Vietnamese, CEFR score B1/B2}
+  \label{fig:vie-attention}
+\end{figure}
 
 
 \subsection{Latent space}

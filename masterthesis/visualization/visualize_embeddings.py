@@ -18,6 +18,7 @@ from masterthesis.utils import (
 )
 
 sns.set(style='white', context='paper')
+logger = logging.getLogger(__name__)
 logging.basicConfig()
 
 
@@ -36,11 +37,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--embeddings', type=Path)
     parser.add_argument('--model', type=Path)
-    parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--debug', dest='loglevel', action='store_const', const=logging.DEBUG)
+    parser.add_argument('--quiet', dest='loglevel', action='store_const', const=logging.WARN)
     parser.add_argument('--split', choices={'train', 'dev', 'test'}, default='dev')
+    parser.set_defaults(loglevel=logging.INFO)
     args = parser.parse_args()
-    if args.debug:
-        logging.getLogger(None).setLevel(logging.DEBUG)
+    logging.getLogger(None).setLevel(args.loglevel)
     return args
 
 
@@ -61,12 +63,12 @@ def get_model_representations(model_path: Path, split: str) -> np.ndarray:
     representation_model = Model(
         inputs=model.input, outputs=model.get_layer(REPRESENTATION_LAYER).output
     )
-    print(model.input)
+    logger.debug(model.input)
     w2i_path = model_path.parent / (model_path.stem + '_w2i.pkl')
     w2i = pickle.load(w2i_path.open('rb'))
-    pos2i_path = model_path.parent / ('pos2i.pkl')
     (x, ) = words_to_sequences(700, [split], w2i)
-    if pos2i_path.is_file():
+    if isinstance(model.input, list) and len(model.input) == 2:
+        pos2i_path = model_path.parent / ('pos2i.pkl')
         pos2i = pickle.load(pos2i_path.open('rb'))
         (x_pos, ) = pos_to_sequences(700, [split], pos2i)
         x = [x, x_pos]
@@ -85,7 +87,7 @@ def main():
 
     column_list = ['cefr', 'testlevel', 'lang']
 
-    print('Computing t-SNE embeddings ...')
+    logger.info('Computing t-SNE embeddings ...')
     embedded = TSNE(n_components=2, verbose=True).fit_transform(representations)
     meta['x'] = embedded[:, 0]
     meta['y'] = embedded[:, 1]

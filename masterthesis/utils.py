@@ -30,6 +30,7 @@ except ImportError:
     pass
 
 RANDOM_SEED = 350
+CMAP = 'gnuplot2_r'
 
 safe_plt = plt
 
@@ -92,7 +93,15 @@ if 'seaborn' in sys.modules:
             vmin = None
             vmax = None
         ax = sns.heatmap(
-            values, square=True, annot=annot, fmt='.2g', ax=ax, cbar=cbar, vmin=vmin, vmax=vmax
+            values,
+            square=True,
+            annot=annot,
+            fmt='.2g',
+            ax=ax,
+            cbar=cbar,
+            vmin=vmin,
+            vmax=vmax,
+            cmap=CMAP
         )
         ax.set_xticklabels(xticks)
         ax.set_yticklabels(yticks, rotation=0)
@@ -117,7 +126,7 @@ else:
             ax = plt.gca()
         if normalize:
             values = values / np.sum(values, axis=1, keepdims=True)
-        ax.imshow(values, cmap='viridis')
+        ax.imshow(values, cmap=CMAP)
         ax.set(
             yticks=range(len(yticks)),
             xticks=range(len(xticks)),

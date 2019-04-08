@@ -8,6 +8,7 @@
 /notebooks/*.html
 /notebooks/*.pdf
 /notebooks/*.svg
+/notebooks/gamle_illustrasjoner/
 
 /ASK/conll/
 /ASK/conll-2-0/
