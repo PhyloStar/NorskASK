@@ -32,12 +32,13 @@ def multi_task_report(history, true, pred, labels):
     aux_acc = AUX_OUTPUT_NAME + '_acc'
     aux_val_acc = 'val_' + aux_acc
 
-    ax2.plot(xs, history[acc], label='CEFR train acc'),
-    ax2.plot(xs, history[aux_acc], label='L1 train acc'),
-    ax2.plot(xs, history[val_acc], label='CEFR val acc')
-    ax2.plot(xs, history[aux_val_acc], label='L1 val acc')
-    ax2.legend()
-    ax2.set(ylabel='Accuracy')
+    if acc in history:
+        ax2.plot(xs, history[acc], label='CEFR train acc'),
+        ax2.plot(xs, history[aux_acc], label='L1 train acc'),
+        ax2.plot(xs, history[val_acc], label='CEFR val acc')
+        ax2.plot(xs, history[aux_val_acc], label='L1 val acc')
+        ax2.legend()
+        ax2.set(ylabel='Accuracy')
 
     ax3 = plt.subplot(122)
     report(true, pred, labels, ax=ax3)

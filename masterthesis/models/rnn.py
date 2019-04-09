@@ -225,10 +225,13 @@ def main():
         pred = rescale_regression_results(predictions, highest_class).ravel()
     elif args.method == 'ranked':
         pred = K.eval(ranked_prediction(predictions))
-    if multi_task:
-        multi_task_report(history.history, true, pred, labels)
-    else:
-        report(true, pred, labels)
+    try:
+        if multi_task:
+            multi_task_report(history.history, true, pred, labels)
+        else:
+            report(true, pred, labels)
+    except Exception:
+        pass
 
     if args.nli:
         name = 'rnn-nli'
