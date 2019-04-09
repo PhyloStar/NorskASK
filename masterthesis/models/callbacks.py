@@ -39,7 +39,6 @@ class F1Metrics(Callback):
         self.multi = self.multi or len(self.model.outputs) > 1
         val_predict = self.model.predict(self.dev_x)
         if self.multi:
-            assert isinstance(list, val_predict)
             val_predict = val_predict[0]
         if val_predict.shape[1] == 1:
             # Regression

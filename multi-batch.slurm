@@ -3,13 +3,13 @@
 #SBATCH --job-name=stigjb-train-rnn-model
 #SBATCH --mail-type=FAIL
 #SBATCH --account=nn9447k
-#SBATCH --time=03:00:00
+#SBATCH --time=07:00:00
 #SBATCH --nodes=1
 #SBATCH --mem-per-cpu=4G
 
 # Increase this number when you really need parallel computing 
 # (don't set it to more than 6 or 8 cores):
-#SBATCH --ntasks-per-node 4
+#SBATCH --ntasks-per-node 1
 
 export CUDA_VISIBLE_DEVICES=""
 export PYTHONHASHSEED=0
@@ -49,22 +49,23 @@ rnn2="python -m masterthesis.models.rnn --rnn-cell gru --bidirectional --embed-d
 
 model_select=$(bc -l <<< "scale=0; $SLURM_ARRAY_TASK_ID/9")
 case $model_select in
-	0) cmd=$cnn1
-	1) cmd=$cnn2
-	2) cmd=$rnn1
-	3) cmd=$rnn2
+	0) cmd=$cnn1 ;;
+	1) cmd=$cnn2 ;;
+	2) cmd=$rnn1 ;;
+	3) cmd=$rnn2 ;;
+esac
 
 weight_select=$(bc -l <<< "scale=0; $SLURM_ARRAY_TASK_ID%9")
 case $weight_select in
-	0) lossweight="0.1"
-	1) lossweight="0.2"
-	2) lossweight="0.3"
-	3) lossweight="0.4"
-	4) lossweight="0.5"
-	5) lossweight="0.6"
-	6) lossweight="0.7"
-	7) lossweight="0.8"
-	8) lossweight="0.9"
+	0) lossweight="0.1" ;;
+	1) lossweight="0.2" ;;
+	2) lossweight="0.3" ;;
+	3) lossweight="0.4" ;;
+	4) lossweight="0.5" ;;
+	5) lossweight="0.6" ;;
+	6) lossweight="0.7" ;;
+	7) lossweight="0.8" ;;
+	8) lossweight="0.9" ;;
 
 	# Run script with arguments if not an array job
 	*)
@@ -73,4 +74,9 @@ case $weight_select in
 		;;
 esac
 
-$cmd --aux-loss-weight $lossweight
+echo "MODEL SELECT $model_select AUX LOSS WEIGHT $lossweight"
+
+cmd="$cmd --aux-loss-weight $lossweight"
+echo "SLURM BATCH RUNNING COMMAND: $cmd"
+$cmd
+

@@ -215,7 +215,7 @@ def main():
     os.close(temp_handle)
     os.remove(weights_path)
 
-    predictions = get_predictions(model, multi_task)
+    predictions = get_predictions(model, dev_x, multi_task)
     true = dev_target_scores
     if args.method == 'classification':
         pred = np.argmax(predictions, axis=1)
