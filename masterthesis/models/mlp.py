@@ -120,7 +120,7 @@ def get_compile_args(method: str, lr: float):
 def main():
     args = parse_args()
 
-    set_reproducible()
+    set_reproducible(args.seed_delta)
     do_classification = args.method == 'classification'
 
     train_meta = load_split('train', round_cefr=args.round_cefr)

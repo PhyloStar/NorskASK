@@ -149,7 +149,7 @@ def get_compile_args(method: str, lr: float):
 def main():
     args = parse_args()
 
-    set_reproducible()
+    set_reproducible(args.seed_delta)
 
     train_meta = load_split('train', round_cefr=args.round_cefr)
     dev_meta = load_split('dev', round_cefr=args.round_cefr)

@@ -49,6 +49,7 @@ def add_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument('--nli', action='store_true')
     parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--save-model', action='store_true')
+    parser.add_argument('--seed-delta', type=int, default=0)
     parser.add_argument('--verbose', action='store_true')
 
 

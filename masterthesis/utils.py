@@ -311,14 +311,15 @@ def get_stopwords() -> Set[str]:
     return res
 
 
-def set_reproducible() -> None:
+def set_reproducible(seed_delta: int = 0) -> None:
     """Fix random seeds and disable multithreading in order to guarantee reproducible results."""
     # The below is necessary for starting Numpy generated random numbers
     # in a well-defined initial state.
-    np.random.seed(RANDOM_SEED)
+    seed = RANDOM_SEED + seed_delta
+    np.random.seed(seed)
     # The below is necessary for starting core Python generated random numbers
     # in a well-defined state.
-    random.seed(RANDOM_SEED)
+    random.seed(seed)
     # Force TensorFlow to use single thread.
     # Multiple threads are a potential source of non-reproducible results.
     # For further details, see: https://stackoverflow.com/questions/42022950/
@@ -327,7 +328,7 @@ def set_reproducible() -> None:
     # in the TensorFlow backend have a well-defined initial state.
     # For further details, see:
     # https://www.tensorflow.org/api_docs/python/tf/set_random_seed
-    tf.set_random_seed(RANDOM_SEED)
+    tf.set_random_seed(seed)
     sess = tf.Session(graph=tf.get_default_graph(), config=session_conf)
     K.set_session(sess)
 
