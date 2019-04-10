@@ -4,6 +4,56 @@ So far we have considered \ac{AES} and \ac{NLI} as independent tasks and
 performed experiments on both tasks separately. We will now try to train
 models to predict both tasks simultaneously.
 
+
+\section{Models}
+
+We selected four models for the multi-task experiments, two convolutional and
+two recurrent neural networks. They were chosen based on the macro \FI results
+on the development set. The two \acp{CNN} chosen were the two \acp{CNN} that
+had the highest macro \FI on the full set of labels in the development set,
+and likewise for the two \acp{RNN}.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lll}
+    \toprule
+    Hyperparameter & CNN1 & CNN2 \\
+    \midrule
+    Embedding size & \multicolumn{2}{c}{100} \\
+    $L_2$ constraint & \multicolumn{2}{c}{3} \\
+    Embedding init & Random & Pre-trained \\
+    Input representation & Mixed UPOS & Tokens \\
+    \bottomrule
+  \end{tabular}
+  \caption{Descriptions of the two CNN models}
+  \label{tab:cnn-parameters}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{lll}
+    \toprule
+    Hyperparameter & RNN1 & RNN2 \\
+    \midrule
+    Word embeddings & \multicolumn{2}{c}{Dynamic} \\
+    Embedding size & \multicolumn{2}{c}{100} \\
+    RNN cell & \multicolumn{2}{c}{GRU} \\
+    Pooling method & \multicolumn{2}{c}{Attention} \\
+    Bidirectional & \multicolumn{2}{c}{Yes} \\
+    Embedding init & Random & Pre-trained \\
+    Input representation & Tokens+UPOS & Tokens \\
+    \bottomrule
+  \end{tabular}
+  \caption{Descriptions of the two RNN models}
+  \label{tab:rnn-parameters}
+\end{table}
+
+In order to learn more about the variance of results, we trained each model
+five times for each auxiliary loss weight with five different random seeds.
+
+
+\section{Results}
+
 In table \ref{tab:multitask-results}, we see the results of running some of
 the most successful models from the previous chapter in a multi-task setting,
 using the essay's L1 as the auxiliary label to predict. The number following
@@ -84,38 +134,10 @@ a side effect of the highest macro \FI seen during training.
   \label{tab:multitask-results}
 \end{table}
 
-\begin{table}
-  \centering
-  \begin{tabular}{lll}
-    \toprule
-    Hyperparameter & CNN1 & CNN2 \\
-    \midrule
-    Word embeddings & Static & Static \\
-    Embedding init & Pre-trained & Pre-trained \\
-    Embedding size & 50 & 50 \\
-    Side input & None & UPOS \\
-    \bottomrule
-  \end{tabular}
-  \caption{Descriptions of the two CNN models}
-  \label{tab:cnn-parameters}
-\end{table}
 
-\begin{table}
-  \centering
-  \begin{tabular}{lll}
-    \toprule
-    Hyperparameter & RNN1 & RNN2 \\
-    \midrule
-    Word embeddings & Dynamic & Dynamic \\
-    Embedding init & Pre-trained & Pre-trained \\
-    Embedding size & 50 & 50 \\
-    RNN cell & GRU & LSTM \\
-    Side input & None & UPOS \\
-    \bottomrule
-  \end{tabular}
-  \caption{Descriptions of the two RNN models}
-  \label{tab:rnn-parameters}
-\end{table}
+\todo{do this}
+Something with the confidence intervals
+
 
 For the RNNs, the results are not quite as clear. The multi-task models were
 not able to exceed the macro \FI scores of $0.354$ (all labels) and $0.624$
