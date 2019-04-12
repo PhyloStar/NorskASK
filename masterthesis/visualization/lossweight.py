@@ -30,7 +30,8 @@ runs = [
     '26646835', '26646836', '26646837', '26646838', '26646843', '26646844', '26646845', '26646846',
     '26646847', '26646848', '26646849', '26646850', '26646851', '26646852', '26647292', '26647293',
     '26647294', '26647295', '26648419', '26648420', '26648421', '26648422', '26648423', '26648424',
-    '26648425', '26648427', '26649222', '26649223', '26649224', '26649225'
+    '26648425', '26648427', '26649222', '26649223', '26649224', '26649225', '26679428', '26679429',
+    '26679430', '26679431'
 ]
 
 
@@ -56,16 +57,8 @@ def get_model_name(filename: str, cfg) -> str:
 
 
 def validate_model(model_name, cfg):
-    if model_name == 'cnn1':
-        true = pickle.load(cnn1.open('rb'))
-    elif model_name == 'cnn2':
-        true = pickle.load(cnn2.open('rb'))
-    elif model_name == 'rnn1':
-        true = pickle.load(rnn1.open('rb'))
-    elif model_name == 'rnn2':
-        true = pickle.load(rnn2.open('rb'))
-    else:
-        raise ValueError
+    file_lookup = {'cnn1': cnn1, 'cnn2': cnn2, 'rnn1': rnn1, 'rnn2': rnn2}
+    true = pickle.load(file_lookup[model_name].open('rb'))
 
     for k, v in true.config.items():
         if k in ['aux_loss_weight', 'round_cefr']:
@@ -83,6 +76,7 @@ def main():
     macrof1 = []
     collapsed = []
     lossweight = []
+    seed_delta = []
     globs = chain.from_iterable(Path('results').glob('*%s*' % run) for run in runs)
     for f in chain(args.files, globs, extra):
         res = pickle.load(f.open('rb'))
@@ -92,6 +86,7 @@ def main():
             logger.warn('Skipping %r', f)
             continue
         lossweight.append(cfg['aux_loss_weight'])
+        seed_delta.append(cfg.get('seed_delta', 0))
         mf1 = f1_score(res.true, res.predictions, average='macro')
         macrof1.append(mf1)
         collapsed.append(cfg['round_cefr'])
@@ -101,20 +96,17 @@ def main():
             'Model': model,
             'Macro F1': macrof1,
             'Collapsed': collapsed,
-            'Aux loss weight': lossweight
+            'Aux loss weight': lossweight,
+            'Seed delta': seed_delta
         }
     )
-    sns.relplot(
-        x='Aux loss weight',
-        y='Macro F1',
-        style='Collapsed',
-        col='Model',
-        data=df,
-        ci='sd',
-        kind='line',
-        col_wrap=2,
-    )
-    print(df.groupby(['Collapsed', 'Model']).count())
+    g = sns.FacetGrid(data=df, col='Model', col_wrap=2, col_order=['cnn1', 'cnn2', 'rnn1', 'rnn2'])
+    g.map_dataframe(sns.lineplot, 'Aux loss weight', 'Macro F1', style='Collapsed')
+    g.map_dataframe(sns.scatterplot, "Aux loss weight", 'Macro F1', style='Collapsed')
+    g.add_legend(label_order=['Collapsed', 'True', 'False'])
+    print(df.groupby(['Collapsed', 'Model']).size())
+    print(df.query('~Collapsed').nlargest(5, 'Macro F1'))
+    print(df.query('Collapsed').nlargest(5, 'Macro F1'))
     plt.show()
 
 
