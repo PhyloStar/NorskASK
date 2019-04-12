@@ -17,24 +17,24 @@ export PYTHONHASHSEED=0
 if [ -n "${SLURM_JOB_NODELIST}" ]; then
     source /cluster/bin/jobsetup
 
-    cp -r $SUBMITDIR/masterthesis $SCRATCH
-    mkdir $SCRATCH/ASK
-    cp $SUBMITDIR/ASK/metadata.csv $SCRATCH/ASK/metadata.csv
-    ln -s $SUBMITDIR/ASK/txt $SCRATCH/ASK
-    ln -s $SUBMITDIR/ASK/conll $SCRATCH/ASK/conll
-    mkdir -p $SCRATCH/models/vectors
+    cp -r "$SUBMITDIR"/masterthesis "$SCRATCH"
+    mkdir "$SCRATCH"/ASK
+    cp "$SUBMITDIR"/ASK/metadata.csv "$SCRATCH"/ASK/metadata.csv
+    ln -s "$SUBMITDIR"/ASK/txt "$SCRATCH"/ASK
+    ln -s "$SUBMITDIR"/ASK/conll "$SCRATCH"/ASK/conll
+    mkdir -p "$SCRATCH"/models/vectors
 
-    cd $SCRATCH
+    cd "$SCRATCH"
 fi
 set +o errexit
 
 module purge
 module use -a /projects/nlpl/software/modulefiles/
 module load \
-	nlpl-python-candy/201902/3.5 \
-	nlpl-gensim/3.7.0/3.5 \
-	nlpl-tensorflow/1.11
+    nlpl-python-candy/201902/3.5 \
+    nlpl-gensim/3.7.0/3.5 \
+    nlpl-tensorflow/1.11
 
 chkfile "models"
 
-python -m masterthesis.data.prepare_vectors $1 $SCRATCH/models/vectors
+python -m masterthesis.data.prepare_vectors "$1" "$SCRATCH"/models/vectors

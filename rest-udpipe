@@ -5,9 +5,8 @@ OUTFILE=$2
 
 BASE_URL="https://lindat.mff.cuni.cz/services/udpipe/api/process"
 
-OLD_MODEL="norwegian-bokmaal-ud-2.0-170801"  # Norwegian (bokmål)
 MODEL="norwegian-bokmaal-ud-2.3-181115"  # Norwegian (bokmål)
 
 PARAMS="-F data=@$INFILE -F input=horizontal -F tagger= -F parser= -F model=$MODEL"
 
-curl $PARAMS "$BASE_URL" | jq -r ".result" > $OUTFILE
+curl "$PARAMS" "$BASE_URL" | jq -r ".result" > "$OUTFILE"

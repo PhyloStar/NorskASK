@@ -17,16 +17,16 @@ export PYTHONHASHSEED=0
 if [ -n "${SLURM_JOB_NODELIST}" ]; then
     source /cluster/bin/jobsetup
 
-    cp -r $SUBMITDIR/masterthesis $SCRATCH
-    mkdir $SCRATCH/ASK
-    cp $SUBMITDIR/ASK/metadata.csv $SCRATCH/ASK/metadata.csv
-    ln -s $SUBMITDIR/ASK/txt $SCRATCH/ASK
-    ln -s $SUBMITDIR/ASK/conll $SCRATCH/ASK/conll
-    mkdir $SCRATCH/models
-    mkdir $SCRATCH/models/stopwords
-    cp $SUBMITDIR/models/stopwords/* $SCRATCH/models/stopwords/
+    cp -r "$SUBMITDIR"/masterthesis "$SCRATC"H
+    mkdir "$SCRATCH"/ASK
+    cp "$SUBMITDIR"/ASK/metadata.csv "$SCRATCH"/ASK/metadata.csv
+    ln -s "$SUBMITDIR"/ASK/txt "$SCRATCH"/ASK
+    ln -s "$SUBMITDIR"/ASK/conll "$SCRATCH"/ASK/conll
+    mkdir "$SCRATCH"/models
+    mkdir "$SCRATCH"/models/stopwords
+    cp "$SUBMITDIR"/models/stopwords/* "$SCRATCH"/models/stopwords/
 
-    cd $SCRATCH
+    cd "$SCRATCH"
 fi
 set +o errexit
 
@@ -40,7 +40,6 @@ module load \
 chkfile "results" "models"
 cmd="python -m masterthesis.models.rnn"
 
-embdim50="--vectors models/vectors/127-small.pkl"
 embdim100="--vectors models/vectors/120-small.pkl"
 
 case $SLURM_ARRAY_TASK_ID in
