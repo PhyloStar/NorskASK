@@ -18,11 +18,11 @@ all tags or correction labels. The text files have one sentence per line,
 consisting of space-separated tokens, and an empty line separating
 paragraphs.
 
-These raw text files were then sent through the UDPipe pipeline
-\autocite{udpipe:2017} for tagging and dependency parsing. The UDPipe project
-maintains an online REST \ac{API} containing a selection of pre-trained
-models. All documents were transformed by the REST \ac{API} using what was at
-the time of writing the newest Norwegian bokmål (nb) model
+These raw text files were then sent through the text processing pipeline
+UDPipe \autocite{udpipe:2017} for tagging and dependency parsing. The UDPipe
+project maintains an online REST \ac{API} containing a selection of
+pre-trained models. All documents were transformed by the REST \ac{API} using
+what was at the time of writing the newest Norwegian bokmål (nb) model
 available\footnote{\texttt{norwegian-bokmaal-ud-2.3-181115}}.
 
 The pipeline accepts different input formats, including raw text files on
@@ -37,10 +37,14 @@ original tags in the ASK corpus are from the Oslo-Bergen tagger's own tagset
 \section{Metrics}
 \label{metrics-discussion}
 
-The \FI score for a single class is the harmonic mean of the precision and
-recall (Eq. \ref{eq:precision}). It can also be expressed as a function of
-true positives ($TP$), false negatives ($FN$), and false positives ($FP$), as
-in equation \ref{eq:fscore}.
+For each class, we can compute the \emph{precision} and \emph{recall} (Eq.
+\ref{eq:precision}). The precision for a class is the ratio of examples that
+were predicted to belong to the class which actually belong to the class. The
+recall for a class is the ration of examples that actually belong to the
+class which were predicted to belong to the class. The \FI score for a class
+is the harmonic mean of the precision and recall . It can also be expressed
+directly as a function of the number of true positives ($TP$), false
+negatives ($FN$), and false positives ($FP$), as in equation \ref{eq:fscore}.
 
 \begin{gather}
   \begin{aligned}\label{eq:precision}
@@ -251,16 +255,19 @@ the highest class to 1, and all classes are evenly spaced. This is in line
 with the method for neural network regression used by \textcite{taghipour16}.
 For evaluating the predictions, the output is scaled back using the value of
 the highest label and transformed into categorical values using the method
-described in subsection \ref{subsec:linear}.
+described in subsection \ref{subsec:linear}. This means that with $C$ classes,
+we actually scale by $C-1$, such that 0 maps directly to the lowest class and
+1 directly to the highest.
 
-Because the sigmoid function is nonlinear, values that are evenly spaced in
-its output are not evenly spaced in the input. The sigmoid function is
-steepest in the region around zero, where its value is close to 0.5. A
+Because the sigmoid function is non-linear, values that are evenly spaced in
+its output domain are not evenly spaced in the input. The sigmoid function is
+steepest in the region around zero, where its value is close to $0.5$. A
 consequence of this is that when we map the classes to the range of the
 sigmoid function, the central classes correspond to a smaller set of input
 values than the peripheral classes. In fact, the lowest and highest classes
 correspond to an unbounded set of input values. Regardless, we will see that
-the model struggles mostly to predict the peripheral classes.
+the classes which the model struggles the most to predict correctly are the
+peripheral classes.
 
 For ordinal regression, we implemented a neural model for ordinal regression
 following a modified version of the method in \textcite{cheng2008neural}.
@@ -272,6 +279,7 @@ positions, continuing to the highest class which is represented by a vector
 of only ones. In the original paper, \citeauthor{cheng2008neural} used
 vectors of size $C$. However, we only need $C-1$ elements to represent the
 thresholds between classes.
+\todo{Refer paper using this formulation}
 
 The output layer of our neural network has size $C-1$ and uses elementwise
 sigmoid activation to constrain the values of elements to the interval
