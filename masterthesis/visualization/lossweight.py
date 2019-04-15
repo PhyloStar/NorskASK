@@ -100,10 +100,17 @@ def main():
             'Seed delta': seed_delta
         }
     )
-    g = sns.FacetGrid(data=df, col='Model', col_wrap=2, col_order=['cnn1', 'cnn2', 'rnn1', 'rnn2'])
+    g = sns.FacetGrid(
+        data=df,
+        col='Model',
+        col_wrap=2,
+        col_order=['cnn1', 'cnn2', 'rnn1', 'rnn2'],
+        legend_out=False
+    )
     g.map_dataframe(sns.lineplot, 'Aux loss weight', 'Macro F1', style='Collapsed')
     g.map_dataframe(sns.scatterplot, "Aux loss weight", 'Macro F1', style='Collapsed')
-    g.add_legend(label_order=['Collapsed', 'True', 'False'])
+    g.fig.set_size_inches(5, 4)
+    g.fig.tight_layout()
     print(df.groupby(['Collapsed', 'Model']).size())
     print(df.query('~Collapsed').nlargest(5, 'Macro F1'))
     print(df.query('Collapsed').nlargest(5, 'Macro F1'))

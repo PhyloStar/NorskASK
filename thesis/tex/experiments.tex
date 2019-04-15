@@ -276,22 +276,35 @@ filled with ones from left to right such that: The lowest class is all zeros.
 The next class is a single one in the leftmost position and zeros in the
 remaining positions. The next class has two ones in the two leftmost
 positions, continuing to the highest class which is represented by a vector
-of only ones. In the original paper, \citeauthor{cheng2008neural} used
-vectors of size $C$. However, we only need $C-1$ elements to represent the
-thresholds between classes.
-\todo{Refer paper using this formulation}
+of only ones.
 
-The output layer of our neural network has size $C-1$ and uses elementwise
+In the original paper, \citeauthor{cheng2008neural} used vectors of size $C$,
+and mapped the lowest class to a where the first element was one. The authors
+did not use an all-zero vector as a gold label at all, but at test time would
+assign an all-zero vector to the lowest class.
+
+Our formulation only uses $C-1$ elements to represent the thresholds between
+classes. This approach for ordinal regression with neural models is one of
+several that are described in a survey paper for ordinal regression
+\autocite{gutierrez2016ordinal}. The authors of the survey describe several
+binary decomposition methods for ordinal regression problems, and our
+approach is the same as they call \emph{Ordered Partitions}.
+
+The output layer of our neural network has size $C-1$ and uses element-wise
 sigmoid activation to constrain the values of elements to the interval
 $(0,1)$. At train time, we minimize the mean square error between the gold
 labels and output.
 
-At predict time, we apply a rounding function to the output vectors such that
-we get a vector of only ones and zeros. The resulting vector may be any
-sequence of ones and zeros, even those not conforming to our rule for
-representing classes, i.e. there might be a one to the right of a zero. We
-then select the predicted class by taking the index of the first zero element
-of this vector, or the highest class if all elements are one.
+At predict time, we convert the sigmoid activated values to either ones or
+zeros by comparing them to a threshold, in our case $0.5$. The resulting
+vector may be any sequence of ones and zeros, even those not conforming to
+our rule for representing classes, i.e. there might be a one to the right of
+a zero. We then select the predicted class by taking the index of the first
+zero element of this vector, or the highest class if all elements are one. In
+this way, assuming a total of four different classes, $[0,0,0]$ and $[0,0,1]$
+are both assigned to the lowest class, since the first element is zero.
+$[1,1,0]$ is the only vector that is assigned to the second-highest class,
+and $[1,1,1]$ is the only vector assigned to the highest class.
 
 The multi-class and ordinal regression neural networks were trained using the
 Adam optimization algorithm \autocite{kingma2014adam} with a learning rate of
@@ -431,13 +444,12 @@ respectively.
 
 The \ac{SVM} classifier, referred to as SVC in the table, performs around the
 same level as the LogReg classifier. Its highest macro \FI scores, 21.5\% and
-39.9\%, are lower than for LogReg.
-
-The \ac{SVM} regressor, referred to as SVR, improves on all macro \FI scores
-from the linear classifiers, and also has the highest micro \FI scores of all
-the linear models. Using bag-of-words input, the model yields a macro \FI of
-44.4\% on the full set of labels. For the collapsed set of labels, the highest
-macro \FI, 47.6\%, comes from POS \ngram features.
+39.9\%, are lower than for LogReg. The \ac{SVM} regressor, referred to as
+SVR, improves on all macro \FI scores from the linear classifiers, and also
+has the highest micro \FI scores of all the linear models. Using bag-of-words
+input, the model yields a macro \FI of 44.4\% on the full set of labels. For
+the collapsed set of labels, the highest macro \FI, 47.6\%, comes from POS
+\ngram features.
 
 
 \subsection{Neural networks}
@@ -451,13 +463,21 @@ outperformed in terms of macro \FI by one or both of the other two neural
 models.
 
 In order to examine the classification behaviour closer, we present the
-confusion matrices from the ordinal regression MLP in figures
-\ref{fig:mlp-char-rank} and \ref{fig:mlp-char-rank-round}. We want
-predictions to lie on the diagonal of the matrix. However, due to the ordinal
-nature of the classes, we also want eventual mis-classifications to lie close
-to the diagonal, which would indicate a small magnitude of misclassification.
-Conversely, we do not want any predictions in the upper right and lower left
-corners, as they represent mis-classifications of the greatest magnitude.
+confusion matrices from one of the neural networks trained and evaluated on
+the complete set of classes. We chose the MLP model using ordinal regression
+and character \ngrams as input (MLP Rank Char), as it had higher accuracy
+than any other linear or neural model, as well as the highest macro \FI of
+the neural models. Refer to figures \ref{fig:mlp-char-rank} and
+\ref{fig:mlp-char-rank-round}.
+
+We want predictions to lie on the diagonal of
+the matrix. However, due to the ordinal nature of the classes, we also want
+eventual misclassifications to lie close to the diagonal, which would
+indicate a small magnitude of misclassification. Conversely, we do not want
+any predictions in the upper right and lower left corners, as they represent
+mis-classifications of the greatest magnitude.
+
+What we see is that the predictions are not 
 
 \begin{figure}
   \centering
