@@ -149,18 +149,15 @@ def plot_reg(data, x, y, ax):
 
 def plot_regs(data: pd.DataFrame):
     fig, (ax1, ax2) = plt.subplots(1, 2)
+    fig.set_size_inches(5, 3.5)
 
     plot_reg(data, "macro F1", "micro F1", ax1)
     sns.scatterplot("macro F1", "micro F1", data=data, style="type", ax=ax1)
-    ax1.set_title(
-        "Pearson corr. = %.3f, p = %.4f" % pearsonr(data["macro F1"], data["micro F1"])
-    )
+    print("Pearson corr. = %.3f, p = %.2e" % pearsonr(data["macro F1"], data["micro F1"]))
 
     plot_reg(data, "macro F1", "macro MAE", ax2)
     sns.scatterplot("macro F1", "macro MAE", data=data, style="type", ax=ax2)
-    ax2.set_title(
-        "Pearson corr. = %.3f, p = %.4f" % pearsonr(data["macro F1"], data["macro MAE"])
-    )
+    print("Pearson corr. = %.3f, p = %.2e" % pearsonr(data["macro F1"], data["macro MAE"]))
     plt.tight_layout()
 
 
