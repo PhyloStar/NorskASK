@@ -21,27 +21,27 @@ B2 levels, respectively. Following the naming in
   \centering
   \begin{tabular}{lrrr}
     \toprule
-    First language             & AL test & IL test & Total \\
+    First language             & IL test & AL test & Total \\
     \midrule
     English                    &     100 &     100 &   200 \\
     Polish                     &     100 &     100 &   200 \\
     Russian                    &     100 &     100 &   200 \\
-    Somali                     &       7 &     100 &   107 \\
+    Somali                     &     100 &       7 &   107 \\
     Spanish                    &     100 &     100 &   200 \\
     German                     &     100 &     100 &   200 \\
-    Vietnamese                 &       5 &     100 &   105 \\
+    Vietnamese                 &     100 &       5 &   105 \\
     \midrule
-    Subtotal (included languages) &  512 &     700 &  1212 \\ \addlinespace
+    Subtotal (included languages) &  700 &     512 &  1212 \\ \addlinespace
     \midrule
-    (Albanian)                 &      24 &     100 &   124 \\
+    (Albanian)                 &     100 &      24 &   124 \\
     (Bosnian-Croatian-Serbian) &     100 &     100 &   200 \\
     (Dutch)                    &     100 &     100 &   200 \\
-    (Norwegian nynorsk)        &      21 &      11 &    32 \\
-    (Norwegian bokmål)         &      79 &      89 &   168 \\
+    (Norwegian nynorsk)        &      11 &      21 &    32 \\
+    (Norwegian bokmål)         &      89 &      79 &   168 \\
     \midrule
-    Subtotal (excluded languages) &  324 &     400 &   724 \\ \addlinespace
+    Subtotal (excluded languages) &  400 &     324 &   724 \\ \addlinespace
     \midrule
-    Total (all languages)      &     836 &    1100 &  1936 \\
+    Total (all languages)      &    1100 &     836 &  1936 \\
     \bottomrule
   \end{tabular}
   \caption[Distributions of first languages for each test level in ASK]{
@@ -99,7 +99,7 @@ labels.
 
 As an example of texts in the ASK corpus, we give an excerpt from a text from
 the corpus. This is a paragraph from a text written by a native English
-speaker from Australia. The author was taking the IL test, writing to the
+speaker from Australia. The author was taking the IL test, and was given the
 prompt ``Skriv en tekst om nyheter'' (\emph{Write a text about the news''}).
 The text was assessed to be on level `B2/C1' in the CEFR framework.
 
@@ -117,10 +117,10 @@ The text was assessed to be on level `B2/C1' in the CEFR framework.
 
 \subsection{Features of learner language}
 
-The ASK corpus has been subject to several studies on Norwegian learner
+The ASK corpus has been used in several studies on features Norwegian learner
 language and transfer effects from different \acp{L1}.
 
-In \textcite{golden2016ask}, the author examines the different uses of a
+In \textcite{golden2016ask}, the author examines the different uses of a single
 specific verb in the ASK corpus. Specifically, the verb ``gjøre'', which
 corresponds to the English `do' or `make'. The study uses a subset of the
 corpus, only looking at texts from learners with English, German, Polish or
@@ -162,20 +162,19 @@ distinction between the vowel sounds [i] and [y].
   \label{fig:testlevel-lang-vs-cefr}
 \end{figure}
 
-Analysis of the data set was carried out in order to find correlations
-between different metadata. Knowing that the documents stem from two
-different language tests that measure different levels of proficiency, the
-data set was split in two using the \emph{Test level} label, and then broken
-down by language and proficiency again. Figure
-\ref{fig:testlevel-lang-vs-cefr} shows that the test levels have different
-distributions of proficiency. Note also that two language groups are
-underrepresented at the B2 test level (\emph{AL test}), namely Somali and
-Vietnamese, which have seven and five essays in the B2 test level,
-respectively. All other combinations of L1 and test level contain exactly 100
-essays. This partly explains the low average proficiency of Somali and
-Vietnamese speakers apparent in figure \ref{fig:lang-vs-cefr}. The difference
-compared to the other language groups is not as salient when looking only at
-the B1 test level (\emph{IL test}) data.
+We analyze the data set in order to find correlations between different
+metadata. Knowing that the documents stem from two different language tests
+that measure different levels of proficiency, the data set was split in two
+using the \emph{Test level} label, and then broken down by language and
+proficiency again. Figure \ref{fig:testlevel-lang-vs-cefr} shows that the
+test levels have different distributions of proficiency. Note also that two
+language groups are underrepresented at the B2 test level (\emph{AL test}),
+namely Somali and Vietnamese, which have seven and five essays in the B2 test
+level, respectively. All other combinations of L1 and test level contain
+exactly 100 essays. This partly explains the low average proficiency of
+Somali and Vietnamese speakers apparent in figure \ref{fig:lang-vs-cefr}. The
+difference compared to the other language groups is not as salient when
+looking only at the B1 test level (\emph{IL test}) data.
 
 \begin{table}
   \centering
@@ -197,7 +196,10 @@ the B1 test level (\emph{IL test}) data.
     % cspell:enable
     \bottomrule
   \end{tabular}
-  \caption{Number of texts in each test level for top 10 topics}
+  \caption[Most common topics in ASK texts]{
+    The number of texts in each test level for the top 10 topics
+    across test level.
+  }
   \label{tab:texts-per-topic}
 \end{table}
 
@@ -229,7 +231,9 @@ $34.8$). 13 sub-topics are only represented in 5 or fewer documents.
 \begin{figure}
   \centering
   \includegraphics{testlevel_lengths_per_cefr}
-  \caption{Distributions of essay lengths for CEFR scores on each test level}
+  \caption[Document lengths on each CEFR level]{
+    Distributions of essay lengths for CEFR scores on each test level.
+  }
   \label{fig:testlevel-lengths-per-cefr}
 \end{figure}
 

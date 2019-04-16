@@ -275,43 +275,36 @@ contribute to a low macro \FI score.
 \section{Recurrent neural networks}
 
 \todo{Outdated section}
-Several \ac{RNN} models were implemented based on the architecture described in
-\textcite{taghipour16}. Changes to their architecture were made in
-order to accommodate our data. For instance, \citeauthor{taghipour16} modelled
-the task as a regression problem, their output layer consisting of a single
-node with a value constrained to $(0,1)$ by the sigmoid function. This layer
-was replaced with a softmax layer similar to the \acp{MLP} in section
-\ref{subsec:mlp} and the \acp{CNN} earlier in this chapter.
 
-Having replaced the output layer, we also used a different loss function,
-since it needed to be suited for multi-class output. As before, we used
-categorical cross-entropy (equation \ref{eq:crossentropy}). A different
-evaluation metric was also needed because we are treating the task as
-multi-class prediction. We are reporting macro and micro \FI as before. Refer
-to section \ref{metrics-discussion} for the discussion of different metrics
-for the task.
+Several \ac{RNN} models were implemented based on the architecture described
+in \textcite{taghipour16}. Changes to their architecture were made in order
+to accommodate our data. The embedding layer in \textcite{taghipour16} was of
+dimension 50 and randomly initialized. We increased the embedding dimension
+to 100, and experiment both with randomly initialized embeddings and with
+pre-trained ones.
 
-The formulation of the \ac{AES} task as a regression problem by
-\citeauthor{taghipour16} was partly a constraint stemming from the Kaggle
-competition that supplied the data and problem formulation, and partly
-motivated by the nature of the data. The ASAP data that they use consists of
-essays from eight different prompts, and the scoring methods differs across
-prompts. Since the scores are numeric values over different ranges, modelling
-the task as a regression problem made it sufficient to normalize the numeric
-scores to a common interval before training.
+We are reporting macro and micro \FI as before, not QWK as
+\citeauthor{taghipour16}. Refer to section \ref{metrics-discussion} for the
+discussion of different metrics for the task.
+
+The ASAP data that \citeauthor{taghipour16} use consists of essays from eight
+different prompts, and the range of scores differs across prompts. Since the
+scores are numeric values over different ranges, modelling the task as a
+regression problem made it sufficient to normalize the numeric scores to a
+common interval before training.
 
 Unlike our corpus, ASK, the ASAP dataset used by \citeauthor{taghipour16}
 contained essays that were not necessarily written in a second language. Our
 data is not split into different parts based on the prompt. There are two
 different test levels in ASK, but these are not distinguished in training.
 
-\todo{remainder of section unstructured} Generally for \ac{AES}, modelling
-the task as multi-class prediction is common, and is used in
-\textcite{vajjala18universalCEFR}. In \textcite{vajjala17}, two different
-datasets with different properties were used, and the author utilized both
-multi-class prediction and regression at different points. The embedding
-layer in \textcite{taghipour16} was initialized with pre-trained embeddings
-of size 100.
+\todo{remainder of section unstructured}
+
+Generally for \ac{AES}, modelling the task as multi-class prediction is
+common, and is used in \textcite{vajjala18universalCEFR}. In
+\textcite{vajjala17}, two different datasets with different properties were
+used, and the author utilized both multi-class prediction and regression at
+different points. 
 
 
 \subsection{Variants}
@@ -324,23 +317,26 @@ Keras, the default activation function for the gates in gated RNNs is the
 chosen because it is computationally more efficient than the sigmoid
 function.
 
-We attempted three different methods of combining the sequence of hidden
-states from the \ac{RNN} into a feature vector. The simplest approach is
-\emph{mean over time}, where we apply element-wise, unweighted averaging to
-the RNN output across the time dimension. This means that the first element
-of the representation vector is the average of the first element of the RNN
-output across time, and similarly for the second element, etc.
+We attempted three different pooling methods, that is, ways of combining a
+sequence of hidden states from the \ac{RNN} into a feature vector. The first
+approach is \emph{mean over time}, where we apply element-wise, unweighted
+averaging to the RNN output across the time dimension. This means that the
+first element of the representation vector is the average of the first
+element of the RNN output across time, and similarly for the second element,
+etc., as in the following equation:
 
 \[
   \mathrm{mean/time}(x_i) = \frac{1}{T}\sum_{t=0}^T o_{t,i}
 \]
 
-where $T$ is the total number of time steps, and $o_{t,i}$ means the output of
+where $T$ is the total number of time steps, and $o_{t,i}$ is the output of
 the RNN at time step $t$ and index $i$.
 
 The second method is similar to the first, except that the averaging
-operation is replaced by a max operation. We refer to this as the \emph{max
-over time}.
+operation is replaced by a max operation. Each dimension of the vector is the
+highest value the hidden state had at that dimension across the entire
+sequence. We refer to this as the \emph{max over time}, and it is defined by
+the following equation:
 
 \[
   \mathrm{max/time}(x_i) = \max_{t=0}^T o_{t,i}
@@ -349,12 +345,14 @@ over time}.
 The final method we used is an attention layer, which differs from the mean
 over time layer in that time steps are weighted by an attention mechanism: a
 single-layer neural network computes a value between -1 and 1 for each time
-step. These values are normalized by a softmax layer and then used to compute
-the weighted average. Since each time step contributes to the final
-representation in differing amounts, the mechanism should be able in theory
-to focus on crucial information by choosing weights such as to disregard
-uninformative time steps, improving performance. The attention mechanism is
-trained along with the rest of the network.
+step. These values are normalized across all time steps by a softmax layer,
+and then used to compute the weighted average.
+
+Since each time step contributes to the final representation in differing
+amounts, the mechanism should be able in theory to focus on crucial
+information by choosing weights such as to disregard uninformative time
+steps, improving performance. The attention mechanism is trained along with
+the rest of the network.
 
 The bidirectional models (BiRNN) are constructed by running two \acp{RNN}
 over the same input, but in opposite directions. The output from the BiRNN
@@ -370,10 +368,10 @@ All the models have a hidden state vector of size 300 in unidirectional
 \acp{RNN}, and 600 in BiRNNs (300 in each direction). We use all tokens in
 the training set as our lexicon, giving a vocabulary size of 20,068 (20,066
 unique tokens occurring in the training set, plus two tokens for padding and
-unknown words). Embeddings are initialized randomly or using vectors from the
-fastText model described in section \ref{subseq:fasttext}, and trained as
-part of the network. BiRNNs are referred to in the tables as either BiLSTM or
-BiGRU, depending on the RNN cell used.
+unknown words). Embeddings are initialized either randomly or using vectors
+from the fastText model described in section \ref{subseq:fasttext}, and
+trained as part of the network. BiRNNs are referred to in the tables as
+either BiLSTM or BiGRU, depending on the RNN cell used.
 
 
 \section{Results}

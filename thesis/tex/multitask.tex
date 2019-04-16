@@ -20,8 +20,10 @@ summarized in tables \ref{tab:cnn-parameters} and \ref{tab:rnn-parameters}.
     \toprule
     Hyperparameter & CNN1 & CNN2 \\
     \midrule
+    Word embeddings & \multicolumn{2}{c}{Dynamic} \\
     Embedding size & \multicolumn{2}{c}{100} \\
     $L_2$ constraint & \multicolumn{2}{c}{3} \\
+    Windows & \multicolumn{2}{c}{3,4,5} \\
     Embedding init & Random & Pre-trained \\
     Input representation & Mixed UPOS & Tokens \\
     \bottomrule
@@ -49,57 +51,56 @@ summarized in tables \ref{tab:cnn-parameters} and \ref{tab:rnn-parameters}.
   \label{tab:rnn-parameters}
 \end{table}
 
+The multi-task models have two outputs with different loss functions. The
+CEFR output is a single regression node with sigmoid output and mean squared
+error loss. The NLI output is a softmax layer with seven nodes, and uses
+categorical cross-entropy loss. To train the models, they are optimized to
+minimize the sum of losses for both output layers. We multiply each loss by a
+weight before summing to see how performance is influenced by which loss has
+most weight. We ensure that the sum of weights is equal to 1. An auxiliary
+loss weight of $0.5$ thus means that both losses have equal weight. An
+auxiliary loss weight of $0.2$ means that the loss on the main task has
+weight $0.8$.
+
 We chose ten different auxiliary loss weights, and for each loss weight we
 trained and evaluated each model five times with different random seeds. By
 training more than one model with a given set of hyperparameters, we can get
 an idea of the variance of results.
 
-
 \section{Results}
 
-Below we plot see the results of running some of
-the most successful models from the previous chapter in a multi-task setting,
-using the essay's L1 as the auxiliary label to predict. The $x$ value
-is the weight given to the auxiliary loss during training. An auxiliary loss
-weight of 0 is the same as single-task setup.
+Below we plot see the results of running some of the most successful models
+from the previous chapter in a multi-task setting, using the essay's L1 as
+the auxiliary label to predict. The $x$ value is the weight given to the
+auxiliary loss during training. Some of the models have an auxiliary loss
+weight of zero, which is the same as training in single-task mode.
 
+\todo{outdated}
 The reported metrics apply to the main task, CEFR prediction, only. It seems
 that the auxiliary task is beneficial for all CNN models. All CNN models get
 higher macro and micro \FI in the multi-task setup. Moreover, a higher weight
 given to the auxiliary L1 prediction task seems to improve macro \FI
 performance across the board. The effect of the auxiliary task weight seems
-less clear on the micro \FI, but remember that in our setup, the micro \FI is
+less clear on the micro \FI. but remember that in our setup, the micro \FI is
 a side effect of the highest macro \FI seen during training.
-
-\todo{new models}
-\todo{graph effect of loss weight on metrics}
 
 \begin{figure}
   \centering
   \includegraphics{lossweight}
   \caption[Performance of multi-task models]{
     Lines follow the mean of macro \FI scores. Shaded areas show 95\% confidence
-    interval for mean. Results for the collapsed set of classes are plotted with
+    interval for the mean. Results for the collapsed set of classes are plotted with
     cross symbols and dashed lines.
   }
   \label{fig:lossweight}
 \end{figure}
 
+\todo{must check again}
 The highest macro \FI scores on the full label set all come from the RNN2 model.
 The five highest scores range between $0.486$ and $0.509$ and were achieved
 using auxiliary loss weights in the range from $0.1$ to $0.6$.
 
-
-\todo{do this}
-Something with the confidence intervals
-
-
-For the RNNs, the results are not quite as clear. The multi-task models were
-not able to exceed the macro \FI scores of $0.354$ (all labels) and $0.624$
-(collapsed labels), but this may be because the macro \FI metric is unstable
-because of the `A2' class with one single example in the dev set. For the
-same models, accuracy did increase in the multi-task setup.t
-
+\todo{outdated}
 The model `RNN1 0.5' was the best performing multi-task model by several
 metrics. In addition to macro \FI, it was the best in terms of RMSE
 ($0.888$), MAE ($0.610$), Pearson's correlation coefficient ($0.765$) and
@@ -123,7 +124,7 @@ Spearman's ranked correlation coefficient ($0.768$).
 \end{figure}
 
 \begin{figure}
-  % rnn-multi-26199963_15
+  % rnn-multi-26646843_28.pkl
   \begin{subfigure}{\linewidth}
     \centering
     \includegraphics{rnn-multi-training}
@@ -144,8 +145,8 @@ Spearman's ranked correlation coefficient ($0.768$).
 \todo{More different metrics}
 
 We have previously discussed different evaluation metrics. Since we now have
-trained and evaluated a number of different models, it is possible to see whether
-the metrics agree on the ranking of models.
+trained and evaluated a number of different models, it is possible to see
+whether the metrics agree on the ranking of models.
 
 Macro \FI and macro \ac{MAE} correlates only weakly, as seen in figure
 \ref{fig:f1-vs-mae}, but they seem to agree on the highest ranking models:
