@@ -41,10 +41,12 @@ chkfile "results" "models"
 
 embdim100="--vectors models/vectors/120-small.pkl"
 
-cnn1="python -m masterthesis.models.cnn --method regression --mixed-pos"
-cnn2="python -m masterthesis.models.cnn --method regression $embdim100"
-rnn1="python -m masterthesis.models.rnn --rnn-cell gru --bidirectional --embed-dim 100 --method regression --include-pos"
-rnn2="python -m masterthesis.models.rnn --rnn-cell gru --bidirectional --embed-dim 100 --method regression $embdim100"
+rnnbase="python -m masterthesis.models.rnn --method regression --embed-dim 100"
+
+cnn1="python -m masterthesis.models.cnn --method regression --mixed-pos --constraint 3.0"
+cnn2="python -m masterthesis.models.cnn --method regression $embdim100 --constraint 3.0"
+rnn1="$rnnbase --rnn-cell gru --bidirectional --include-pos --pool-method attention"
+rnn2="$rnnbase --rnn-cell gru --bidirectional $embdim100 --pool-method attention"
 
 model_select=$(bc -l <<< "scale=0; $SLURM_ARRAY_TASK_ID/9")
 case $model_select in
@@ -77,5 +79,5 @@ echo "MODEL SELECT $model_select AUX LOSS WEIGHT $lossweight"
 
 cmd="$cmd --aux-loss-weight $lossweight"
 echo "SLURM BATCH RUNNING COMMAND: $cmd"
-$cmd
+$cmd "$@"
 
