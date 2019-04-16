@@ -17,7 +17,7 @@ export PYTHONHASHSEED=0
 if [ -n "${SLURM_JOB_NODELIST}" ]; then
     source /cluster/bin/jobsetup
 
-    cp -r "$SUBMITDIR"/masterthesis "$SCRATC"H
+    cp -r "$SUBMITDIR"/masterthesis "$SCRATCH"
     mkdir "$SCRATCH"/ASK
     cp "$SUBMITDIR"/ASK/metadata.csv "$SCRATCH"/ASK/metadata.csv
     ln -s "$SUBMITDIR"/ASK/txt "$SCRATCH"/ASK
