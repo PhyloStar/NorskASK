@@ -129,21 +129,22 @@ def get_name(nli: bool, multi_task: bool) -> str:
 
 
 def get_compile_args(method: str, lr: float):
+    losses = {AUX_OUTPUT_NAME: 'categorical_crossentropy'}
     if method == 'classification':
         optimizer = Adam(lr=lr)
-        loss = 'categorical_crossentropy'
+        losses[OUTPUT_NAME] = 'categorical_crossentropy'
         metrics = ['accuracy']  # type: List[Union[str, Callable]]
     elif method == 'ranked':
         optimizer = Adam(lr=lr)
-        loss = 'mean_squared_error'
+        losses[OUTPUT_NAME] = 'mean_squared_error'
         metrics = [ranked_accuracy]
     elif method == 'regression':
         optimizer = 'rmsprop'
-        loss = 'mean_squared_error'
+        losses[OUTPUT_NAME] = 'mean_squared_error'
         metrics = ['mae']
     else:
         raise ValueError('Unknown method')
-    return optimizer, loss, metrics
+    return optimizer, losses, metrics
 
 
 def main():
@@ -169,6 +170,7 @@ def main():
         train_target_scores, dev_target_scores, args.method
     )
 
+    optimizer, loss, metrics = get_compile_args(args.method, args.lr)
     multi_task = args.aux_loss_weight > 0
     if multi_task:
         assert not args.nli, "Both NLI and multi-task specified"
@@ -181,6 +183,7 @@ def main():
             OUTPUT_NAME: 1.0 - args.aux_loss_weight
         }
     else:
+        loss = loss[OUTPUT_NAME]
         loss_weights = None
     del train_meta, dev_meta
 
@@ -200,7 +203,6 @@ def main():
     if args.vectors:
         init_pretrained_embs(model, args.vectors, w2i)
 
-    optimizer, loss, metrics = get_compile_args(args.method, args.lr)
     model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics)
 
     logger.debug("Train y\n%r", train_y[0][:5])

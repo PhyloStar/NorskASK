@@ -122,21 +122,22 @@ def build_model(args: argparse.Namespace, output_units: Sequence[int], num_pos: 
 
 
 def get_compile_args(args: argparse.Namespace):
+    losses = {AUX_OUTPUT_NAME: 'categorical_crossentropy'}
     if args.method == 'classification':
         optimizer = RMSprop(lr=args.lr, rho=args.decay_rate)
-        loss = 'categorical_crossentropy'
+        losses[OUTPUT_NAME] = 'categorical_crossentropy'
         metrics = ['accuracy']  # type: List[Union[str, Callable]]
     elif args.method == 'ranked':
         optimizer = RMSprop(lr=args.lr, rho=args.decay_rate)
-        loss = 'mean_squared_error'
+        losses[OUTPUT_NAME] = 'mean_squared_error'
         metrics = [ranked_accuracy]
     elif args.method == 'regression':
         optimizer = 'rmsprop'
-        loss = 'mean_squared_error'
+        losses[OUTPUT_NAME] = 'mean_squared_error'
         metrics = ['mae']
     else:
         raise ValueError('Unknown method')
-    return optimizer, loss, metrics
+    return optimizer, losses, metrics
 
 
 def get_predictions(model: Model, x, multi_task: bool) -> np.ndarray:
@@ -170,6 +171,7 @@ def main():
         train_target_scores, dev_target_scores, args.method
     )
 
+    optimizer, loss, metrics = get_compile_args(args)
     multi_task = args.aux_loss_weight > 0
     if multi_task:
         assert not args.nli, "Both NLI and multi-task specified"
@@ -182,6 +184,7 @@ def main():
             OUTPUT_NAME: 1.0 - args.aux_loss_weight
         }
     else:
+        loss = loss[OUTPUT_NAME]
         loss_weights = None
 
     model = build_model(args, output_units=output_units, num_pos=num_pos)
@@ -190,12 +193,6 @@ def main():
     if args.vectors:
         init_pretrained_embs(model, args.vectors, w2i)
 
-    optimizer = RMSprop(lr=args.lr, rho=args.decay_rate)
-    model.compile(
-        optimizer, 'categorical_crossentropy', loss_weights=loss_weights, metrics=['accuracy']
-    )
-
-    optimizer, loss, metrics = get_compile_args(args)
     model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics)
 
     # Context manager fails on Windows (can't open an open file again)
