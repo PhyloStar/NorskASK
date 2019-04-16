@@ -23,7 +23,7 @@ cnn2 = RESULTS_DIR / "cnn-26515464_13.pkl"
 rnn1 = RESULTS_DIR / "rnn-26536430_15.pkl"
 rnn2 = RESULTS_DIR / "rnn-26536430_27.pkl"
 
-extra = [
+base_runs = [
     cnn1,
     RESULTS_DIR / "cnn-26518498_6.pkl",
     cnn2,
@@ -33,7 +33,8 @@ extra = [
     rnn2,
     RESULTS_DIR / "rnn-26536431_27.pkl",
 ]
-runs = [
+
+base_delta_runs = [
     "26646835",
     "26646836",
     "26646837",
@@ -59,18 +60,27 @@ runs = [
     "26679430",
     "26679431",
 ]
+multi_delta_runs = [
+    "26728426",
+    "26728427",
+    "26728428",
+    "26728429",
+    "26728430",
+    "26728431",
+    "26728432",
+    "26728433",
+    "26728434",
+    "26728435",
+]
+to_glob = base_delta_runs + multi_delta_runs
 
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument("files", nargs="*", type=Path)
-    parser.add_argument(
-        "--debug", dest="loglevel", action="store_const", const=logging.DEBUG
-    )
-    parser.add_argument(
-        "--quiet", dest="loglevel", action="store_const", const=logging.WARN
-    )
+    parser.add_argument("--debug", dest="loglevel", action="store_const", const=logging.DEBUG)
+    parser.add_argument("--quiet", dest="loglevel", action="store_const", const=logging.WARN)
     parser.set_defaults(loglevel=logging.INFO)
     args = parser.parse_args()
     logging.getLogger(None).setLevel(args.loglevel)
@@ -120,15 +130,14 @@ def compile_dataframe(files: Iterable[Path]):
 
 def main():
     args = parse_args()
-    globs = chain.from_iterable(Path("results").glob("*%s*" % run) for run in runs)
-    df = compile_dataframe(chain(args.files, globs, extra))
+    globs = chain.from_iterable(Path("results").glob("*%s*" % run) for run in to_glob)
+    df = compile_dataframe(chain(args.files, globs, base_runs))
     df.to_csv("Multitask_runs.csv")
     g = sns.FacetGrid(
         data=df,
         col="Model",
         col_wrap=2,
         col_order=["cnn1", "cnn2", "rnn1", "rnn2"],
-        legend_out=False,
     )
     g.map_dataframe(sns.lineplot, "Aux loss weight", "Macro F1", style="Collapsed")
     g.map_dataframe(sns.scatterplot, "Aux loss weight", "Macro F1", style="Collapsed")
