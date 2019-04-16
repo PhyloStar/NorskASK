@@ -41,10 +41,10 @@ chkfile "results" "models"
 
 embdim100="--vectors models/vectors/120-small.pkl"
 
-rnnbase="python -m masterthesis.models.rnn --method regression --embed-dim 100"
-
 cnn1="python -m masterthesis.models.cnn --method regression --mixed-pos --constraint 3.0"
 cnn2="python -m masterthesis.models.cnn --method regression $embdim100 --constraint 3.0"
+
+rnnbase="python -m masterthesis.models.rnn --method regression --embed-dim 100"
 rnn1="$rnnbase --rnn-cell gru --bidirectional --include-pos --pool-method attention"
 rnn2="$rnnbase --rnn-cell gru --bidirectional $embdim100 --pool-method attention"
 
