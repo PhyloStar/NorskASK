@@ -1,7 +1,7 @@
 import argparse
 import os
 import tempfile
-from typing import Callable, Iterable, List, Sequence, Union  # noqa: F401
+from typing import Callable, Dict, Iterable, List, Sequence, Union  # noqa: F401
 
 from keras import backend as K
 from keras.layers import (
@@ -123,18 +123,19 @@ def build_model(args: argparse.Namespace, output_units: Sequence[int], num_pos: 
 
 def get_compile_args(args: argparse.Namespace):
     losses = {AUX_OUTPUT_NAME: 'categorical_crossentropy'}
+    metrics = {AUX_OUTPUT_NAME: ['accuracy']}  # type: Dict[str, List[Union[str, Callable]]]
     if args.method == 'classification':
         optimizer = RMSprop(lr=args.lr, rho=args.decay_rate)
         losses[OUTPUT_NAME] = 'categorical_crossentropy'
-        metrics = ['accuracy']  # type: List[Union[str, Callable]]
+        metrics[OUTPUT_NAME] = ['accuracy']
     elif args.method == 'ranked':
         optimizer = RMSprop(lr=args.lr, rho=args.decay_rate)
         losses[OUTPUT_NAME] = 'mean_squared_error'
-        metrics = [ranked_accuracy]
+        metrics[OUTPUT_NAME] = [ranked_accuracy]
     elif args.method == 'regression':
         optimizer = 'rmsprop'
         losses[OUTPUT_NAME] = 'mean_squared_error'
-        metrics = ['mae']
+        metrics[OUTPUT_NAME] = ['mae']
     else:
         raise ValueError('Unknown method')
     return optimizer, losses, metrics
@@ -185,6 +186,7 @@ def main():
         }
     else:
         loss = loss[OUTPUT_NAME]
+        metrics = metrics[OUTPUT_NAME]
         loss_weights = None
 
     model = build_model(args, output_units=output_units, num_pos=num_pos)

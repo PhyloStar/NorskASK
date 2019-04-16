@@ -3,7 +3,7 @@ from math import isfinite
 import logging
 import os
 import tempfile
-from typing import Callable, Iterable, List, Optional, Sequence, Union  # noqa: F401
+from typing import Callable, Dict, Iterable, List, Optional, Sequence, Union  # noqa: F401
 
 import keras.backend as K
 from keras.constraints import max_norm
@@ -130,18 +130,19 @@ def get_name(nli: bool, multi_task: bool) -> str:
 
 def get_compile_args(method: str, lr: float):
     losses = {AUX_OUTPUT_NAME: 'categorical_crossentropy'}
+    metrics = {AUX_OUTPUT_NAME: 'accuracy'}  # type: Dict[str, List[Union[str, Callable]]]
     if method == 'classification':
         optimizer = Adam(lr=lr)
         losses[OUTPUT_NAME] = 'categorical_crossentropy'
-        metrics = ['accuracy']  # type: List[Union[str, Callable]]
+        metrics[OUTPUT_NAME] = ['accuracy']
     elif method == 'ranked':
         optimizer = Adam(lr=lr)
         losses[OUTPUT_NAME] = 'mean_squared_error'
-        metrics = [ranked_accuracy]
+        metrics[OUTPUT_NAME] = [ranked_accuracy]
     elif method == 'regression':
         optimizer = 'rmsprop'
         losses[OUTPUT_NAME] = 'mean_squared_error'
-        metrics = ['mae']
+        metrics[OUTPUT_NAME] = ['mae']
     else:
         raise ValueError('Unknown method')
     return optimizer, losses, metrics
@@ -184,6 +185,7 @@ def main():
         }
     else:
         loss = loss[OUTPUT_NAME]
+        metrics = metrics[OUTPUT_NAME]
         loss_weights = None
     del train_meta, dev_meta
 
