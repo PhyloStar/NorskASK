@@ -74,15 +74,7 @@ from the previous chapter in a multi-task setting, using the essay's L1 as
 the auxiliary label to predict. The $x$ value is the weight given to the
 auxiliary loss during training. Some of the models have an auxiliary loss
 weight of zero, which is the same as training in single-task mode.
-
-\todo{outdated}
-The reported metrics apply to the main task, CEFR prediction, only. It seems
-that the auxiliary task is beneficial for all CNN models. All CNN models get
-higher macro and micro \FI in the multi-task setup. Moreover, a higher weight
-given to the auxiliary L1 prediction task seems to improve macro \FI
-performance across the board. The effect of the auxiliary task weight seems
-less clear on the micro \FI. but remember that in our setup, the micro \FI is
-a side effect of the highest macro \FI seen during training.
+The reported metrics apply to the main task, CEFR prediction, only.
 
 \begin{figure}
   \centering
@@ -96,15 +88,10 @@ a side effect of the highest macro \FI seen during training.
 \end{figure}
 
 \todo{must check again}
-The highest macro \FI scores on the full label set all come from the RNN2 model.
-The five highest scores range between $0.486$ and $0.509$ and were achieved
-using auxiliary loss weights in the range from $0.1$ to $0.6$.
-
-\todo{outdated}
-The model `RNN1 0.5' was the best performing multi-task model by several
-metrics. In addition to macro \FI, it was the best in terms of RMSE
-($0.888$), MAE ($0.610$), Pearson's correlation coefficient ($0.765$) and
-Spearman's ranked correlation coefficient ($0.768$).
+The highest macro \FI scores on the full label set all come from RNN models.
+The five highest scores range between $0.468$ and $0.483$ and were achieved
+using auxiliary loss weights in the range from $0$ to $0.5$.
+The highest macro \FI score in the previous chapter was $0.460$.
 
 
 \begin{figure}
@@ -148,18 +135,76 @@ We have previously discussed different evaluation metrics. Since we now have
 trained and evaluated a number of different models, it is possible to see
 whether the metrics agree on the ranking of models.
 
-Macro \FI and macro \ac{MAE} correlates only weakly, as seen in figure
-\ref{fig:f1-vs-mae}, but they seem to agree on the highest ranking models:
-The Pareto front consists of only two samples. The samples in the plot are
-models that predict the full seven classes.
+\begin{figure}
+  \centering
+  \includegraphics{reg_macro_F1_all}
+  \caption[Macro \FI versus macro MAE]{
+    Macro \FI versus macro MAE. Line of regression included in plot. The shaded
+    area covers a 95\% confidence interval for the line of regression. CNN
+    models are plotted with dots, RNN models with crosses.
+  }
+  \label{fig:reg_macro_F1_all}
+\end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics{f1-vs-mae}
+  \includegraphics{reg_macro_F1_collapsed}
   \caption[Macro \FI versus macro MAE]{
-    Macro \FI versus macro MAE. Pearson's correlation coefficient = $-0.5945$,
-    $p < 10^{-4}$. The shaded area covers a 95\% confidence interval for the
-    line of regression.
+    Macro \FI versus macro MAE for all experiments using collapsed CEFR labels.
+    Line of regression included in plot. The shaded area covers a 95\%
+    confidence interval for the line of regression. CNN models are plotted with
+    dots, RNN models with crosses.
   }
-  \label{fig:f1-vs-mae}
+  \label{fig:reg_macro_F1_collapsed}
 \end{figure}
+
+In figure \ref{fig:reg_macro_F1_all}, all experiments from this chapter have
+been plotted to compare the macro \FI score to both the micro \FI score and
+the macro mean average error.
+
+The correlation is not all that strong, at least not for macro \FI vs. micro
+\FI. Four experiments are tied for the highest micro \FI, but they range
+between $0.302$ and $0.480$ in macro \FI.
+
+It is also of note that the CNN and RNN experiments appear to form two
+separate populations in the plot, with different correlation properties.
+Table \ref{tab:metric-corrs} shows that in several cases, the correlation
+value is much lower when examining CNN experiments and RNN experiments as
+separate populations. Correlation is not additive. Therefore it is maybe not
+possible to interpret the correlation values for the combined dataset.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrrr}
+    \toprule
+             & \multicolumn{2}{c}{Macro \FI vs. micro \FI}
+             & \multicolumn{2}{c}{Macro F1 vs. macro MAE} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    Experiments & Correlation & $p$-value & Correlation & $p$-value \\
+    \midrule
+      \multicolumn{5}{c}{All CEFR labels} \\
+    \midrule
+    CNN         & $0.856$     & $7.02\cdot 10^{-30}$ & $-0.549$    & $3.34\cdot 10^{-9}$ \\
+    RNN         & $0.196$     & $5.02\cdot 10^{-2}$  & $-0.780$    & $1.07\cdot 10^{-21}$ \\
+    CNN+RNN     & $0.775$     & $2.39\cdot 10^{-41}$ & $-0.926$    & $1.05\cdot 10^{-85}$ \\
+    \midrule
+      \multicolumn{5}{c}{Collapsed CEFR labels} \\
+    \midrule
+    CNN         & $0.055$     & $5.88\cdot 10^{-1}$  & $-0.331$    & $7.57\cdot 10^{-4}$ \\
+    RNN         & $0.362$     & $2.15\cdot 10^{-4}$  & $-0.764$    & $2.48\cdot 10^{-20}$ \\
+    CNN+RNN     & $0.721$     & $2.15\cdot 10^{-33}$ & $-0.941$    & $2.03\cdot 10^{-95}$ \\
+    \bottomrule
+  \end{tabular}
+  \caption[Correlation of metrics]{Correlation between different evaluation metrics.}
+  \label{tab:metric-corrs}
+\end{table}
+
+
+Pearson correlation $0.775$, $p ~= 2\cdot10^{-41}$
+Pearson correlation $-0.926$, $p ~= 10^{-85}$
+
+The $p$-values reported for the correlation are to be taken with a grain of
+salt. They were computed with the SciPy library, which gives no guarantees in
+its documentation other than that the $p$-values should be reasonable for
+datasets with at least 500 samples. In our case, we have 200 samples.
