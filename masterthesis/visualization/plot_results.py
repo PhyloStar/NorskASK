@@ -38,30 +38,49 @@ def print_config(config):
         print(fmt.format(key, val))
 
 
-def multi_task_plot_history(history, ax1, ax2):
+def multi_task_plot_history(history, fig):
     xs = np.arange(len(history["loss"])) + 1
 
+    acc = OUTPUT_NAME + "_acc"
+    aux_acc = AUX_OUTPUT_NAME + "_acc"
+    mae = OUTPUT_NAME + "_mean_absolute_error"
+
+    num_subplots = 3 if mae in history or "val_f1" in history else 2
+
+    axes = fig.subplots(1, num_subplots)
+    ax1, ax2 = axes[0], axes[-1]
+
     ax1.plot(xs, history["loss"], label="train"),
-    ax1.plot(xs, history["val_loss"], label="validation"),
+    ax1.plot(xs, history["val_loss"], label="val."),
     ax1.legend()
     ax1.set(xlabel="Epoch", ylabel="Loss")
 
     logger.warning(list(history.keys()))
 
-    aux_acc = AUX_OUTPUT_NAME + "_acc"
-    key_labels = [(aux_acc, "train L1"), ("val_" + aux_acc, "val. L1")]
+    key_labels = [
+        (aux_acc, "train L1"),
+        ("val_" + aux_acc, "val. L1"),
+        (acc, "train CEFR"),
+        ("val_" + acc, "val. CEFR"),
+    ]
     for key, label in key_labels:
-        ax2.plot(xs, history[key], label=label),
-    if OUTPUT_NAME + "_acc" in history:
-        acc = OUTPUT_NAME + "_acc"
-        key_labels = [(acc, "train CEFR"), ("val_" + acc, "val. CEFR")]
-        for key, label in key_labels:
+        try:
             ax2.plot(xs, history[key], label=label),
-    elif "val_f1" in history:
-        label = "val. CEFR F1"
-        ax = ax2.twinx()
-        ax.plot(xs, history["val_f1"], label=label, secondary_y=True)
+        except KeyError:
+            logger.info("Key not found: %s", key)
+    if mae in history:
+        ax = axes[1]
         ax.set_ylabel("Macro F1")
+        key_labels = [(mae, "train CEFR"), ("val_" + mae, "val. CEFR")]
+        for key, label in key_labels:
+            ax.plot(xs, history[key], label=label)
+        ax.set_ylabel("MAE")
+        ax.legend()
+    elif "val_f1" in history:
+        ax = axes[1]
+        ax.plot(xs, history["val_f1"], label="val. CEFR F1", color="C2")
+        ax.set_ylabel("Macro F1")
+        ax.legend()
 
     ax2.legend()
     ax2.set(xlabel="Epoch", ylabel="Accuracy")
