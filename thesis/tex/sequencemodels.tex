@@ -370,8 +370,9 @@ the training set as our lexicon, giving a vocabulary size of 20,068 (20,066
 unique tokens occurring in the training set, plus two tokens for padding and
 unknown words). Embeddings are initialized either randomly or using vectors
 from the fastText model described in section \ref{subseq:fasttext}, and
-trained as part of the network. BiRNNs are referred to in the tables as
-either BiLSTM or BiGRU, depending on the RNN cell used.
+trained as part of the network. BiRNNs are referred to in the following
+tables and discussion as either BiLSTM or BiGRU, depending on the RNN cell
+used.
 
 
 \section{Results}
@@ -750,6 +751,22 @@ attention model that was best, but a bidirectional LSTM.
   \caption{\FI scores of RNN classifiers on NLI}
   \label{tab:rnn-nli-results}
 \end{table}
+
+It is unfortunately not possible to compare our results to the previous work,
+for a number of reasons. First, our subset of ASK is the seven \acp{L1} which
+has been assigned CEFR scores, as compared to the full ten \acp{L1} used in
+\autocite{malmasi15,malmasi17,malmasi2018native}, and the subsets of four fixed
+and one varying \ac{L1} used in \autocite{pepper2012,ionescu2016string}. Second,
+some of the cited experiments used generated data sets and not the actual raw
+essays. Third, the cited studies have mostly evaluated their experiments using
+cross-validation ($k$-fold or \emph{leave one out}).
+
+However, we can probably conclude that our \ac{NLI} system is far from the
+state of the art. Our best accuracy of 53.7\% is lower than the 54.2\%
+reported in \textcite{malmasi2018native}, even with a smaller set of classes
+(seven and ten, respectively). Getting a high accuracy gets harder as the
+number of classes increases. Thus, it is most likely that our \ac{NLI} system
+is actually not as good.
 
 
 \section{Visualization}

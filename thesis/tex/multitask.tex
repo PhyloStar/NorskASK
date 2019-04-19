@@ -181,7 +181,7 @@ possible to interpret the correlation values for the combined dataset.
              & \multicolumn{2}{c}{Macro F1 vs. macro MAE} \\
     \cmidrule(lr){2-3}
     \cmidrule(lr){4-5}
-    Experiments & Correlation & $p$-value & Correlation & $p$-value \\
+    Experiments & Correlation & $p$-value            & Correlation & $p$-value \\
     \midrule
       \multicolumn{5}{c}{All CEFR labels} \\
     \midrule
@@ -205,6 +205,6 @@ Pearson correlation $0.775$, $p ~= 2\cdot10^{-41}$
 Pearson correlation $-0.926$, $p ~= 10^{-85}$
 
 The $p$-values reported for the correlation are to be taken with a grain of
-salt. They were computed with the SciPy library, which gives no guarantees in
+salt. They were computed with the SciPy library \autocite{scipy}, which gives no guarantees in
 its documentation other than that the $p$-values should be reasonable for
 datasets with at least 500 samples. In our case, we have 200 samples.

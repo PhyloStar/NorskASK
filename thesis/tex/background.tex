@@ -462,7 +462,7 @@ a bag and sampling sentences from the bag to create the new documents. Their
 rationale for the methodology is that all the resulting documents are of
 similar length, and that they eliminate the variation between individual
 writers that otherwise might present a stronger signal than the writer's L1
-alone.
+alone. Their data set includes all ten different \acp{L1} in the ASK corpus.
 
 In a later study \autocite{malmasi17}, they perform an \ac{NLI} experiment on
 several corpora, namely TOEFL11, the Norwegian ASK corpus and the Jinan
@@ -475,18 +475,35 @@ combining a selection of base classifiers using a \ac{LDA} meta-classifier
 trained with bootstrap aggregation (bagging), they achieve an accuracy of
 $0.818$ on the Norwegian corpus.
 
-They reapply the above methodology of generating artificial essays for the
-Norwegian and Chinese corpora. In particular, they mention that this removes
-bias stemming from different topics. In the case of the TOEFL11 corpus,
-however, the authors of the corpus have made an effort to make the documents
-balanced in terms of both L1 and the writing prompt which the learner has
-answered.
+In this later study, they reapply the above methodology of generating
+artificial essays for the Norwegian and Chinese corpora. In particular, they
+mention that this removes bias stemming from different topics. In the case of
+the TOEFL11 corpus, however, the authors of the corpus have made an effort to
+make the documents balanced in terms of both L1 and the writing prompt which
+the learner has answered.
 
 Adopting this methodology, however, does mean letting go of the discourse
 properties of a text, which could offer valuable cues both toward the L1, and
 in relation to the automated assessment task. Moreover, it does not reflect
 realistic real-world documents, which in many cases are written by
 individuals, and contain bias toward specific topics.
+
+In an updated study \autocite{malmasi2018native}, the same authors also
+evaluated their models on the raw texts in addition to the generated
+artificial essays. The accuracy on raw texts was much lower, with the best
+model for Norwegian having an accuracy of $0.542$. It was the same model, a
+\ac{LDA} meta-classifier, which had the best accuracy on both the generated
+and raw texts.
+
+Another study that performed NLI on the ASK corpus is
+\textcite{ionescu2016string}. They used a subset of the ASK corpus containing
+seven different native languages. They excluded Vietnamese, Somali and
+Albanian from their subset because the corpus contains fewer documents for
+these \acp{L1} (see table \ref{tab:l1-and-testlevel}). Moreover, in each
+experiment they only a subset of only five \acp{L1}, of which four are the
+same in all experiments, and the fifth varies between experiments.
+
+A study by \textcite{pepper2012} \todo{write more}
 
 
 \subsection{Datasets}
