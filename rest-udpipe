@@ -9,4 +9,4 @@ MODEL="norwegian-bokmaal-ud-2.3-181115"  # Norwegian (bokmål)
 
 PARAMS="-F data=@$INFILE -F input=horizontal -F tagger= -F parser= -F model=$MODEL"
 
-curl "$PARAMS" "$BASE_URL" | jq -r ".result" > "$OUTFILE"
+curl "$PARAMS" "$BASE_URL" | jq --raw-output ".result" > "$OUTFILE"
