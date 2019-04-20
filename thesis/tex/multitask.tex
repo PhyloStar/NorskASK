@@ -170,8 +170,22 @@ It is also of note that the CNN and RNN experiments appear to form two
 separate populations in the plot, with different correlation properties.
 Table \ref{tab:metric-corrs} shows that in several cases, the correlation
 value is much lower when examining CNN experiments and RNN experiments as
-separate populations. Correlation is not additive. Therefore it is maybe not
-possible to interpret the correlation values for the combined dataset.
+separate populations. \todo{Something with non-linearity} The correlation
+values can be misleading when we combine two distinct populations into one
+dataset. The most extreme case is the correlation between macro \FI and micro
+\FI for collapsed CEFR labels. The CNN experiments are completely
+uncorrelated, and the RNN experiments have a very low correlation coefficient
+of $0.362$. Still, when combined, the correlation coefficient becomes
+$0.721$.
+
+In the other cases, while not as extreme, the Pearson coefficient is
+significantly higher for CNN and RNN experiments together than for CNN and
+RNN separately. The one exception is the correlation between macro \FI and
+micro \FI for the full set of labels, where the CNN group has a higher
+correlation coefficient on its own than when combined with the RNN
+experiments. Notice also that in this case, the RNN experiments show no
+correlation within their group.
+
 
 \begin{table}
   \centering
@@ -183,28 +197,31 @@ possible to interpret the correlation values for the combined dataset.
     \cmidrule(lr){4-5}
     Experiments & Correlation & $p$-value            & Correlation & $p$-value \\
     \midrule
-      \multicolumn{5}{c}{All CEFR labels} \\
+      & \multicolumn{4}{c}{All CEFR labels} \\
     \midrule
     CNN         & $0.856$     & $7.02\cdot 10^{-30}$ & $-0.549$    & $3.34\cdot 10^{-9}$ \\
     RNN         & $0.196$     & $5.02\cdot 10^{-2}$  & $-0.780$    & $1.07\cdot 10^{-21}$ \\
     CNN+RNN     & $0.775$     & $2.39\cdot 10^{-41}$ & $-0.926$    & $1.05\cdot 10^{-85}$ \\
     \midrule
-      \multicolumn{5}{c}{Collapsed CEFR labels} \\
+      & \multicolumn{4}{c}{Collapsed CEFR labels} \\
     \midrule
     CNN         & $0.055$     & $5.88\cdot 10^{-1}$  & $-0.331$    & $7.57\cdot 10^{-4}$ \\
     RNN         & $0.362$     & $2.15\cdot 10^{-4}$  & $-0.764$    & $2.48\cdot 10^{-20}$ \\
     CNN+RNN     & $0.721$     & $2.15\cdot 10^{-33}$ & $-0.941$    & $2.03\cdot 10^{-95}$ \\
     \bottomrule
   \end{tabular}
-  \caption[Correlation of metrics]{Correlation between different evaluation metrics.}
+  \caption[Correlation of metrics]{
+    Pearson's correlation coefficient between two pairs of evaluation metrics and
+    different subsets of experiments. Two-tailed $p$-values are included.
+  }
   \label{tab:metric-corrs}
 \end{table}
 
 
-Pearson correlation $0.775$, $p ~= 2\cdot10^{-41}$
-Pearson correlation $-0.926$, $p ~= 10^{-85}$
 
 The $p$-values reported for the correlation are to be taken with a grain of
-salt. They were computed with the SciPy library \autocite{scipy}, which gives no guarantees in
-its documentation other than that the $p$-values should be reasonable for
-datasets with at least 500 samples. In our case, we have 200 samples.
+salt. They were computed with the SciPy library \autocite{scipy}, which
+states in its documentation other that the $p$-values should be reasonable
+for datasets with at least 500 samples. The values in table
+\ref{tab:metric-corrs} were computed on samples with either 100 or 200
+samples, well below 500.
