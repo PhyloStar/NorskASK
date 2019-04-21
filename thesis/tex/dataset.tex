@@ -4,6 +4,7 @@ In this chapter we will describe the data set used throughout the thesis. The
 process used to select the split between training, testing and validation
 data is also described.
 
+
 \section{Data set}
 
 % cspell:disable
@@ -141,11 +142,12 @@ categories of mistakes were considered in the study, including the general
 prevalence of mistakes per word of running text, groups of consonant
 graphemes and mistakes involving single and double consonants.
 
-Several of the differences discovered in the study were statistically significant.
-The author also interpreted the differences in terms of transfer effect from
-\ac{L1} on \ac{L2}. For instance, mistakes in substituting the vowel graphemes
-`i' and `y' can often be seen in texts where the author's L1 has no phonological
-distinction between the vowel sounds [i] and [y].
+Several of the differences discovered in the study were statistically
+significant. The author also interpreted the differences in terms of transfer
+effect from \ac{L1} on \ac{L2}. For instance, mistakes in substituting the
+vowel graphemes `i' and `y' can often be seen in texts where the author's L1
+has no phonological distinction between the vowel sounds [i] and [y], as is
+the case in, for instance, Bosnian-Serbian-Croatian.
 
 
 \subsection{Analyzing non-linguistic variables}
@@ -281,8 +283,17 @@ each part of the split, and so the distribution of proficiency and native
 language is as similar as possible across the separate parts of the data
 split. Specifically, the split was found by running an evolutionary algorithm
 with a fitness function favouring splits that were as close as possible to
-8:1:1 in proportion, while maintaining a low Kullback-Leibler divergence of
-the proficiency and language distributions against the entire corpus.
+8:1:1 in proportion, while ensuring that each split contained a disjoint set
+of topics.
+
+We designed a fitness function incurred several penalties. A candidate split
+was given a size penalty proportional to the absolute difference between the
+sizes of test and dev splits and the wanted size, namely 10\% of the corpus.
+Further, we added a label distribution penalty by calculating the
+Kullback-Leibler divergences between the distributions of CEFR and L1 labels
+in the candidate splits and the distribution in the entire corpus.
+Kullback-Leibler divergence was computed using the SciPy \autocite{scipy}
+library. The divergence values were squared and added to the penalty.
 
 \begin{table}
   \centering
@@ -319,12 +330,15 @@ the proficiency and language distributions against the entire corpus.
 \end{table}
 
 % cspell:disable
-The split in terms of the topics can be seen in table \ref{tab:topics-in-split}.
-The dev and test sets contain 123 texts each. The topic variable has values
-which are sets of keywords, and therefore there is still topical overlap
-between splits. For example, ``økonomi'' (economy) and ``økonomi holdning''
-(economy attitude) are considered separate values and assigned to different
-splits, even though both topics include the economy keyword.
+The split in terms of the topics can be seen in table
+\ref{tab:topics-in-split} \footnote{In the XML files, the topic values
+contain a trailing space character, not visible in print.}. The dev and test
+sets contain 123 texts each, close to the ideal 10\% of the corpus, which is
+121. The topic variable has values which are sets of keywords, and therefore
+there is still topical overlap between splits. For example, `økonomi'
+(economy) and `økonomi holdning' (economy attitude) are considered separate
+values and assigned to different splits, even though both topics include the
+`economy' keyword.
 % cspell:enable
 
 \begin{figure}
@@ -342,5 +356,16 @@ splits, even though both topics include the economy keyword.
 \end{figure}
 
 Figure \ref{fig:split-cefr-dist} shows how CEFR labels are distributed in the
-resulting training, development and testing splits, and figure
-\ref{fig:split-lang-dist} shows the same for language labels.
+resulting training, development and test splits, and figure
+\ref{fig:split-lang-dist} shows the same for language labels. It can be seen
+that all splits contain texts on all CEFR levels and for all different
+\acp{L1}. While there are considerable differences in the distributions, we
+decided that the result was reasonable given the constraints and the small
+size of the dataset.
+
+Each split does not contain every combination of CEFR score and \ac{L1}. This
+follows from the distribution plotted in figure \ref{fig:lang-vs-cefr}, where
+we find five combinations of CEFR score and \ac{L1} that occur only once or
+twice. Since each document is assigned to exactly one of three different
+splits, these combinations must necessarily be absent from one or two of the
+splits.
