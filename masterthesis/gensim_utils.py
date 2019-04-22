@@ -26,8 +26,8 @@ def load_embeddings(file: Union[Path, str], fasttext: bool = False) -> KeyedVect
 
     # Native Gensim format?
     emb_model = KeyedVectors.load(str(file))
-
-    emb_model.init_sims(replace=True)  # Unit-normalizing the vectors (if they aren't already)
+    # Unit-normalizing the vectors (if they aren't already)
+    emb_model.init_sims(replace=True)
     return emb_model.wv
 
 
@@ -48,7 +48,8 @@ def load_fasttext_embeddings(file: Union[Path, str]) -> FastTextKeyedVectors:
         # Native Gensim format?
         emb_model = FastText.load(str(file))
 
-    emb_model.init_sims(replace=True)  # Unit-normalizing the vectors (if they aren't already)
+    # Unit-normalizing the vectors (if they aren't already)
+    emb_model.init_sims(replace=True)
     return emb_model.wv
 
 

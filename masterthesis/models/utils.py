@@ -48,7 +48,9 @@ def add_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument('--epochs', '-e', type=int, default=50)
     parser.add_argument('--lr', type=float, default=2e-4)
     parser.add_argument(
-        '--method', choices={'classification', 'regression', 'ranked'}, default='regression'
+        '--method',
+        choices={'classification', 'regression', 'ranked'},
+        default='regression',
     )
     parser.add_argument('--nli', action='store_true')
     parser.add_argument('--round-cefr', action='store_true')
@@ -122,7 +124,9 @@ def get_sequence_input_reps(args):
         if args.include_pos:
             pos2i = make_pos2i()
             num_pos = len(pos2i)
-            train_pos, dev_pos = pos_to_sequences(args.doc_length, ['train', 'dev'], pos2i)
+            train_pos, dev_pos = pos_to_sequences(
+                args.doc_length, ['train', 'dev'], pos2i
+            )
             train_x = [train_x, train_pos]
             dev_x = [dev_x, dev_pos]
         else:

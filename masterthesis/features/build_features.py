@@ -38,7 +38,7 @@ def iterate_pos_tags(split: str = 'train') -> Iterable[str]:
 def iterate_pos_docs(split: str = 'train') -> Iterable[Iterable[str]]:
     def _inner_iter(stream):
         for sent in sents:
-            for (pos, ) in sent:
+            for (pos,) in sent:
                 yield pos
 
     meta = load_split(split)
@@ -135,8 +135,10 @@ def make_mixed_pos2i() -> Dict[str, int]:
 
 
 def _x_to_sequences(
-    seq_len: int, splits: Iterable[str], mapping: Mapping[str, int],
-    doc_iterator: Callable[[str], Iterable[Iterable[str]]]
+    seq_len: int,
+    splits: Iterable[str],
+    mapping: Mapping[str, int],
+    doc_iterator: Callable[[str], Iterable[Iterable[str]]],
 ) -> List[np.ndarray]:
     out = []
     for split in splits:
@@ -152,22 +154,27 @@ def _x_to_sequences(
     return out
 
 
-def pos_to_sequences(seq_len: int, splits: Iterable[str],
-                     pos2i: Mapping[str, int]) -> List[np.ndarray]:
+def pos_to_sequences(
+    seq_len: int, splits: Iterable[str], pos2i: Mapping[str, int]
+) -> List[np.ndarray]:
     return _x_to_sequences(seq_len, splits, pos2i, iterate_pos_docs)
 
 
-def words_to_sequences(seq_len: int, splits: Iterable[str],
-                       w2i: Mapping[str, int]) -> List[np.ndarray]:
+def words_to_sequences(
+    seq_len: int, splits: Iterable[str], w2i: Mapping[str, int]
+) -> List[np.ndarray]:
     return _x_to_sequences(seq_len, splits, w2i, iterate_docs)
 
 
-def mixed_pos_to_sequences(seq_len: int, splits: Iterable[str],
-                           w2i: Mapping[str, int]) -> List[np.ndarray]:
+def mixed_pos_to_sequences(
+    seq_len: int, splits: Iterable[str], w2i: Mapping[str, int]
+) -> List[np.ndarray]:
     return _x_to_sequences(seq_len, splits, w2i, iterate_mixed_pos_docs)
 
 
-def file_to_sequence(seq_len: int, filepath: Path, w2i: Mapping[str, int]) -> np.ndarray:
+def file_to_sequence(
+    seq_len: int, filepath: Path, w2i: Mapping[str, int]
+) -> np.ndarray:
     x = np.zeros(seq_len, int)
     with filepath.open() as f:
         idx = 0

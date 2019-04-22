@@ -42,7 +42,9 @@ class F1Metrics(Callback):
             val_predict = val_predict[0]
         if val_predict.shape[1] == 1:
             # Regression
-            val_predict = rescale_regression_results(val_predict, self.highest_class).ravel()
+            val_predict = rescale_regression_results(
+                val_predict, self.highest_class
+            ).ravel()
         if self.ranked:
             val_predict = K.eval(ranked_prediction(val_predict))
         logger.debug('Transformed predict\n%r', val_predict[:5])
@@ -51,14 +53,15 @@ class F1Metrics(Callback):
         logs['val_f1'] = _val_f1
         if _val_f1 > self.best_f1:
             print(
-                "Epoch %d: val_f1 improved from %f to %f: saving weights as %s" %
-                (epoch + 1, self.best_f1, _val_f1, self.weights_path)
+                "Epoch %d: val_f1 improved from %f to %f: saving weights as %s"
+                % (epoch + 1, self.best_f1, _val_f1, self.weights_path)
             )
             self.best_f1 = _val_f1
             self.model.save_weights(self.weights_path)
         else:
             print(
-                "Epoch %d: val_f1 did not improve (%f >= %f)" % (epoch + 1, self.best_f1, _val_f1)
+                "Epoch %d: val_f1 did not improve (%f >= %f)"
+                % (epoch + 1, self.best_f1, _val_f1)
             )
 
 

@@ -3,7 +3,7 @@ import logging
 from math import isfinite
 import os
 import tempfile
-from typing import (  # noqa: F401
+from typing import (
     Callable,
     Dict,
     Iterable,
@@ -11,7 +11,7 @@ from typing import (  # noqa: F401
     Optional,
     Sequence,
     Union,
-)
+)  # noqa: F401
 
 import keras.backend as K
 from keras.constraints import max_norm

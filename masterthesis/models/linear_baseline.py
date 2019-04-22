@@ -32,7 +32,9 @@ def mixed_pos_line_iter(split) -> Iterable[str]:
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--kind', choices={'bow', 'char', 'pos', 'mix'}, default='bow')
-    parser.add_argument('--algorithm', choices={'logreg', 'svc', 'svr'}, default='logreg')
+    parser.add_argument(
+        '--algorithm', choices={'logreg', 'svc', 'svr'}, default='logreg'
+    )
     parser.add_argument('--round-cefr', action='store_true')
     parser.add_argument('--nli', action='store_true')
     return parser.parse_args()
@@ -41,14 +43,20 @@ def parse_args():
 def preprocess(kind: str, max_features: Optional[int], train_meta, dev_meta):
     if kind == 'pos':
         vectorizer = CountVectorizer(
-            lowercase=False, token_pattern=r"[^\s]+", ngram_range=(2, 4), max_features=max_features
+            lowercase=False,
+            token_pattern=r"[^\s]+",
+            ngram_range=(2, 4),
+            max_features=max_features,
         )
         train_x = vectorizer.fit_transform(pos_line_iter('train'))
         dev_x = vectorizer.transform(pos_line_iter('dev'))
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'mix':
         vectorizer = CountVectorizer(
-            lowercase=False, token_pattern=r"[^\s]+", ngram_range=(1, 3), max_features=max_features
+            lowercase=False,
+            token_pattern=r"[^\s]+",
+            ngram_range=(1, 3),
+            max_features=max_features,
         )
         train_x = vectorizer.fit_transform(mixed_pos_line_iter('train'))
         dev_x = vectorizer.transform(mixed_pos_line_iter('dev'))

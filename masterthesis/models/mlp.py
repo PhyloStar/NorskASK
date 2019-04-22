@@ -51,7 +51,7 @@ def parse_args():
 
 
 def build_model(vocab_size: int, output_units: Sequence[int], classification: bool):
-    input_ = Input((vocab_size, ))
+    input_ = Input((vocab_size,))
 
     hidden_1 = Dense(100, activation='relu')(input_)
     dropout_1 = Dropout(0.5)(hidden_1)
@@ -59,9 +59,13 @@ def build_model(vocab_size: int, output_units: Sequence[int], classification: bo
     dropout_2 = Dropout(0.5)(hidden_2)
 
     activation = 'softmax' if classification else 'sigmoid'
-    outputs = [Dense(output_units[0], activation=activation, name=OUTPUT_NAME)(dropout_2)]
+    outputs = [
+        Dense(output_units[0], activation=activation, name=OUTPUT_NAME)(dropout_2)
+    ]
     if len(output_units) > 1:
-        aux_out = Dense(output_units[1], activation='softmax', name=AUX_OUTPUT_NAME)(dropout_2)
+        aux_out = Dense(output_units[1], activation='softmax', name=AUX_OUTPUT_NAME)(
+            dropout_2
+        )
         outputs.append(aux_out)
 
     return Model(inputs=[input_], outputs=outputs)
@@ -80,14 +84,20 @@ def mixed_pos_line_iter(split) -> Iterable[str]:
 def preprocess(kind: str, max_features: int, train_meta, dev_meta):
     if kind == 'pos':
         vectorizer = CountVectorizer(
-            lowercase=False, token_pattern=r"[^\s]+", ngram_range=(2, 4), max_features=max_features
+            lowercase=False,
+            token_pattern=r"[^\s]+",
+            ngram_range=(2, 4),
+            max_features=max_features,
         )
         train_x = vectorizer.fit_transform(pos_line_iter('train'))
         dev_x = vectorizer.transform(pos_line_iter('dev'))
         num_features = len(vectorizer.vocabulary_)
     elif kind == 'mix':
         vectorizer = CountVectorizer(
-            lowercase=False, token_pattern=r"[^\s]+", ngram_range=(1, 3), max_features=max_features
+            lowercase=False,
+            token_pattern=r"[^\s]+",
+            ngram_range=(1, 3),
+            max_features=max_features,
         )
         train_x = vectorizer.fit_transform(mixed_pos_line_iter('train'))
         dev_x = vectorizer.transform(mixed_pos_line_iter('dev'))
@@ -98,7 +108,7 @@ def preprocess(kind: str, max_features: int, train_meta, dev_meta):
             analyzer='char',
             ngram_range=(2, 4),
             max_features=max_features,
-            lowercase=False
+            lowercase=False,
         )
         dev_x = vectorizer.transform(filename_iter(dev_meta))
         num_features = len(vectorizer.vocabulary_)
@@ -141,13 +151,19 @@ def main():
     dev_meta = load_split('dev', round_cefr=args.round_cefr)
 
     kind = args.featuretype
-    train_x, dev_x, num_features = preprocess(kind, args.max_features, train_meta, dev_meta)
+    train_x, dev_x, num_features = preprocess(
+        kind, args.max_features, train_meta, dev_meta
+    )
 
     target_col = 'lang' if args.nli else 'cefr'
     labels = sorted(train_meta[target_col].unique())
 
-    train_target_scores = np.array([labels.index(c) for c in train_meta[target_col]], dtype=int)
-    dev_target_scores = np.array([labels.index(c) for c in dev_meta[target_col]], dtype=int)
+    train_target_scores = np.array(
+        [labels.index(c) for c in train_meta[target_col]], dtype=int
+    )
+    dev_target_scores = np.array(
+        [labels.index(c) for c in dev_meta[target_col]], dtype=int
+    )
 
     train_y, dev_y, output_units = get_targets_and_output_units(
         train_target_scores, dev_target_scores, args.method
@@ -162,7 +178,7 @@ def main():
         output_units.append(len(lang_labels))
         loss_weights = {
             AUX_OUTPUT_NAME: args.aux_loss_weight,
-            OUTPUT_NAME: 1.0 - args.aux_loss_weight
+            OUTPUT_NAME: 1.0 - args.aux_loss_weight,
         }
     else:
         loss_weights = None
@@ -172,7 +188,9 @@ def main():
     model.summary()
 
     optimizer, loss, metrics = get_compile_args(args.method, args.lr)
-    model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics)
+    model.compile(
+        optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics
+    )
 
     # Context manager fails on Windows (can't open an open file again)
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
@@ -185,7 +203,7 @@ def main():
         batch_size=args.batch_size,
         callbacks=callbacks,
         validation_data=(dev_x, dev_y),
-        verbose=2
+        verbose=2,
     )
     model.load_weights(weights_path)
     os.close(temp_handle)

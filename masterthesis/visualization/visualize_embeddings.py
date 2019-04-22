@@ -42,8 +42,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--embeddings', type=Path)
     parser.add_argument('--model', type=Path)
-    parser.add_argument('--debug', dest='loglevel', action='store_const', const=logging.DEBUG)
-    parser.add_argument('--quiet', dest='loglevel', action='store_const', const=logging.WARN)
+    parser.add_argument(
+        '--debug', dest='loglevel', action='store_const', const=logging.DEBUG
+    )
+    parser.add_argument(
+        '--quiet', dest='loglevel', action='store_const', const=logging.WARN
+    )
     parser.add_argument('--split', choices={'train', 'dev', 'test'}, default='dev')
     parser.set_defaults(loglevel=logging.INFO)
     args = parser.parse_args()
@@ -71,11 +75,11 @@ def get_model_representations(model_path: Path, split: str) -> np.ndarray:
     logger.debug(model.input)
     w2i_path = model_path.parent / (model_path.stem + '_w2i.pkl')
     w2i = pickle.load(w2i_path.open('rb'))
-    (x, ) = words_to_sequences(700, [split], w2i)
+    (x,) = words_to_sequences(700, [split], w2i)
     if isinstance(model.input, list) and len(model.input) == 2:
         pos2i_path = model_path.parent / ('pos2i.pkl')
         pos2i = pickle.load(pos2i_path.open('rb'))
-        (x_pos, ) = pos_to_sequences(700, [split], pos2i)
+        (x_pos,) = pos_to_sequences(700, [split], pos2i)
         x = [x, x_pos]
     return representation_model.predict(x)
 
@@ -115,7 +119,7 @@ def main():
             ax=ax,
             size='num_tokens',
             palette=palette,
-            hue_order=hue_order
+            hue_order=hue_order,
         )
     fig.set_size_inches(4, 3)
     plt.show()

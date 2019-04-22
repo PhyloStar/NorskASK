@@ -8,18 +8,43 @@ import pandas as pd
 from masterthesis.utils import DATA_DIR
 
 test_topics = {
-    'geografi norge folk ', 'innvandring ', 'innvandring politikk valg ', 'idrett/sport ',
-    'bolig geografi ', 'arbeid yrke ', 'økonomi holdning ', 'humor kultur ',
-    'politikk norge holdning ', 'litteratur bok ', 'familie befolkning norge ',
-    'litteratur dikt idrett ', 'folk utdannelse ', 'politikk holdning ', 'media tv ', 'religion ',
-    'helse organ ', 'folk følelser '
+    'geografi norge folk ',
+    'innvandring ',
+    'innvandring politikk valg ',
+    'idrett/sport ',
+    'bolig geografi ',
+    'arbeid yrke ',
+    'økonomi holdning ',
+    'humor kultur ',
+    'politikk norge holdning ',
+    'litteratur bok ',
+    'familie befolkning norge ',
+    'litteratur dikt idrett ',
+    'folk utdannelse ',
+    'politikk holdning ',
+    'media tv ',
+    'religion ',
+    'helse organ ',
+    'folk følelser ',
 }
 
 dev_topics = {
-    'helse ', 'helse arbeid innvandring ', 'litteratur dikt språk ', 'organisasjon ',
-    'helse røyking ', 'barn familie ', 'økonomi ', 'opplevelse ', 'familie flytting ',
-    'eldre familie ', 'barn idrett/sport ', 'litteratur dikt venner ', 'arbeid innvandring ',
-    'utdannelse språk ', 'idrett/sport kultur ', 'holdning '
+    'helse ',
+    'helse arbeid innvandring ',
+    'litteratur dikt språk ',
+    'organisasjon ',
+    'helse røyking ',
+    'barn familie ',
+    'økonomi ',
+    'opplevelse ',
+    'familie flytting ',
+    'eldre familie ',
+    'barn idrett/sport ',
+    'litteratur dikt venner ',
+    'arbeid innvandring ',
+    'utdannelse språk ',
+    'idrett/sport kultur ',
+    'holdning ',
 }
 
 

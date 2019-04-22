@@ -17,7 +17,12 @@ for i, row in enumerate(counts.itertuples()):
     for j, count in enumerate(row[1:]):
         col = 'white' if count < col_cutoff else 'black'
         plt.text(
-            j, i, int(count), horizontalalignment='center', verticalalignment='center', color=col
+            j,
+            i,
+            int(count),
+            horizontalalignment='center',
+            verticalalignment='center',
+            color=col,
         )
 
 plt.ylabel('Native language')

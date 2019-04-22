@@ -7,7 +7,15 @@ import pandas as pd
 from scipy.stats import entropy
 
 CEFR_LABELS = ['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']
-LANG_LABELS = ['russisk', 'polsk', 'tysk', 'vietnamesisk', 'engelsk', 'spansk', 'somali']
+LANG_LABELS = [
+    'russisk',
+    'polsk',
+    'tysk',
+    'vietnamesisk',
+    'engelsk',
+    'spansk',
+    'somali',
+]
 
 
 def cefr_distribution(df):
@@ -18,12 +26,14 @@ def lang_distribution(df):
     return df.lang.value_counts().reindex(LANG_LABELS, fill_value=0).values
 
 
-def selection_distributions(df, indices) -> Tuple[Tuple[float, float], Tuple[float, float]]:
+def selection_distributions(
+    df, indices
+) -> Tuple[Tuple[float, float], Tuple[float, float]]:
     dev = df[indices == 1]
     test = df[indices == 2]
     return (
         (cefr_distribution(dev), cefr_distribution(test)),
-        (lang_distribution(dev), lang_distribution(test))
+        (lang_distribution(dev), lang_distribution(test)),
     )
 
 
@@ -42,7 +52,7 @@ def evaluate_candidate(df, sample_topics, topics, overall_cefr, overall_lang):
             entropy(cefr_distribution(dev_set), overall_cefr),
             entropy(cefr_distribution(test_set), overall_cefr),
             entropy(lang_distribution(dev_set), overall_lang),
-            entropy(lang_distribution(test_set), overall_lang)
+            entropy(lang_distribution(test_set), overall_lang),
         ]
     )
 
@@ -54,7 +64,7 @@ def evaluate_candidate(df, sample_topics, topics, overall_cefr, overall_lang):
         'test_topics': test_topics,
         'entropies': entropies,
         'sample_sizes': sample_sizes,
-        'penalty': np.sum(entropies**2) + sample_size_penalty
+        'penalty': np.sum(entropies ** 2) + sample_size_penalty,
     }
 
 
@@ -96,14 +106,17 @@ def evolution(df, topics, overall_cefr, overall_lang):
         df=df,
         topics=topics,
         overall_cefr=overall_cefr,
-        overall_lang=overall_lang
+        overall_lang=overall_lang,
     )
     pop_size = 100
     elite_size = 20
     mutants_per_cand = pop_size // elite_size
     best_ever = None
     generations = 0
-    population = [np.random.choice([0, 1, 2], len(topics), p=[.8, .1, .1]) for _ in range(pop_size)]
+    population = [
+        np.random.choice([0, 1, 2], len(topics), p=[0.8, 0.1, 0.1])
+        for _ in range(pop_size)
+    ]
     print('Starting evolution algorithm ... Ctrl-C to end')
     try:
         while True:

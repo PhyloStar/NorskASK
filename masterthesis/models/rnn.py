@@ -81,7 +81,7 @@ def parse_args():
         rnn_cell='lstm',
         rnn_dim=300,
         vocab_size=None,
-        pool_method='mean'
+        pool_method='mean',
     )
     return parser.parse_args()
 
@@ -92,14 +92,19 @@ def _build_rnn(rnn_cell: str, rnn_dim: int, bidirectional: bool) -> Layer:
     elif rnn_cell == 'gru':
         cell_factory = GRU
     rnn_factory = cell_factory(
-        rnn_dim, return_sequences=True, dropout=INPUT_DROPOUT, recurrent_dropout=RECURRENT_DROPOUT
+        rnn_dim,
+        return_sequences=True,
+        dropout=INPUT_DROPOUT,
+        recurrent_dropout=RECURRENT_DROPOUT,
     )
     if bidirectional:
         rnn_factory = Bidirectional(rnn_factory)
     return rnn_factory
 
 
-def build_model(args: argparse.Namespace, output_units: Sequence[int], num_pos: int = 0):
+def build_model(
+    args: argparse.Namespace, output_units: Sequence[int], num_pos: int = 0
+):
     # Only the global average pooling supports masked input
     mask_zero = args.pool_method == 'mean'
 
@@ -110,7 +115,7 @@ def build_model(args: argparse.Namespace, output_units: Sequence[int], num_pos: 
         pos_embed_dim=POS_EMB_DIM,
         vocab_size=args.vocab_size,
         sequence_len=args.doc_length,
-        static_embeddings=args.static_embs
+        static_embeddings=args.static_embs,
     )
     inputs, embedding_layer = build_inputs_and_embeddings(input_layer_args)
 
@@ -130,9 +135,9 @@ def build_model(args: argparse.Namespace, output_units: Sequence[int], num_pos: 
 
         # apply the attention
         sent_representation = Multiply()([dropout, attention])
-        pooled = Lambda(
-            lambda xin: K.sum(xin, axis=1), name=REPRESENTATION_LAYER
-        )(sent_representation)
+        pooled = Lambda(lambda xin: K.sum(xin, axis=1), name=REPRESENTATION_LAYER)(
+            sent_representation
+        )
     elif args.pool_method == 'mean':
         pooled = GlobalAveragePooling1D(name=REPRESENTATION_LAYER)(dropout)
     elif args.pool_method == 'max':
@@ -143,14 +148,18 @@ def build_model(args: argparse.Namespace, output_units: Sequence[int], num_pos: 
     activation = 'softmax' if args.method == 'classification' else 'sigmoid'
     outputs = [Dense(output_units[0], activation=activation, name=OUTPUT_NAME)(pooled)]
     if len(output_units) > 1:
-        aux_out = Dense(output_units[1], activation='softmax', name=AUX_OUTPUT_NAME)(pooled)
+        aux_out = Dense(output_units[1], activation='softmax', name=AUX_OUTPUT_NAME)(
+            pooled
+        )
         outputs.append(aux_out)
     return Model(inputs=inputs, outputs=outputs)
 
 
 def get_compile_args(args: argparse.Namespace):
     losses = {AUX_OUTPUT_NAME: 'categorical_crossentropy'}
-    metrics = {AUX_OUTPUT_NAME: ['accuracy']}  # type: Dict[str, List[Union[str, Callable]]]
+    metrics = {
+        AUX_OUTPUT_NAME: ['accuracy']
+    }  # type: Dict[str, List[Union[str, Callable]]]
     if args.method == 'classification':
         optimizer = RMSprop(lr=args.lr, rho=args.decay_rate)
         losses[OUTPUT_NAME] = 'categorical_crossentropy'
@@ -191,8 +200,12 @@ def main():
     args.vocab_size = len(w2i)
     print("Vocabulary size is {}".format(args.vocab_size))
 
-    train_target_scores = np.array([labels.index(c) for c in train_meta[target_col]], dtype=int)
-    dev_target_scores = np.array([labels.index(c) for c in dev_meta[target_col]], dtype=int)
+    train_target_scores = np.array(
+        [labels.index(c) for c in train_meta[target_col]], dtype=int
+    )
+    dev_target_scores = np.array(
+        [labels.index(c) for c in dev_meta[target_col]], dtype=int
+    )
     del target_col
 
     train_y, dev_y, output_units = get_targets_and_output_units(
@@ -209,7 +222,7 @@ def main():
         output_units.append(len(lang_labels))
         loss_weights = {
             AUX_OUTPUT_NAME: args.aux_loss_weight,
-            OUTPUT_NAME: 1.0 - args.aux_loss_weight
+            OUTPUT_NAME: 1.0 - args.aux_loss_weight,
         }
     else:
         loss = loss[OUTPUT_NAME]
@@ -222,7 +235,9 @@ def main():
     if args.vectors:
         init_pretrained_embs(model, args.vectors, w2i)
 
-    model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics)
+    model.compile(
+        optimizer=optimizer, loss=loss, loss_weights=loss_weights, metrics=metrics
+    )
 
     # Context manager fails on Windows (can't open an open file again)
     temp_handle, weights_path = tempfile.mkstemp(suffix='.h5')
@@ -235,7 +250,7 @@ def main():
         batch_size=args.batch_size,
         callbacks=callbacks,
         validation_data=(dev_x, dev_y),
-        verbose=2
+        verbose=2,
     )
     model.load_weights(weights_path)
     os.close(temp_handle)

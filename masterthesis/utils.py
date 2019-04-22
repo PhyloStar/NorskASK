@@ -15,8 +15,10 @@ from typing import Iterable, List, Optional, Sequence, Set, TextIO, Tuple, Union
 
 import keras.backend as K
 import matplotlib
-if 'SLURM_JOB_NODELIST' in os.environ or \
-        (os.name == 'posix' and 'DISPLAY' not in os.environ):  # noqa: E402
+
+if 'SLURM_JOB_NODELIST' in os.environ or (
+    os.name == 'posix' and 'DISPLAY' not in os.environ
+):  # noqa: E402
     matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
@@ -25,6 +27,7 @@ import tensorflow as tf
 
 try:
     import seaborn as sns
+
     sns.set(context='paper', style='whitegrid')
 except ImportError:
     pass
@@ -34,7 +37,18 @@ CMAP = 'gnuplot2_r'
 
 safe_plt = plt
 
-conll_cols = ['ID', 'FORM', 'LEMMA', 'UPOS', 'XPOS', 'FEATS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']
+conll_cols = [
+    'ID',
+    'FORM',
+    'LEMMA',
+    'UPOS',
+    'XPOS',
+    'FEATS',
+    'HEAD',
+    'DEPREL',
+    'DEPS',
+    'MISC',
+]
 
 iso639_3 = dict(
     engelsk='eng',
@@ -43,7 +57,7 @@ iso639_3 = dict(
     somali='som',
     spansk='spa',
     tysk='deu',
-    vietnamesisk='vie'
+    vietnamesisk='vie',
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]  # type: Path
@@ -71,7 +85,7 @@ if 'seaborn' in sys.modules:
         xticks: Sequence[str],
         yticks: Sequence[str],
         normalize: bool = False,
-        ax: Optional[plt.Axes] = None
+        ax: Optional[plt.Axes] = None,
     ) -> None:
         """Plot a 2D array as a heatmap with overlayed values.
 
@@ -101,10 +115,12 @@ if 'seaborn' in sys.modules:
             cbar=cbar,
             vmin=vmin,
             vmax=vmax,
-            cmap=CMAP
+            cmap=CMAP,
         )
         ax.set_xticklabels(xticks)
         ax.set_yticklabels(yticks, rotation=0)
+
+
 else:
 
     def heatmap(
@@ -112,7 +128,7 @@ else:
         xticks: Sequence[str],
         yticks: Sequence[str],
         normalize: bool = False,
-        ax: Optional[plt.Axes] = None
+        ax: Optional[plt.Axes] = None,
     ) -> None:
         """Plot a 2D array as a heatmap with overlayed values.
 
@@ -131,11 +147,13 @@ else:
             yticks=range(len(yticks)),
             xticks=range(len(xticks)),
             yticklabels=yticks,
-            xticklabels=xticks
+            xticklabels=xticks,
         )
         color_cutoff = values.max() / 2
 
-        for row, col in itertools.product(range(values.shape[0]), range(values.shape[1])):
+        for row, col in itertools.product(
+            range(values.shape[0]), range(values.shape[1])
+        ):
             val = values[row, col]
             color = 'white' if val < color_cutoff else 'black'
             if np.issubdtype(values.dtype, np.floating):
@@ -148,7 +166,7 @@ else:
                 label,
                 horizontalalignment='center',
                 verticalalignment='center',
-                color=color
+                color=color,
             )
 
 
@@ -223,8 +241,9 @@ def document_iterator(doc: TextIO) -> Iterable[str]:
         yield next(tokens_iter)
 
 
-def conll_reader(file: Union[str, Path], cols: Sequence[str],
-                 tags: bool = False) -> Iterable[List[Tuple[str, ...]]]:
+def conll_reader(
+    file: Union[str, Path], cols: Sequence[str], tags: bool = False
+) -> Iterable[List[Tuple[str, ...]]]:
     """Iterate over sentences in a CoNLL file.
 
     Args:
@@ -272,7 +291,9 @@ def get_split_len(split: str) -> int:
         return 966
     elif split in ('dev', 'test'):
         return 123
-    raise ValueError("Unrecognized split '%s', should be 'train', 'dev' or 'test'" % split)
+    raise ValueError(
+        "Unrecognized split '%s', should be 'train', 'dev' or 'test'" % split
+    )
 
 
 def get_file_name(name: str) -> str:
@@ -306,7 +327,9 @@ def save_model(name: str, model, w2i, pos2i=None):
 
 def get_stopwords() -> Set[str]:
     """Read and return stop words from a text file."""
-    with (MODEL_DIR / 'stopwords' / 'norwegian-funcwords.txt').open(encoding='utf8') as f:
+    with (MODEL_DIR / 'stopwords' / 'norwegian-funcwords.txt').open(
+        encoding='utf8'
+    ) as f:
         res = set(line.strip() for line in f)
     return res
 
@@ -323,7 +346,9 @@ def set_reproducible(seed_delta: int = 0) -> None:
     # Force TensorFlow to use single thread.
     # Multiple threads are a potential source of non-reproducible results.
     # For further details, see: https://stackoverflow.com/questions/42022950/
-    session_conf = tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
+    session_conf = tf.ConfigProto(
+        intra_op_parallelism_threads=1, inter_op_parallelism_threads=1
+    )
     # The below tf.set_random_seed() will make random number generation
     # in the TensorFlow backend have a well-defined initial state.
     # For further details, see:
@@ -334,4 +359,6 @@ def set_reproducible(seed_delta: int = 0) -> None:
 
 
 def rescale_regression_results(predictions, highest_class):
-    return np.clip(np.floor(predictions * highest_class + 0.5), 0, highest_class).astype(int)
+    return np.clip(
+        np.floor(predictions * highest_class + 0.5), 0, highest_class
+    ).astype(int)
