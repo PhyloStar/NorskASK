@@ -11,11 +11,12 @@ data is also described.
 The ASK corpus (\emph{andrespråkskorpus}) was presented in 2006
 \autocite{tenfjord06}. The corpus contains Norwegian learner essays from two
 different language tests: \emph{Språkprøven i norsk for voksne innvandrere}
-and \emph{Test i norsk – høyere nivå}, which test proficiency at the B1 and
-B2 levels, respectively. Following the naming in
-\textcite{carlsen2012proficiency}, we will refer to these tests as the
-\emph{IL test} (Intermediate Level, ``Språkprøven'') and the \emph{AL test}
-(Advanced Level, ``Høyere nivå'').
+and \emph{Test i norsk – høyere nivå}. The two test levels are not offically
+tied to the CEFR framework, but \textcite{carlsen2012proficiency} estimated
+them to measure proficiency at approximately B1 and B2/C1 level,
+respectively. Following the naming in \textcite{carlsen2012proficiency}, we
+will refer to these tests as the \emph{IL test} (Intermediate Level,
+``Språkprøven'') and the \emph{AL test} (Advanced Level, ``Høyere nivå'').
 % cspell:enable
 
 \begin{table}
@@ -85,10 +86,25 @@ is about, and the learner's country of origin, age, and gender.
 The CEFR scores in the ASK corpus range between A2 and C1, and also includes
 intermediate labels between the canonical proficiency scores, such as A2/B1
 and B1/B2. Thus, the total number of distinct CEFR scores is seven, which is
-more fine-grained than the TOEFL11 corpus \autocite{blanchard13}, which only
-uses three distinct proficiency categories, or the corpus used in
-\textcite{vajjala18universalCEFR}, the MERLIN corpus, where the CEFR scores
-range between A1 and C1, but without any intermediate levels.
+more fine-grained than the TOEFL11 corpus \autocite{blanchard13}, which uses
+three distinct proficiency categories, not necessarily corresponding to CEFR
+scores. The corpus used in \textcite{vajjala18universalCEFR}, the MERLIN
+corpus, has CEFR scores ranging between A1 and C1, but does not use any
+intermediate levels.
+
+As mentioned, the two test levels making up the ASK corpus are estimated to
+measure proficiency at the B1 and B2/C1 levels in the CEFR framework.
+However, many essays are rated with CEFR scores both above and below the
+estimated level of their associated test. Essays scoring higher are easily
+accounted for, considering that a learner at a high level is expected to pass
+a test at a lower level. The essays scoring below the test level can also be
+accounted for, even though we know that all the documents in ASK are taken
+from learners who passed their test. First, while ASK only contains essays,
+the original test consisted of multiple parts, and a low score on the essay
+part could be outweighed by good performance by the learner on other parts of
+the test. Second, the CEFR labels in ASK were assigned after the test, by
+different raters, who cannot be expected to be in complete agreement with the
+raters who originally passed the tests.
 
 The fine-grained labels makes it challenging to train and evaluate models,
 and also to compare the results against work on other corpora, because the
@@ -121,10 +137,25 @@ The text was assessed to be on level `B2/C1' in the CEFR framework.
 The ASK corpus has been used in several studies on features Norwegian learner
 language and transfer effects from different \acp{L1}.
 
-\textcite{pepper2012} uses statistical methods to \todo{write here}
+\textcite{pepper2012} uses predictive analysis to find lexical features that
+are indicative of different \acp{L1}. The study was designed to closely
+replicate \textcite{jarvis}, which influenced many of the methodological
+design decisions. In the study, experiments were limited to different subsets
+of five languages. All features were based on word counts. The predictive
+model used was \acp{LDA}.
 
-In \textcite{golden2016ask}, the author examines the different uses of a single
-specific verb in the ASK corpus. Specifically, the verb ``gjøre'', which
+Concrete findings from the \citeauthor{pepper2012} study include that
+learners with a Slavic language background (Russian and Polish) used
+indefinite articles (`en', `et' and `ei' in Norwegian bokmål) less
+frequently. This was interpreted as cross-linguistic transfer, since the
+relevant \acp{L1} lack indefinite articles. The study found multiple
+distinguishing patterns in the use of prepositions, but providing possible
+explanations for the differences was out of its scope. These two patterns
+serve here as indicative of the results of the study regarding transfer
+effects, but they are far from an exhaustive account of the findings.
+
+In \textcite{golden2016ask}, the author examines the different uses of a
+specific verb in the ASK corpus. Specifically, the verb `gjøre', which
 corresponds to the English `do' or `make'. The study uses a subset of the
 corpus, only looking at texts from learners with English, German, Polish or
 Spanish as their \ac{L1}. The occurrences of the verb are categorized into
@@ -177,26 +208,34 @@ namely Somali and Vietnamese, which have seven and five essays in the B2 test
 level, respectively. All other combinations of L1 and test level contain
 exactly 100 essays. This partly explains the low average proficiency of
 Somali and Vietnamese speakers apparent in figure \ref{fig:lang-vs-cefr}. The
-difference compared to the other language groups is not as salient when
-looking only at the B1 test level (\emph{IL test}) data.
+difference compared to the other language groups is less salient when looking
+only at the B1 test level (\emph{IL test}) data (figure
+\ref{fig:testlevel-lang-vs-cefr}, left).
+
+In fact, the distribution of CEFR scores corresponds to the similarity of the
+various \acp{L1} to Norwegian. The Germanic languages, German and English,
+have the fewest number of essays below B1 level in the IL test. The
+non-Indo-European languages, Vietnamese and Somali, rarely score above B1
+level in the IL test, and their mode is A2/B1 compared to B1 for all the
+Indo-European languages.
 
 \begin{table}
   \centering
   \begin{tabular}{lrrr}
     \toprule
-    Topic                    & AL test & IL test & Total \\
+    Topic                    & IL test & AL test & Total \\
     \midrule
     % cspell:disable
-    telefon                  &      37 &      64 &   101 \\
-    bolig                    &       0 &      83 &    83 \\
-    familie helse vekt       &      59 &       0 &    59 \\
-    tid                      &       2 &      51 &    53 \\
-    natur norge              &       0 &      48 &    48 \\
-    folk relasjoner vennskap &       0 &      45 &    45 \\
-    tradisjoner flytting     &       0 &      38 &    38 \\
-    barn                     &       3 &      32 &    35 \\
-    kultur norge             &       0 &      34 &    34 \\
-    media                    &       0 &      31 &    31 \\
+    telefon                  &      64 &      37 &   101 \\
+    bolig                    &      83 &       0 &    83 \\
+    familie helse vekt       &       0 &      59 &    59 \\
+    tid                      &      51 &       2 &    53 \\
+    natur norge              &      48 &       0 &    48 \\
+    folk relasjoner vennskap &      45 &       0 &    45 \\
+    tradisjoner flytting     &      38 &       0 &    38 \\
+    barn                     &      32 &       3 &    35 \\
+    kultur norge             &      34 &       0 &    34 \\
+    media                    &      31 &       0 &    31 \\
     % cspell:enable
     \bottomrule
   \end{tabular}
@@ -207,21 +246,27 @@ looking only at the B1 test level (\emph{IL test}) data.
   \label{tab:texts-per-topic}
 \end{table}
 
-Another interesting variable is the essay topic. There is generally a strong
-correlation between topic and vocabulary, and not accounting for this may
-lead to a model picking up the wrong signal. Since the data is collected from
-two different language tests, we might expect the distribution of topics to
-differ between the test levels, and this is the case. Looking at the ten most
-common topics in the data (table \ref{tab:texts-per-topic}), several are only
-present on one test level.
+Another interesting variable is the essay topic. When we refer to the topic,
+we refer to the `tema' (theme, topic) variable in the documents' metadata
+section, as opposed to the essay title, for instance. The various prompts do
+not correspond strictly to topic.
 
-There is also a difference in granularity. There are 52 topics in ``Høyere
-nivå'' and only 38 topics in \emph{IL test}, even though there are more
+We can generally expect a high correlation between topic and vocabulary, and
+not accounting for this may lead to a model picking up the wrong signal.
+Since the data is collected from two different language tests, we might
+expect the distribution of topics to differ between the test levels, and this
+is indeed the case. Looking at the ten most common topics in the data (table
+\ref{tab:texts-per-topic}), several are only present on one test level.
+
+There is also a difference in granularity. There are 52 different topics in
+the AL test, and only 38 topics in IL test, even though there are more
 documents in the latter test level (512 vs. 700). This also means that the
 topics within each test level have different support. The median number of
-documents for a topic in \emph{AL test} is 5 (mean $9.8$), while it is 11 in
-\emph{IL test} (mean $18.4$). This also explains the overrepresentation of
-\emph{IL test} in the table of top ten topics.
+documents for a topic in AL test is 5 (mean $9.8$), while it is 11 in IL test
+(mean $18.4$). This also explains the overrepresentation of the IL test in
+the table of top ten topics. The individual topics in the AL test have fewer
+occurrences, and thus are less likely to appear on the top ten list when we
+combine the test levels.
 
 % cspell:disable
 It has been observed that some topics in the diagram consist of several
