@@ -106,21 +106,23 @@ to avoid undefined values.
   \centering
   \includegraphics[width=0.8\textwidth]{graph}
   \caption[Illustration of a feed-forward neural network]{
-    A fully connected feed-forward neural network with four input
-    nodes, two hidden layers, and three output nodes.
+    A fully connected feed-forward neural network with four input nodes, two
+    hidden layers, and three output nodes. This network would consist of
+    three weight matrices, represented by the lines connecting adjacent
+    layers.
   }
   \label{fig:mlp-diagram}
 \end{figure}
 
-The ``vanilla'' neural network is the feed-forward network, also known as the
-\ac{MLP}. This model incorporates one or more
-hidden layer in-between the input layer (the feature vector) and the output
-layer. A diagram of an example \ac{MLP} with two hidden layers can be seen in
-figure \ref{fig:mlp-diagram}. For multi-class prediction, the output layer
-typically uses a \emph{softmax} activation. This has the property of
-restricting each output value to be in the interval $(0,1)$, and additionally
-makes sure all output values sum to $1$. These properties allow the outputted
-values to be interpreted as a probability distribution.
+The `vanilla' neural network is the feed-forward network, also known as the
+\ac{MLP}. This model incorporates one or more hidden layers in-between the
+input layer (the feature vector) and the output layer. A diagram of an
+example \ac{MLP} with two hidden layers can be seen in figure
+\ref{fig:mlp-diagram}. For multi-class prediction, the output layer typically
+uses a \emph{softmax} activation. This has the property of restricting each
+output value to be in the interval $(0,1)$, and additionally makes sure all
+output values sum to $1$. These properties allow the outputted values to be
+interpreted as a probability distribution.
 
 \begin{equation}\label{eq:softmax}
   \mathrm{softmax}(x)_i = \frac{\exp{x_i}}{\sum_{j=1}^{m}\exp{x_j}}
@@ -130,9 +132,9 @@ values to be interpreted as a probability distribution.
 \subsection{Convolutional neural networks}
 
 \acp{CNN} are widely employed in image processing models, using
-two-dimensional convolutional layers. These models can often get very
-deep, using a number of convolutional layers at different levels in the
-network, interspersed with pooling, also known as downsampling, layers.
+two-dimensional convolutional layers. These models can often get very deep,
+using a number of convolutional layers at different levels in the network,
+interspersed with pooling, also known as downsampling, layers.
 
 \acp{CNN} can exploit local patterns in the input, unlike the \ac{MLP}, which
 has no notion of distance between different elements of the input. For data
@@ -369,14 +371,13 @@ corpus \autocite{yannakoudakis2011new}. This study examines which features
 may be most informative in relation to the task, and whether these are the
 same features for different datasets. \citeauthor{vajjala17} uses a number of
 linguistic features for the task, including several different measures for
-the lexical diversity, distribution of \ac{POS} tags, and
-syntactic complexity. The models in the study utilize up to 116 different
-features. Applied pre-processing includes syntactic parsing of sentences in
-order to extract features from the parse trees. These syntactic features
-include measures of average sentence length, clauses per sentence, the height
-of the parse tree etc. Several of these features were based on previous work
-on measuring syntactic complexity in L2 writing by
-\textcite{lu2010automatic}.
+the lexical diversity, distribution of \ac{POS} tags, and syntactic
+complexity. The models in the study utilize up to 116 different features.
+Applied pre-processing includes syntactic parsing of sentences in order to
+extract features from the parse trees. These syntactic features include
+measures of average sentence length, clauses per sentence, the height of the
+parse tree etc. Several of these features were based on previous work on
+measuring syntactic complexity in L2 writing by \textcite{lu2010automatic}.
 
 Other features are designed to capture discourse properties of the text,
 based on reference chains. The English language has different ways of
@@ -548,6 +549,12 @@ documents are marked on a proficiency scale from 1 to 40.
 \section{Conclusion}
 
 \todo{Expand a bit}
-The thesis will be focused on training an automated essay scoring model on
-Norwegian data using multi-task learning. Native language identification is
-one of possibly more auxiliary tasks that will be attempted.
+This thesis will be focused on training automated essay scoring models on
+Norwegian data. We will experiment with various linear and neural machine
+learning models. We will try using different input features and combinations
+of these, and do limited exploration of the hyperparameter space of our
+models.
+
+Finally, we will train some of our models with multi-task learning, using
+\ac{NLI} as an auxiliary task. As far as we know, this task combination has
+not been attempted in previous work \todo{verify}.
