@@ -15,7 +15,6 @@ from typing import Iterable, List, Optional, Sequence, Set, TextIO, Tuple, Union
 
 import keras.backend as K
 import matplotlib
-
 if 'SLURM_JOB_NODELIST' in os.environ or (
     os.name == 'posix' and 'DISPLAY' not in os.environ
 ):  # noqa: E402

@@ -67,23 +67,41 @@ trained and evaluated each model five times with different random seeds. By
 training more than one model with a given set of hyperparameters, we can get
 an idea of the variance of results.
 
-We know that the sigmoid output yields values between 0 and 1, and that the
-target value is also between 0 and 1. Therefore, the prediction error is also
-bounded between 0 and 1. We are using squared error loss, and squaring a
-number between 0 and 1 gives a smaller number. However, the cross-entropy
-loss on the auxiliary output is a number bigger than 0, but unbounded from
-above. This suggests that a small auxiliary loss weight may be preferable, so
-the loss from our main task is not drowned in the loss from the auxiliary
-task.
+We know that the sigmoid output used for regression on the main task yields
+values between 0 and 1, and that the target value is also between 0 and 1.
+Therefore, the prediction error is also bounded between 0 and 1. We are using
+squared error loss, and squaring a number between 0 and 1 gives a smaller
+number. However, the cross-entropy loss on the auxiliary output is always a
+number bigger than 0, but unbounded from above. This suggests that a small
+auxiliary loss weight may be preferable, so the loss from our main task is
+not drowned in the loss from the auxiliary task.
+
 
 \section{Results}
 
-Below we plot see the results of running some of the most successful models
-from the previous chapter in a multi-task setting, using the essay's L1 as
-the auxiliary label to predict. The $x$ value is the weight given to the
-auxiliary loss during training. Some of the models have an auxiliary loss
-weight of zero, which is the same as training in single-task mode.
 The reported metrics apply to the main task, CEFR prediction, only.
+
+The highest macro \FI scores on the full label set all come from RNN models.
+Three of them was achieved by RNN2 and two by RNN1. The five highest scores
+range between $0.468$ and $0.483$ and were achieved using auxiliary loss
+weights in the range from $0$ to $0.5$. The highest score was achieved in
+single-task mode, but with a different random seed than before. The highest
+macro \FI score in the previous chapter was $0.460$.
+
+On the set of collapsed labels, the five highest macro \FI scores range
+between $0.798$ and $0.824$. Four of the top five results are from RNN1, and
+one from RNN2. Here, the auxiliary loss weights range from $0$ to $0.2$. The
+two highest scores were also achieved in single-task mode with a different
+random seed than before. Additionally, the model that had the highest macro
+\FI score ($0.806$) on the collapsed set of labels in the previous chapter
+was not included in the multi-task experiments. RNN1 and RNN2 had respective
+macro \FI scores of $0.687$ and $0.773$ on the collapsed set of labels in the
+previous chapter.
+
+Below we plot the effect of auxiliary loss on all four models (fig.
+\ref{fig:lossweight}). The $x$ value is the weight given to the auxiliary
+loss during training. Some of the models have an auxiliary loss weight of
+zero, which is the same as training in single-task mode.
 
 \begin{figure}
   \centering
@@ -96,11 +114,28 @@ The reported metrics apply to the main task, CEFR prediction, only.
   \label{fig:lossweight}
 \end{figure}
 
+The effect of auxiliary task weight is most visible for the RNN2 model, where
+we see a degradation of results as the auxiliary loss weight gets closer to
+1. In RNN1, a different effect seems apparent, namely an increase in variance
+with increased auxiliary loss weight. The RNN1 experiment that entered the
+top five with an auxiliary loss weight of $0.5$ appears from the to be an
+outlier. Most of the best results are a result of single-task training or a
+low auxiliary loss weight, confirming our suspicions above regarding the
+magnitude of loss functions. In model RNN2, it looks like a small auxiliary
+loss weight of $0.1$ has reduced the variance in results compared to the
+experiments in single-task mode.
+
+For the experiments using collapsed CEFR labels, we see in three of the four
+models that the mean macro \FI score (the dashed line in the plot) is highest
+using a small auxiliary loss weight of $0.1$. However, the variance is large,
+especially in the RNN models.
+
+However, even though we are now running the same experiment multiple times
+using different random seeds, we still have only five samples for each
+auxiliary loss weight, which is a small number to try to draw any conclusions
+from with statistical certainty.
+
 \todo{must check again}
-The highest macro \FI scores on the full label set all come from RNN models.
-The five highest scores range between $0.468$ and $0.483$ and were achieved
-using auxiliary loss weights in the range from $0$ to $0.5$.
-The highest macro \FI score in the previous chapter was $0.460$.
 
 
 \todo{update figures}
@@ -168,16 +203,18 @@ whether the metrics agree on the ranking of models.
   \label{fig:reg_macro_F1_collapsed}
 \end{figure}
 
-In figure \ref{fig:reg_macro_F1_all}, all experiments from this chapter have
-been plotted to compare the macro \FI score to both the micro \FI score and
-the macro mean average error.
-
-The correlation is not all that strong, at least not for macro \FI vs. micro
-\FI. Four experiments are tied for the highest micro \FI, but they range
-between $0.302$ and $0.480$ in macro \FI.
+We plotted two pairs of metrics for all experiments in this chapter against
+each other. The first pair is macro \FI score against the micro \FI score,
+and the second pair is the macro \FI score against the macro mean average
+error. The experiments on the full set of classes and the collapsed set of
+classes are separated into two plots, figures \ref{fig:reg_macro_F1_all} and
+\ref{fig:reg_macro_F1_collapsed}. From examining the plots, it appears that
+the correlation is not all that strong, at least not for macro \FI vs. micro
+\FI. Four of the experiments on the full set of classes are tied for the
+highest micro \FI, but they range between $0.302$ and $0.480$ in macro \FI.
 
 It is also of note that the CNN and RNN experiments appear to form two
-separate populations in the plot, with different correlation properties.
+separate populations in the plots, with different correlation properties.
 Table \ref{tab:metric-corrs} shows that in several cases, the correlation
 value is much lower when examining CNN experiments and RNN experiments as
 separate populations. \todo{Something with non-linearity} The correlation
@@ -195,6 +232,12 @@ micro \FI for the full set of labels, where the CNN group has a higher
 correlation coefficient on its own than when combined with the RNN
 experiments. Notice also that in this case, the RNN experiments show no
 correlation within their group.
+
+A possible interpretation of the high correlation we see in the combined
+experiments is that it is not so much an indication of a linear relationship
+between the metrics, but merely tells us that one of the two populations
+tends to have improved values for both metrics compared to the other
+population.
 
 
 \begin{table}
