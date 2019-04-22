@@ -131,7 +131,7 @@ def compile_dataframe(files: Iterable[Path]):
         data["MAE"].append(mean_absolute_error(res.true, res.predictions))
         data["Macro MAE"].append(macro_mae(res.true, res.predictions))
         data["Collapsed"].append(cfg["round_cefr"])
-        data["Model"].append(model_name)
+        data["Model"].append(model_name.upper())
         data["Filename"].append(str(f))
     return pd.DataFrame.from_dict(data)
 
@@ -143,11 +143,12 @@ def main():
     df.to_csv("Multitask_runs.csv")
     metric = {"f1": "Macro F1", "mae": "MAE", "macro_mae": "Macro MAE"}[args.metric]
     g = sns.FacetGrid(
-        data=df, col="Model", col_wrap=2, col_order=["cnn1", "cnn2", "rnn1", "rnn2"]
+        data=df, col="Model", col_wrap=2, col_order=["CNN1", "CNN2", "RNN1", "RNN2"]
     )
     g.map_dataframe(sns.lineplot, "Aux loss weight", metric, style="Collapsed")
     g.map_dataframe(sns.scatterplot, "Aux loss weight", metric, style="Collapsed")
-    g.fig.set_size_inches(5, 4)
+    g.set_axis_labels(x_var="Auxiliary loss weight", y_var="Macro F₁")
+    g.fig.set_size_inches(5, 5)
     g.fig.tight_layout()
     print(df.groupby(["Collapsed", "Model"]).size())
     if metric == "Macro F1":
