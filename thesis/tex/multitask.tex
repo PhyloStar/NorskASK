@@ -67,6 +67,15 @@ trained and evaluated each model five times with different random seeds. By
 training more than one model with a given set of hyperparameters, we can get
 an idea of the variance of results.
 
+We know that the sigmoid output yields values between 0 and 1, and that the
+target value is also between 0 and 1. Therefore, the prediction error is also
+bounded between 0 and 1. We are using squared error loss, and squaring a
+number between 0 and 1 gives a smaller number. However, the cross-entropy
+loss on the auxiliary output is a number bigger than 0, but unbounded from
+above. This suggests that a small auxiliary loss weight may be preferable, so
+the loss from our main task is not drowned in the loss from the auxiliary
+task.
+
 \section{Results}
 
 Below we plot see the results of running some of the most successful models
