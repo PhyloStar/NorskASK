@@ -8,8 +8,8 @@ from typing import Any, DefaultDict, Iterable, List  # noqa: F401
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.metrics import f1_score, mean_absolute_error
 import seaborn as sns
+from sklearn.metrics import f1_score, mean_absolute_error
 
 from masterthesis.agreement import macro_mae
 from masterthesis.utils import RESULTS_DIR

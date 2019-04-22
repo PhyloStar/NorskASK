@@ -1,16 +1,24 @@
 from itertools import chain
 from pathlib import Path
-from typing import Callable, Dict, Iterable, List, Optional, Mapping
-try:
-    from typing import Counter
-except ImportError:
-    from collections import Counter
+from typing import Callable, Dict, Iterable, List, Mapping, Optional
 
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 import tqdm
 
-from masterthesis.utils import conll_reader, get_split_len, get_stopwords, load_split, PROJECT_ROOT
+from masterthesis.utils import (
+    conll_reader,
+    get_split_len,
+    get_stopwords,
+    load_split,
+    PROJECT_ROOT,
+)
+
+try:
+    from typing import Counter
+except ImportError:
+    from collections import Counter
+
 
 data_folder = PROJECT_ROOT / 'ASK'
 

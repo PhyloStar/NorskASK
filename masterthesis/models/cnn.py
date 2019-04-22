@@ -1,6 +1,6 @@
 import argparse
-from math import isfinite
 import logging
+from math import isfinite
 import os
 import tempfile
 from typing import (  # noqa: F401
@@ -30,8 +30,8 @@ from masterthesis.models.utils import (
     get_sequence_input_reps,
     get_targets_and_output_units,
     init_pretrained_embs,
-    ranked_prediction,
     ranked_accuracy,
+    ranked_prediction,
 )
 from masterthesis.results import save_results
 from masterthesis.utils import (

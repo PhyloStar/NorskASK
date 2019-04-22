@@ -5,8 +5,20 @@ from typing import Callable, Dict, Iterable, List, Sequence, Union  # noqa: F401
 
 from keras import backend as K
 from keras.layers import (
-    Activation, Bidirectional, Dense, Dropout, Flatten, GlobalMaxPooling1D, GRU, Lambda, Layer,
-    LSTM, Multiply, Permute, RepeatVector, TimeDistributed
+    Activation,
+    Bidirectional,
+    Dense,
+    Dropout,
+    Flatten,
+    GlobalMaxPooling1D,
+    GRU,
+    Lambda,
+    Layer,
+    LSTM,
+    Multiply,
+    Permute,
+    RepeatVector,
+    TimeDistributed,
 )
 from keras.models import Model
 from keras.optimizers import RMSprop
@@ -15,17 +27,32 @@ import numpy as np
 
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.layers import (
-    build_inputs_and_embeddings, GlobalAveragePooling1D, InputLayerArgs
+    build_inputs_and_embeddings,
+    GlobalAveragePooling1D,
+    InputLayerArgs,
 )
 from masterthesis.models.report import multi_task_report, report
 from masterthesis.models.utils import (
-    add_common_args, add_seq_common_args, get_sequence_input_reps, get_targets_and_output_units,
-    init_pretrained_embs, ranked_accuracy, ranked_prediction
+    add_common_args,
+    add_seq_common_args,
+    get_sequence_input_reps,
+    get_targets_and_output_units,
+    init_pretrained_embs,
+    ranked_accuracy,
+    ranked_prediction,
 )
 from masterthesis.results import save_results
 from masterthesis.utils import (
-    ATTENTION_LAYER, AUX_OUTPUT_NAME, get_file_name, load_split, OUTPUT_NAME, REPRESENTATION_LAYER,
-    rescale_regression_results, safe_plt as plt, save_model, set_reproducible
+    ATTENTION_LAYER,
+    AUX_OUTPUT_NAME,
+    get_file_name,
+    load_split,
+    OUTPUT_NAME,
+    REPRESENTATION_LAYER,
+    rescale_regression_results,
+    safe_plt as plt,
+    save_model,
+    set_reproducible,
 )
 
 INPUT_DROPOUT = 0.5

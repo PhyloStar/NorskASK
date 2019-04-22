@@ -9,8 +9,12 @@ import numpy as np
 from tqdm import tqdm
 
 from masterthesis.features.build_features import (
-    make_mixed_pos2i, make_pos2i, make_w2i, mixed_pos_to_sequences, pos_to_sequences,
-    words_to_sequences
+    make_mixed_pos2i,
+    make_pos2i,
+    make_w2i,
+    mixed_pos_to_sequences,
+    pos_to_sequences,
+    words_to_sequences,
 )
 from masterthesis.gensim_utils import load_embeddings
 from masterthesis.utils import EMB_LAYER_NAME

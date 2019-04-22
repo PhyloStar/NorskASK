@@ -12,17 +12,31 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 
 from masterthesis.features.build_features import (
-    bag_of_words, filename_iter, iterate_mixed_pos_docs, iterate_pos_docs
+    bag_of_words,
+    filename_iter,
+    iterate_mixed_pos_docs,
+    iterate_pos_docs,
 )
 from masterthesis.models.callbacks import F1Metrics
 from masterthesis.models.report import multi_task_report, report
 from masterthesis.models.utils import (
-    add_common_args, get_targets_and_output_units, ranked_accuracy, ranked_prediction
+    add_common_args,
+    get_targets_and_output_units,
+    ranked_accuracy,
+    ranked_prediction,
 )
 from masterthesis.results import save_results
 from masterthesis.utils import (
-    AUX_OUTPUT_NAME, DATA_DIR, get_file_name, load_split, OUTPUT_NAME, REPRESENTATION_LAYER,
-    rescale_regression_results, safe_plt as plt, save_model, set_reproducible
+    AUX_OUTPUT_NAME,
+    DATA_DIR,
+    get_file_name,
+    load_split,
+    OUTPUT_NAME,
+    REPRESENTATION_LAYER,
+    rescale_regression_results,
+    safe_plt as plt,
+    save_model,
+    set_reproducible,
 )
 
 conll_folder = DATA_DIR / 'conll'

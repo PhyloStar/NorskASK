@@ -7,7 +7,10 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC, LinearSVR
 
 from masterthesis.features.build_features import (
-    bag_of_words, filename_iter, iterate_mixed_pos_docs, iterate_pos_docs
+    bag_of_words,
+    filename_iter,
+    iterate_mixed_pos_docs,
+    iterate_pos_docs,
 )
 from masterthesis.models.report import report
 from masterthesis.results import save_results

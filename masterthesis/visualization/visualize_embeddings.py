@@ -13,8 +13,13 @@ import tqdm
 from masterthesis.features.build_features import pos_to_sequences, words_to_sequences
 from masterthesis.gensim_utils import fingerprint, load_embeddings
 from masterthesis.utils import (
-    CEFR_LABELS, DATA_DIR, document_iterator, iso639_3, load_split, REPRESENTATION_LAYER, safe_plt
-    as plt
+    CEFR_LABELS,
+    DATA_DIR,
+    document_iterator,
+    iso639_3,
+    load_split,
+    REPRESENTATION_LAYER,
+    safe_plt as plt,
 )
 
 sns.set(style='white', context='paper')
