@@ -52,10 +52,10 @@ def multi_task_plot_history(history, fig):
 
     ax1.plot(xs, history["loss"], label="train"),
     ax1.plot(xs, history["val_loss"], label="val."),
-    ax1.legend()
+    ax1.legend(loc='lower center', bbox_to_anchor=(0.5, 1.0))
     ax1.set(xlabel="Epoch", ylabel="Loss")
 
-    logger.warning(list(history.keys()))
+    logger.debug(list(history.keys()))
 
     key_labels = [
         (aux_acc, "train L1"),
@@ -68,6 +68,9 @@ def multi_task_plot_history(history, fig):
             ax2.plot(xs, history[key], label=label),
         except KeyError:
             logger.info("Key not found: %s", key)
+    ax2.legend(loc='lower center', bbox_to_anchor=(0.5, 1.0))
+    ax2.set(xlabel="Epoch", ylabel="Accuracy")
+
     if mae in history:
         ax = axes[1]
         ax.set_ylabel("Macro F1")
@@ -75,15 +78,14 @@ def multi_task_plot_history(history, fig):
         for key, label in key_labels:
             ax.plot(xs, history[key], label=label)
         ax.set_ylabel("MAE")
-        ax.legend()
     elif "val_f1" in history:
         ax = axes[1]
         ax.plot(xs, history["val_f1"], label="val. CEFR F1", color="C2")
         ax.set_ylabel("Macro F1")
-        ax.legend()
-
-    ax2.legend()
-    ax2.set(xlabel="Epoch", ylabel="Accuracy")
+    else:
+        return
+    ax.set_xlabel('Epoch')
+    ax.legend(loc='lower center', bbox_to_anchor=(0.5, 1.0))
 
 
 def plot_history(history, ax1, ax2):
