@@ -101,15 +101,17 @@ previous chapter.
 Below we plot the effect of auxiliary loss on all four models (fig.
 \ref{fig:lossweight}). The $x$ value is the weight given to the auxiliary
 loss during training. Some of the models have an auxiliary loss weight of
-zero, which is the same as training in single-task mode.
+zero, which is the same as training in single-task mode. The 95\% confidence
+intervals indicated by shaded areas in the plots are computed in the plotting
+software Seaborn \autocite{seaborn}, using a bootstrap sampling method.
 
 \begin{figure}
   \centering
   \includegraphics{lossweight}
   \caption[Performance of multi-task models]{
-    Lines follow the mean of macro \FI scores. Shaded areas show 95\% confidence
-    interval for the mean. Results for the collapsed set of classes are plotted with
-    cross symbols and dashed lines.
+    Lines follow the mean of macro \FI scores. Shaded areas show 95\%
+    confidence interval for the mean. Results for the collapsed set of
+    classes are plotted with cross symbols and dashed lines.
   }
   \label{fig:lossweight}
 \end{figure}
@@ -135,12 +137,8 @@ using different random seeds, we still have only five samples for each
 auxiliary loss weight, which is a small number to try to draw any conclusions
 from with statistical certainty.
 
-\todo{must check again}
-
-
-\todo{update figures}
 \begin{figure}
-  % cnn-multi-26199963_11
+  % cnn-multi-26728430_2.pkl
   \begin{subfigure}{\linewidth}
     \centering
     \includegraphics{cnn-multi-training}
@@ -151,42 +149,62 @@ from with statistical certainty.
     \includegraphics{cnn-multi-confusion}
     \caption{Confusion matrix on validation set, raw counts and normalized.}
   \end{subfigure}
-  \caption{CNN2 0.75}
+  \caption[Training behaviour of a multi-task CNN]{
+    Training behaviour of a CNN1 with an auxiliary loss weight of $0.3$.
+    Macro \FI = $0.293$.
+  }
   \label{fig:cnn-multi-training}
 \end{figure}
 
 \begin{figure}
-  % rnn-multi-26646843_28.pkl
+  % rnn-multi-26728427_18.pkl
   \begin{subfigure}{\linewidth}
     \centering
     \includegraphics{rnn-multi-training}
-    \caption{Training and validation loss and accuracy over 50 epochs of training.}
+    \caption{Training and validation loss and metrics over 50 epochs of training.}
   \end{subfigure}
   \begin{subfigure}{\linewidth}
     \centering
     \includegraphics{rnn-multi-confusion}
     \caption{Confusion matrix on validation set, raw counts and normalized.}
   \end{subfigure}
-  \caption{RNN1 0.5}
+  \caption[Training behaviour of a multi-task RNN]{
+    Training behaviour of an RNN1 with an auxiliary loss weight of $0.1$.
+    Macro \FI = $0.471$.
+  }
   \label{fig:rnn-multi-training}
 \end{figure}
+
+The training behaviour \todo{write}
 
 
 \section{Correlation of metrics}
 
-\todo{More different metrics}
+Even though we decided previously to use macro \FI score as our main
+evaluation metric, it is still interesting to compare it to alternative
+evaluation methods, especially since there is so much variation in evaluation
+metrics used for \ac{AES} in the literature. In particular, we want to see if
+there are significant differences in how models would be ranked according to
+different metrics. Since we now have trained and evaluated a number of
+different models, we can compare and contrast their scores on different
+metrics by using the prediction they made.
 
-We have previously discussed different evaluation metrics. Since we now have
-trained and evaluated a number of different models, it is possible to see
-whether the metrics agree on the ranking of models.
+We chose micro \FI score and \ac{MAE} as the metrics to compare with macro
+\FI score. The micro \FI lets us compare the effect of macro vs. micro
+averaging scores for different classes. On the other hand, \ac{MAE} is a
+metric that has an intuitive interpretation on ordinal labels, such as in our
+case. It is also a metric that has been reported in previous literature
+\autocite{vajjala17}.
 
 \begin{figure}
   \centering
   \includegraphics{reg_macro_F1_all}
-  \caption[Macro \FI versus macro MAE]{
-    Macro \FI versus macro MAE. Line of regression included in plot. The shaded
-    area covers a 95\% confidence interval for the line of regression. CNN
-    models are plotted with dots, RNN models with crosses.
+  \caption[Macro \FI versus MAE]{
+    Macro \FI versus micro \FI and MAE for experiments on the full set of
+    CEFR labels. Line of regression included in plot. The shaded area covers
+    a 95\% confidence interval for the line of regression. CNN models are
+    plotted with dots, RNN models with crosses. Lines of regression for the
+    sub-populations are plotted in different colours and with dashed lines.
   }
   \label{fig:reg_macro_F1_all}
 \end{figure}
@@ -194,36 +212,92 @@ whether the metrics agree on the ranking of models.
 \begin{figure}
   \centering
   \includegraphics{reg_macro_F1_collapsed}
-  \caption[Macro \FI versus macro MAE]{
-    Macro \FI versus macro MAE for all experiments using collapsed CEFR labels.
-    Line of regression included in plot. The shaded area covers a 95\%
-    confidence interval for the line of regression. CNN models are plotted with
-    dots, RNN models with crosses.
+  \caption[Macro \FI versus micro \FI and MAE]{
+    Macro \FI versus micro \FI and MAE for all experiments using collapsed
+    CEFR labels. Line of regression included in plot. The shaded area covers
+    a 95\% confidence interval for the line of regression. CNN models are
+    plotted with dots, RNN models with crosses. Lines of regression for the
+    sub-populations are plotted in different colours and with dashed lines.
   }
   \label{fig:reg_macro_F1_collapsed}
 \end{figure}
 
 We plotted two pairs of metrics for all experiments in this chapter against
 each other. The first pair is macro \FI score against the micro \FI score,
-and the second pair is the macro \FI score against the macro mean average
-error. The experiments on the full set of classes and the collapsed set of
-classes are separated into two plots, figures \ref{fig:reg_macro_F1_all} and
+and the second pair is the macro \FI score against the mean average error.
+The experiments on the full set of classes and the collapsed set of classes
+are separated into two plots, figures \ref{fig:reg_macro_F1_all} and
 \ref{fig:reg_macro_F1_collapsed}. From examining the plots, it appears that
 the correlation is not all that strong, at least not for macro \FI vs. micro
 \FI. Four of the experiments on the full set of classes are tied for the
 highest micro \FI, but they range between $0.302$ and $0.480$ in macro \FI.
 
-It is also of note that the CNN and RNN experiments appear to form two
-separate populations in the plots, with different correlation properties.
-Table \ref{tab:metric-corrs} shows that in several cases, the correlation
-value is much lower when examining CNN experiments and RNN experiments as
-separate populations. \todo{Something with non-linearity} The correlation
-values can be misleading when we combine two distinct populations into one
-dataset. The most extreme case is the correlation between macro \FI and micro
-\FI for collapsed CEFR labels. The CNN experiments are completely
+An interesting effect is that when we use fewer target labels, the mean
+absolute error is almost perfectly correlated with the micro \FI. This is
+apparent from the plot, since the right-hand plot in figure
+\ref{fig:reg_macro_F1_collapsed} is almost a perfect mirror image of the
+left-hand plot, flipped top to bottom. We can also quantify this using a
+correlation coefficient. For the full set of labels, Pearson's r between
+micro \FI and MAE is $-0.913$ ($p < 10^{-78}$). For the collapsed set of
+labels, it is $-0.994$ ($p < 10^{-193}$). 
+
+We notice that the CNN and RNN experiments appear to form two separate
+populations in the plots, with different correlation properties. In fact, we
+see that in almost all cases, the lines of regression for the separate
+populations have different slopes from the line of regression for the
+combined populations. On the other hand, if there were a linear relationship
+between the metrics that was consistent across all populations, we would
+expect the regression lines for the sub-populations to be more or less
+collinear with the regression line for the combined populations.
+\footnote{Two populations can have equal correlation coefficients, but this
+does not mean that the lines of regression have equal slope.}
+
+The actual values of Pearson's correlation coefficient for the different
+populations and pairs of metrics are tabulated in table
+\ref{tab:metric-corrs}. We see that in several cases, the correlation value
+is much lower when examining CNN experiments and RNN experiments as separate
+populations than when we combine them. The correlation values can be
+misleading when we combine two distinct populations into one dataset, since
+Pearson's correlation coefficient implicitly assumes that the relationship is
+linear. This does not seem to be the case for our data, as indicated by the
+different slopes of the regression lines we saw above.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrrr}
+    \toprule
+             & \multicolumn{2}{c}{Macro \FI vs. micro \FI}
+             & \multicolumn{2}{c}{Macro F1 vs. MAE} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    Experiments & Correlation & $p$-value            & Correlation & $p$-value \\
+    \midrule
+      & \multicolumn{4}{c}{All CEFR labels} \\
+    \midrule
+    CNN         & $0.856$     & $7.02\cdot 10^{-30}$ & $-0.670$    & $2.36\cdot 10^{-14}$ \\
+    RNN         & $0.196$     & $5.02\cdot 10^{-2}$  & $-0.311$    & $1.65\cdot 10^{-3}$ \\
+    CNN+RNN     & $0.775$     & $2.39\cdot 10^{-41}$ & $-0.842$    & $4.39\cdot 10^{-55}$ \\
+    \midrule
+      & \multicolumn{4}{c}{Collapsed CEFR labels} \\
+    \midrule
+    CNN         & $0.055$     & $5.88\cdot 10^{-1}$  & $-0.077$    & $4.47\cdot 10^{-1}$ \\
+    RNN         & $0.362$     & $2.15\cdot 10^{-4}$  & $-0.383$    & $8.53\cdot 10^{-5}$ \\
+    CNN+RNN     & $0.721$     & $2.15\cdot 10^{-33}$ & $-0.720$    & $3.39\cdot 10^{-33}$ \\
+    \bottomrule
+  \end{tabular}
+  \caption[Correlation of metrics]{
+    Pearson's correlation coefficient between two pairs of evaluation metrics
+    and different subsets of experiments. Two-tailed $p$-values are included.
+  }
+  \label{tab:metric-corrs}
+\end{table}
+
+The most extreme case of the strength of correlation increasing when the
+populations are merged happens with the correlation between macro \FI and
+micro \FI for collapsed CEFR labels. The CNN experiments are completely
 uncorrelated, and the RNN experiments have a very low correlation coefficient
 of $0.362$. Still, when combined, the correlation coefficient becomes
-$0.721$.
+$0.721$, with an extremely low $p$-value.
 
 In the other cases, while not as extreme, the Pearson coefficient is
 significantly higher for CNN and RNN experiments together than for CNN and
@@ -239,37 +313,12 @@ between the metrics, but merely tells us that one of the two populations
 tends to have improved values for both metrics compared to the other
 population.
 
-
-\begin{table}
-  \centering
-  \begin{tabular}{lrrrr}
-    \toprule
-             & \multicolumn{2}{c}{Macro \FI vs. micro \FI}
-             & \multicolumn{2}{c}{Macro F1 vs. macro MAE} \\
-    \cmidrule(lr){2-3}
-    \cmidrule(lr){4-5}
-    Experiments & Correlation & $p$-value            & Correlation & $p$-value \\
-    \midrule
-      & \multicolumn{4}{c}{All CEFR labels} \\
-    \midrule
-    CNN         & $0.856$     & $7.02\cdot 10^{-30}$ & $-0.549$    & $3.34\cdot 10^{-9}$ \\
-    RNN         & $0.196$     & $5.02\cdot 10^{-2}$  & $-0.780$    & $1.07\cdot 10^{-21}$ \\
-    CNN+RNN     & $0.775$     & $2.39\cdot 10^{-41}$ & $-0.926$    & $1.05\cdot 10^{-85}$ \\
-    \midrule
-      & \multicolumn{4}{c}{Collapsed CEFR labels} \\
-    \midrule
-    CNN         & $0.055$     & $5.88\cdot 10^{-1}$  & $-0.331$    & $7.57\cdot 10^{-4}$ \\
-    RNN         & $0.362$     & $2.15\cdot 10^{-4}$  & $-0.764$    & $2.48\cdot 10^{-20}$ \\
-    CNN+RNN     & $0.721$     & $2.15\cdot 10^{-33}$ & $-0.941$    & $2.03\cdot 10^{-95}$ \\
-    \bottomrule
-  \end{tabular}
-  \caption[Correlation of metrics]{
-    Pearson's correlation coefficient between two pairs of evaluation metrics and
-    different subsets of experiments. Two-tailed $p$-values are included.
-  }
-  \label{tab:metric-corrs}
-\end{table}
-
+None of the correlations in table \ref{tab:metric-corrs} are as high as the
+correlation we observed between micro \FI and \ac{MAE}. This is probably
+because the averaging method in macro \FI means that the metric changes in a
+different way depending on input, an effect that probably gets even more
+noticeable because of the small size of the dataset and the uneven
+distribution of target labels.
 
 The $p$-values reported for the correlation are to be taken with a grain of
 salt. They were computed with the SciPy library \autocite{scipy}, which
@@ -277,3 +326,8 @@ states in its documentation other that the $p$-values should be reasonable
 for datasets with at least 500 samples. The values in table
 \ref{tab:metric-corrs} were computed on samples with either 100 or 200
 samples, well below 500.
+
+
+\section{Conclusion}
+
+todo
