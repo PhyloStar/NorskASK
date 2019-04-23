@@ -25,25 +25,25 @@ logger = logging.getLogger(__name__)
 logging.basicConfig()
 
 
-def macro_rmse(true, pred):
-    groups = defaultdict(list)
+def macro_rmse(true, pred) -> float:
+    """Calculate the macro averaged root mean squared error."""
+    groups = defaultdict(list)  # type: DefaultDict[int, List[int]]
     for t, p in zip(true, pred):
-        groups[t].append((t - p) ** 2)
-    rmses = []
-    for group in groups.values():
-        rmses.append(sqrt(sum(group) / len(group)))
-    return sum(rmses) / len(rmses)
+        groups[t].append((t - p) ** 2)  # Collect squared error for each class
+    rmses = [sqrt(sum(group) / len(group)) for group in groups.values()]  # RMSE for each group
+    return sum(rmses) / len(rmses)  # Macro average
 
 
-def macro_mae(true, pred):
-    groups = defaultdict(list)
+def macro_mae(true, pred) -> float:
+    """Calculate the macro averaged mean absolute error."""
+    groups = defaultdict(list)  # type: DefaultDict[int, List[int]]
     for t, p in zip(true, pred):
         groups[t].append(abs(t - p))  # Collect absolute error for each class
     maes = [sum(group) / len(group) for group in groups.values()]  # MAE for each group
     return sum(maes) / len(maes)  # Macro average
 
 
-def get_type(name):
+def get_type(name: str) -> str:
     if name.startswith("rnn") or name.startswith("taghipour"):
         return "RNN"
     elif name.startswith("cnn"):
@@ -60,7 +60,7 @@ def get_type(name):
     return "UNK"
 
 
-def files_to_dataframe(files):
+def files_to_dataframe(files: Iterable[str]) -> pd.DataFrame:
     data = defaultdict(list)  # type: DefaultDict[str, Any]
     for filename in files:
         results_file = Path(filename)
