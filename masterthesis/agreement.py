@@ -30,7 +30,9 @@ def macro_rmse(true, pred) -> float:
     groups = defaultdict(list)  # type: DefaultDict[int, List[int]]
     for t, p in zip(true, pred):
         groups[t].append((t - p) ** 2)  # Collect squared error for each class
-    rmses = [sqrt(sum(group) / len(group)) for group in groups.values()]  # RMSE for each group
+    rmses = [
+        sqrt(sum(group) / len(group)) for group in groups.values()
+    ]  # RMSE for each group
     return sum(rmses) / len(rmses)  # Macro average
 
 
@@ -145,6 +147,26 @@ def plot_corrs(data: pd.DataFrame):
 
 def plot_reg(data, x, y, ax):
     sns.regplot(x=x, y=y, data=data, ax=ax, scatter=False, truncate=True, color="C0")
+    sns.regplot(
+        x=x,
+        y=y,
+        data=data[data.type == "CNN"],
+        ax=ax,
+        scatter=False,
+        truncate=True,
+        color="C1",
+        line_kws={"linestyle": "--"},
+    )
+    sns.regplot(
+        x=x,
+        y=y,
+        data=data[data.type == "RNN"],
+        ax=ax,
+        scatter=False,
+        truncate=True,
+        color="C2",
+        line_kws={"linestyle": "--"},
+    )
 
 
 def plot_regs(data: pd.DataFrame):
