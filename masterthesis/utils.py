@@ -203,13 +203,16 @@ def load_split(split: str, round_cefr: bool = False) -> pd.DataFrame:
     Returns:
         A frame with the metadata for documents in the requested split.
     """
-    if split not in ['train', 'dev', 'test']:
+    if split not in ['train', 'dev', 'test', 'train,dev']:
         raise ValueError('Split must be train, dev or test')
     filepath = PROJECT_ROOT / 'ASK/metadata.csv'
     df = pd.read_csv(filepath).dropna(subset=['cefr'])
     if round_cefr:
         df.loc[:, 'cefr'] = df.cefr.apply(round_cefr_score)
-    return df[df.split == split]
+    if split == "train,dev":
+        return df[df.split != "test"]
+    else:
+        return df[df.split == split]
 
 
 def load_test() -> pd.DataFrame:

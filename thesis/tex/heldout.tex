@@ -1,0 +1,61 @@
+\chapter{Evaluation on the held-out test set}
+
+Up to now, we have performed all evaluation on our development set. Now this
+changes.
+
+In the development set, the size of peripheral classes is very small. Only
+one document has label `A2', and only three have the label `C1'. This has
+influenced our macro \FI scores quite a bit, since the \FI score for the `A2'
+class has always been either 0 or 1. The distribution of classes in the test
+set is such that the smallest class, `A2', is supported by three documents.
+We therefore expect the macro \FI scores in this evaluation to be different.
+It is however not as hard to compare micro \FI scores, as they are not
+influenced by the support of the classes.
+
+In the linear models, we have not previously used the development set as
+validation (e.g. early stopping). Therefore, when we evaluate on the test
+set, we have merged the training and development set to use as training data.
+
+For the neural models, however, we train exactly like before. The training
+set is used for gradient descent, while we monitor the macro \FI score on the
+development set and remember the epoch that had the highest \FI score so that
+we can restore the network weights from this epoch at the end of training.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrrr}
+    \toprule
+             & \multicolumn{2}{c}{All labels} & \multicolumn{2}{c}{Collapsed labels} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    Model      & Macro \FI & Micro \FI & Macro \FI & Micro \FI \\
+    \midrule
+    Majority   &  $0.040$  &  $0.163$  &  $0.127$  &  $0.341$ \\
+    \midrule
+    % $BEGIN autotable final_test_eval
+    % $META models-per-row=2 columns-per-model=macrof1,microf1
+    % $ROW SVR BOW: linear_svr-04-24_13-29-06  linear_svr-04-24_13-30-41
+    % $ROW SVR POS: linear_svr-04-24_13-30-09  linear_svr-04-24_13-31-01
+    % \midrule
+    % $ROW RNN1: rnn-26805083_0_model_test_eval rnn-26805084_0_model_test_eval
+    % $ROW RNN2: rnn-26805083_1_model_test_eval rnn-26805084_1_model_test_eval
+    % $ROW RNN1 Multi: rnn-multi-26805083_2_model_test_eval rnn-multi-26805084_2_model_test_eval
+    % $ROW RNN2 Multi: rnn-multi-26805083_3_model_test_eval rnn-multi-26805084_3_model_test_eval
+    % $END autotable
+    SVR BOW & $0.231$ & $0.285$ & $0.420$ & $0.602$ \\
+    SVR POS & $0.271$ & $0.350$ & $0.422$ & $0.602$ \\
+    \midrule
+    RNN1 & $0.291$ & $0.439$ & $0.478$ & $\mathbf{0.724}$ \\
+    RNN2 & $\mathbf{0.388}$ & $\mathbf{0.480}$ & $\mathbf{0.511}$ & $\mathbf{0.724}$ \\
+    RNN1 Multi & $0.266$ & $0.398$ & $0.509$ & $0.707$ \\
+    RNN2 Multi & $0.356$ & $0.447$ & $0.443$ & $\mathbf{0.724}$ \\
+    \bottomrule
+  \end{tabular}
+  \caption[Evaluation results on the held-out test set]{
+      Results from evaluating on the held-out test set. SVR is support vector
+      regression. Hyperparameters for RNN1 and RNN2 are found in table
+      \ref{tab:rnn-parameters}. Multi-task models use an auxiliary task
+      weight of $0.1$.
+  }
+  \label{tab:held-out-results}
+\end{table}
