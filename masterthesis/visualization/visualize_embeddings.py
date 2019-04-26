@@ -7,6 +7,7 @@ from typing import Iterable
 from keras.models import load_model, Model
 import numpy as np
 import seaborn as sns
+from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 import tqdm
 
@@ -42,6 +43,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--embeddings', type=Path)
     parser.add_argument('--model', type=Path)
+    parser.add_argument("--decomposition", choices={"tsne", "pca"}, default="pca")
+    parser.add_argument("--hue", choices={"CEFR", "L1"}, default="CEFR")
     parser.add_argument(
         '--debug', dest='loglevel', action='store_const', const=logging.DEBUG
     )
@@ -59,7 +62,7 @@ def get_fingerprints(embeddings: Path, filenames: Iterable[str]) -> np.ndarray:
     wv = load_embeddings(embeddings)
     txt_folder = DATA_DIR / 'txt'
     fingerprints = []
-    print('Computing fingerprints of all documents ...')
+    logger.info("Computing fingerprints of all documents ...")
     for filename in tqdm.tqdm(filenames):
         infile = txt_folder / Path(filename).with_suffix('.txt')
         with open(str(infile), encoding='utf-8') as f:
@@ -87,41 +90,69 @@ def get_model_representations(model_path: Path, split: str) -> np.ndarray:
 def main():
     args = parse_args()
     meta = load_split(args.split)
-    meta.loc[:, 'lang'] = [iso639_3[l] for l in meta.lang]
+    meta["lang"].replace(iso639_3, inplace=True)
 
     if args.embeddings:
         representations = get_fingerprints(args.embeddings, meta.filename)
     elif args.model:
         representations = get_model_representations(args.model, args.split)
 
-    column_list = ['cefr', 'testlevel', 'lang']
+    logger.info("Computing embeddings ...")
+    if args.decomposition == "tsne":
+        decomposer = TSNE(n_components=2, verbose=True)
+    elif args.decomposition == "pca":
+        decomposer = PCA(n_components=2)
+    embedded = decomposer.fit_transform(representations)
+    meta["Component 1"] = embedded[:, 0]
+    meta["Component 2"] = embedded[:, 1]
+    meta.rename(
+        {"cefr": "CEFR", "testlevel": "Test level", "num_tokens": "Length", "lang": "L1"},
+        axis="columns",
+        inplace=True
+    )
+    meta["Test level"].replace(
+        {"Språkprøven": "IL test", "Høyere nivå": "AL test"},
+        inplace=True
+    )
 
-    logger.info('Computing t-SNE embeddings ...')
-    embedded = TSNE(n_components=2, verbose=True).fit_transform(representations)
-    meta['x'] = embedded[:, 0]
-    meta['y'] = embedded[:, 1]
-
-    fig, axes = plt.subplots(1, len(column_list))
-    if not hasattr(axes, '__iter__'):
-        axes = [axes]
-    for ax, col in zip(axes, column_list):
-        if col == 'cefr':
-            palette = sns.mpl_palette('cool', 7)
-            hue_order = CEFR_LABELS
-        else:
-            palette = None
-            hue_order = None
-        sns.scatterplot(
-            x='x',
-            y='y',
-            hue=col,
-            data=meta,
-            ax=ax,
-            size='num_tokens',
-            palette=palette,
-            hue_order=hue_order,
-        )
-    fig.set_size_inches(4, 3)
+    fig, ax = (plt.gcf(), plt.gca())
+    if args.hue == "CEFR":
+        palette = sns.mpl_palette('cool', 7)
+        hue_order = CEFR_LABELS
+    else:
+        palette = None
+        hue_order = None
+    sns.scatterplot(
+        x="Component 1",
+        y="Component 2",
+        hue=args.hue,
+        style="Test level",
+        data=meta,
+        ax=ax,
+        size="Length",
+        palette=palette,
+        hue_order=hue_order,
+    )
+    ax.tick_params(
+        axis="both",
+        which="both",
+        bottom="off",
+        top="off",
+        labelbottom="off",
+        right="off",
+        left="off",
+        labelleft="off",
+    )
+    handles, labels = ax.get_legend_handles_labels()
+    cefr_legend = ax.legend(
+        handles[:8], labels[:8], loc="center right", bbox_to_anchor=(-0.1, 0.5)
+    )
+    ax.legend(
+        handles[8:], labels[8:], loc="center left", bbox_to_anchor=(1.05, 0.5)
+    )
+    ax.add_artist(cefr_legend)
+    fig.set_size_inches(5, 3)
+    plt.tight_layout()
     plt.show()
 
 
