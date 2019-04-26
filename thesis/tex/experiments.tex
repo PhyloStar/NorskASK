@@ -470,15 +470,19 @@ than any other linear or neural model, as well as the highest macro \FI of
 the neural models. Refer to figures \ref{fig:mlp-char-rank} and
 \ref{fig:mlp-char-rank-round}.
 
-We want predictions to lie on the diagonal of
-the matrix. However, due to the ordinal nature of the classes, we also want
-eventual misclassifications to lie close to the diagonal, which would
-indicate a small magnitude of misclassification. Conversely, we do not want
-any predictions in the upper right and lower left corners, as they represent
-mis-classifications of the greatest magnitude.
+We want predictions to lie on the diagonal of the matrix. This is true for
+all classification tasks. However, due to the ordinal nature of the CEFR
+scores, we also want eventual mis-classifications to lie close to the
+diagonal, which would indicate a small magnitude of misclassification.
+Conversely, we do not want any predictions in the upper right and lower left
+corners, as they represent mis-classifications of the greatest magnitude.
 
-What we see is that the predictions are not 
-\todo{finish sentence}
+What we see is that while the predictions are not perfectly on the diagonal,
+they tend to it. For four out of seven rows, and five out of seven columns
+(all columns with predictions), the highest value is on the diagonal.
+However, despite the tendency toward the diagonal, there are several severe
+mis-classifications, such as three `B2/C1' texts being classified as `B1' and
+`A2/B1'.
 
 \begin{figure}
   \centering

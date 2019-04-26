@@ -30,7 +30,7 @@ we can restore the network weights from this epoch at the end of training.
     \cmidrule(lr){4-5}
     Model      & Macro \FI & Micro \FI & Macro \FI & Micro \FI \\
     \midrule
-    Majority   &  $0.040$  &  $0.163$  &  $0.127$  &  $0.341$ \\
+    Majority   &  $0.045$  &  $0.187$  &  $0.127$  &  $0.341$ \\
     \midrule
     % $BEGIN autotable final_test_eval
     % $META models-per-row=2 columns-per-model=macrof1,microf1
@@ -59,3 +59,20 @@ we can restore the network weights from this epoch at the end of training.
   }
   \label{tab:held-out-results}
 \end{table}
+
+The best macro \FI score on the test set is $0.388$, noticeably less than the
+highest macro \FI score we saw when we evaluated on the test set. For
+instance, all the RNN1 and RNN2 models we trained with an auxiliary loss
+weight of 0 or $0.1$ in the previous chapter had macro \FI scores $>0.4$.
+However, the micro \FI scores are comparable. The highest micro \FI score
+among all the RNN models we trained in single-task mode in chapter
+\ref{ch:sequencemodels} was $0.463$. The RNN2 model with the highest micro
+\FI score in table \ref{tab:held-out-results} increased from $0.447$ to
+$0.480$ when evaluating on the test set instead.
+
+We assume that the differences in macro \FI are mostly caused by the
+different distribution of labels in the development and test sets, and not
+because of poor generalization. The micro \FI scores are a good indication of
+this. If the models turned out to not generalize beyond the development set,
+we would expect performance to drop on both metrics, not only the macro \FI
+score.

@@ -788,81 +788,132 @@ texts from four different documents in the dev set for which the L1 was
 correctly predicted by an attention model. Red tokens indicate time steps
 that were given higher weight by the attention model, and blue tokens ones
 that were given low weights. Out of vocabulary tokens are replaced by the
-special token ``UNK''.
+special token ``UNK''. We will supplement the analysis of attention values
+with some qualitative remarks related to properties of learner language, and
+the findings from transfer research on the ASK corpus discussed in the
+background chapter.
 
-The attention values do not seem easily interpretable. There is no obvious
-pattern to what kind of segments get high and low attention. Lexical and
-grammatical errors that are typical of learner language occur both in the
-high-attention and the low-attention regions. Even individual words that
-provide very strong hints to \ac{L1} seem to be ignored by the model, as we
-will see in the Vietnamese example below.
+In general, the attention values do not seem easily interpretable. There is
+no obvious pattern to what kind of segments get high and low attention, and
+the distribution of high and low attention is also different between
+different examples. Lexical and grammatical errors that are typical of
+learner language occur both in the high-attention and the low-attention
+regions. Even individual words that provide very strong hints to \ac{L1} seem
+to be ignored by the model, as we will see in the Vietnamese example below.
 
-The Russian speaker's text (fig. \ref{fig:rus-attention}) is almost entirely
-high-attention in this excerpt. There is a section of low-attention, around
-three sentences long, in the middle of the excerpt.
-
-In the Somali speaker's text (fig. \ref{fig:som-attention}), most of the text
-has low attention, except for shorter segments with high attention. However, the
-attention is not highest on the most obvious mistakes.
-
-In the Vietnamese speaker's text (fig. \ref{fig:vie-attention}), the word
-Vietnam appears three times. This should be a very informative word, as it is
-likely that when someone mentions a country in this context, it is their
-country of origin. Two of the occurrences have low attention, and one (on the
-second-to-last line) has high attention. 
-
-\todo{relate to linguistic studies}
-\todo{attention is not explanation}
+The interpretability and explanation power of attention mechanisms has been
+questioned in literature, for instance in \textcite{attentionexplanation}.
 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{h0169-eng}
-  \caption{Attention values of NLI classifier on excerpt from ASK text h0189.
-           L1 is English, CEFR score B2}
+  \caption[Attention in a text by an English speaker]{
+    Attention values of NLI classifier on excerpt from ASK text h0189. L1 is
+    English, CEFR score B2.
+  }
   \label{fig:eng-attention}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{h0185-rus}
-  \caption{Attention values of NLI classifier on excerpt from ASK text h0186.
-           L1 is Russian, CEFR score B1/B2}
+  \caption[Attention in a text by a Russian speaker]{
+    Attention values of NLI classifier on excerpt from ASK text h0186. L1 is
+    Russian, CEFR score B1/B2.
+  }
   \label{fig:rus-attention}
 \end{figure}
+
+The Russian speaker's text (fig. \ref{fig:rus-attention}) is almost entirely
+high-attention in this excerpt. There is a section of low-attention, around
+three sentences long, in the middle of the excerpt. We can therefore not pick
+out specific features that the model seems to focus on.
+
+One of the findings in \textcite{pepper2012} was that speakers of Slavic
+languages tend to use fewer indefinite articles. In this excerpt we see an
+example of the opposite, for instance in the twice occuring `*en god helse'
+(\emph{*a good health}). `Helse' (\emph{{health}}) is an uncountable noun,
+and should therefore not have an indefinite article, neither in Norwegian nor
+English. While this runs counter to the general trend for learners with
+Slavic \acp{L1}, it could perhaps be interpreted as a case of
+hypercorrection, i.e. a conscious effort to use articles that results in
+false positives.
 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{s0546-som}
-  \caption{Attention values of NLI classifier on full ASK text s0621.
-           L1 is Somali, CEFR score A2}
+  \caption[Attention in a text by a Somali speaker]{
+    Attention values of NLI classifier on full ASK text s0621. L1 is Somali,
+    CEFR score A2.
+  }
   \label{fig:som-attention}
 \end{figure}
+
+In the Somali speaker's text (fig. \ref{fig:som-attention}), most of the text
+has low attention, except for shorter segments with high attention. However,
+the attention is not highest on the most obvious mistakes.
+
+In \textcite{pepper2012}, Somali speakers were found to use the auxiliary
+`skal' (\emph{shall/will}) and the pronoun `jeg' (\emph{I}) more frequently
+than native Norwegian speakers and several other L1 groups.
+\citeauthor{pepper2012} suggested that the frequency of `skal' partly might
+be explained by topic bias, since some essay prompts were about the future,
+and `skal' is often involved with the future tense. This exerpt is not one of
+these texts, and concerns a past experience. Thus, it is not surprising that
+it contains no occurrences of `skal'. On the other hand, `jeg' is indeed a
+frequent word, occurring five times in the course of a rather short text.
 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{s0628-vie}
-  \caption{Attention values of NLI classifier on excerpt from ASK text s0180.
-           L1 is Vietnamese, CEFR score B1/B2}
+  \caption[Attention in a text by a Vietnamese speaker]{
+    Attention values of NLI classifier on excerpt from ASK text s0180. L1 is
+    Vietnamese, CEFR score B1/B2
+  }
   \label{fig:vie-attention}
 \end{figure}
+
+In the Vietnamese speaker's text (fig. \ref{fig:vie-attention}), the word
+Vietnam appears three times. This should be a very informative word, as it is
+likely that when someone mentions a country in this context, it is their
+country of origin. Two of the occurrences have low attention, and one (on the
+second-to-last line) has high attention. Within the high-attention segments, we
+find a couple of places were the V2 word order in Norwegian shows up. In one
+case, `Da jeg var bare ti år` (\emph{Then I was only ten}), the learner gets
+the word order wrong (`jeg' and `var' should switch places), but in another
+case, `I Vietnam må du ta en [...] prøve' (\emph{In Vietnam you have to take
+a test}), they correctly apply V2 word order.
+
+
+
+\todo{relate to linguistic studies}
+\todo{attention is not explanation}
 
 
 \subsection{Latent space}
 
-We can use dimensionality reduction methods such as $t$-SNE in order to see
-if the intermediate representation of documents prior to the final
-classification layer positions documents that should be similar close to each
-other. In figure \ref{fig:cefr-t-sne} we have taken the documents in the dev
-set and computed these representations using a \ac{CNN}, then run them through
-the $t$-SNE algorithm in order to reduce them two two dimensions while still
-maintaining a measure of distance. It can be seen that the document space
-is split into two clusters, one with generally lower CEFR scores than the
-other. However there is no visible structure on a finer level than that.
-\todo{use recent model}
+We can use dimensionality reduction methods such as $t$-SNE or \ac{PCA} in
+order to see if the intermediate representation of documents prior to the
+final classification layer positions documents that should be similar close
+to each other. In figure \ref{fig:pca-rnn-cefr} we have taken the documents
+in the dev set and computed these representations using a BiGRU, then run
+them through the PCA algorithm in order to reduce them to two dimensions. The
+dimensions are the two axes that account for most of the variance in the
+data, and they are orthogonal to each other.
 
 \begin{figure}
   \centering
-  \includegraphics{cefr-t-sne}
-  \caption{$t$-SNE plot of the vector representations of documents}
-  \label{fig:cefr-t-sne}
+  \includegraphics{pca-rnn-cefr}
+  \caption[PCA plot of the vector representations of documents]{
+    Each document in the dev set is plotted according to its two principal
+    components after PCA dimensionality reduction. Marker size and style
+    corresponds to document length and test level, respectively.
+  }
+  \label{fig:pca-rnn-cefr}
 \end{figure}
+
+We see that the first component maps closely to the length of the document.
+As previously discussed, there is correlation between the length of essays
+and the proficiency score, as well as the test level (IL level or AL level).
+The PCA plots demonstrates that this relationship is preserved after the RNN
+transformation of a document into a feature vector.
