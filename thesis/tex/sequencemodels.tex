@@ -596,6 +596,13 @@ pre-trained embeddings has a higher macro \FI score than the best LSTM model,
 
 \subsubsection*{Pooling method}
 
+There are clear differences in the performance of the three pooling method we
+have used, mean-over-time, max-over-time and attention. The one that gives
+the worst results is max-over-time, which is the only method that ever gives
+a macro \FI score less than $0.2$ on the full set of labels, and even the
+best run using max pooling has a macro \FI of $0.235$, lower than several CNN
+and MLP models trained previously.
+
 Attention comes out as the clear winner of the three pooling methods. It is
 the only pooling method that gives macro \FI scores above 40\% in the full
 set of classes. At the other end of the scale, max pooling performs worse
@@ -603,14 +610,24 @@ than the other two mechanisms in almost every case. Intuitively, it seems
 reasonable that max pooling performs poorly on the task. A couple of mistakes
 should not count more towards the result than an otherwise consistent level.
 
-It can seem promising that the attention mechanism performs well, since it
-by design might be able to give more interpretable results than other neural
-methods.
+The mean-over-time pooling method is somewhere in between, usually giving
+macro \FI scores higher than max-over-time and lower than attention.
+Interestingly, this is the opposite of what \textcite{taghipour16} found,
+even though we are using a very similar network architecture for the same
+kind of task. In their case, mean-over-time gave slightly better results than
+attention when they compared them.
+
+It can seem promising that the attention mechanism performs well, since it by
+design might be able to give more interpretable results than other neural
+methods. However, as we will see below (section \ref{subsec:attentionvis}),
+it is not apparent that the attention mechanism aids model interpretation in
+our case.
 
 
 \subsubsection*{UPOS tags}
 
-Not very clear.
+The addition of UPOS tags as a side input seems to have variable effect on
+the performance. 
 
 
 \subsection{Training behaviour}
@@ -780,7 +797,7 @@ data points using a dimensionality reduction algorithm, and examine the plot
 for salient groupings.
 
 
-\subsection{Attention}
+\subsection{Attention} \label{subsec:attentionvis}
 
 The attention model allows us to visualize the weights the network gives to
 each token in a document. In figures
