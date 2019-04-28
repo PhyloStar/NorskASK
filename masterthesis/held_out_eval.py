@@ -26,10 +26,10 @@ pos2i = pickle.load(pos2i_path.open("rb"))
 (x_pos,) = pos_to_sequences(700, ["test"], pos2i)
 
 
-def get_input_reps(w2i, multi_input: bool):
-    (x,) = words_to_sequences(700, ["test"], w2i)
+def get_input_reps(w2i, multi_input: bool, split="test"):
+    (x,) = words_to_sequences(700, [split], w2i)
     if multi_input:
-        (x_pos,) = pos_to_sequences(700, ["test"], pos2i)
+        (x_pos,) = pos_to_sequences(700, [split], pos2i)
         x = [x, x_pos]
     return x
 

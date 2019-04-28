@@ -1,7 +1,19 @@
 \chapter{Evaluation on the held-out test set}
 
 Up to now, we have performed all evaluation on our development set. Now this
-changes.
+changes. Evaluation on a held-out test set is how we will get our final
+estimate on our models' performance on unseen data. Since we have used
+results on the development set to inform decisions about model selection and
+tuning of hyperparameters, we have arguably trained these properties on the
+development set. Moreover even if the development set has not been used by
+the gradient descent methods to tune the weights of a neural network, we have
+monitored our metrics on the development set and used them to stop training
+at a point where the performance on validation data is most favourable.
+
+While the results on the development set are still informative, the final
+evaluation on the test set is even more so, since the test data has not been
+used at all for training models, and thus is our best proxy for real-world
+data outside of our dataset.
 
 In the development set, the size of peripheral classes is very small. Only
 one document has label `A2', and only three have the label `C1'. This has
@@ -67,12 +79,38 @@ weight of 0 or $0.1$ in the previous chapter had macro \FI scores $>0.4$.
 However, the micro \FI scores are comparable. The highest micro \FI score
 among all the RNN models we trained in single-task mode in chapter
 \ref{ch:sequencemodels} was $0.463$. The RNN2 model with the highest micro
-\FI score in table \ref{tab:held-out-results} increased from $0.447$ to
-$0.480$ when evaluating on the test set instead.
+\FI score in table \ref{tab:held-out-results} had a micro \FI of $0.447$ when
+evaluated on the development set, increasing to $0.480$ when evaluating on
+the test set instead.
 
 We assume that the differences in macro \FI are mostly caused by the
 different distribution of labels in the development and test sets, and not
-because of poor generalization. The micro \FI scores are a good indication of
-this. If the models turned out to not generalize beyond the development set,
-we would expect performance to drop on both metrics, not only the macro \FI
-score.
+indicative of poor generalization. The micro \FI scores are a good indication
+of this. If the models turned out to not generalize beyond the development
+set, we would expect performance to drop on both metrics, not only the macro
+\FI score.
+
+
+\section{Predictions on the control corpus}
+
+As a sanity check, we also use our model to automatically assign CEFR labels
+to the texts in ASK's control corpus, which consists of texts written by
+native Norwegian speakers. There is no canonical CEFR score associated with
+these texts in the corpus, but we assume that native Norwegian speakers would
+generally be rated at a high level of proficiency in the CEFR framework.
+
+\begin{figure}
+  \centering
+  \includegraphics{native-predictions}
+  \caption[Predicted CEFR score for native Norwegian speakers]{
+    Counts of predicted labels for texts in the ASK control corpus, written by
+    native speakers of Norwegian. `Nynorsk' and `bokmål' are the two official
+    written variants of Norwegian.
+  }
+  \label{native-predictions}
+\end{figure}
+
+We chose the single-task RNN2 model to perform the predictions and plotted the
+distribution of predictions in figure \ref{native-predictions}. The model predicts
+very few texts from the control corpus to have a proficiency of more than B2,
+which seems unlikely.

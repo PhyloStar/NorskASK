@@ -203,10 +203,13 @@ def load_split(split: str, round_cefr: bool = False) -> pd.DataFrame:
     Returns:
         A frame with the metadata for documents in the requested split.
     """
-    if split not in ['train', 'dev', 'test', 'train,dev']:
+    if split not in ["train", "dev", "test", "train,dev", "norsk"]:
         raise ValueError('Split must be train, dev or test')
-    filepath = PROJECT_ROOT / 'ASK/metadata.csv'
-    df = pd.read_csv(filepath).dropna(subset=['cefr'])
+    filepath = DATA_DIR / "metadata.csv"
+    df = pd.read_csv(filepath)
+    if split == "norsk":
+        return df[df.lang.isin({"bokmål", "nynorsk"})]
+    df = df.dropna(subset=['cefr'])
     if round_cefr:
         df.loc[:, 'cefr'] = df.cefr.apply(round_cefr_score)
     if split == "train,dev":
@@ -293,6 +296,8 @@ def get_split_len(split: str) -> int:
         return 966
     elif split in ('dev', 'test'):
         return 123
+    elif split == "norsk":
+        return 200
     raise ValueError(
         "Unrecognized split '%s', should be 'train', 'dev' or 'test'" % split
     )
