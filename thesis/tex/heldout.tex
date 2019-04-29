@@ -27,6 +27,8 @@ influenced by the support of the classes.
 In the linear models, we have not previously used the development set as
 validation (e.g. early stopping). Therefore, when we evaluate on the test
 set, we have merged the training and development set to use as training data.
+This also means that the input features are not exactly the same, since the
+features are decided by the training data.
 
 For the neural models, however, we train exactly like before. The training
 set is used for gradient descent, while we monitor the macro \FI score on the
@@ -72,6 +74,9 @@ we can restore the network weights from this epoch at the end of training.
   \label{tab:held-out-results}
 \end{table}
 
+The linear models have lower scores on the evaluation metrics when evaluated
+on the test set than they did previously. 
+
 The best macro \FI score on the test set is $0.388$, noticeably less than the
 highest macro \FI score we saw when we evaluated on the test set. For
 instance, all the RNN1 and RNN2 models we trained with an auxiliary loss
@@ -91,11 +96,45 @@ set, we would expect performance to drop on both metrics, not only the macro
 \FI score.
 
 
+\section{Multi-task predictions}
+
+We examine the confusion matrices for our best multi-task model, `RNN2 Multi',
+on the test set. The plot is given in figure \ref{fig:multi-test-cm}.
+
+\begin{figure}[]
+  \centering
+  \includegraphics{multi-test-cm}
+  
+  \caption[Multi-task confusion matrices]{
+    Confusion matrices for RNN2 Multi. \ac{AES} task on the left, \ac{NLI}
+    task on the right. Numbers are counts.
+  }
+  \label{fig:multi-test-cm}
+\end{figure}
+
+The confusion matrix on CEFR scores looks a lot like previous confusion matrices
+for the task. Predictions follow a blurry diagonal.
+
+In the confusion matrix for \acp{L1}, we see that all languages are predicted
+to be Spanish at some point. German is predicted with 100\% precision,
+however a lot of German texts are wrongly classified as English. This seems
+reasonable since English and German are similar languages in the same
+language family. However, the Slavic languages are not confused for each
+other, as one might expect, but rather Russian and Polish are both commonly
+mistaken for Spanish.
+
+
 \section{Predictions on the control corpus}
 
 As a sanity check, we also use our model to automatically assign CEFR labels
 to the texts in ASK's control corpus, which consists of texts written by
-native Norwegian speakers. There is no canonical CEFR score associated with
+native Norwegian speakers. These texts are written under similar conditions as
+the essays in the main corpus, at least with respect to essay prompts and time
+limits. However, the authors in the control corpus have not actually taken the
+test in order to prove their proficiency in their native language, unlike the
+authors in the main corpus, who have had a stake in their test results.
+
+There is no canonical CEFR score associated with
 these texts in the corpus, but we assume that native Norwegian speakers would
 generally be rated at a high level of proficiency in the CEFR framework.
 
