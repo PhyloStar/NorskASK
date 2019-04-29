@@ -124,7 +124,13 @@ and linear regression, and neural models following the \acp{MLP} architecture.
 \subsection{Classification versus regression}
 
 \ac{AES} can be modelled both as a classification task and as a regression
-task, and both are seen in previous work.
+task, and both are seen in previous work. Sometimes both have used in the
+same study. For instance, in \textcite{vajjala17}, two different datasets
+with different properties were used, and the author utilized both multi-class
+prediction and regression at different points.
+
+Modelling the task as multi-class prediction is used in
+\textcite{vajjala18universalCEFR}.
 
 A disadvantage with using regression for the AES task is that while we know the
 correct order of classes, it is not obvious that the distance between adjacent
@@ -485,6 +491,7 @@ mis-classifications, such as three `B2/C1' texts being classified as `B1' and
 `A2/B1'.
 
 \begin{figure}
+  % mlp_char-26449272_22 
   \centering
   \includegraphics{mlp-char-rank}
   \caption{Confusion matrix for MLP Rank Char}
@@ -492,6 +499,7 @@ mis-classifications, such as three `B2/C1' texts being classified as `B1' and
 \end{figure}
 
 \begin{figure}
+  % mlp_char-26449273_22 
   \centering
   \includegraphics{mlp-char-rank-round}
   \caption{Confusion matrix for MLP Rank Char, collapsed labels}
