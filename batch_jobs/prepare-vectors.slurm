@@ -37,4 +37,4 @@ module load \
 
 chkfile "models"
 
-python -m masterthesis.data.prepare_vectors "$1" "$SCRATCH"/models/vectors
+python -m masterthesis.data.prepare_vectors "$1" "$SCRATCH"/models/vectors "$@"

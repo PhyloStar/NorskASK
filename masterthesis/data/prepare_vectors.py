@@ -1,5 +1,6 @@
 """Store pre-trained vectors for the vocabulary in training set"""
 import argparse
+from itertools import chain
 import logging
 from pathlib import Path
 
@@ -19,6 +20,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('outputdir', type=Path)
     parser.add_argument('--outputname', type=str)
     parser.add_argument('--verbose', action='store_true')
+    parser.add_argument("--splits", type=str.split, default=["train"])
     args = parser.parse_args()
     if args.verbose:
         logging.getLogger(None).setLevel(logging.DEBUG)
@@ -40,7 +42,8 @@ def main():
     kv = load_fasttext_embeddings(args.input)
 
     vector_size = kv.vector_size
-    words = list(set(iterate_tokens('train'))) + ['__UNK__', '__PAD__']
+    token_iter = chain.from_iterable(iterate_tokens(s) for s in args.splits)
+    words = list(set(token_iter)) + ["__UNK__", "__PAD__"]
     embeddings = np.zeros((len(words), vector_size))
     for row, word in tqdm.tqdm(enumerate(words)):
         embeddings[row, :] = kv.word_vec(word)
