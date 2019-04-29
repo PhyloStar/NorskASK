@@ -619,7 +619,11 @@ choice for the task than mean over time and max over time.
 
 \todo{expand}
 We choose five different hyperparameters and examine the effect each of them
-has on the predictions of the networks.
+has on the predictions of the networks. When it is relevant, we will compare
+the effect we got with the effect found by \textcite{taghipour16}. However,
+our experiments are not directly comparable, for reasons including different
+evaluation metric, and different evaluation method (\citeauthor{taghipour16}
+use 5-fold cross validation).
 
 
 \subsubsection*{LSTM versus GRU}
@@ -629,7 +633,8 @@ GRU comes out on top with somewhat higher top scores.
 
 \subsubsection*{Bidirectional RNN}
 
-Not very clear.
+The effect is not very clear. Our top performing models are BiRNNs, but the
+bidirectional models are not universally better.
 
 
 \subsubsection*{Initialization of embeddings}
