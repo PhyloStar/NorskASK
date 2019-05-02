@@ -1,0 +1,5 @@
+181: Regression layer was not replaced with softmax layer
+277: s/leven/level/
+278: Question mark?
+356: s/to aware/to be aware/
+

@@ -416,7 +416,12 @@ All the models have a hidden state vector of size 300 in unidirectional
 \acp{RNN}, and 600 in BiRNNs (300 in each direction). We use all tokens in
 the training set as our lexicon, giving a vocabulary size of 20,068 (20,066
 unique tokens occurring in the training set, plus two tokens for padding and
-unknown words). Embeddings are initialized either randomly or using vectors
+unknown words). This entails that the unknown token will receive no training
+signal, and remain whatever it was initialized as, which is either a random
+vector or the embedding computed by the fastText model for the token
+`__UNK__'. \todo{sanity}
+
+Embeddings are initialized either randomly or using vectors
 from the fastText model described in section \ref{subseq:fasttext}, and
 trained as part of the network. BiRNNs are referred to in the following
 tables and discussion as either BiLSTM or BiGRU, depending on the RNN cell
