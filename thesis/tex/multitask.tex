@@ -327,6 +327,31 @@ for datasets with at least 500 samples. The values in table
 \ref{tab:metric-corrs} were computed on samples with either 100 or 200
 samples, well below 500.
 
+\section{Results on NLI}
+
+The models which have been trained using \ac{NLI} as an auxiliary task can also
+be used to predict this task, by using only the output from the auxiliary
+output layer.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrrr}
+    \toprule
+    target   & precision &  recall & f1-score & support \\
+    \midrule
+    English    &   $0.55$  &   $0.67$   &  $0.60$  &     18 \\
+    Polish     &   $0.57$  &   $0.43$   &  $0.49$  &     30 \\
+    Russian    &   $0.50$  &   $0.18$   &  $0.26$  &     17 \\
+    Somali     &   $0.50$  &   $0.38$   &  $0.43$  &      8 \\
+    Spanish    &   $0.38$  &   $0.74$   &  $0.50$  &     23 \\
+    German     &   $0.43$  &   $0.30$   &  $0.35$  &     10 \\
+    Vietnamese &   $0.71$  &   $0.59$   &  $0.65$  &     17 \\
+    \midrule
+    Macro average &     &      &           $0.451$ & \\
+    Micro average &     &      &           $0.472$ & \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \section{Conclusion}
 
