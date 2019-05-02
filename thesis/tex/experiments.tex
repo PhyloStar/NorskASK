@@ -7,6 +7,11 @@ comparing the performance of different kinds of input. We use both tokens,
 character \ngrams, mixed POS and function word \ngrams, and \ac{POS} \ngrams
 as inputs.
 
+We will compare nominal classification, ordinal regression and numeric
+regression as different formulations of the \ac{AES} task, and see which
+performs best. We will also investigate different evaluation metrics for the
+task.
+
 
 \section{Preprocessing}
 
@@ -102,17 +107,26 @@ this metric, either alone or in conjunction with other metrics.
 
 \subsection{Reported metrics}
 
-We report both the macro and micro \FI for all experiments. The metrics are
-reported for two different modes: The first utilizing the full set of
-classes, and the second training and evaluating on the collapsed classes.
+Two different sets of output labels are used in the experiments: The original
+seven CEFR labels, and a collapsed set where the intermediate classes, such
+as ``A2/B1'', are rounded up to the nearest canonical class, i.e. the CEFR
+label after the slash. This results in only four different labels: ``A2'',
+``B1'', ``B2'' and ``C1''. We will focus on comparing the models based on
+their performance on the full set of labels, but include the performance on
+collapsed labels because the setup is more similar to other \ac{AES} studies
+using different datasets using CEFR labels without intermediate classes.
+
+We run two parallel experiments for each model. One where we train and
+evaluate on the full set of classes, and one where we train and evaluate on
+the collapsed classes. We report both the macro and micro \FI for both modes.
 
 A third option, namely to train on the full set of classes and reduce the
 predictions to the collapsed set of classes, was also attempted, based on the
 assumption that the more fine grained labels in the full set of classes can
 provide useful supervision signals even though we evaluate on a smaller set.
-However, in practice the best performers on the collapsed labels was
-empirically observed to be the models that were also trained on the collapsed
-tags.
+However, in practice we observed that the best performing models on the
+collapsed labels were the models that were also trained on the collapsed
+tags. Therefore, we do not report any results from this evaluation mode.
 
 
 \section{Model descriptions}
@@ -132,20 +146,29 @@ prediction and regression at different points.
 Modelling the task as multi-class prediction is used in
 \textcite{vajjala18universalCEFR}.
 
-A disadvantage with using regression for the AES task is that while we know the
-correct order of classes, it is not obvious that the distance between adjacent
-classes is always equal. For instance, we cannot know if the jump from CEFR
-score `A2/B1' to 'B1' is just as big as `B1' to `B1/B2'. However, we need to
+A problem with using regression for the AES task is, in theory, that while we
+know the ordering of proficiency classes, we do not know the distance between
+adjacent classes. For instance, we cannot know if the jump from CEFR score
+`A2/B1' to 'B1' is just as big as `B1' to `B1/B2'. However, we need to
 implicitly decide this when we transform the labels into numeric values for
-regression.
+regression. In practice we place the classes with equal distance over a
+numeric interval.
 
 This challenge of quantifying distance between classes does not apply to the
 classification approach, but it comes with another problem. Multi-class
 classification does not consider any ordering of classes, which is an
-intrinsic property of the classes for AES.
+intrinsic property of the classes for AES. However, we do not have to make
+assumptions about the distance between classes.
 
 A third class of analysis called \emph{ordinal regression} or \emph{ranking
-learning} is intended for predicting an ordinal variable, such as CEFR scores.
+learning} is intended for predicting an ordinal variable, where classes are
+distinct, but have a natural ordering. In theory, it is the most fitting
+formulation for the \ac{AES} task with nominal classes, since we know the
+ordering of the classes, but not the distance between them. However, unlike
+regression and nominal classification, algorithms for ordinal regression are
+implemented in common machine learning frameworks like scikit-learn. We will
+however explore a formulation of ordinal regression for a neural model, as
+described in section \ref{subsec:ordreg}.
 
 
 \subsection{Input representations}
@@ -216,13 +239,21 @@ transformed sequences, we extracted \ngrams in the interval $[1,3]$. The
 20,000 most commonly occurring of these were used for the neural models.
 
 
-\subsection{Linear models}
-\label{subsec:linear}
+\subsection{Linear models} \label{subsec:linear}
+
+The purpose of linear models in the context of this thesis is to establish
+baseline results, and investigate the performance of regression versus
+nominal classification for the task. Since the main goal of the thesis is to
+investigate neural models, we have not spent any effort tuning
+hyperparameters for the linear models, and instead kept the default
+parameters from the library implementation.
 
 The logistic regression model was implemented using the Python library
-scikit-Learn \autocite{scikit-learn}. The model was instantiated with the
-`lgbfs' solver to minimize multinomial loss. No regularization was used, and
-the optimizer was set to run for a maximum of 100 iterations.
+scikit-learn \autocite{scikit-learn}. The model was instantiated with the
+`lgbfs' solver to minimize multinomial loss. This solver was chosen because
+it is set to become the default solver in a future version of scikit-learn.
+No regularization was used, and the optimizer was set to run for a maximum of
+100 iterations.
 
 The linear regression model was a support vector regressor also chosen from
 scikit-learn. The default parameters were used, which are epsilon-insensitive
@@ -238,8 +269,7 @@ additionally clip the output values to the range of scores: $[0,6]$ in our
 full set of labels and $[0,3]$ in the collapsed set.
 
 
-\subsection{Multi-layer perceptron}
-\label{subsec:mlp}
+\subsection{Multi-layer perceptron} \label{subsec:mlp}
 
 The MLP models were implementing in Keras \autocite{keras} and run on the
 TensorFlow backend \autocite{tensorflow}. All the models the have an input
@@ -274,6 +304,8 @@ values than the peripheral classes. In fact, the lowest and highest classes
 correspond to an unbounded set of input values. Regardless, we will see that
 the classes which the model struggles the most to predict correctly are the
 peripheral classes.
+
+\subsubsection{Ordinal regression} \label{subsec:ordreg}
 
 For ordinal regression, we implemented a neural model for ordinal regression
 following a modified version of the method in \textcite{cheng2008neural}.
@@ -339,13 +371,9 @@ over time.
 
 \section{Results}
 
-Two different sets of output labels are used in the experiments: The original
-seven CEFR labels, and a collapsed set where the intermediate classes, such
-as ``A2/B1'', are rounded up to the nearest canonical class, i.e. the CEFR
-label after the slash. This results in only four different labels: ``A2'',
-``B1'', ``B2'' and ``C1''. All macro and micro \FI scores for the classifiers
-described in this chapter, for both the full and collapsed sets of classes,
-are found in table \ref{tab:baseline-accuracies}.
+All macro and micro \FI scores for the classifiers described in this chapter,
+for both the full and collapsed sets of classes, are found in table
+\ref{tab:baseline-accuracies}.
 
 \begin{table}
   \centering
