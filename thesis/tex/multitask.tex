@@ -358,7 +358,21 @@ output layer.
 In this section, we will examine how the models trained with \ac{NLI} as
 an auxiliary task perform on this task in isolation.
 
-\todo{Sanity check vocab size}
+
+\section{Sanity check vocab size}
+
+Previously we made the decision to limit the vocabulary in the models to only
+the word forms that appear in the essays in the training set. This made sense
+because we are using dynamic word embeddings that are updated during
+training, and only the word forms in the training set receive weight updates
+during the backward pass.
+
+This does however also mean that we lose one of the advantages of pre-trained
+vectors, and fastText in particular, namely the ability to get vector
+representations for words not seen in training. Instead, during evaluation,
+words that do not appear in the training set are represented by an
+`\_\_UNK\_\_' token that is essentially random, since it has received no
+weight updates in training.
 
 
 
