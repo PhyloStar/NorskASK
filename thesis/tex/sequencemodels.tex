@@ -285,7 +285,14 @@ matrix for the \ac{CNN} looks like a fuzzy diagonal line, with gradual
 dropoff as the distance from the diagonal increases. It also looks like it
 has a steeper slope than the ideal diagonal running between the top-left and
 bottom-right corner, which is not ideal, but even if the slope is wrong, a
-diagonal indicates good ranking of examples.
+diagonal indicates that relative ranks between essays are reasonable.
+
+We wondered whether the visible difference between scattered predictions and
+a fuzzy diagonal could be explained using other metrics than macro or micro
+\FI, on which we have previously decided to base our model evaluations. As
+seen in table \ref{tab:mlp-cnn-metrics}, while the \ac{MLP} has the best \FI
+scores, the \ac{CNN} beats it in terms of ranking and error metrics. This
+explains the intuition of the CNN confusion matrix looking better.
 
 It is worth noting that CNN Reg Mix has 149,101 trainable parameters, compared
 to the 2,032,206 of MLP Rank char, which is more than 13 times as many.
@@ -310,11 +317,6 @@ to the 2,032,206 of MLP Rank char, which is more than 13 times as many.
   \label{tab:mlp-cnn-metrics}
 \end{table}
 
-The difference between scattered predictions and a fuzzy diagonal is
-quantifiable using some other metrics than macro or micro \FI. As seen in
-table \ref{tab:mlp-cnn-metrics}, while the \ac{MLP} has the best \FI scores,
-the \ac{CNN} beats it in terms of ranking and error metrics. This explains
-the intuition of the CNN confusion matrix looking better.
 
 
 \section{Recurrent neural networks}
@@ -419,7 +421,7 @@ unique tokens occurring in the training set, plus two tokens for padding and
 unknown words). This entails that the unknown token will receive no training
 signal, and remain whatever it was initialized as, which is either a random
 vector or the embedding computed by the fastText model for the token
-`__UNK__'. \todo{sanity}
+`\_\_UNK\_\_'. \todo{sanity}
 
 Embeddings are initialized either randomly or using vectors
 from the fastText model described in section \ref{subseq:fasttext}, and
