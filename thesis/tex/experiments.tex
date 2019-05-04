@@ -39,8 +39,7 @@ original tags in the ASK corpus are from the Oslo-Bergen tagger's own tagset
 \autocite{oslobergen}, and these were not used in any of our experiments.
 
 
-\section{Metrics}
-\label{metrics-discussion}
+\section{Metrics} \label{metrics-discussion}
 
 For each class, we can compute the \emph{precision} and \emph{recall} (Eq.
 \ref{eq:precision}). The precision for a class is the ratio of examples that
@@ -83,31 +82,36 @@ complete dataset.
 \FI scores previously reported in \ac{AES} literature include Micro \FI score
 in \textcite{vajjala17}, and weighted \FI in
 \textcite{vajjala18universalCEFR}. For the \ac{NLI} task, micro \FI is
-reported in \textcite{malmasi15,malmasi17}. Other, non-\FI metrics that have
-been reported in \ac{AES} literature include \ac{QWK} \autocite{taghipour16,
-alikaniotis2016automatic}, Pearson's correlation coefficient
-\autocite{vajjala17, alikaniotis2016automatic}, Spearman's rank correlation
-coefficient and root mean squared error \autocite{alikaniotis2016automatic},
-and mean absolute error \autocite{vajjala17}. These are metrics that may
-depend on the ordinal nature of proficiency scores, and potentially the
-relative differences between different scores. For instance, a prediction of
-`C1' for an essay with gold label `B1' is a more serious misclassification
-than a prediction of `A2/B1' for the same sample, and this can be taken into
-account by some metrics.
+reported in \textcite{malmasi15,malmasi17}. \FI is also reported in
+\textcite{hancke2013,pilan2016}, but it is not clear whether they are
+referring to a macro or weighted average. \todo{find out} In \textcite{vajjalaloo2014}, \FI
+scores are reported separately for each class.
+
+Other, non-\FI metrics that have been reported in \ac{AES} literature include
+\ac{QWK} \autocite{taghipour16, alikaniotis2016automatic}, Pearson's
+correlation coefficient \autocite{vajjala17, alikaniotis2016automatic},
+Spearman's rank correlation coefficient and root mean squared error
+\autocite{alikaniotis2016automatic}, and mean absolute error
+\autocite{vajjala17}. These are metrics that may depend on the ordinal nature
+of proficiency scores, and potentially the relative differences between
+different scores. For instance, a prediction of `C1' for an essay with gold
+label `B1' is a more serious misclassification than a prediction of `A2/B1'
+for the same sample, and this can be taken into account by some metrics.
 
 According to \textcite{yannakoudakis2015evaluating}, there are several
-problems with using \ac{QWK} as a metric for the \ac{AES} task, because it
+problems with using \ac{QWK} as a metric for the \ac{AES} task. The metric
 depends on trait prevalence, the scoring scale and the marginal distributions
-of labels and predictions. Therefore it is problematic to compare \ac{QWK}
-scores between different systems and datasets. However, since two of the
-cited studies are based on a dataset from a Kaggle competition where \ac{QWK}
-was the official metric, the authors of the studies have chosen to report
-this metric, either alone or in conjunction with other metrics.
+of labels and predictions, among other issues. Therefore it is problematic to
+compare \ac{QWK} scores between different systems and datasets. However,
+since two of the cited studies are based on a dataset from a Kaggle
+competition where \ac{QWK} was the official metric, the authors of the
+studies have chosen to report this metric, either alone or in conjunction
+with other metrics.
 
 
 \subsection{Reported metrics}
 
-Two different sets of output labels are used in the experiments: The original
+Two different sets of output labels are used in our experiments: The original
 seven CEFR labels, and a collapsed set where the intermediate classes, such
 as ``A2/B1'', are rounded up to the nearest canonical class, i.e. the CEFR
 label after the slash. This results in only four different labels: ``A2'',
@@ -142,9 +146,6 @@ task, and both are seen in previous work. Sometimes both have used in the
 same study. For instance, in \textcite{vajjala17}, two different datasets
 with different properties were used, and the author utilized both multi-class
 prediction and regression at different points.
-
-Modelling the task as multi-class prediction is used in
-\textcite{vajjala18universalCEFR}.
 
 A problem with using regression for the AES task is, in theory, that while we
 know the ordering of proficiency classes, we do not know the distance between
