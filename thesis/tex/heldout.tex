@@ -101,7 +101,7 @@ set, we would expect performance to drop on both metrics, not only the macro
 We examine the confusion matrices for our best multi-task model, `RNN2 Multi',
 on the test set. The plot is given in figure \ref{fig:multi-test-cm}.
 
-\begin{figure}[]
+\begin{figure}
   \centering
   \includegraphics{multi-test-cm}
   
@@ -124,9 +124,10 @@ other, as one might expect, but rather Russian and Polish are both commonly
 mistaken for Spanish.
 
 Considering \ac{NLI} as a task of its own, we see worse performance from this
-multi-task model than the single-task model we trained earlier \todo{ref}
-using the same architecture. \todo{numbers} This may be because the NLI loss
-had a low weight during training.
+multi-task model than the single-task model we trained earlier (see section
+\ref{sec:nli-experiments}) using the same architecture. We had a macro \FI of
+$0.447$ and an accuracy of $0.480$ then. This
+may be because the NLI loss had a low weight during training.
 
 
 \section{Predictions on the control corpus}
