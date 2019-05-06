@@ -106,8 +106,8 @@ on the test set. The plot is given in figure \ref{fig:multi-test-cm}.
   \includegraphics{multi-test-cm}
   
   \caption[Multi-task confusion matrices]{
-    Confusion matrices for RNN2 Multi. \ac{AES} task on the left, \ac{NLI}
-    task on the right. Numbers are counts.
+    Confusion matrices for RNN2 Multi on the held-out test set. \ac{AES} task on the left, \ac{NLI}
+    task on the right. The numbers are counts.
   }
   \label{fig:multi-test-cm}
 \end{figure}
@@ -122,12 +122,6 @@ reasonable since English and German are similar languages in the same
 language family. However, the Slavic languages are not confused for each
 other, as one might expect, but rather Russian and Polish are both commonly
 mistaken for Spanish.
-
-Considering \ac{NLI} as a task of its own, we see worse performance from this
-multi-task model than the single-task model we trained earlier (see section
-\ref{sec:nli-experiments}) using the same architecture. We had a macro \FI of
-$0.447$ and an accuracy of $0.480$ then. This
-may be because the NLI loss had a low weight during training.
 
 
 \section{Predictions on the control corpus}
