@@ -635,7 +635,16 @@ use 5-fold cross validation).
 
 \subsubsection*{LSTM versus GRU}
 
-GRU comes out on top with somewhat higher top scores.
+GRU comes out on top with somewhat higher macro \FI scores. When ranking all
+models by macro \FI score on the full set of labels, the top three places are
+taken by GRU models ($0.460$, $0.459$, $0.454$), and the fourth and fifth
+places by LSTM models ($0.448$, $0.445$). A GRU model also has the highest
+macro \FI on the collapsed labels ($0.805$). The best LSTM macro \FI on
+collapsed labels is $0.704$, ranking seventh among all GRU and LSTM
+experiments.
+
+We conclude that GRU performs best on the task. An additional benefit of GRU
+is that it has fewer parameters and is a little faster in training.
 
 
 \subsubsection*{Bidirectional RNN}
@@ -650,7 +659,7 @@ The effects of initialization is not very clear, and in any case mixed.
 The best LSTM models used pre-trained embeddings, and the best GRU models
 used randomly initialized embeddings. However, the best GRU model with
 pre-trained embeddings has a higher macro \FI score than the best LSTM model,
-45.4\% and 44.8\% respectively.
+$0.454$ and $0.448$ respectively.
 
 
 \subsubsection*{Pooling method}
@@ -911,7 +920,7 @@ out specific features that the model seems to focus on.
 
 One of the findings in \textcite{pepper2012} was that speakers of Slavic
 languages tend to use fewer indefinite articles. In this excerpt we see an
-example of the opposite, for instance in the twice occuring `*en god helse'
+example of the opposite, for instance in the twice occurring `*en god helse'
 (\emph{*a good health}). `Helse' (\emph{{health}}) is an uncountable noun,
 and should therefore not have an indefinite article, neither in Norwegian nor
 English. While this runs counter to the general trend for learners with
@@ -938,7 +947,7 @@ In \textcite{pepper2012}, Somali speakers were found to use the auxiliary
 than native Norwegian speakers and several other L1 groups.
 \citeauthor{pepper2012} suggested that the frequency of `skal' partly might
 be explained by topic bias, since some essay prompts were about the future,
-and `skal' is often involved with the future tense. This exerpt is not one of
+and `skal' is often involved with the future tense. This excerpt is not one of
 these texts, and concerns a past experience. Thus, it is not surprising that
 it contains no occurrences of `skal'. On the other hand, `jeg' is indeed a
 frequent word, occurring five times in the course of a rather short text.
