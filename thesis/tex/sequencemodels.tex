@@ -611,16 +611,6 @@ embeddings.
   \label{tab:gru-results}
 \end{table}
 
-We find that many of the best performing models all use the attention
-mechanism. Since the stopping criterion for our neural networks is the macro
-\FI score, and the micro \FI score is to be considered a side effect of the
-macro \FI. In addition there is considerable variance in results between
-different training runs of the same model. It is therefore hard to select a
-single model as the clear winner. However, it is very unlikely that the best
-scores would all be from attention based models by mere chance, and it
-therefore seems reasonable to conclude that an attention model is a better
-choice for the task than mean over time and max over time.
-
 
 \subsection{The effect of hyperparameters}
 
@@ -649,16 +639,23 @@ is that it has fewer parameters and is a little faster in training.
 
 \subsubsection*{Bidirectional RNN}
 
-The effect is not very clear. Our top performing models are BiRNNs, but the
-bidirectional models are not universally better.
+Our top performing models are BiRNNs, and the unidirectional model with the
+highest macro \FI on the full set of labels only ranks fifth among all RNN
+experiments (macro \FI $0.445$). When comparing models that differ only in
+whether they are bidirectional or not, we do not always see that the macro
+\FI is higher in the bidirectional model. However, if we only look at the
+models which use an attention mechanism, the bidirectional models win in all
+but one case. The GRU attention model with mixed UPOS input drops from
+$0.320$ to $0.275$. It seems that BiRNNs may be most effective in conjunction
+with an attention mechanism, at least on this dataset.
 
 
 \subsubsection*{Initialization of embeddings}
 
-The effects of initialization is not very clear, and in any case mixed.
-The best LSTM models used pre-trained embeddings, and the best GRU models
-used randomly initialized embeddings. However, the best GRU model with
-pre-trained embeddings has a higher macro \FI score than the best LSTM model,
+The effects of initialization is not very clear, and in any case mixed. The
+best LSTM models used pre-trained embeddings, and the best GRU models used
+randomly initialized embeddings. However, the best GRU model with pre-trained
+embeddings has a higher macro \FI score than the overall best LSTM model,
 $0.454$ and $0.448$ respectively.
 
 
@@ -695,7 +692,20 @@ our case.
 \subsubsection*{UPOS tags}
 
 The addition of UPOS tags as a side input seems to have variable effect on
-the performance. 
+the performance. In the LSTM experiments, all the models with an attention
+mechanism had a drop in performance when adding the UPOS side input. However,
+in the GRU experiments, some models increased their macro \FI when they used
+the UPOS side input, including the overall best model, which had a macro \FI
+of $0.459$ without UPOS tags and $0.460$ with them. We also see inconsistent
+effects when looking at the results on the collapsed labels.
+
+The mixed UPOS input does not measure up in the RNN context, even though it
+had the best results in the CNN experiments. The highest macro \FI from an
+RNN with mixed UPOS input is $0.305$ on the full set of labels, and $0.617$
+on the collapsed set of labels. This is higher than the best results in the
+CNN experiments ($0.258$ and $0.463$). It is possible that RNNs are better
+able to make use of the greater amount of information present in full lexical
+features.
 
 
 \subsection{Training behaviour}
