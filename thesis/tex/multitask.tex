@@ -175,10 +175,11 @@ from with statistical certainty.
   \label{fig:rnn-multi-training}
 \end{figure}
 
-In the plots of training behaviour, we see that both the CNN and RNN models are
-able to overfit the training data on the \ac{NLI} task. On the \ac{AES} task,
-training stops before the training MAE converges, but for both models the
-validation metrics seem to have stopped improving long before 50 epochs.
+In the plots of training behaviour, we see that both the CNN and RNN models
+are able to overfit the training data on the \ac{NLI} task. On the \ac{AES}
+task, training stops before the training \ac{MAE} converges, but for both
+models the validation metrics seem to have stopped improving long before 50
+epochs.
 
 As before, the validation loss for the RNN model has much bigger fluctuations
 than the CNN model. The RNN validation loss (figure
@@ -186,6 +187,11 @@ than the CNN model. The RNN validation loss (figure
 $0.2$, with fluctuations that occasionally exceed $0.4$ and approach $0.6$.
 The CNN validation loss (figure \ref{fig:cnn-multi-training}(a), left) is
 quite stable, but around a higher value, somewhere between $0.5$ and $0.6$.
+
+From the confusion matrices (figures \ref{fig:cnn-multi-training}(b) and
+\ref{fig:rnn-multi-training}(b)), we see that the CNN produces few
+predictions in the peripheral classes, and none at all in `A2' and `C1',
+contributing to a low macro \FI score.
 
 
 \section{Correlation of metrics}
