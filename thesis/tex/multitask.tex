@@ -8,10 +8,18 @@ models to predict both tasks simultaneously.
 \section{Models}
 
 We selected four models for the multi-task experiments, two convolutional and
-two recurrent neural networks. They were chosen based on the macro \FI results
-on the development set. The two \acp{CNN} chosen were the two \acp{CNN} that
-had the highest macro \FI on the full set of labels in the development set,
-and likewise for the two \acp{RNN}. The hyperparameters for the four models are
+two recurrent neural networks. They were chosen based on the macro \FI
+results on the development set. The two \acp{CNN} chosen were the two
+\acp{CNN} that had the highest macro \FI scores on the full set of labels in
+the development set ($0.258$ and $0.242$). For the \acp{RNN}, we chose the
+models with the highest and third highest macro \FI scores on the development
+set ($0.460$ and $0.454$). The reason for choosing the third-best model
+instead of the second-best ($0.459$) is that the best and second-best models
+differed only in a single parameter---whether or not UPOS tags were used as a
+side input---and we deemed them too similar to make an interesting
+comparison.
+
+The hyperparameters for the four models are
 summarized in tables \ref{tab:cnn-parameters} and \ref{tab:rnn-parameters}.
 
 \begin{table}
