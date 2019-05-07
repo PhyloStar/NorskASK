@@ -1,46 +1,57 @@
 \chapter{Convolutional and recurrent neural networks}
 \label{ch:sequencemodels}
 
-Next, we will implement models which take the ordering of tokens into
-account. These includes \acp{CNN} and \acp{RNN}. In \ac{NLP}, \acp{CNN} can
-be considered as a ``\ngram extractor'', which looks at a window of tokens.
-However, unlike the count vector approach used above, the CNN extracts
-``soft'' \ngrams, utilizing the ability of word embeddings to share
-statistical strength between words, and outputting a real-valued number
-instead of a boolean yes/no value or an integer count.
+In the previous chapter we established baseline results for the \ac{AES} task,
+and found that for the systems we implemented, regression gave better results
+than nominal classification.
+
+We now go on to investigate more advanced neural architectures, \acp{CNN} and
+\acp{RNN}. Both are widely used in various \ac{NLP} tasks.
+[...]\todo{todo}.
+
+These architectures take the ordering of tokens into account. In \ac{NLP},
+\acp{CNN} can be considered as a \ngram detector, which looks at a window of
+tokens \autocite[155]{goldbergNLP}. However, unlike the count vector approach
+used above, the CNN extracts `soft' \ngrams, utilizing the ability of word
+embeddings to share statistical strength between words, and outputting a
+real-valued number instead of a boolean yes/no value or an integer count.
 
 \acp{RNN} are theoretically able to detect long range patterns, which is
 useful for the tasks at hand. For instance, the ability to connect different
 sections of a text and refer back to things that have been mentioned before
 can be considered a part of language proficiency.
 
+In the following, [...]\todo{todo}
+
 
 \section{Experimental setup}
 
-As in the last chapter, models are trained on the test set, and use the
+As in the last chapter, models are trained on the training set, and we use the
 development set as validation data to decide which weights to keep. We keep
 the weights that gave the highest macro \FI score over the validation set in
 the course of training. The reported metrics are also evaluated on the
 development set.
 
-Certain aspects of setup for the new models are different from the models in
-the previous chapter, but shared between \ac{CNN} and \ac{RNN} models. These
-aspects are described in this section.
+Certain aspects of the experimental setup for the new models are different
+from the models in the previous chapter, but shared between \ac{CNN} and
+\ac{RNN} models. These aspects are described in this section.
 
 
 \subsection{Input length}
 
 The models in this chapter take as input a document of a predetermined
-length. We therefore need to set a fixed number of tokens such that shorter
-documents were padded to this length, and longer documents truncated. In
-order to decide this, we examined the distribution of document lengths in the
-training set. All the subsequent values are rounded to the nearest integer.
-First, we found the 95th percentile of document lengths, which turned out to
-be 701 tokens. Then, we computed the value $Q_2 + 1.5 \cdot (Q_3 - Q_1)$, or
-the median plus 1.5 times the interquartile range, which gives 693 tokens.
-Finally, we computed the mean value plus two standard deviations, giving 707
-tokens. These values are all close to each other, and we decided to settle on
-700 tokens since it is a round number close to all values we examined.
+length. We therefore need to set a fixed number of tokens that will be the
+length of each document. Documents shorter than this length were padded to
+this length by appending special padding tokens, and longer documents were
+truncated. In order to decide this fixed length, we examined the distribution
+of document lengths in the training set. All the subsequent values are
+rounded to the nearest integer. First, we found the 95th percentile of
+document lengths, which turned out to be 701 tokens. Then, we computed the
+value $Q_2 + 1.5 \cdot (Q_3 - Q_1)$, or the median plus 1.5 times the
+interquartile range, which gives 693 tokens. Finally, we computed the mean
+value plus two standard deviations, giving 707 tokens. These values are all
+close to each other, and we decided to settle on 700 tokens since it is a
+round number close to all values we examined.
 
 As a consequence of the unequal distributions of length between the two test
 levels, the documents that are truncated are mainly from the advanced level
@@ -80,7 +91,7 @@ at vector similarities. We use the Python library Gensim \autocite{gensim} to
 load vector models and look up word similarities. For instance, the token
 `kjokoladet' is a misspelt version of `sjokolade' (chocolate), and it is
 closest in the embedding space to `sjokolade'. Curiously, it is also closer
-to `potetgul' than `potetgull' (potato crisps), and the former is a
+to `potetgul' than `potetgull' (potato crisps), where the former is a
 misspelling.
 
 Our training data only contains 20,766 unique tokens, which is less than 1\%
@@ -131,12 +142,12 @@ smaller vectors for POS tags.
 To create the input to the core part of our network, we concatenate the word
 and POS embeddings into a single vector. For instance, if we use word
 embeddings of size 100 and POS embeddings of size 10, the next layer will
-receive vectors of size 110.
+receive vectors of size 110. \todo{implementation details, keras etc}
 
 
 \section{Convolutional neural networks}
 
-We create a model with a convolutional architecture based on the model
+We create a system with a convolutional architecture based on the model
 described in \textcite{kim2014convolutional}. Documents are represented as
 sequences of token IDs, and fed into an embedding lookup layer. A separate
 token ID is used for padding if the document is shorter than 700 tokens.
@@ -149,7 +160,7 @@ that are applied to sequences of embeddings. We may use several different
 window sizes for the filters. The default architecture from
 \textcite{kim2014convolutional} uses 300 convolutional filters: 100 each of
 window size 3, 4 and 5. After applying the convolutions, the output is max
-pooled along the time axis. This selects the highest output each filter
+pooled along the time axis. This selects the highest output of each filter
 computed across all windows in the document. In practice, three pooling
 operations are included in the computational graph, one for each filter bank.
 This is a technical consideration, necessary because of the different window
@@ -165,6 +176,7 @@ layer as a regularization method.
 
 \subsection{Results}
 
+\todo{table 5.1 presents ... we observe that ...}
 The \ac{CNN} classifier that used both tokens and POS tags as input performed
 better than the one which only used tokens as input, as seen in table
 \ref{tab:cnn-results}. However, on the collapsed label set, the model which
@@ -230,7 +242,7 @@ maximum $L_2$ norm of 3.
 \end{table}
 
 
-\subsubsection{Effect of hyperparameters}
+\subsubsection{Comparing classification, regression and ordinal regression}
 
 Comparing the different prediction methods, namely categorical
 classification, numeric regression and ordinal regression, we see that
@@ -265,11 +277,12 @@ we train \ac{RNN} models.
   \label{fig:cnn-training}
 \end{figure}
 
-Figure \ref{fig:cnn-training} shows that how the training and validation
-metrics evolve in the course of training, as well as the confusion matrix of
-the final model. While the training loss quickly converges to a very low
-value, the validation loss fluctuates around a much higher loss, indicating
-overfitting. The plot of validation macro \FI also shows large fluctuations.
+Figure \ref{fig:cnn-training} shows how the training and validation metrics
+evolve in the course of training, as well as the confusion matrix of the
+final model's predictions. While the training loss quickly converges to a
+very low value, the validation loss fluctuates around a much higher loss,
+indicating overfitting. The plot of validation macro \FI also shows large
+fluctuations.
 
 The confusion matrix reveals that the final model did not assign any samples
 to the classes `A2', and `C1', the peripheral classes which are also the
@@ -289,13 +302,16 @@ diagonal indicates that relative ranks between essays are reasonable.
 
 We wondered whether the visible difference between scattered predictions and
 a fuzzy diagonal could be explained using other metrics than macro or micro
-\FI, on which we have previously decided to base our model evaluations. As
-seen in table \ref{tab:mlp-cnn-metrics}, while the \ac{MLP} has the best \FI
-scores, the \ac{CNN} beats it in terms of ranking and error metrics. This
-explains the intuition of the CNN confusion matrix looking better.
+\FI, on which we have previously decided to base our model evaluations. We
+therefore collected additional metrics for the best MLP model from the
+previous chapter, as well as the best CNN model in this chapter. The results
+are listed in table \ref{tab:mlp-cnn-metrics}. We observe that though the
+\ac{MLP} has the best \FI scores, the \ac{CNN} beats it in terms of ranking
+and error metrics. This explains the intuition of the CNN confusion matrix
+looking better\todo{wording}.
 
 It is worth noting that CNN Reg Mix has 149,101 trainable parameters, compared
-to the 2,032,206 of MLP Rank char, which is more than 13 times as many.
+to the 2,032,206 of MLP Rank char, which is more than 13 times as many.\todo{what to conclude}
 
 \begin{table}
   \centering
@@ -318,10 +334,10 @@ to the 2,032,206 of MLP Rank char, which is more than 13 times as many.
 \end{table}
 
 
-
 \section{Recurrent neural networks}
 
-Next, we moved to a different kind of architecture, \acp{RNN}. We implemented
+\todo{describe t\&n model}
+Next, we move to a different kind of architecture, \acp{RNN}. We implemented
 several models that were variants of the architecture described in
 \textcite{taghipour16}. The various changes we made to their architecture
 are described below. Some of our variations are similar to the variations
@@ -336,7 +352,7 @@ with using pre-trained vectors.
 
 The embedding layer in \textcite{taghipour16} was of dimension 50 and
 randomly initialized. We increased the embedding dimension to 100, and
-experiment both with randomly initialized embeddings and with pre-trained
+experimented both with randomly initialized embeddings and with pre-trained
 ones.
 
 We are reporting macro and micro \FI as before, not QWK as
@@ -417,9 +433,10 @@ All the models have a hidden state vector of size 300 in unidirectional
 the training set as our lexicon, giving a vocabulary size of 20,068 (20,066
 unique tokens occurring in the training set, plus two tokens for padding and
 unknown words). This entails that the unknown token will receive no training
-signal, and remain whatever it was initialized as, which is either a random
-vector or the embedding computed by the fastText model for the token
-`\_\_UNK\_\_'. \todo{sanity}
+signal, and its embedding will remain whatever it was initialized as.
+Depending on whether the experiment uses pre-trained embeddings, this
+representation will either be a random vector, or the embedding computed by
+the fastText model for the token `\_\_UNK\_\_'. \todo{sanity - where wat}
 
 Embeddings are initialized either randomly or using vectors
 from the fastText model described in section \ref{subseq:fasttext}, and
@@ -616,12 +633,13 @@ embeddings.
 We choose five different hyperparameters and examine the effect each of them
 has on the predictions of the networks. When it is relevant, we will compare
 the effect we got with the effect found by \textcite{taghipour16}. However,
-our experiments are not directly comparable, for reasons including different
-evaluation metric, and different evaluation method (\citeauthor{taghipour16}
-use 5-fold cross validation).
+our experiments for many reasons not comparable: We use a different dataset
+with different labels, a different evaluation metric, and a different
+evaluation method (\citeauthor{taghipour16} use 5-fold cross validation),
+among other things. \todo{diff datasets never comparable}
 
 
-\subsubsection*{LSTM versus GRU}
+\subsubsection{LSTM versus GRU}
 
 GRU comes out on top with somewhat higher macro \FI scores. When ranking all
 models by macro \FI score on the full set of labels, the top three places are
@@ -635,7 +653,7 @@ We conclude that GRU performs best on the task. An additional benefit of GRU
 is that it has fewer parameters and is a little faster in training.
 
 
-\subsubsection*{Bidirectional RNN}
+\subsubsection{Bidirectional RNN}
 
 Our top performing models are BiRNNs, and the unidirectional model with the
 highest macro \FI on the full set of labels only ranks fifth among all RNN
@@ -648,7 +666,7 @@ $0.320$ to $0.275$. It seems that BiRNNs may be most effective in conjunction
 with an attention mechanism, at least on this dataset.
 
 
-\subsubsection*{Initialization of embeddings}
+\subsubsection{Initialization of embeddings}
 
 The effects of initialization is not very clear, and in any case mixed. The
 best LSTM models used pre-trained embeddings, and the best GRU models used
@@ -657,7 +675,7 @@ embeddings has a higher macro \FI score than the overall best LSTM model,
 $0.454$ and $0.448$ respectively.
 
 
-\subsubsection*{Pooling method}
+\subsubsection{Pooling method}
 
 There are clear differences in the performance of the three pooling method we
 have used, mean-over-time, max-over-time and attention. The one that gives
@@ -687,7 +705,7 @@ it is not apparent that the attention mechanism aids model interpretation in
 our case.
 
 
-\subsubsection*{UPOS tags}
+\subsubsection{UPOS tags}
 
 The addition of UPOS tags as a side input seems to have variable effect on
 the performance. In the LSTM experiments, all the models with an attention
@@ -746,6 +764,7 @@ Compared to the training plot of the CNN model in figure
 \ref{fig:cnn-training}, it seems that the RNN metrics fluctuate much more,
 especially on validation data. However, the training accuracy seems to
 increase slower, and does not get as close to 100\% in the course of 50 epochs.
+\todo{what does this mean}
 
 The BiGRU model has more parameters than the MLP and CNN we looked at before.
 The number is 2,817,992.
@@ -753,6 +772,7 @@ The number is 2,817,992.
 
 \section{Native language identification} \label{sec:nli-experiments}
 
+\todo{reintroduce nli ref ch2}
 In comparison to proficiency labels in ASK where the peripheral classes are
 very small, \acp{L1} are much more evenly distributed. There is also no natural
 ordering of \ac{L1}, making regression or ordinal regression pointless. For
@@ -900,6 +920,7 @@ to be ignored by the model, as we will see in the Vietnamese example below.
 
 The interpretability and explanation power of attention mechanisms has been
 questioned in literature, for instance in \textcite{attentionexplanation}.
+\todo{expand, what do they find}
 
 \begin{figure}
   \centering
@@ -974,12 +995,22 @@ In the Vietnamese speaker's text (fig. \ref{fig:vie-attention}), the word
 Vietnam appears three times. This should be a very informative word, as it is
 likely that when someone mentions a country in this context, it is their
 country of origin. Two of the occurrences have low attention, and one (on the
-second-to-last line) has high attention. Within the high-attention segments, we
-find a couple of places were the V2 word order in Norwegian shows up. In one
-case, `Da jeg var bare ti år` (\emph{Then I was only ten}), the learner gets
-the word order wrong (`jeg' and `var' should switch places), but in another
-case, `I Vietnam må du ta en [...] prøve' (\emph{In Vietnam you have to take
-a test}), they correctly apply V2 word order.
+second-to-last line) has high attention.
+
+Within the high-attention segments, we find a couple of places were the V2
+word order in Norwegian shows up. V2 word order is a typological feature of
+Norwegian and several other Germanic languages that is challenging to acquire
+for many learners.
+
+In one case in this excerpt, `Da jeg var bare ti år` (\emph{Then I was only
+ten}), the learner gets the word order wrong (`jeg' and `var' should switch
+places), but in another case, `I Vietnam må du ta en [...] prøve' (\emph{In
+Vietnam you have to take a test}), they correctly apply V2 word order. Both
+these places occur with high attention values, but we cannot say with
+certainty that the model actually picks up V2 errors. In this excerpt, there
+are also several places with V2 word order that have low attention, for
+instance `Så måtte to […] søsken slutte' (\emph{Then two […] siblings had to
+quit}). \todo{discussion, attention here}
 
 
 \subsection{Latent space}
@@ -989,23 +1020,42 @@ order to see if the intermediate representation of documents prior to the
 final classification layer positions documents that should be similar close
 to each other. In figure \ref{fig:pca-rnn-cefr} we have taken the documents
 in the dev set and computed these representations using a BiGRU, then run
-them through the PCA algorithm in order to reduce them to two dimensions. The
-dimensions are the two axes that account for most of the variance in the
-data, and they are orthogonal to each other.
+them through the PCA algorithm\footnote{We used the implementation in
+Scikit-learn\autocite{scikit-learn}.} in order to project them down to two
+dimensions. The resulting dimensions are the two axes that account for most
+of the variance in the data. Additionally, the components are uncorrelated
+with each other.
 
 \begin{figure}
   \centering
   \includegraphics{pca-rnn-cefr}
   \caption[PCA plot of the vector representations of documents]{
     Each document in the dev set is plotted according to its two principal
-    components after PCA dimensionality reduction. Marker size and style
+    components after PCA dimensionality reduction. Marker size and shape
     corresponds to document length and test level, respectively.
   }
   \label{fig:pca-rnn-cefr}
 \end{figure}
 
-We see that the first component maps closely to the length of the document.
-As previously discussed, there is correlation between the length of essays
+We see that the first component, which corresponds to the horizontal axis in
+the plot, maps closely to the length of the document. The long essays,
+indicated by the size of the markers, are on the left hand side of the plot.
+These are overwhelmingly from the AL test. The right hand side of the plot is
+dominated by texts from the IL test, plotted with crosses, and the size of
+the markers indicate that these texts are small. The second component of the
+plot, on the other hand, does not seem to be interpretable in terms of CEFR
+score, essay length or test level.
+
+As previously discussed, there is a correlation between the length of essays
 and the proficiency score, as well as the test level (IL level or AL level).
-The PCA plots demonstrates that this relationship is preserved after the RNN
-transformation of a document into a feature vector.
+The system learns to see the length of the essay, likely by the presence of
+padding tokens in short essays. Therefore, it learns a feature which is
+strongly correlated with the output, namely proficiency labels.
+
+
+\section{Conclusion}
+
+We implemented CNN and RNN classifiers.
+Error analysis and visualization of attention values.
+Experiments with pure NLI.
+Analyzed the representation of documents in latent space.
