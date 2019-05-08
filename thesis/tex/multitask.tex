@@ -26,17 +26,19 @@ summarized in tables \ref{tab:cnn-parameters} and \ref{tab:rnn-parameters}.
   \centering
   \begin{tabular}{lll}
     \toprule
-    Hyperparameter & CNN1 & CNN2 \\
+    Hyperparameter       & CNN1 & CNN2 \\
     \midrule
-    Word embeddings & \multicolumn{2}{c}{Dynamic} \\
-    Embedding size & \multicolumn{2}{c}{100} \\
-    $L_2$ constraint & \multicolumn{2}{c}{3} \\
-    Windows & \multicolumn{2}{c}{3,4,5} \\
-    Embedding init & Random & Pre-trained \\
+    Word embeddings      & \multicolumn{2}{c}{Dynamic} \\
+    Embedding size       & \multicolumn{2}{c}{100} \\
+    $L_2$ constraint     & \multicolumn{2}{c}{3} \\
+    Windows              & \multicolumn{2}{c}{3,4,5} \\
+    Embedding init       & Random & Pre-trained \\
     Input representation & Mixed UPOS & Tokens \\
     \bottomrule
   \end{tabular}
-  \caption{Descriptions of the two CNN models}
+  \caption[Descriptions of the two CNN models]{
+    Hyperparameters for the two CNN models used in multi-task experiments.
+  }
   \label{tab:cnn-parameters}
 \end{table}
 
@@ -44,18 +46,23 @@ summarized in tables \ref{tab:cnn-parameters} and \ref{tab:rnn-parameters}.
   \centering
   \begin{tabular}{lll}
     \toprule
-    Hyperparameter & RNN1 & RNN2 \\
+    Hyperparameter       & RNN1 & RNN2 \\
     \midrule
-    Word embeddings & \multicolumn{2}{c}{Dynamic} \\
-    Embedding size & \multicolumn{2}{c}{100} \\
-    RNN cell & \multicolumn{2}{c}{GRU} \\
-    Pooling method & \multicolumn{2}{c}{Attention} \\
-    Bidirectional & \multicolumn{2}{c}{Yes} \\
-    Embedding init & Random & Pre-trained \\
+    Word embeddings      & \multicolumn{2}{c}{Dynamic} \\
+    Embedding size       & \multicolumn{2}{c}{$100$} \\
+    RNN cell             & \multicolumn{2}{c}{GRU} \\
+    RNN hidden dimension & \multicolumn{2}{c}{$300+300$} \\
+    Bidirectional        & \multicolumn{2}{c}{Yes} \\
+    Pooling method       & \multicolumn{2}{c}{Attention} \\
+    Embedding init       & Random & Pre-trained \\
     Input representation & Tokens+UPOS & Tokens \\
     \bottomrule
   \end{tabular}
-  \caption{Descriptions of the two RNN models}
+  \caption[Descriptions of the two RNN models]{
+    Hyperparameters for the two RNN models used in multi-task experiments.
+    The RNN hidden dimension has two parts because the models are
+    bidirectional.
+  }
   \label{tab:rnn-parameters}
 \end{table}
 
