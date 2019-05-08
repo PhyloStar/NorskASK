@@ -364,10 +364,13 @@ distribution of target labels.
 
 The $p$-values reported for the correlation are to be taken with a grain of
 salt. They were computed with the SciPy library \autocite{scipy}, which
-states in its documentation that the $p$-values should be reasonable
-for datasets with at least 500 samples. The values in table
+states in its documentation that the $p$-values should be reasonable for
+datasets with at least 500 samples. The values in table
 \ref{tab:metric-corrs} were computed on samples with either 100 or 200
-samples, well below 500.
+samples, well below 500. Even so, we believe that the dramatic differences
+between the computed $p$-values should give an indication of which
+correlations are most and least significant, even though the exact value may
+be inaccurate.
 
 
 \section{NLI results with multi-task models}
