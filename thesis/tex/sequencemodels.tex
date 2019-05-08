@@ -49,7 +49,10 @@ development set.
 
 Certain aspects of the experimental setup for the new models are different
 from the models in the previous chapter, but shared between \ac{CNN} and
-\ac{RNN} models. These aspects are described in this section.
+\ac{RNN} models. These aspects are described in this section. Like the
+\ac{MLP} models in chapter \ref{ch:baseline}, the neural networks are
+implemented in \textcite{keras} and trained on the \textcite{tensorflow}
+backend.
 
 
 \subsection{Input length}
@@ -118,7 +121,7 @@ storing the resulting vectors in a new vector model containing only 20,766
 words. In this way, we are also able to benefit from the FastText models'
 ability to compute vectors for unknown words, since the \ngram algorithm is
 being used when computing the reduced models. However, after the embedding
-layers of our models have been initialized with vectors from the fastText
+layers of our models have been initialized with vectors from the FastText
 model, fine-tuning of vectors happens in the same way as if we had used
 embeddings from any other model such as Word2vec, or even randomly
 initialized embeddings, since the FastText network is not incorporated into
@@ -131,11 +134,9 @@ static embeddings, where the embedding vectors are kept constant while other
 weights in the network are updated. Additional variations are also found in
 literature, for example the multi-channel approach seen in
 \textcite{kim2014convolutional} where two embedding layers, one static and
-one dynamic, are run in parallel.
-
-We will use both static and dynamic embeddings in our experiments, but not in
-a multi-channel setup. For RNN experiments, we will limit our experiments to
-dynamic word embeddings only.
+one dynamic, are run in parallel. In this study we will not use static
+embeddings, but always fine-tune our embeddings, whether they are pre-trained
+or randomly initialized.
 
 Experiments using mixed UPOS tags as input will not use pre-trained
 embeddings. This is because of two reasons. First, we do not have any
@@ -157,7 +158,12 @@ smaller vectors for POS tags.
 To create the input to the core part of our network, we concatenate the word
 and POS embeddings into a single vector. For instance, if we use word
 embeddings of size 100 and POS embeddings of size 10, the next layer will
-receive vectors of size 110. \todo{implementation details, keras etc}
+receive vectors of size 110. To implement this, we create two separate
+embedding layers in Keras. One for words, which has embedding dimension 100,
+and one for UPOS tags, which has embedding dimension 10. Then, we use a
+concatenation layer to combine these two layers, and get a layer with vector
+size 110.
+\todo{implementation details, keras etc}
 
 
 \section{Convolutional neural networks}
@@ -168,7 +174,7 @@ sequences of token IDs, and fed into an embedding lookup layer. A separate
 token ID is used for padding if the document is shorter than 700 tokens.
 Another unique token ID is used for unknown tokens, i.e. tokens that either
 are not present in training data, or are not among the $n$ most frequent
-tokens, if we select a frequency cutoff.
+tokens, if we select a frequency cut-off.
 
 The central part of the architecture is a set of convolutional filter banks
 that are applied to sequences of embeddings. We may use several different
@@ -186,18 +192,22 @@ single vector, representing the document as a whole. This vector has as many
 elements as there are filters in all the filter banks combined. This
 representation vector is fed to a final softmax layer to produce a
 classification output. During training, we apply dropout to this final weight
-layer as a regularization method.
+layer as a regularization method. The last dense layer uses dropout with
+$p=0.5$ and a constraint on maximum $L_2$ norm of 3.\todo{check}
+
+We do not make any changes to the core of the
+\citeauthor{kim2014convolutional} architecture, but we experiment with
+different output layers and input representations. Filters of size 3, 4, and
+5 were used.
 
 
 \subsection{Results}
 
-\todo{table 5.1 presents ... we observe that ...}
-The \ac{CNN} classifier that used both tokens and POS tags as input performed
-better than the one which only used tokens as input, as seen in table
-\ref{tab:cnn-results}. However, on the collapsed label set, the model which
-only used tokens had a higher accuracy. Filters of size 3, 4, and 5 were
-used. The last dense layer uses dropout with $p=0.5$ and a constraint on
-maximum $L_2$ norm of 3.
+Table \ref{tab:cnn-results} presents the \FI scores on the \ac{AES} task from
+our \ac{CNN} experiments. The best macro \FI score on the full set of labels
+is a regressor using mixed UPOS input ($0.258$). The second best results comes
+from a regressor initialized with pre-trained embeddings. This is also the
+model with the highest macro \FI on the collapsed labels. \todo{incomplete}
 
 \begin{table}
   \centering
@@ -451,10 +461,10 @@ unknown words). This entails that the unknown token will receive no training
 signal, and its embedding will remain whatever it was initialized as.
 Depending on whether the experiment uses pre-trained embeddings, this
 representation will either be a random vector, or the embedding computed by
-the fastText model for the token `\_\_UNK\_\_'. \todo{sanity - where wat}
+the FastText model for the token `\_\_UNK\_\_'. \todo{sanity - where wat}
 
 Embeddings are initialized either randomly or using vectors
-from the fastText model described in section \ref{subseq:fasttext}, and
+from the FastText model described in section \ref{subseq:fasttext}, and
 trained as part of the network. BiRNNs are referred to in the following
 tables and discussion as either BiLSTM or BiGRU, depending on the RNN cell
 used.
