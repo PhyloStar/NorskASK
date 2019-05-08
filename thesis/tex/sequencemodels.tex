@@ -5,23 +5,38 @@ In the previous chapter we established baseline results for the \ac{AES} task,
 and found that for the systems we implemented, regression gave better results
 than nominal classification.
 
-We now go on to investigate more advanced neural architectures, \acp{CNN} and
-\acp{RNN}. Both are widely used in various \ac{NLP} tasks.
-[...]\todo{todo}.
+We now go on to investigate distributed representations of inputs and more
+advanced neural architectures, namely \acp{CNN} and \acp{RNN}. Both
+architectures are widely used in various \ac{NLP} tasks. Their advantage is
+the ability to automatically extract features that are more domain-specific
+than the simple representations we used in chapter \ref{ch:baseline}. For
+instance \acp{CNN} can be considered as \ngram detectors. Instead of having
+to find and count \ngrams to feed as inputs to the system, the \ac{CNN} can
+take a sequence of tokens and find the most informative \ngrams for the task
+at hand by end-to-end training\autocite[155]{goldbergNLP}.
 
-These architectures take the ordering of tokens into account. In \ac{NLP},
-\acp{CNN} can be considered as a \ngram detector, which looks at a window of
-tokens \autocite[155]{goldbergNLP}. However, unlike the count vector approach
-used above, the CNN extracts `soft' \ngrams, utilizing the ability of word
-embeddings to share statistical strength between words, and outputting a
-real-valued number instead of a boolean yes/no value or an integer count.
+Coupled with distributed representations of words, i.e. word embeddings,
+similar \ngrams can also share representation. For instance, assuming a
+setting where the embeddings for the words `nice' and `good' are similar, the
+3-grams `nice to hear' and `good to hear' may be efficiently encoded in a
+\ac{CNN}. The features produced by the network are not binary or integer
+counts, but real-valued vectors.
 
-\acp{RNN} are theoretically able to detect long range patterns, which is
-useful for the tasks at hand. For instance, the ability to connect different
-sections of a text and refer back to things that have been mentioned before
-can be considered a part of language proficiency.
+The strength of \acp{RNN} is their theoretical ability to detect long range
+features. This should intuitively be useful for the tasks at hand. For
+instance, discourse features of a text, such as how different sections of a
+text are connected and referring to topics that have been mentioned before,
+can be considered a part of language proficiency. Learning to build complex
+sentences and producing longer discourse is a part of acquiring a second
+language.
 
-In the following, [...]\todo{todo}
+In the following, we will first describe the experimental setup that is
+common for CNN and RNN experiments. We will also describe the pre-trained
+word embeddings used in some experiments. CNN and RNN experiments and results
+for the \ac{AES} task will be discussed separately. We will also briefly see
+how the models perform on the \ac{NLI} task on its own, and visualize some of
+the system internals to see if it aids the interpretation of system
+performance.
 
 
 \section{Experimental setup}
@@ -1059,3 +1074,10 @@ We implemented CNN and RNN classifiers.
 Error analysis and visualization of attention values.
 Experiments with pure NLI.
 Analyzed the representation of documents in latent space.
+
+Our experiments with \ac{CNN} models confirmed what we saw in the previous
+chapter regarding nominal classification versus regression, namely that
+regression gives the best results for the \ac{AES} task on this dataset.
+
+Our \ac{RNN} experiments gave results on the task which clearly improved on
+our baseline systems.
