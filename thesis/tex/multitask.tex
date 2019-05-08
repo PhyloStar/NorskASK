@@ -1,5 +1,6 @@
 \chapter{Multi-task learning}
 
+\todo{reintroduce MTL ref ch 2}
 So far we have considered \ac{AES} and \ac{NLI} as independent tasks and
 performed experiments on both tasks separately. We will now try to train
 models to predict both tasks simultaneously.
@@ -69,13 +70,13 @@ summarized in tables \ref{tab:cnn-parameters} and \ref{tab:rnn-parameters}.
 The multi-task models have two outputs with different loss functions. The
 CEFR output is a single regression node with sigmoid output and mean squared
 error loss. The NLI output is a softmax layer with seven nodes, and uses
-categorical cross-entropy loss. To train the models, they are optimized to
-minimize the sum of losses for both output layers. We multiply each loss by a
-weight before summing to see how performance is influenced by which loss has
-most weight. We ensure that the sum of weights is equal to 1. An auxiliary
-loss weight of $0.5$ thus means that both losses have equal weight. An
-auxiliary loss weight of $0.2$ means that the loss on the main task has
-weight $0.8$.
+categorical cross-entropy loss. To train the models jointly, they are
+optimized to minimize the sum of losses for both output layers. We multiply
+each loss by a weight before summing to see how performance is influenced by
+which loss has most weight. We ensure that the sum of weights is equal to 1.
+An auxiliary loss weight of $0.5$ thus means that both losses have equal
+weight. An auxiliary loss weight of $0.2$ means that the loss on the main
+task has weight $0.8$.
 
 We chose ten different auxiliary loss weights, and for each loss weight we
 trained and evaluated each model five times with different random seeds. By
@@ -83,42 +84,25 @@ training more than one model with a given set of hyperparameters, we can get
 an idea of the variance of results.
 
 We know that the sigmoid output used for regression on the main task yields
-values between 0 and 1, and that the target value is also between 0 and 1.
-Therefore, the prediction error is also bounded between 0 and 1. We are using
-squared error loss, and squaring a number between 0 and 1 gives a smaller
-number. However, the cross-entropy loss on the auxiliary output is always a
-number bigger than 0, but unbounded from above. This suggests that a small
-auxiliary loss weight may be preferable, so the loss from our main task is
-not drowned in the loss from the auxiliary task.
+values between $0$ and $1$, and that the target value is also between $0$ and
+$1$. Therefore, the prediction error is also bounded between $0$ and $1$. We
+are using squared error loss, and squaring a number between $0$ and $1$ gives
+a smaller number. However, the cross-entropy loss on the auxiliary output is
+always a number bigger than $0$, but unbounded from above. This suggests that
+a small auxiliary loss weight may be preferable, so the loss from our main
+task is not drowned in the loss from the auxiliary task.
 
 
 \section{Results}
 
-The reported metrics apply to the main task, CEFR prediction, only.
-
-The highest macro \FI scores on the full label set all come from RNN models.
-Three of them was achieved by RNN2 and two by RNN1. The five highest scores
-range between $0.468$ and $0.483$ and were achieved using auxiliary loss
-weights in the range from $0$ to $0.5$. The highest score was achieved in
-single-task mode, but with a different random seed than before. The highest
-macro \FI score in the previous chapter was $0.460$.
-
-On the set of collapsed labels, the five highest macro \FI scores range
-between $0.798$ and $0.824$. Four of the top five results are from RNN1, and
-one from RNN2. Here, the auxiliary loss weights range from $0$ to $0.2$. The
-two highest scores were also achieved in single-task mode with a different
-random seed than before. Additionally, the model that had the highest macro
-\FI score ($0.806$) on the collapsed set of labels in the previous chapter
-was not included in the multi-task experiments. RNN1 and RNN2 had respective
-macro \FI scores of $0.687$ and $0.773$ on the collapsed set of labels in the
-previous chapter.
-
-Below we plot the effect of auxiliary loss on all four models (fig.
-\ref{fig:lossweight}). The $x$ value is the weight given to the auxiliary
-loss during training. Some of the models have an auxiliary loss weight of
-zero, which is the same as training in single-task mode. The 95\% confidence
-intervals indicated by shaded areas in the plots are computed in the plotting
-software Seaborn \autocite{seaborn}, using a bootstrap sampling method.
+In this section, we will evaluate the performance of our experiments on the
+\ac{AES} task. Because the number of experiments is very high, we are not
+able to present them all in a table. Instead, we have plotted the macro \FI
+score of the experiments in figure \ref{fig:lossweight}. Each of the four
+models has a separate subplot in the figure. The horizontal axis is the
+auxiliary loss weight used in training. Each combination of model and loss
+weight has ten data points. Five for the full set of labels, with different
+random seeds, and five for the collapsed set of labels.
 
 \begin{figure}
   \centering
@@ -130,6 +114,35 @@ software Seaborn \autocite{seaborn}, using a bootstrap sampling method.
   }
   \label{fig:lossweight}
 \end{figure}
+
+By presenting the results in this way, we can see the influence of a higher
+auxiliary loss weight on the results. Some of the models have an auxiliary
+loss weight of zero, which is the same as training in single-task mode. The
+95\% confidence intervals indicated by shaded areas in the plots are computed
+in the plotting software Seaborn \autocite{seaborn}, using a bootstrap
+sampling method.
+
+In addition to the plot, we will present some of the actual numeric scores in
+the remainder of the section. The highest macro \FI scores on the full label
+set all come from RNN models. Three of them was achieved by RNN2 and two by
+RNN1. The five highest scores range between $0.468$ and $0.483$ and were
+achieved using auxiliary loss weights in the range from $0$ to $0.5$. The
+highest score was achieved in single-task mode, but with a different random
+seed than before. The highest macro \FI score in the previous chapter was
+$0.460$.
+
+On the set of collapsed labels, the five highest macro \FI scores range
+between $0.798$ and $0.824$. Four of the top five results are from RNN1, and
+one from RNN2. Here, the auxiliary loss weights range from $0$ to $0.2$. The
+two highest scores were also achieved in single-task mode with a different
+random seed than before. Additionally, the model that had the highest macro
+\FI score ($0.806$) on the collapsed set of labels in the previous chapter
+was not included in the multi-task experiments. RNN1 and RNN2 had respective
+macro \FI scores of $0.687$ and $0.773$ on the collapsed set of labels in the
+previous chapter.
+
+
+\subsection{The effect of loss weight}
 
 The effect of auxiliary task weight is most visible for the RNN2 model, where
 we see a degradation of results as the auxiliary loss weight gets closer to
@@ -145,12 +158,10 @@ experiments in single-task mode.
 For the experiments using collapsed CEFR labels, we see in three of the four
 models that the mean macro \FI score (the dashed line in the plot) is highest
 using a small auxiliary loss weight of $0.1$. However, the variance is large,
-especially in the RNN models.
-
-However, even though we are now running the same experiment multiple times
-using different random seeds, we still have only five samples for each
-auxiliary loss weight, which is a small number to try to draw any conclusions
-from with statistical certainty.
+especially in the RNN models. However, even though we are now running the
+same experiment multiple times using different random seeds, we still have
+only five samples for each auxiliary loss weight, which is a small number to
+try to draw any conclusions from with statistical certainty.
 
 \begin{figure}
   % cnn-multi-26728430_2.pkl
