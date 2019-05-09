@@ -87,8 +87,7 @@ able to discern the test levels just by document length, since we do not hide
 the document length from the model.
 
 
-\subsection{Pre-trained embeddings}
-\label{subseq:fasttext}
+\subsection{Pre-trained embeddings} \label{subseq:fasttext}
 
 We experimented with randomly initialized word embedding vectors trained from
 scratch, as well as initializing the vectors with pre-trained embeddings. We
@@ -164,11 +163,10 @@ To create the input to the core part of our network, we concatenate the word
 and POS embeddings into a single vector. For instance, if we use word
 embeddings of size 100 and POS embeddings of size 10, the next layer will
 receive vectors of size 110. To implement this, we create two separate
-embedding layers in Keras. One for words, which has embedding dimension 100,
+embedding layers in Keras: One for words, which has embedding dimension 100,
 and one for UPOS tags, which has embedding dimension 10. Then, we use a
 concatenation layer to combine these two layers, and get a layer with vector
 size 110.
-\todo{implementation details, keras etc}
 
 
 \section{Convolutional neural networks}
@@ -193,17 +191,17 @@ This is a technical consideration, necessary because of the different window
 sizes.
 
 The pooled vectors for each of the filter banks are concatenated into a
-single vector, representing the document as a whole. This vector has as many
-elements as there are filters in all the filter banks combined. This
-representation vector is fed to a final softmax layer to produce a
-classification output. During training, we apply dropout to this final weight
-layer as a regularization method. The last dense layer uses dropout with
-$p=0.5$ and a constraint on maximum $L_2$ norm of 3.\todo{check}
-
-We do not make any changes to the core of the
-\citeauthor{kim2014convolutional} architecture, but we experiment with
-different output layers and input representations. Filters of size 3, 4, and
-5 were used.
+single vector, representing the document as a whole. The dimension of this
+vector is the number of filters in all the filter banks combined. This
+representation vector is fed to a final output layer. The output layer is
+either a softmax layer producing classification output, an ordinal regression
+layer as described in section \ref{subsec:ordreg}, or a single node with
+sigmoid output to produce regression. During training, we apply dropout to
+this final weight layer as a regularization method. The last dense layer uses
+dropout with $p=0.5$ and a constraint on maximum $L_2$ norm of 3. The only
+differences between our system and the architecture described in
+\textcite{kim2014convolutional} regard the different output layers and input
+representations.
 
 
 \subsection{Results}
@@ -909,12 +907,13 @@ some of the cited experiments used generated data sets and not the actual raw
 essays. Third, the cited studies have mostly evaluated their experiments using
 cross-validation ($k$-fold or \emph{leave one out}).
 
-However, we can probably conclude that our \ac{NLI} system is far from the
-state of the art. Our best accuracy of 53.7\% is lower than the 54.2\%
-reported in \textcite{malmasi2018native}, even with a smaller set of classes
-(seven and ten, respectively). Getting a high accuracy gets harder as the
-number of classes increases. Thus, it is most likely that our \ac{NLI} system
-is actually not as good.
+Our best accuracy is 53.7\%. We can not compare this value to the reports from
+previously reported \ac{NLI} results on the dataset, because of differences
+in experimental setup. For instance, \textcite{malmasi2018native} train and
+evaluate with ten different target \acp{L1}, whereas we use a set of seven.
+\textcite{pepper2012} uses various subsets of five \acp{L1}. Additionally, we
+are using the training/test split we created in section \ref{sec:datasplit},
+while \textcite{malmasi2018native} uses stratified cross-validation.
 
 
 \section{Visualization}
