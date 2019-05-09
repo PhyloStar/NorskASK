@@ -64,12 +64,17 @@ this length by appending special padding tokens, and longer documents were
 truncated. In order to decide this fixed length, we examined the distribution
 of document lengths in the training set. All the subsequent values are
 rounded to the nearest integer. First, we found the 95th percentile of
-document lengths, which turned out to be 701 tokens. Then, we computed the
-value $Q_2 + 1.5 \cdot (Q_3 - Q_1)$, or the median plus 1.5 times the
-interquartile range, which gives 693 tokens. Finally, we computed the mean
-value plus two standard deviations, giving 707 tokens. These values are all
-close to each other, and we decided to settle on 700 tokens since it is a
-round number close to all values we examined.
+document lengths, which turned out to be 701 tokens. Then, we computed a
+common threshold for high outliers, the upper quartile plus 1.5 times the
+interquartile range:
+\[
+  Q_3 + 1.5 \cdot (Q_3 - Q_1)
+\]
+This gives 825 tokens. Finally, we computed the mean value plus two standard
+deviations, giving 707 tokens. We decided to settle on 700 tokens as our
+document length, since it is a round number close to two of three values we
+examined. We know that using this value, a great majority of documents will
+not be truncated at all.
 
 As a consequence of the unequal distributions of length between the two test
 levels, the documents that are truncated are mainly from the advanced level
