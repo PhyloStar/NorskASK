@@ -208,9 +208,12 @@ representations.
 
 Table \ref{tab:cnn-results} presents the \FI scores on the \ac{AES} task from
 our \ac{CNN} experiments. The best macro \FI score on the full set of labels
-is a regressor using mixed UPOS input ($0.258$). The second best results comes
-from a regressor initialized with pre-trained embeddings. This is also the
-model with the highest macro \FI on the collapsed labels. \todo{incomplete}
+is a regressor using mixed UPOS input ($0.258$). The second best results
+comes from a regressor initialized with pre-trained embeddings ($0.242$).
+This is also the model with the highest macro \FI on the collapsed labels
+($0.463$).
+
+The \FI scores are not an improvement over the SVR and 
 
 \begin{table}
   \centering
@@ -315,48 +318,64 @@ fluctuations.
 The confusion matrix reveals that the final model did not assign any samples
 to the classes `A2', and `C1', the peripheral classes which are also the
 smallest in the validation set. As noted in the discussion about metrics in
-the previous chapter (\ref{metrics-discussion}), classes with no predictions
+the previous chapter (\ref{sec:metrics}), classes with no predictions
 contribute to a low macro \FI score.
 
 Overall, the convolutional models were not able to improve on the macro or
 micro \FI scores the \ac{MLP} models in the previous chapter achieved.
 However, while the \ac{MLP} confusion matrix (fig. \ref{fig:mlp-char-rank})
-had several predictions scattered away from the diagonal, the confusion
-matrix for the \ac{CNN} looks like a fuzzy diagonal line, with gradual
-dropoff as the distance from the diagonal increases. It also looks like it
-has a steeper slope than the ideal diagonal running between the top-left and
-bottom-right corner, which is not ideal, but even if the slope is wrong, a
-diagonal indicates that relative ranks between essays are reasonable.
+had several erroneous predictions scattered away from the diagonal, the
+confusion matrix for the \ac{CNN} looks like a fuzzy diagonal line, with
+gradual dropoff as the distance from the diagonal increases. It also looks
+like it has a steeper slope than the ideal diagonal running between the
+top-left and bottom-right corner. This is not ideal, but even if the slope
+is wrong, a diagonal indicates that relative ranks between essays are
+reasonable.
 
-We wondered whether the visible difference between scattered predictions and
-a fuzzy diagonal could be explained using other metrics than macro or micro
-\FI, on which we have previously decided to base our model evaluations. We
-therefore collected additional metrics for the best MLP model from the
-previous chapter, as well as the best CNN model in this chapter. The results
-are listed in table \ref{tab:mlp-cnn-metrics}. We observe that though the
-\ac{MLP} has the best \FI scores, the \ac{CNN} beats it in terms of ranking
-and error metrics. This explains the intuition of the CNN confusion matrix
-looking better\todo{wording}.
 
-It is worth noting that CNN Reg Mix has 149,101 trainable parameters, compared
-to the 2,032,206 of MLP Rank char, which is more than 13 times as many.\todo{what to conclude}
+\subsection{Non-\FI metrics}
+
+We wondered whether the difference we saw in the confusion matrices, which we
+intuitively described as \emph{scattered errors} and a \emph{fuzzy diagonal},
+could be explained using other metrics than macro or micro \FI, on which we
+have previously decided to base our model evaluations. We therefore collected
+additional metrics for the predictions of the best linear regressor and the
+best MLP model from the previous chapter, as well as the best CNN model in
+this chapter. The metrics we chose have all been reported in previous
+\ac{AES} literature, as discussed in section \ref{sec:metrics} The results
+are listed in table \ref{tab:mlp-cnn-metrics}.
+
+We observe that even though the \ac{CNN} scores last on the \FI metrics, it
+is competitive or better than the other models when we compare them by
+ranking and error metrics. We think this quantifies the intuition we had
+looking at the confusion matrices. The fuzziness stems from many
+mis-classifications of a small magnitude, which is captured by the error
+metric.
+
+It is worth noting that CNN Reg Mix has 149,101 trainable parameters,
+compared to the 2,032,206 of MLP Rank char, which is more than 13 times as
+many. In some situations, the size of the model may be important, and
+\acp{CNN} may be favourable in that case. Another factor that could favour
+\acp{CNN} is the choice of metric. As seen here, they give comparatively
+better results on error metrics than \FI scores.
 
 \begin{table}
   \centering
-  \begin{tabular}{lrr}
+  \begin{tabular}{lrrr}
     \toprule
-    Metric                       & MLP Rank Char & CNN Reg Mix \\
+    Metric           & SVR POS          & MLP Rank Char & CNN Reg Mix \\
     \midrule
-    Macro \FI                     & $\mathbf{0.330}$ & $0.258$ \\
-    Micro \FI                     & $\mathbf{0.480}$ & $0.398$ \\
-    Spearman's ranked correlation & $0.580$ & $\mathbf{0.647}$ \\
-    Mean absolute error           & $0.805$ & $\mathbf{0.756}$ \\
-    Root mean squared error       & $1.24$  & $\mathbf{1.03}$ \\
+    Macro \FI        & $\mathbf{0.444}$ &         $0.330$  &         $0.258$ \\
+    Micro \FI        &         $0.415$  & $\mathbf{0.480}$ &         $0.398$ \\
+    Spearman's r     & $\mathbf{0.650}$ &         $0.580$  &         $0.647$ \\
+    MAE              &         $0.789$  &         $0.805$  & $\mathbf{0.756}$ \\
+    RMSE             &         $1.123$  &         $1.24$   & $\mathbf{1.03}$ \\
     \bottomrule
   \end{tabular}
   \caption[Comparison of metrics for a MLP and a CNN model]{
-    Metrics for MLP Rank Char and CNN Reg Mix. For error metrics, lower values
-    are better.
+    Metrics for MLP Rank Char and CNN Reg Mix. For error metrics, lower
+    values are better. Spearman's r is the Spearman ranked correlation
+    coefficient. MAE is mean absolute error. RMSE is root mean squared error.
   }
   \label{tab:mlp-cnn-metrics}
 \end{table}
@@ -364,27 +383,36 @@ to the 2,032,206 of MLP Rank char, which is more than 13 times as many.\todo{wha
 
 \section{Recurrent neural networks}
 
-\todo{describe t\&n model}
-Next, we move to a different kind of architecture, \acp{RNN}. We implemented
-several models that were variants of the architecture described in
-\textcite{taghipour16}. The various changes we made to their architecture
-are described below. Some of our variations are similar to the variations
-in \textcite{taghipour16}, while others are different ideas. There are also
-variations from the paper that we do not implement ourselves, such as a
-combined \ac{RNN} and \ac{CNN} model.
+For the next architecture, \ac{RNN}, we decided to base our system on the
+model used by \textcite{taghipour16}. Their basic architecture consists of a
+layer mapping a sequence of tokens into their embeddings, which then is
+connected to a \ac{RNN} layer. Then, the sequence of hidden states is pooled
+into a representation vector by a mean-over-time operation. A final layer
+combines the representation vector into a scalar value by a linear
+combination, which is then clamped to the interval $(0,1)$ by the sigmoid
+function.
+
+We create several variations on the architecture. Some of our variations are
+also found in the reference article, and others are our own variations. The
+reference study also includes variations we do not attempt to use in our
+system, such as a combined \ac{RNN} and \ac{CNN} model.
 
 We explore some variations in hyperparameters, namely LSTM vs. GRU cells,
 unidirectional networks vs. BiRNN, different input representations, different
 pooling methods, and compare random initialization of the embedding layer
 with using pre-trained vectors.
 
-The embedding layer in \textcite{taghipour16} was of dimension 50 and
-randomly initialized. We increased the embedding dimension to 100, and
-experimented both with randomly initialized embeddings and with pre-trained
-ones.
+A couple of key parameters that differ between our system and the one in
+\textcite{taghipour16} are the embedding dimension and vocabulary size. The
+reference article used randomly initialized embeddings of dimension 50. We
+increased the embedding dimension to 100, and experimented both with randomly
+initialized embeddings and with pre-trained ones. The vocabulary size in the
+reference article was set to 4000. We increased it to the total number of
+unique tokens in the training set, which is a little over 20,000.
 
+\todo{fix remander of section}
 We are reporting macro and micro \FI as before, not QWK as
-\citeauthor{taghipour16}. Refer to section \ref{metrics-discussion} for the
+\citeauthor{taghipour16}. Refer to section \ref{sec:metrics} for the
 discussion of different metrics for the task.
 
 The ASAP data that \citeauthor{taghipour16} use consists of essays from eight
@@ -800,17 +828,19 @@ The number is 2,817,992.
 
 \section{Native language identification} \label{sec:nli-experiments}
 
-\todo{reintroduce nli ref ch2}
-In comparison to proficiency labels in ASK where the peripheral classes are
-very small, \acp{L1} are much more evenly distributed. There is also no natural
-ordering of \ac{L1}, making regression or ordinal regression pointless. For
-experiments in \ac{NLI} we will therefore only use networks with a softmax
-classification layer.
+\ac{NLI} is the task of taking a text and predicting the native language of
+the person who has written it. Refer back to section \ref{sec:nli} for more
+details.
+
+In comparison to proficiency labels in ASK, where the peripheral classes are
+very small, \acp{L1} are much more evenly distributed. There is also no
+natural ordering of different \acp{L1}, making regression or ordinal
+regression pointless. For experiments in \ac{NLI} we will therefore only use
+networks with a softmax classification layer.
 
 We train the same models to classify the documents by native language. The
 performance of a \ac{CNN} model improved drastically when including \ac{POS}
 tags as input, as evident in table \ref{tab:cnn-nli-results}.
-
 A RNN was able to outperform the CNN only slightly, and here it was not the
 attention model that was best, but a bidirectional LSTM.
 
@@ -939,17 +969,22 @@ with some qualitative remarks related to properties of learner language, and
 the findings from transfer research on the ASK corpus discussed in the
 background chapter.
 
-In general, the attention values do not seem easily interpretable. There is
+In general, our attention values do not seem easily interpretable. There is
 no obvious pattern to what kind of segments get high and low attention, and
-the distribution of high and low attention is also different between
-different examples. Lexical and grammatical errors that are typical of
-learner language occur both in the high-attention and the low-attention
-regions. Even individual words that provide very strong hints to \ac{L1} seem
-to be ignored by the model, as we will see in the Vietnamese example below.
+the general patterns of high and low attention are also different between
+different examples. We see that lexical and grammatical errors that are
+typical of learner language occur both in the high-attention and the
+low-attention regions. Even individual words that provide very strong hints
+to \ac{L1} seem to be ignored by the model, as we will see in the Vietnamese
+example below.
 
 The interpretability and explanation power of attention mechanisms has been
 questioned in literature, for instance in \textcite{attentionexplanation}.
-\todo{expand, what do they find}
+The authors suggest that the attention weights should correlate with other
+measures of feature importance, such as those computed with gradient-based
+methods, but find only low levels of correlation. Second, they demonstrate
+that they can construct `adversarial' attention weights which produce the
+same predictions, even with all other parameters kept constant.
 
 \begin{figure}
   \centering
