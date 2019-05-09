@@ -1,9 +1,16 @@
 \chapter{Multi-task learning}
 
-\todo{reintroduce MTL ref ch 2}
 So far we have considered \ac{AES} and \ac{NLI} as independent tasks and
-performed experiments on both tasks separately. We will now try to train
-models to predict both tasks simultaneously.
+performed experiments on both tasks separately. In this chapter, we will
+explore the effect of training models in a multi-task setup, as described in
+section \ref{subsec:multitask}. Multi-task learning has been observed to
+improve model performance on certain tasks previously. The effectiveness of
+the technique depends on the tasks involved.
+
+In this chapter, we will also train each model several times with different
+random seeds, to examine the effect of initialization, and the degree to
+which results may vary between runs. We will also take another look at
+different evaluation metrics, and see to what degree they correlate.
 
 
 \section{Models}
@@ -441,4 +448,5 @@ weight updates in training.
 
 \section{Conclusion}
 
-todo
+Multi-task with NLI does not hurt performance with small loss weights. 
+Different metrics have a non-linear relationship with each other.

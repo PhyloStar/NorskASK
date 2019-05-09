@@ -1,6 +1,15 @@
 \chapter{Conclusion}
 
-Neural networks are an improvement over the majority classifier.
+We have presented the first results for the \ac{AES} task on the ASK corpus
+of Norwegian learner language. We have explored a wide variety of classifier
+architectures, including linear models, simple neural networks (\acp{MLP})
+and more specialized neural architectures: \acp{CNN} and \acp{RNN}. For this
+dataset, we found that regression gave better results than nominal
+classification.
+
+We showed that different evaluation metrics commonly used have a complex
+relationship with each other, and that the most suitable metric to use may
+depend on the setting.
 
 
 \section{Ethical considerations}
@@ -52,7 +61,8 @@ on \ac{LADO}}.
 \section{Future work}
 
 \begin{enumerate}
-    \item Ordinal regression
+    \item Ordinal regression. In theory the most natural representation of the
+          problem, but architectures are not commonly available.
     \item Compare model errors with annotated errors
     \item Hierarchical RNN sentence level -> document level
 \end{enumerate}
