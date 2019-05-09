@@ -203,7 +203,7 @@ def main():
     print("== All labels ==")
     lim_df = df.query("n_class == 7 and not nli").dropna()
     print(lim_df.head())
-    print_top_by_metric(lim_df, ["spearman", "RMSE", "MAE"])
+    print_top_by_metric(lim_df, ["macro F1", "micro F1", "spearman", "RMSE", "MAE"])
     if "seaborn" in sys.modules:
         plot_corrs(lim_df)
         plt.show()
