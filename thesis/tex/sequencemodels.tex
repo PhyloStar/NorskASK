@@ -1,5 +1,4 @@
-\chapter{Convolutional and recurrent neural networks}
-\label{ch:sequencemodels}
+\chapter{Convolutional and recurrent neural networks} \label{ch:sequencemodels}
 
 In the previous chapter we established baseline results for the \ac{AES} task,
 and found that for the systems we implemented, regression gave better results
@@ -30,13 +29,13 @@ can be considered a part of language proficiency. Learning to build complex
 sentences and producing longer discourse is a part of acquiring a second
 language.
 
-In the following, we will first describe the experimental setup that is
-common for CNN and RNN experiments. We will also describe the pre-trained
-word embeddings used in some experiments. CNN and RNN experiments and results
-for the \ac{AES} task will be discussed separately. We will also briefly see
-how the models perform on the \ac{NLI} task on its own, and visualize some of
-the system internals to see if it aids the interpretation of system
-performance.
+In this chapter, we will first describe the parts of our experimental setup
+that is common for CNN and RNN experiments. We will also describe the
+pre-trained word embeddings used in some experiments. CNN and RNN experiments
+and results for the \ac{AES} task will be discussed separately. We will also
+briefly see how the models perform on the \ac{NLI} task on its own, and
+visualize some of the system internals to see if it aids the interpretation
+of system performance.
 
 
 \section{Experimental setup}
@@ -1119,14 +1118,18 @@ strongly correlated with the output, namely proficiency labels.
 
 \section{Conclusion}
 
-We implemented CNN and RNN classifiers.
-Error analysis and visualization of attention values.
-Experiments with pure NLI.
-Analyzed the representation of documents in latent space.
-
 Our experiments with \ac{CNN} models confirmed what we saw in the previous
 chapter regarding nominal classification versus regression, namely that
 regression gives the best results for the \ac{AES} task on this dataset.
 
 Our \ac{RNN} experiments gave results on the task which clearly improved on
 our baseline systems.
+
+We tested our systems on the NLI task, and examined the attention values.
+We did not seem to find clear connections between the parts of texts that our
+model focused on and traits of learner language that is known from \ac{SLA}
+literature.
+
+We plotted the representation vectors of documents in a 2-D projection, and
+saw that the length of a document seemed to be considered important in our
+system.
