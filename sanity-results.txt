@@ -1,0 +1,39 @@
+# Results with only training data tokens
+
+## Dev set results
+
+----------   --------   --------
+Model        Macro F1   Micro F1
+----------   --------   --------
+RNN2            0.454      0.447
+RNN2 Multi      0.451      0.472
+----------   --------   --------
+
+## Test set results
+
+----------   --------   --------
+Model        Macro F1   Micro F1
+----------   --------   --------
+RNN2            0.388      0.480
+RNN2 Multi      0.356      0.447
+----------   --------   --------
+
+# Results with all tokens
+
+## Dev set results
+
+----------   --------   --------
+Model        Macro F1   Micro F1
+----------   --------   --------
+RNN2            0.457      0.455
+RNN2 Multi      0.455      0.452
+----------   --------   --------
+
+## Test set results
+
+----------   --------   --------
+Model        Macro F1   Micro F1
+----------   --------   --------
+RNN2            0.318      0.472
+RNN2 Multi      0.326      0.480
+----------   --------   --------
