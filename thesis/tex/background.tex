@@ -13,7 +13,7 @@ the specific tasks of automated scoring and native language identification.
 We will also look at a selection of datasets of learner language that have
 been used for these tasks previously.
 
-Unless otherwise noted, the plots in the thesis, including heatmaps and box
+Unless otherwise noted, the plots in the thesis, including heat maps and box
 plots, are generated using the Python libraries Matplotlib
 \autocite{matplotlib} and Seaborn \autocite{seaborn}.
 
@@ -344,6 +344,11 @@ idioms that do not exist in the same form in the target language. The study
 of linguistic \emph{transfer} is an attempt to understand these influences.
 
 
+\section{NLP tasks using learner language}
+
+\todo{short intro}
+
+
 \subsection{Automated essay scoring}
 
 \acf{AES}, in the literature also referred to as Assessment of proficiency or
@@ -514,7 +519,9 @@ these \acp{L1} (see table \ref{tab:l1-and-testlevel}). Moreover, in each
 experiment they only a subset of only five \acp{L1}, of which four are the
 same in all experiments, and the fifth varies between experiments.
 
-A study by \textcite{pepper2012} \todo{write more}
+A study by \textcite{pepper2012} examined transfer effects from various
+\acp{L1} to Norwegian using predictive models, following a similar
+methodology as \textcite{jarvis2012detecting}.
 
 
 \subsection{Datasets}
@@ -523,9 +530,10 @@ Several available datasets for different languages have been or can be used
 in the tasks discussed above. Desirable properties for these tasks include
 representing a broad selection of different language backgrounds and
 proficiencies, a balanced selection with respect to variables such as L1 and
-topic, and rich metadata. Below we will look at two corpora with English and
-\todo{one with Norwegian learner texts}. There exists learner corpora for several
-other target languages as well, including Chinese and Czech.
+topic, and rich metadata. Below we will briefly introduce two corpora with
+English learner texts. There exists learner corpora for several other target
+languages as well, including Chinese and Czech. In the next chapter we will
+closely examine the Norwegian dataset used in this thesis.
 
 
 \subsubsection{TOEFL11}
@@ -558,13 +566,8 @@ documents are marked on a proficiency scale from 1 to 40.
 
 \section{Conclusion}
 
-\todo{Expand a bit}
-This thesis will be focused on training automated essay scoring models on
-Norwegian data. We will experiment with various linear and neural machine
-learning models. We will try using different input features and combinations
-of these, and do limited exploration of the hyperparameter space of our
-models.
-
-Finally, we will train some of our models with multi-task learning, using
-\ac{NLI} as an auxiliary task. As far as we know, this task combination has
-not been attempted in previous work \todo{verify}.
+We have given a brief introduction to machine learning in general, and neural
+architectures in particular. We have discussed unique properties of learner
+language data, and introduced \ac{AES} and \ac{NLI} as specific \ac{NLP}
+tasks relating to this kind of data. We have given an overview over previous
+work in the field, and different datasets that are available for the tasks.

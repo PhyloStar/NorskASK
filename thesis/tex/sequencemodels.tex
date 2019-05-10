@@ -403,10 +403,10 @@ with using pre-trained vectors.
 
 A couple of key parameters that differ between our system and the one in
 \textcite{taghipour16} are the embedding dimension and vocabulary size. The
-reference article used randomly initialized embeddings of dimension 50. We
+reference study used randomly initialized embeddings of dimension 50. We
 increased the embedding dimension to 100, and experimented both with randomly
 initialized embeddings and with pre-trained ones. The vocabulary size in the
-reference article was set to 4000. We increased it to the total number of
+reference study was set to 4000. We increased it to the total number of
 unique tokens in the training set, which is a little over 20,000.
 
 \todo{fix remander of section}
@@ -414,11 +414,15 @@ We are reporting macro and micro \FI as before, not QWK as
 \citeauthor{taghipour16}. Refer to section \ref{sec:metrics} for the
 discussion of different metrics for the task.
 
-The ASAP data that \citeauthor{taghipour16} use consists of essays from eight
-different prompts, and the range of scores differs across prompts. Since the
-scores are numeric values over different ranges, modelling the task as a
-regression problem made it sufficient to normalize the numeric scores to a
-common interval before training.
+The authors of the reference study did not investigate different prediction
+methods apart from regression. A reason for this is that the ASAP dataset
+which they use consists of essays from eight different prompts. Both the
+range of scores and the number of possible scores differs across
+these prompts. The number of possible scores is as low as 4 or as high as
+61 depending on the prompt. Modelling the task as a regression allowed them
+to use the same type of output layer for all the prompts, despite the
+differences in scoring, by normalizing them to a common interval respective
+to the prompt before training.
 
 Unlike our corpus, ASK, the ASAP dataset used by \citeauthor{taghipour16}
 contained essays that were not necessarily written in a second language. Our
@@ -1065,15 +1069,19 @@ word order in Norwegian shows up. V2 word order is a typological feature of
 Norwegian and several other Germanic languages that is challenging to acquire
 for many learners.
 
-In one case in this excerpt, `Da jeg var bare ti år` (\emph{Then I was only
-ten}), the learner gets the word order wrong (`jeg' and `var' should switch
-places), but in another case, `I Vietnam må du ta en [...] prøve' (\emph{In
-Vietnam you have to take a test}), they correctly apply V2 word order. Both
-these places occur with high attention values, but we cannot say with
-certainty that the model actually picks up V2 errors. In this excerpt, there
-are also several places with V2 word order that have low attention, for
-instance `Så måtte to […] søsken slutte' (\emph{Then two […] siblings had to
-quit}). \todo{discussion, attention here}
+We focus on two cases in this excerpt where the attention values are high and
+V2 word order is involved. One example is `Da jeg var bare ti år` (\emph{Then
+I was only ten}), where the learner gets the word order wrong. In this case,
+`jeg' and `var' should switch places in order to have the verb `var' in the
+second position. In another case, `I Vietnam må du ta en [...] prøve'
+(\emph{In Vietnam you have to take a test}), they correctly apply V2 word
+order.
+
+There are also a couple of places in the excerpt that have V2 word order, but
+low attention values. For instance `Så måtte to […] søsken slutte'
+(\emph{Then two […] siblings had to quit}). Based on these observations, we
+do not think that the model has learnt to identify mistakes and correct
+applications related to V2 word order.
 
 
 \subsection{Latent space}
