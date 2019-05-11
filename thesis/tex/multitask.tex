@@ -439,11 +439,42 @@ training, and only the word forms in the training set receive weight updates
 during the backward pass.
 
 This does however also mean that we lose one of the advantages of pre-trained
-vectors, and fastText in particular, namely the ability to get vector
+vectors, and FastText in particular, namely the ability to get vector
 representations for words not seen in training. Instead, during evaluation,
 words that do not appear in the training set are represented by an
 `\_\_UNK\_\_' token that is essentially random, since it has received no
 weight updates in training.
+
+In order to alleviate concerns about whether this hurts evaluation
+performance, we performed a couple of experiments where we used all
+vocabulary in all the splits. We performed these experiments on the RNN2
+model, which is the only one of our selected models which uses pre-trained
+embeddings.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Model     & Macro \FI      & Micro \FI \\
+    \midrule \multicolumn{3}{c}{Training tokens only} \\ \midrule
+    RNN2       & $0.454$ & $0.447$ \\
+    Multi-RNN2 & $0.451$ & $0.472$ \\
+    \midrule \multicolumn{3}{c}{All tokens} \\ \midrule
+    RNN2       & $0.457$ & $0.455$ \\
+    Multi-RNN2 & $0.455$ & $0.452$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Sanity check \FI scores}
+  \label{tab:sanitycheck}
+\end{table}
+
+The results of these runs are presented in table \ref{tab:sanitycheck}. We
+only see small changes in \FI scores when we use all tokens, and not all
+changes are in the same direction. The biggest change is an accuracy
+reduction of $0.02$ for the Multi-RNN2 when using all tokens. All other
+changes are smaller, and they favour the runs using all tokens. We judge the
+differences to be within the natural variance caused by different
+initialization.
 
 
 \section{Conclusion}
