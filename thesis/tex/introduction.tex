@@ -1,8 +1,9 @@
 \chapter{Introduction}
 
+\acresetall
+
 \todo{lifted from ACL submission}
-In this paper we present first results for the task of Automated Essay
-Scoring for Norwegian learner language. We analyze a number of properties of
+In this paper we present first results for the task of \ac{AES} for Norwegian learner language. We analyze a number of properties of
 this task experimentally and assess (i) the formulation of the task as either
 regression or classification, (ii) the use of various non-neural and neural
 machine learning architectures with various types of input representations,
@@ -11,12 +12,47 @@ and native language identification. We find that a GRU-based attention model
 trained in a single-task setting performs best at the AES task.
 
 \todo{Moved from bkg chap}
+
 This thesis will be focused on training automated essay scoring models on
 Norwegian data. We will experiment with various linear and neural machine
 learning models. We will try using different input features and combinations
-of these, and do limited exploration of the hyperparameter space of our
+of these, and we do limited exploration of the hyperparameter space of our
 models.
 
 Finally, we will train some of our models with multi-task learning, using
-\ac{NLI} as an auxiliary task. As far as we know, this task combination has
-not been attempted in previous work \todo{verify}.
+\ac{NLI}, as an auxiliary task. This is the first time \ac{NLI} has been used
+as an auxiliary task for \ac{AES}.
+
+\section{Overview}
+
+Chapter \ref{ch:background} introduces basic machine learning theory and the
+tasks attempted in the thesis. Previous research on the main and auxiliary
+tasks is presented and discussed.
+
+Chapter \ref{ch:dataset} describes the dataset we base our experiments on. It
+briefly discusses its role in previous research on Norwegian \ac{SLA}. We
+analyze a number of properties of the data and create a
+training/test/development split of the data.
+
+Chapter \ref{ch:baseline} contains the first experiments and discussion about
+the right evaluation metrics to use for the tasks.
+
+Chapter \ref{ch:sequencemodels} contains further experiments using more advanced
+neural architectures. It features visualization of the inner workings of a
+RNN.
+
+Chapter \ref{ch:multitask} introduces \ac{NLI} as an auxiliary task. We
+perform additional experiments in multi-task setup and examine the effect on
+the prediction results. We also analyze the variance of results as a result
+of random initialization. We also revisit the question of evaluation metrics
+by evaluating their correlation with each other.
+
+Chapter \ref{ch:heldout} contains evaluation of selected models on the
+held-out test set from chapter \ref{ch:dataset}.
+
+Chapter \ref{ch:conclusion} contains a brief summary of the thesis' results,
+as well as a limited discussion of ethical considerations related to the
+tasks in question. It also provides key questions for future work on the same
+data.
+
+\acresetall
