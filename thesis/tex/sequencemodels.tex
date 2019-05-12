@@ -805,7 +805,7 @@ training loss drops quickly at the beginning and then asymptotically
 approaches zero. At the same time, the validation loss quickly converges
 around a stable value, but fluctuates somewhat. The plot of macro \FI is more
 noisy, with values fluctuating between approximately $0.2$ and $0.4$ for the
-entire training process.
+entire training duration.
 
 We see in the confusion matrix that we can identify a diagonal running from
 the top-left to the bottom-right, with zeros in the top-right and bottom-left
@@ -813,14 +813,16 @@ corners. We see that mis-classifications are mostly close to the true value,
 with only a single prediction being more than two classes away from the gold
 label (an instance of `C1' classified as `B1/B2').
 
-Compared to the training plot of the CNN model in figure
-\ref{fig:cnn-training}, it seems that the RNN metrics fluctuate much more,
-especially on validation data. However, the training accuracy seems to
-increase slower, and does not get as close to 100\% in the course of 50 epochs.
-\todo{what does this mean}
-
-The BiGRU model has more parameters than the MLP and CNN we looked at before.
-The number is 2,817,992.
+When we compare the training plots of the CNN (fig \ref{fig:cnn-training})
+and RNN models, we see that the training loss initially drops much quicker in
+the RNN model than in the CNN model. We think some of the reason for this is
+the much larger number of parameters in the RNN compared to the CNN
+(2,817,992 vs. 149,101). However, the most notable difference is the
+magnitude of fluctuations in the validation macro \FI score. The fluctuations
+in the CNN span only an interval of approximately $0.05$ in size, and the RNN
+fluctuates over an interval approximately $0.2$ in size. This indicates that
+monitoring \FI and stopping at the right epoch may be more important for the
+results of the RNN.
 
 
 \section{Native language identification} \label{sec:nli-experiments}
