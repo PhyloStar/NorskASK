@@ -430,13 +430,13 @@ prediction layer comprise a small fraction of the total number of weights in
 the model, but the multi-task model performs two different tasks at once.
 
 
-\section{Sanity check vocab size}
+\section{The effect of vocabulary size} \label{sec:sanitycheck}
 
 Previously we made the decision to limit the vocabulary in the models to only
-the word forms that appear in the essays in the training set. This made sense
-because we are using dynamic word embeddings that are updated during
-training, and only the word forms in the training set receive weight updates
-during the backward pass.
+the word forms that appear in the essays in the training set (see section
+\ref{subsec:vocabsize}). This made sense because we are using dynamic word
+embeddings that are updated during training, and only the word forms in the
+training set receive weight updates during the backward pass.
 
 This does however also mean that we lose one of the advantages of pre-trained
 vectors, and FastText in particular, namely the ability to get vector

@@ -12,7 +12,7 @@ than the simple representations we used in chapter \ref{ch:baseline}. For
 instance \acp{CNN} can be considered as \ngram detectors. Instead of having
 to find and count \ngrams to feed as inputs to the system, the \ac{CNN} can
 take a sequence of tokens and find the most informative \ngrams for the task
-at hand by end-to-end training\autocite[155]{goldbergNLP}.
+at hand by end-to-end training \autocite[155]{goldbergNLP}.
 
 Coupled with distributed representations of words, i.e. word embeddings,
 similar \ngrams can also share representation. For instance, assuming a
@@ -64,8 +64,8 @@ truncated. In order to decide this fixed length, we examined the distribution
 of document lengths in the training set. All the subsequent values are
 rounded to the nearest integer. First, we found the 95th percentile of
 document lengths, which turned out to be 701 tokens. Then, we computed a
-common threshold for high outliers, the upper quartile plus 1.5 times the
-interquartile range:
+common threshold for high outliers, namely the upper quartile plus 1.5 times
+the interquartile range:
 \[
   Q_3 + 1.5 \cdot (Q_3 - Q_1)
 \]
@@ -105,30 +105,30 @@ models are stored in a repository that is available online and on the Abel
 supercomputer cluster \autocite{murhaf2017repository}. We use three models
 trained on this corpus using the FastText algorithm, differing only in the
 dimension of embeddings. They were trained using skipgram and window size 5, 
-and lemmatization has not been applied to the corpora.
+on an unlemmatized corpus.
 
 We can superficially confirm the usefulness of FastText embeddings by looking
 at vector similarities. We use the Python library Gensim \autocite{gensim} to
 load vector models and look up word similarities. For instance, the token
-`kjokoladet' is a misspelt version of `sjokolade' (chocolate), and it is
-closest in the embedding space to `sjokolade'. Curiously, it is also closer
-to `potetgul' than `potetgull' (potato crisps), where the former is a
-misspelling.
+`kjokoladet' is a misspelt version of `sjokolade' (chocolate), and we find
+that its closest neighbour in the embedding space is `sjokolade'. Other close
+neighbours include `potetgul' and `potetgull' (potato crisps), where the
+former is also a misspelling.
 
+\todo{messy}
 Our training data only contains 20,766 unique tokens, which is less than 1\%
-of the full vocabulary of the models. Loading the full pre-trained model
-takes a long time and uses huge amounts of memory for word vectors we will
-never use. For that reason, we created models of smaller size by loading the
-full models once and iterating through all of the word forms in our corpus,
-storing the resulting vectors in a new vector model containing only 20,766
-words. In this way, we are also able to benefit from the FastText models'
-ability to compute vectors for unknown words, since the \ngram algorithm is
-being used when computing the reduced models. However, after the embedding
-layers of our models have been initialized with vectors from the FastText
-model, fine-tuning of vectors happens in the same way as if we had used
-embeddings from any other model such as Word2vec, or even randomly
-initialized embeddings, since the FastText network is not incorporated into
-our models.
+of the full vocabulary of the pre-trained FastText models. Because of their
+size, loading the full models takes a long time, and uses huge amounts of
+memory, most of which is word vectors we will never use. For that reason, we
+created models of smaller size by loading the full models once and iterating
+through all of the word forms in our corpus, storing the resulting vectors in
+a new vector model containing only the words we need. In this way, we were
+still able to benefit from the FastText models' ability to compute vectors
+for unknown words, since the \ngram algorithm is being used when computing
+the reduced models. However, after the embedding layers of our models have
+been initialized with vectors from the FastText model, fine-tuning of vectors
+happens in the same way as if they had been initialized in any other way.
+This is because the FastText network is not incorporated into our models.
 
 Two common variations on training a neural model with pre-trained word
 embeddings are using dynamic embeddings, where the embedding vectors are
@@ -166,6 +166,22 @@ embedding layers in Keras: One for words, which has embedding dimension 100,
 and one for UPOS tags, which has embedding dimension 10. Then, we use a
 concatenation layer to combine these two layers, and get a layer with vector
 size 110.
+
+
+\subsection{Vocabulary size} \label{subsec:vocabsize}
+
+We use all tokens in the training set as our lexicon, giving a vocabulary
+size of 20,768 (20,766 unique tokens occurring in the training set, plus two
+tokens for padding and unknown words).
+
+The inclusion of all tokens in the training set in the vocabulary entails
+that the unknown token will receive no training signal, and its embedding
+will remain whatever it was initialized as. Depending on whether the
+experiment uses pre-trained embeddings, this representation will either be a
+random vector, or the embedding computed by the FastText model for the token
+`\_\_UNK\_\_'. Though this might appear to be problematic, we will
+experimentally confirm later that this has no measurable effect on the
+evaluation results (section \ref{sec:sanitycheck}).
 
 
 \section{Convolutional neural networks}
@@ -210,9 +226,8 @@ our \ac{CNN} experiments. The best macro \FI score on the full set of labels
 is a regressor using mixed UPOS input ($0.258$). The second best results
 comes from a regressor initialized with pre-trained embeddings ($0.242$).
 This is also the model with the highest macro \FI on the collapsed labels
-($0.463$).
-
-The \FI scores are not an improvement over the SVR and 
+($0.463$). However, these scores are lower than the results we got
+from SVR and MLP experiments in the previous chapter.
 
 \begin{table}
   \centering
@@ -371,10 +386,11 @@ better results on error metrics than \FI scores.
     RMSE             &         $1.123$  &         $1.24$   & $\mathbf{1.03}$ \\
     \bottomrule
   \end{tabular}
-  \caption[Comparison of metrics for a MLP and a CNN model]{
-    Metrics for MLP Rank Char and CNN Reg Mix. For error metrics, lower
-    values are better. Spearman's r is the Spearman ranked correlation
-    coefficient. MAE is mean absolute error. RMSE is root mean squared error.
+  \caption[Comparison of metrics for SVR, MLP and CNN models]{
+    Metrics for a linear regressor, an ordinal regression MLP and a
+    convolutional regressor. For error metrics, lower values are better.
+    Spearman's r is the Spearman ranked correlation coefficient. MAE is the
+    mean absolute error. RMSE is the root mean squared error.
   }
   \label{tab:mlp-cnn-metrics}
 \end{table}
@@ -407,30 +423,21 @@ reference study used randomly initialized embeddings of dimension 50. We
 increased the embedding dimension to 100, and experimented both with randomly
 initialized embeddings and with pre-trained ones. The vocabulary size in the
 reference study was set to 4000. We increased it to the total number of
-unique tokens in the training set, which is a little over 20,000.
+unique tokens in the training set, which is a little over 20,000 (see section
+\ref{subsec:vocabsize}).
 
-\todo{fix remander of section}
-We are reporting macro and micro \FI as before, not QWK as
-\citeauthor{taghipour16}. Refer to section \ref{sec:metrics} for the
-discussion of different metrics for the task.
+All of our models have a hidden state vector of size 300 in unidirectional
+\acp{RNN}, and 600 in BiRNNs (300 in each direction). BiRNNs are referred to
+in the following tables and discussion as either BiLSTM or BiGRU, depending
+on the RNN cell used.
 
-The authors of the reference study did not investigate different prediction
-methods apart from regression. A reason for this is that the ASAP dataset
-which they use consists of essays from eight different prompts. Both the
-range of scores and the number of possible scores differs across
-these prompts. The number of possible scores is as low as 4 or as high as
-61 depending on the prompt. Modelling the task as a regression allowed them
-to use the same type of output layer for all the prompts, despite the
-differences in scoring, by normalizing them to a common interval respective
-to the prompt before training.
-
-Unlike our corpus, ASK, the ASAP dataset used by \citeauthor{taghipour16}
-contained essays that were not necessarily written in a second language. Our
-data is not split into different parts based on the prompt. There are two
-different test levels in ASK, but these are not distinguished in training.
+Based on our experience with nominal classification, ordinal regression and
+regression from experiments in the previous chapter and with \acp{CNN}, we
+decide to only use regression in the subsequent experiments. This is also the
+only prediction mode used in the reference paper.
 
 
-\subsection{Variants}
+\subsection{Variations}
 
 We create \acp{RNN} with two different types of gated \ac{RNN} cell, the
 \ac{LSTM} and the \ac{GRU}. The concept of gated cells is explained in
@@ -449,7 +456,7 @@ element of the RNN output across time, and similarly for the second element,
 etc., as in the following equation:
 
 \[
-  \mathrm{mean/time}(x_i) = \frac{1}{T}\sum_{t=0}^T o_{t,i}
+  \mathrm{meanovertime}(x_i) = \frac{1}{T}\sum_{t=0}^T o_{t,i}
 \]
 
 where $T$ is the total number of time steps, and $o_{t,i}$ is the output of
@@ -462,7 +469,7 @@ sequence. We refer to this as the \emph{max over time}, and it is defined by
 the following equation:
 
 \[
-  \mathrm{max/time}(x_i) = \max_{t=0}^T o_{t,i}
+  \mathrm{maxovertime}(x_i) = \max_{t=0}^T o_{t,i}
 \]
 
 The final method we used is an attention layer, which differs from the mean
@@ -487,21 +494,8 @@ processing the inputs $(x_m, x_{m-1}, \ldots, x_j)$, where $m$ is the total
 number of time steps. The BiRNN should therefore be able to extract context
 on both sides of a input time step.
 
-All the models have a hidden state vector of size 300 in unidirectional
-\acp{RNN}, and 600 in BiRNNs (300 in each direction). We use all tokens in
-the training set as our lexicon, giving a vocabulary size of 20,068 (20,066
-unique tokens occurring in the training set, plus two tokens for padding and
-unknown words). This entails that the unknown token will receive no training
-signal, and its embedding will remain whatever it was initialized as.
-Depending on whether the experiment uses pre-trained embeddings, this
-representation will either be a random vector, or the embedding computed by
-the FastText model for the token `\_\_UNK\_\_'. \todo{sanity - where wat}
-
-Embeddings are initialized either randomly or using vectors
-from the FastText model described in section \ref{subseq:fasttext}, and
-trained as part of the network. BiRNNs are referred to in the following
-tables and discussion as either BiLSTM or BiGRU, depending on the RNN cell
-used.
+We test the combination of a BiRNN and attention mechanism, which was not
+attempted by \textcite{taghipour16}.
 
 
 \section{Results}
@@ -1092,7 +1086,7 @@ final classification layer positions documents that should be similar close
 to each other. In figure \ref{fig:pca-rnn-cefr} we have taken the documents
 in the dev set and computed these representations using a BiGRU, then run
 them through the PCA algorithm\footnote{We used the implementation in
-Scikit-learn\autocite{scikit-learn}.} in order to project them down to two
+Scikit-learn \autocite{scikit-learn}.} in order to project them down to two
 dimensions. The resulting dimensions are the two axes that account for most
 of the variance in the data. Additionally, the components are uncorrelated
 with each other.

@@ -228,17 +228,18 @@ encoding with the vector having the number of dimensions equal to the size of
 the lexicon. It is therefore useful to map words to a lower-dimensional
 representation, known as an \emph{embedding}.
 
-\sloppy Training embeddings rely on the distributional hypothesis, namely
-that words with similar meanings are likely to appear in similar contexts.
-Therefore, without prior knowledge of any words in a language, the resulting
-embeddings are likely to put words with similar meanings close to each other
-in the embedding space. It has also been observed that semantic relations
-between words, for instance regarding gender or inflection, corresponds to
-defined directions in the embedding space\autocite{mikolov2013linguistic}.
-These relations can be found by subtracting word vectors. A famous example of
-an emergent analogy learned by the embeddings is: ``Man is to king as woman
-is to ...''. In terms of arithmetic on embedding vectors, the embeddings
-modelled the analogy as $\vec{king}-\vec{man}+\vec{woman}\approx\vec{queen}$.
+\sloppy
+Training embeddings rely on the distributional hypothesis, namely that words
+with similar meanings are likely to appear in similar contexts. Therefore,
+without prior knowledge of any words in a language, the resulting embeddings
+are likely to put words with similar meanings close to each other in the
+embedding space. It has also been observed that semantic relations between
+words, for instance regarding gender or inflection, corresponds to defined
+directions in the embedding space \autocite{mikolov2013linguistic}. These
+relations can be found by subtracting word vectors. A famous example of an
+emergent analogy learned by the embeddings is: ``Man is to king as woman is
+to …''. In terms of arithmetic on embedding vectors, the embeddings modelled
+the analogy as $\vec{king}-\vec{man}+\vec{woman}\approx\vec{queen}$.
 \fussy
 
 There exists a number of embedding models, including Word2Vec
@@ -428,6 +429,22 @@ learner texts from the Estonian Interlanguage Corpus (EIC).
 SweLL corpus. \textcite{vajjala18universalCEFR} carry out a multilingual
 study that predicts CEFR scores for German, Czech and Italian learner texts
 from the MERLIN corpus.
+
+A study by \textcite{taghipour16} investigated neural prediction methods for
+evaluating essays in the ASAP dataset. This dataset was introduced as part of
+a competition on Kaggle. It consists of essays from eight different prompts.
+Both the range of scores and the number of possible scores differs across
+these prompts. The number of possible scores is as low as 4 or as high as 61
+depending on the prompt. The essays are not necessarily written in a second
+language. The documents are collected from standard assessment tests used in
+states in the USA.
+
+The systems investigated in the study include \acp{CNN}, \acp{RNN}, and a
+combination of the two. Their networks used regression output, which is
+suitable for the variety of different score ranges in the dataset. They
+presented their results in terms of the \ac{QWK} evaluation metric, both for
+each of the eight prompts separately, and as an average over all prompts.
+
 
 
 \subsection{Native Language Identification} \label{sec:nli}
