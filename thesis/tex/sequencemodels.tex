@@ -313,7 +313,7 @@ we train \ac{RNN} models.
     \centering
     \includegraphics{cnn-confusion}
     \caption{
-      Confusion matrix on validation set, raw counts and normalized.
+      Confusion matrix on the validation set, raw counts and normalized.
     }
   \end{subfigure}
   \caption[Training behaviour of CNN regression]{
@@ -784,12 +784,17 @@ features.
   \begin{subfigure}{\linewidth}
     \centering
     \includegraphics{rnn-training}
-    \caption{Training and validation loss and accuracy over 50 epochs of training.}
+    \caption{
+      Training and validation loss and validation \FI over 50 epochs of
+      training.
+    }
   \end{subfigure}
   \begin{subfigure}{\linewidth}
     \centering
     \includegraphics{rnn-confusion}
-    \caption{Confusion matrix on validation set, raw counts and normalized.}
+    \caption{
+      Confusion matrix on the validation set, raw counts and normalized.
+    }
   \end{subfigure}
   \caption[Training behaviour of BiGRU with attention]{
     BiRNN with GRU cells, attention mechanism, and pre-trained
@@ -988,7 +993,7 @@ same predictions, even with all other parameters kept constant.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{h0169-eng}
-  \caption[Attention in a text by an English speaker]{
+  \caption[Attention heat map in a text by an English speaker]{
     Attention values of NLI classifier on excerpt from ASK text h0189. L1 is
     English, CEFR score B2.
   }
@@ -998,7 +1003,7 @@ same predictions, even with all other parameters kept constant.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{h0185-rus}
-  \caption[Attention in a text by a Russian speaker]{
+  \caption[Attention heat map in a text by a Russian speaker]{
     Attention values of NLI classifier on excerpt from ASK text h0186. L1 is
     Russian, CEFR score B1/B2.
   }
@@ -1023,7 +1028,7 @@ false positives.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{s0546-som}
-  \caption[Attention in a text by a Somali speaker]{
+  \caption[Attention heat map in a text by a Somali speaker]{
     Attention values of NLI classifier on full ASK text s0621. L1 is Somali,
     CEFR score A2.
   }
@@ -1047,7 +1052,7 @@ frequent word, occurring five times in the course of a rather short text.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{s0628-vie}
-  \caption[Attention in a text by a Vietnamese speaker]{
+  \caption[Attention heat map in a text by a Vietnamese speaker]{
     Attention values of NLI classifier on excerpt from ASK text s0180. L1 is
     Vietnamese, CEFR score B1/B2
   }

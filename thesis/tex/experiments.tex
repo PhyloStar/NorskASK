@@ -453,7 +453,9 @@ for both the full and collapsed sets of classes, are found in table
   \end{tabular}
   \caption[\FI scores of linear and neural classifiers]{
     \FI scores of various classifiers. LogReg is logistic regression, SVC is
-    support vector classification, SVR is support vector regression.
+    support vector classification, SVR is support vector regression, MLP is
+    multi-layer perceptron. BOW is bag-of-words input, Char is character
+    \ngrams, POS is UPOS \ngrams, Mix is mixed UPOS \ngrams.
   }
   \label{tab:baseline-accuracies}
 \end{table}
@@ -527,7 +529,10 @@ labels, the number of parameters is 2,031,303.
   % mlp_char-26449272_22 
   \centering
   \includegraphics{mlp-char-rank}
-  \caption{Confusion matrix for MLP Rank Char}
+  \caption[Confusion matrix for MLP Rank Char]{
+    The confusion matrix for a multi-layer perceptron with ordinal regression
+    output, using character \ngrams as input.
+  }
   \label{fig:mlp-char-rank}
 \end{figure}
 
@@ -535,7 +540,11 @@ labels, the number of parameters is 2,031,303.
   % mlp_char-26449273_22 
   \centering
   \includegraphics{mlp-char-rank-round}
-  \caption{Confusion matrix for MLP Rank Char, collapsed labels}
+  \caption[Confusion matrix for MLP Rank Char, collapsed labels]{
+    The confusion matrix for a multi-layer perceptron with ordinal regression
+    output, using character \ngrams as input. Trained and evaluated using
+    collapsed CEFR labels.
+  }
   \label{fig:mlp-char-rank-round}
 \end{figure}
 
