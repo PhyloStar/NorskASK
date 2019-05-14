@@ -26,27 +26,28 @@ created a training/development/test data split.
 
 In chapter \ref{ch:experiments} we looked at a number of different evaluation
 metrics that have previously been used in the \ac{AES} literature, and
-decided on macro and micro \FI scores as the metrics to focus on in this
-project. We explored a selection of different classifier models, both linear
-and neural architectures. We compared three different prediction modes, and
-saw that regression and ordinal regression had better performance on the task
-than nominal classification. We tried out a selection of different input
-representations for our systems. We saw that the best input representation is
-dependent on the model in question.
+decided on macro and micro \FI scores as the metrics we would use to evaluate
+our models on the task. We explored a selection of different classifier
+models, both linear and neural architectures. We compared three different
+prediction modes, and saw that regression and ordinal regression had better
+performance on the task than nominal classification. We established a strong
+baseline using a \ac{SVM} regressor.
 
 In chapter \ref{ch:sequencemodels} we performed experiments with more
 advanced neural models, namely \acp{CNN} and \acp{RNN}. Our CNN experiments
 confirmed what we observed in the previous chapter regarding nominal
 classification versus regression, namely that regression gives the best
-results for the \ac{AES} task on this dataset. Our \ac{RNN} experiments gave
-results on the task which clearly improved on our baseline systems.
+results for the \ac{AES} task on this dataset. Our \ac{RNN} experiments
+resulted in the strongest results on the task using a model with GRU cells
+and an attention mechanism.
 
-We tested our systems on the NLI task, and examined the attention values. We
-did not seem to find clear connections between the parts of texts that our
-model focused on and traits of learner language that is known from \ac{SLA}
-literature. We plotted the representation vectors of documents in a 2-D
-projection, and saw that the length of a document seemed to be considered
-important in our system.
+We also tested our systems on the NLI task in isolation. We examined the
+workings of the attention mechanism using heat map visualization. We did not
+observe a correspondence between the parts of texts that our model focused on
+and traits of learner language that is known from \ac{SLA} literature. We
+plotted the representation vectors of documents in a 2-D projection, and saw
+that the length of a document seemed to be considered important in our
+system.
 
 In chapter \ref{ch:multitask} we added \ac{NLI} as an auxiliary task to our
 best models. We found that multi-task with NLI does not hurt performance with
@@ -55,7 +56,9 @@ examined the correlation between different evaluation metrics, and discovered
 that some of them have a non-linear relationship with each other.
 
 In chapter \ref{ch:heldout} we evaluated our models on a held-out test set we
-created in chapter \ref{ch:dataset}.
+created in chapter \ref{ch:dataset}, and found that the micro \FI results
+were close to what we had seen on the development set, indicating that the
+model generalized well to unseen data.
 
 
 \section{Ethical considerations}
@@ -95,10 +98,10 @@ arbitrary.
 
 \section{Future work}
 
-There are more architectures to explore for the \ac{AES} task on the ASK corpus.
-For instance, the system in \textcite{alikaniotis2016automatic} gave strong
-results on the ASAP dataset, and could be adapted to work with documents from
-ASK.
+There are more architectures to explore for the \ac{AES} task on the ASK
+corpus. For instance, the system in \textcite{alikaniotis2016automatic} gave
+strong results on the ASAP dataset, and could be adapted to work with
+documents from ASK.
 
 Because documents can be long, it could prove beneficial to use a
 hierarchical classifier. Each sentence in a document could be encoded by an
@@ -107,9 +110,10 @@ sentence representations rather than a sequence of tokens.
 
 The formulation of \ac{AES} as ordinal classification should be explored
 further. It is a natural formulation of the task, at least with labels such
-as \ac{CEFR} levels, where we know their order, but not the distance between
-them. For alternative scoring systems, such as numeric scores over a large
-interval, regression may still be more appropriate.
+as \ac{CEFR} levels, where the number of different scores is reasonable low,
+they have a clear order, but we do not know the distance between them. For
+alternative scoring systems, such as numeric scores over a large interval,
+regression may still be more appropriate.
 
 The ASK corpus contains detailed annotations of mistakes with respect to the
 target language. These could be compared to features discovered by \iac{ML}
