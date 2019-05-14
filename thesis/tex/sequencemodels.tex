@@ -50,8 +50,8 @@ Certain aspects of the experimental setup for the new models are different
 from the models in the previous chapter, but shared between \ac{CNN} and
 \ac{RNN} models. These aspects are described in this section. Like the
 \ac{MLP} models in chapter \ref{ch:experiments}, the neural networks are
-implemented in \textcite{keras} and trained on the \textcite{tensorflow}
-backend.
+implemented in Keras \autocite{keras} and trained on the TensorFlow
+\autocite{tensorflow} backend.
 
 
 \subsection{Input length}
@@ -97,15 +97,14 @@ vectors even for words that do not have separate entries in the model, in
 which case the model creates a vector based on the word's constituent
 character \ngrams.
 
-In our case, we used a selection of models trained on a large Norwegian
-corpus, the combination of Norsk aviskorpus (The Norwegian Newspaper Corpus)
-and NoWaC (Norwegian Web As Corpus) \autocite{stadsnes2018}. These vector
-models are very large, containing vectors for more than 2,500,000 words. The
-models are stored in a repository that is available online and on the Abel
-supercomputer cluster \autocite{murhaf2017repository}. We use three models
-trained on this corpus using the FastText algorithm, differing only in the
-dimension of embeddings. They were trained using skipgram and window size 5, 
-on an unlemmatized corpus.
+For our experiments, we used a model trained using the FastText algorithm on
+a large Norwegian corpus, the combination of Norsk aviskorpus (The Norwegian
+Newspaper Corpus) and NoWaC (Norwegian Web As Corpus)
+\autocite{stadsnes2018}. This model, contains vectors for more than 2,500,000
+words. The model is stored in a repository that is available online and on
+the Abel supercomputer cluster \autocite{murhaf2017repository}\footnote{Model
+ID 120}. The model we are using has embedding dimension $100$, and is trained
+using skipgram and window size 5, on an unlemmatized version of the corpus.
 
 We can superficially confirm the usefulness of FastText embeddings by looking
 at vector similarities. We use the Python library Gensim \autocite{gensim} to
@@ -115,38 +114,45 @@ that its closest neighbour in the embedding space is `sjokolade'. Other close
 neighbours include `potetgul' and `potetgull' (potato crisps), where the
 former is also a misspelling.
 
-\todo{messy}
-Our training data only contains 20,766 unique tokens, which is less than 1\%
-of the full vocabulary of the pre-trained FastText models. Because of their
-size, loading the full models takes a long time, and uses huge amounts of
-memory, most of which is word vectors we will never use. For that reason, we
-created models of smaller size by loading the full models once and iterating
-through all of the word forms in our corpus, storing the resulting vectors in
-a new vector model containing only the words we need. In this way, we were
-still able to benefit from the FastText models' ability to compute vectors
-for unknown words, since the \ngram algorithm is being used when computing
-the reduced models. However, after the embedding layers of our models have
-been initialized with vectors from the FastText model, fine-tuning of vectors
-happens in the same way as if they had been initialized in any other way.
-This is because the FastText network is not incorporated into our models.
-
-Two common variations on training a neural model with pre-trained word
-embeddings are using dynamic embeddings, where the embedding vectors are
-updated by gradient descent as part of training the entire network, and
-static embeddings, where the embedding vectors are kept constant while other
-weights in the network are updated. Additional variations are also found in
-literature, for example the multi-channel approach seen in
-\textcite{kim2014convolutional} where two embedding layers, one static and
-one dynamic, are run in parallel. In this study we will not use static
-embeddings, but always fine-tune our embeddings, whether they are pre-trained
-or randomly initialized.
-
+Pre-trained embeddings are only used when we have word tokens as inputs.
 Experiments using mixed UPOS tags as input will not use pre-trained
 embeddings. This is because of two reasons. First, we do not have any
 pre-trained embeddings for UPOS tags. Second, the pre-trained word embeddings
 for function words that occur in the mixed UPOS tag representation are
 trained in the context of content words, and we therefore do not expect them
 to have much utility in the context of UPOS tags.
+
+
+\subsubsection{Reducing model size}
+
+Our training data only contains 20,766 unique tokens, which is less than 1\%
+of the full vocabulary of the pre-trained FastText model. Because of its
+size, loading the full model takes a long time, and uses huge amounts of
+memory, most of which is word vectors we will never use. For that reason, we
+created a model of smaller size by loading the full model once and iterating
+through all of the word forms in our corpus, storing the resulting vectors in
+a new vector model containing only the words we need. In this way, we were
+still able to benefit from the FastText model's ability to compute vectors
+for unknown words, since the \ngram algorithm is being used when computing
+the reduced models. However, after the embedding layers of our neural models
+have been initialized with vectors from the FastText model, fine-tuning of
+vectors happens in the same way as if they had been initialized in any other
+way. This is because the FastText network is not incorporated into our
+models.
+
+
+\subsubsection{Dynamic or static embeddings}
+
+Two common variations on training a neural model with pre-trained word
+embeddings are to dynamic or static embeddings. With dynamic embeddings, the
+embedding vectors are updated by gradient descent as part of training the
+entire network. With static embeddings, the embedding vectors are kept
+constant while other weights in the network are updated. Additional
+variations are also found in literature, for example the multi-channel
+approach seen in \textcite{kim2014convolutional} where two embedding layers,
+one static and one dynamic, are run in parallel. In this study we will not
+use static embeddings, but always fine-tune our embeddings, whether they are
+pre-trained or randomly initialized.
 
 
 \subsection{Multi-channel input}
@@ -682,14 +688,15 @@ embeddings.
 
 \subsection{The effect of hyperparameters}
 
-\todo{expand}
 We choose five different hyperparameters and examine the effect each of them
 has on the predictions of the networks. When it is relevant, we will compare
 the effect we got with the effect found by \textcite{taghipour16}. However,
-our experiments are not comparable for many reasons: We use a different
-dataset with different labels, a different evaluation metric, and a different
-evaluation method (\citeauthor{taghipour16} use 5-fold cross validation),
-among other things. \todo{diff datasets never comparable}
+our experiments are not comparable for many reasons, including: We use a
+different dataset from a different domain, which has different labels. Our
+evaluation metric is not the same, and our evaluation method, testing on a
+separate held-out subset, is different from 5-fold cross validation used by
+the reference study. Comparisons are therefore only meant to highlight that
+the effect of hyperparameters can vary between different experimental setups.
 
 
 \subsubsection{LSTM versus GRU}
@@ -702,8 +709,10 @@ macro \FI on the collapsed labels ($0.805$). The best LSTM macro \FI on
 collapsed labels is $0.704$, ranking seventh among all GRU and LSTM
 experiments.
 
-We conclude that GRU performs best on the task. An additional benefit of GRU
-is that it has fewer parameters and is a little faster in training.
+We conclude that GRU performs best on the task on our dataset. In contrast,
+\textcite{taghipour16} compared both RNN cells and got better predictions
+from the \ac{LSTM}. In our case, another benefit of GRU is that it has fewer
+parameters and is a little faster in training.
 
 
 \subsubsection{Bidirectional RNN}
@@ -716,16 +725,19 @@ whether they are bidirectional or not, we do not always see that the macro
 models which use an attention mechanism, the bidirectional models win in all
 but one case. The GRU attention model with mixed UPOS input drops from
 $0.320$ to $0.275$. It seems that BiRNNs may be most effective in conjunction
-with an attention mechanism, at least on this dataset.
+with an attention mechanism, at least on this dataset. The combination of
+BiRNN and attention was not used in \textcite{taghipour16}.
 
 
 \subsubsection{Initialization of embeddings}
 
-The effects of initialization is not very clear, and in any case mixed. The
-best LSTM models used pre-trained embeddings, and the best GRU models used
-randomly initialized embeddings. However, the best GRU model with pre-trained
-embeddings has a higher macro \FI score than the overall best LSTM model,
-$0.454$ and $0.448$ respectively.
+The effects of randomly initialized vs. pre-trained embeddings is not very
+clear, and results seem to go in both directions. The best LSTM models used
+pre-trained embeddings, and the best GRU models used randomly initialized
+embeddings. However, the best GRU model with pre-trained embeddings has a
+higher macro \FI score than the overall best LSTM model, $0.454$ and $0.448$
+respectively. We think the effect of initialization, if it exists, may be
+overshadowed by noise from other factors.
 
 
 \subsubsection{Pooling method}
@@ -775,6 +787,10 @@ on the collapsed set of labels. This is higher than the best results in the
 CNN experiments ($0.258$ and $0.463$). It is possible that RNNs are better
 able to make use of the greater amount of information present in full lexical
 features.
+
+We conclude that mixed UPOS is not a suitable input to these architecture, at
+least not on its own. The effect of UPOS tags as a side input is inconclusive,
+and may be hidden by noise stemming from other factors.
 
 
 \subsection{Training behaviour}
