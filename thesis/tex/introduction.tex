@@ -3,10 +3,10 @@
 \acresetall
 
 Learner language is the linguistic output produced by people in the process
-of a second language. It can be a challenge for \ac{NLP} pipelines, since it
-is likely to contain ungrammatical constructions and spelling mistakes.
-Widely used methods such as standard word embeddings are not necessarily
-suited to deal with the data.
+of learning a second language. It can be a challenge for \ac{NLP} pipelines,
+since it is likely to contain ungrammatical constructions and spelling
+mistakes. Widely used methods such as standard word embeddings are not
+necessarily suited to deal with the data. 
 
 \ac{AES} is the task of automatically assigning a grade to a written text,
 such as pass/fail, a proficiency score, or a numerical grade. It is a well
@@ -15,9 +15,12 @@ on hand-engineered features and traditional classification methods. However,
 the neural revolution enables researchers to build novel systems to perform
 the task, as well as gain new insight into features of learner language.
 
-In some settings, \ac{AES} is formulated also for texts that are not learner
-language. An example is grading tests in a national education system, where
-a majority of students may be writing in their first language.
+\ac{AES} can be formulated for many kinds of textual data, both learner
+language and non-learner language. An example of the former might be a
+language proficiency test, which is a requirement for admission to higher
+education in many places. An example of the latter is grading tests in a
+national education system, where a majority of students may be writing in
+their first language.
 
 \ac{AES} systems are useful for organizations which deliver tests, because
 they can simplify the otherwise manual work of grading student essays.
@@ -25,14 +28,18 @@ Furthermore, they can also be useful for individuals, since they can get
 valuable feedback on their writing quickly and reliably.
 
 While most \ac{AES} research to date has been focused on English language, a
-number corpora suited for the task have been made available in other
+number of corpora suited for the task have been made available in other
 languages as well. We present the first results for \ac{AES} on Norwegian
 learner language, using the ASK corpus. ASK has been the basis for a number
-of studies on Norwegian learner language. The corpus contains a rich
-selection of metadata, including CEFR levels for a subset of the corpus, and
-the \ac{L1} of participants. This makes it well suited for experiments with
-multi-task learning, where we utilize more than one label in training in
-order to improve a model's representations of the data.
+of studies on Norwegian learner language. For instance, it has been used for
+the \ac{NLI} task, where the objective is to predict the \ac{L1} of the
+author of a text.
+
+The ASK corpus contains a rich selection of metadata, including CEFR levels
+for a subset of the corpus, and the \ac{L1} of participants. This makes it
+well suited for experiments with multi-task learning, where we utilize more
+than one label in the training training in order to improve a model's
+representations of the data.
 
 In this thesis we present first results for the task of \ac{AES} for
 Norwegian learner language. Furthermore, we present the first results for
@@ -55,8 +62,8 @@ train some of our models with multi-task learning, using \ac{NLI} as an
 auxiliary task. This is, as far as we know, the first time \ac{NLI} has been
 used as an auxiliary task for \ac{AES}.
 
-We find that a GRU-based attention model trained in a single-task setting
-performs best at the AES task.
+Our best system on the AES task is a GRU-based attention model trained in a
+single-task setting.
 
 
 \section{Overview}
@@ -71,22 +78,23 @@ performs best at the AES task.
   discussed.
 
 \item [Chapter \ref{ch:dataset}]
-  describes the dataset we base our experiments on. It briefly discusses its
-  role in previous research on Norwegian \ac{SLA}. We analyse a number of
-  properties of the data and create a training/test/development split of the
-  data.
+  describes the dataset we use in our experiments, the Norwegian ASK corpus.
+  It briefly discusses its role in previous research on Norwegian \ac{SLA}.
+  We analyse a number of properties of the data and create a
+  training/test/development split of the data.
 
 \item [Chapter \ref{ch:experiments}]
-  contains the first experiments and discussion about the right evaluation
-  metrics to use for the tasks. We present results for linear classifiers and
-  regressors, as well as simple neural networks, on different input
-  representations. We evaluate formulations of \ac{AES} as nominal
-  classification, regression, and ordinal regression.
+  contains the first experiments, and we discuss a number of different
+  evaluation metrics that can be used for the tasks. We present results for
+  linear classifiers and regressors, as well as simple neural networks, on
+  different input representations. We evaluate different formulations of the
+  \ac{AES} task, namely as nominal classification, regression, and ordinal
+  regression.
 
 \item [Chapter \ref{ch:sequencemodels}]
   contains further experiments using more advanced neural architectures,
-  namely \acp{CNN} and \acp{RNN}. It features visualization of the inner
-  workings of a RNN.
+  namely \acp{CNN} and \acp{RNN}. We use attention heat maps to visualize the
+  inner workings of a RNN.
 
 \item [Chapter \ref{ch:multitask}]
   introduces \ac{NLI} as an auxiliary task. We perform additional experiments
