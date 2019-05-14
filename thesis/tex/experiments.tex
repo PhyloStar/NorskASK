@@ -27,24 +27,27 @@ These raw text files were then sent through the text processing pipeline
 UDPipe \autocite{udpipe:2017} for tagging and dependency parsing. The UDPipe
 project maintains an online REST \ac{API} containing a selection of
 pre-trained models. All documents were transformed by the REST \ac{API} using
-what was at the time of writing the newest Norwegian bokmål (nb) model
-available\footnote{\texttt{norwegian-bokmaal-ud-2.3-181115}}.
+the most recent Norwegian bokmål (nb) model
+available\footnote{\texttt{norwegian-bokmaal-ud-2.3-181115}} at the time of
+writing.
 
-The pipeline accepts different input formats, including raw text files on
-this format. We used the tokenization from the ASK corpus and not the
-tokenization algorithm built into UDPipe. The output from UDPipe is on the
-CoNLL file format, with a single token per line. UDPipe tags the documents
-using the Universal Dependencies (UD) tagset, referred to as UPOS. The
-original tags in the ASK corpus are from the Oslo-Bergen tagger's own tagset
-\autocite{oslobergen}, and these were not used in any of our experiments.
+The pipeline accepts different input formats, including raw text files on the
+format described above. We used the tokenization from the ASK corpus and not
+the tokenization algorithm built into UDPipe. The output from UDPipe is on
+the CoNLL file format, with a single token per line. UDPipe tags the
+documents using the Universal Dependencies (UD) tagset, referred to as UPOS.
+The original tags in the ASK corpus are from the Oslo-Bergen tagger's own
+tagset \autocite{oslobergen}, and these were not used in any of our
+experiments---when we refer to POS tag features, they are always based on
+UPOS.
 
 
-\section{Metrics} \label{sec:metrics}
+\section{Evaluation metrics} \label{sec:metrics}
 
 For each class, we can compute the \emph{precision} and \emph{recall} (Eq.
 \ref{eq:precision}). The precision for a class is the ratio of examples that
 were predicted to belong to the class which actually belong to the class. The
-recall for a class is the ration of examples that actually belong to the
+recall for a class is the ratio of examples that actually belong to the
 class which were predicted to belong to the class. The \FI score for a class
 is the harmonic mean of the precision and recall . It can also be expressed
 directly as a function of the number of true positives ($TP$), false
@@ -64,7 +67,7 @@ classes' individual \FI scores into a single metric. There is the micro
 average \FI, which is equal to accuracy in the case where all samples have
 exactly one true label. Since this is the case for our data, we will
 sometimes refer to micro \FI or accuracy interchangeably. Accuracy is the
-proportion of samples where the gold labels and predicted labels are the
+proportion of samples where the target labels and predicted labels are the
 same.
 
 Then there is the macro average, which is the unweighted average of \FI
@@ -75,11 +78,11 @@ high micro \FI and a low macro \FI indicates that it is good at classifying
 examples from the most frequent classes, but performs worse on classes with
 low support.
 
-In addition to macro and micro average, the weighted \FI is a weighted
-average where each class is weighted proportionally to its share of the
-complete dataset.
+In addition to macro and micro average, the weighted \FI is somethimes used.
+It is a weighted average, where each class is weighted proportionally to its
+proportion of the complete dataset.
 
-\FI scores previously reported in \ac{AES} literature include Micro \FI score
+\FI scores previously reported in \ac{AES} literature include micro \FI score
 in \textcite{vajjala17}, and weighted \FI in
 \textcite{vajjala18universalCEFR}. For the \ac{NLI} task, micro \FI is
 reported in \textcite{malmasi15,malmasi17}. \FI score is also reported in
@@ -89,15 +92,15 @@ explicit about whether it is the case. In \textcite{vajjalaloo2014}, \FI
 scores are reported separately for each class.
 
 Other, non-\FI metrics that have been reported in \ac{AES} literature include
-\ac{QWK} \autocite{taghipour16, alikaniotis2016automatic}, Pearson's
+\acf{QWK} \autocite{taghipour16, alikaniotis2016automatic}, Pearson's
 correlation coefficient \autocite{vajjala17, alikaniotis2016automatic},
-Spearman's rank correlation coefficient and root mean squared error
-\autocite{alikaniotis2016automatic}, and mean absolute error
-\autocite{vajjala17}. These are metrics that may depend on the ordinal nature
-of proficiency scores, and potentially the relative differences between
-different scores. For instance, a prediction of `C1' for an essay with gold
-label `B1' is a more serious misclassification than a prediction of `A2/B1'
-for the same sample, and this can be taken into account by some metrics.
+Spearman's rank correlation coefficient, \acf{RMSE}
+\autocite{alikaniotis2016automatic}, and \acf{MAE} \autocite{vajjala17}.
+These are metrics that may depend on the ordinal nature of proficiency
+scores, and potentially the relative differences between different scores.
+For instance, a prediction of `C1' for an essay with gold label `B1' is a
+more serious misclassification than a prediction of `A2/B1' for the same
+sample, and this can be taken into account by some metrics.
 
 According to \textcite{yannakoudakis2015evaluating}, there are several
 problems with using \ac{QWK} as a metric for the \ac{AES} task. The metric
@@ -114,10 +117,10 @@ with other metrics.
 
 Two different sets of output labels are used in our experiments: The original
 seven CEFR labels, and a collapsed set where the intermediate classes, such
-as ``A2/B1'', are rounded up to the nearest canonical class, i.e. the CEFR
-label after the slash. This results in only four different labels: ``A2'',
-``B1'', ``B2'' and ``C1''. We will focus on comparing the models based on
-their performance on the full set of labels, but include the performance on
+as `A2/B1', are rounded up to the nearest canonical class, i.e. the CEFR
+label after the slash. This results in only four different labels: `A2',
+`B1', `B2' and `C1'. We will focus on comparing the models based on their
+performance on the full set of labels, but include the performance on
 collapsed labels because the setup is more similar to other \ac{AES} studies
 using different datasets using CEFR labels without intermediate classes.
 
@@ -143,7 +146,7 @@ and linear regression, and neural models following the \acp{MLP} architecture.
 \subsection{Classification versus regression}
 
 \ac{AES} can be modelled both as a classification task and as a regression
-task, and both are seen in previous work. Sometimes both have used in the
+task, and both are seen in previous work. Sometimes both are used in the
 same study. For instance, in \textcite{vajjala17}, two different datasets
 with different properties were used, and the author utilized both multi-class
 prediction and regression at different points.
@@ -156,11 +159,11 @@ implicitly decide this when we transform the labels into numeric values for
 regression. In practice we place the classes with equal distance over a
 numeric interval.
 
-This challenge of quantifying distance between classes does not apply to the
-classification approach, but it comes with another problem. Multi-class
-classification does not consider any ordering of classes, which is an
-intrinsic property of the classes for AES. However, we do not have to make
-assumptions about the distance between classes.
+The problem of having to make assumptions about the distance between classes
+does not apply when taking the nominal classification approach, but this
+comes with another problem. Multi-class classification does not take any
+ordering of classes into account, even though it is an intrinsic property of
+the classes for AES.
 
 A third class of analysis called \emph{ordinal regression} or \emph{ranking
 learning} is intended for predicting an ordinal variable, where classes are
@@ -168,9 +171,9 @@ distinct, but have a natural ordering. In theory, it is the most fitting
 formulation for the \ac{AES} task with nominal classes, since we know the
 ordering of the classes, but not the distance between them. However, unlike
 regression and nominal classification, algorithms for ordinal regression are
-implemented in common machine learning frameworks like scikit-learn. We will
-however explore a formulation of ordinal regression for a neural model, as
-described in section \ref{subsec:ordreg}.
+not implemented in common machine learning frameworks like scikit-learn. We
+will however explore a formulation of ordinal regression for a neural model,
+as described in section \ref{subsec:ordreg}.
 
 
 \subsection{Input representations}
@@ -180,12 +183,21 @@ for the total number of features. The neural models may restrict the number
 of features by cutting off less frequently occurring features, and this is
 noted below.
 
+The \ngram features add a certain sensitivity to local order of features.
+Many character \ngrams will represent entities smaller than a word, but may
+indicate common spelling mistakes. \ac{POS} and Mixed POS \ngrams, on the
+other hand, might be able to represent syntactic features. Spelling and
+syntax should be correlated with L2 proficiency, and traditional \ac{ML}
+methods that rely on manual feature engineering have included domain specific
+features designed to capture spelling and syntax, as for instance in
+\textcite{vajjala17}.
+
 \subsubsection*{Word counts}
 
 This representation is a vector with a entry for each unique word form in the
 training data, 20,766 in total. The value of each entry is the number of
 times the word form occurs in the document. The neural models limits the
-count vectors to the 10,000 most common tokens.
+count vectors to the 20,000 most common tokens.
 
 \subsubsection*{Character \ngrams}
 
@@ -193,7 +205,7 @@ Documents are represented by count vectors where each entry represents a
 \ngram of characters. Some examples of character \ngrams are
 $\langle$eg␣$\rangle$, $\langle$␣i␣$\rangle$ or $\langle$si$\rangle$. For the
 linear model, all \ngrams with $n\in \{1,2,3\}$ were used, and for the neural
-models the 10,000 most commonly occurring \ngrams with $n\in \{2,3,4\}$ were
+models the 20,000 most commonly occurring \ngrams with $n\in \{2,3,4\}$ were
 used.
 
 \subsubsection*{POS \ngrams}
@@ -202,16 +214,16 @@ Documents are represented by count vectors where each entry represents a
 \ngram of POS tags. Some examples of POS \ngrams are $\langle$NOUN
 NOUN$\rangle$, $\langle$PRON AUX PRON$\rangle$ or $\langle$SCONJ
 ADJ$\rangle$. For the linear model, all \ngrams with $n\in \{1,2,3\}$ were
-used, and for the neural models the 10,000 most commonly occurring \ngrams
+used, and for the neural models the 20,000 most commonly occurring \ngrams
 with $n\in \{2,3,4\}$ were used.
 
-\subsubsection*{Mixed POS}
+\subsubsection*{Mixed POS \ngrams}
 
-The Mixed POS mode was taken from \textcite{malmasi15}. Their best performing
-single feature was a mix of word forms and POS tags, so that common function
-words appeared in their written form, while content words were substituted
-with their POS tag. We used the same set of function words as
-\citeauthor{malmasi15}.
+The Mixed POS mode was taken from an \ac{NLI} study by \textcite{malmasi15}.
+Their best performing single feature was a mix of word forms and POS tags,
+such that common function words appeared in their written form, while content
+words were substituted with their POS tag. We used the same set of function
+words as \citeauthor{malmasi15}.
 
 \begin{example}
 % cSpell:disable-next
@@ -225,18 +237,7 @@ with their POS tag. We used the same set of function words as
 
 Example \ref{ex:mixed-pos} shows a sentence fragment with the original series
 of tokens, the sequence of mixed function words and UPOS tags it is
-transformed into, as well as a translation into English.
-
-The \ngram features add a certain sensitivity to local order of features.
-Many character \ngrams will represent entities smaller than a word, but may
-indicate common spelling mistakes. \ac{POS} and Mixed POS \ngrams, on the
-other hand, might be able to represent syntactic features. Spelling and
-syntax should be correlated with L2 proficiency, and traditional \ac{ML}
-methods that rely on manual feature engineering have included domain specific
-features designed to capture spelling and syntax, as for instance in
-\textcite{vajjala17}.
-
-We used the same set of stop words as \citeauthor{malmasi15}. From these
+transformed into, as well as a translation into English. From these
 transformed sequences, we extracted \ngrams in the interval $[1,3]$. The
 20,000 most commonly occurring of these were used for the neural models.
 
@@ -264,11 +265,11 @@ $10^{-4}$ for the stopping criteria.
 
 In order to report classification based metrics for a regression model, we
 had to transform the predicted scores, which are continuous, into discrete
-scores equivalent to the given classes. This was by rounding the raw
-regression scores to the nearest integer. The output from the support vector
-regression model is not constrained to any interval, making it necessary to
-additionally clip the output values to the range of scores: $[0,6]$ in our
-full set of labels and $[0,3]$ in the collapsed set.
+scores representing the CEFR classes. This was by rounding the raw regression
+scores to the nearest integer. The output from the support vector regression
+model is not constrained to any interval, so it was necessary to additionally
+clip the output values to the range of scores: $[0,6]$ in our full set of
+labels and $[0,3]$ in the collapsed set.
 
 
 \subsection{Multi-layer perceptron} \label{subsec:mlp}
@@ -332,7 +333,7 @@ approach is the same as they call \emph{Ordered Partitions}.
 
 The output layer of our neural network has size $C-1$ and uses element-wise
 sigmoid activation to constrain the values of elements to the interval
-$(0,1)$. At train time, we minimize the mean square error between the gold
+$(0,1)$. At training time, we minimize the mean square error between the gold
 labels and output.
 
 At predict time, we convert the sigmoid activated values to either ones or
@@ -355,13 +356,13 @@ optimization algorithm using the default learning rate of $10^{-3}$.
 \subsection{Controlling randomness}
 
 We took several measures to ensure reproducible results from our experiments.
-One was to fix the seeds to the random seeds in Python and associated libraries
-used for the experiments. Since the software uses pseudo-random generators,
-the same seed will always yield the same sequence of numbers when a program
-is run again. In addition to the random number generators, Python can use a
-configured seed value to compute hashes of strings and other values. Without a
-way to control the Python hash seed, the mapping of e.g. word tokens to indices
-would be different on each run.
+One was to fix the seeds to the random number generations in Python and
+associated libraries used for the experiments. Since the random number
+generators are pseudo-random, the same seed will always yield the same
+sequence of numbers when a program is run again. In addition to the random
+number generators, Python can use a configured seed value to compute hashes
+of strings and other values. Without a way to control the Python hash seed,
+the mapping of e.g. word tokens to indices would be different on each run.
 
 Second, we disabled parallel execution in the computation graphs underlying
 the neural models. Parallel execution is a source of non-determinism, because
@@ -461,7 +462,7 @@ for both the full and collapsed sets of classes, are found in table
 \end{table}
 
 As a simple baseline, we consider the majority class classifier. The majority
-class in the training set is ``B1'', both with the full class set of labels
+class in the training set is `B1', both with the full class set of labels
 and with the collapsed set. The macro \FI scores for the majority classifier
 are very low, as the majority class classifier predicts no samples for any
 classes except the majority, and thus the \FI score for all other classes is
@@ -522,8 +523,6 @@ However, despite the tendency toward the diagonal, there are several severe
 mis-classifications, such as three `B2/C1' texts being classified as `B1' and
 `A2/B1'.
 
-MLP Char Rank has 2,032,206 parameters which are all trainable. For collapsed
-labels, the number of parameters is 2,031,303.
 
 \begin{figure}
   % mlp_char-26449272_22 
