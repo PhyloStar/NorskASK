@@ -309,7 +309,7 @@ the models for different languages. The model they used for this was a
 hierarchical attention network.
 
 \textcite{alonso17} investigated the effect of different auxiliary tasks and
-combinations of these on a \ac{LSTM} recurrent network for sequence labelling
+combinations of these on \iac{LSTM} recurrent network for sequence labelling
 tasks. The main tasks they considered in the study were labelling semantic
 frames, semantic supersenses, named entity recognition, ontological types for
 senses and Multi-Perspective Question Answering.
@@ -478,14 +478,14 @@ written data only, are considered below.
 The written documents in the task was English L2 essays, written by learners
 with 11 different L1s. The best-performing system in the track using only
 written essays had a macro-averaged \FI score of $0.8818$, using stacked
-classifiers combining logistic regression on sentences with a \ac{SVM}
+classifiers combining logistic regression on sentences with \iac{SVM}
 meta-classifier \autocite{cimino17}.
 
 The best performing team which used neural networks was \textcite{li17}, who
 used a multi-layer perceptron meta-classifier to combine outputs from
 \ac{SVM} base classifiers, and reported a \FI score of $0.8654$. Another team
 experimented with different neural network architectures, including \acp{RNN}
-and a \ac{CNN} variant known as a deep residual network
+and \iac{CNN} variant known as a deep residual network
 \autocite{bjerva2017neural}. Their best result was with a stacked model,
 combining their different models with an \ac{SVM} meta-classifier. Their best
 ensemble model achieved a \FI score of $0.8323$, and used no external
@@ -513,7 +513,7 @@ features for all the different corpora. For Norwegian, they only use the
 features \emph{function word unigrams}, \emph{function word bigrams} and
 \emph{part-of-speech \ngrams}. For the English corpus, they were able to use
 other features such as dependencies and context free grammar-rules. By
-combining a selection of base classifiers using a \ac{LDA} meta-classifier
+combining a selection of base classifiers using \iac{LDA} meta-classifier
 trained with bootstrap aggregation (bagging), they achieve an accuracy of
 $0.818$ on the Norwegian corpus.
 

@@ -8,7 +8,7 @@ We now go on to investigate distributed representations of inputs and more
 advanced neural architectures, namely \acp{CNN} and \acp{RNN}. Both
 architectures are widely used in various \ac{NLP} tasks. Their advantage is
 the ability to automatically extract features that are more domain-specific
-than the simple representations we used in chapter \ref{ch:baseline}. For
+than the simple representations we used in chapter \ref{ch:experiments}. For
 instance \acp{CNN} can be considered as \ngram detectors. Instead of having
 to find and count \ngrams to feed as inputs to the system, the \ac{CNN} can
 take a sequence of tokens and find the most informative \ngrams for the task
@@ -49,7 +49,7 @@ development set.
 Certain aspects of the experimental setup for the new models are different
 from the models in the previous chapter, but shared between \ac{CNN} and
 \ac{RNN} models. These aspects are described in this section. Like the
-\ac{MLP} models in chapter \ref{ch:baseline}, the neural networks are
+\ac{MLP} models in chapter \ref{ch:experiments}, the neural networks are
 implemented in \textcite{keras} and trained on the \textcite{tensorflow}
 backend.
 
@@ -401,7 +401,7 @@ better results on error metrics than \FI scores.
 For the next architecture, \ac{RNN}, we decided to base our system on the
 model used by \textcite{taghipour16}. Their basic architecture consists of a
 layer mapping a sequence of tokens into their embeddings, which then is
-connected to a \ac{RNN} layer. Then, the sequence of hidden states is pooled
+connected to \iac{RNN} layer. Then, the sequence of hidden states is pooled
 into a representation vector by a mean-over-time operation. A final layer
 combines the representation vector into a scalar value by a linear
 combination, which is then clamped to the interval $(0,1)$ by the sigmoid
@@ -843,7 +843,7 @@ regression pointless. For experiments in \ac{NLI} we will therefore only use
 networks with a softmax classification layer.
 
 We train the same models to classify the documents by native language. The
-performance of a \ac{CNN} model improved drastically when including \ac{POS}
+performance of \iac{CNN} model improved drastically when including \ac{POS}
 tags as input, as evident in table \ref{tab:cnn-nli-results}.
 A RNN was able to outperform the CNN only slightly, and here it was not the
 attention model that was best, but a bidirectional LSTM.

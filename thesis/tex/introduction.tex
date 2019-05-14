@@ -2,57 +2,107 @@
 
 \acresetall
 
-\todo{lifted from ACL submission}
-In this paper we present first results for the task of \ac{AES} for Norwegian learner language. We analyze a number of properties of
-this task experimentally and assess (i) the formulation of the task as either
-regression or classification, (ii) the use of various non-neural and neural
-machine learning architectures with various types of input representations,
-and (iii) applying multi-task learning for joint prediction of essay scoring
-and native language identification. We find that a GRU-based attention model
-trained in a single-task setting performs best at the AES task.
+Learner language is the linguistic output produced by people in the process
+of a second language. It can be a challenge for \ac{NLP} pipelines, since it
+is likely to contain ungrammatical constructions and spelling mistakes.
+Widely used methods such as standard word embeddings are not necessarily
+suited to deal with the data.
 
-\todo{Moved from bkg chap}
+\ac{AES} is the task of automatically assigning a grade to a written text,
+such as pass/fail, a proficiency score, or a numerical grade. It is a well
+studied task, and applications are in use in the real world via models based
+on hand-engineered features and traditional classification methods. However,
+the neural revolution enables researchers to build novel systems to perform
+the task, as well as gain new insight into features of learner language.
 
-This thesis will be focused on training automated essay scoring models on
-Norwegian data. We will experiment with various linear and neural machine
-learning models. We will try using different input features and combinations
-of these, and we do limited exploration of the hyperparameter space of our
-models.
+In some settings, \ac{AES} is formulated also for texts that are not learner
+language. An example is grading tests in a national education system, where
+a majority of students may be writing in their first language.
 
-Finally, we will train some of our models with multi-task learning, using
-\ac{NLI}, as an auxiliary task. This is the first time \ac{NLI} has been used
-as an auxiliary task for \ac{AES}.
+\ac{AES} systems are useful for organizations which deliver tests, because
+they can simplify the otherwise manual work of grading student essays.
+Furthermore, they can also be useful for individuals, since they can get
+valuable feedback on their writing quickly and reliably.
+
+While most \ac{AES} research to date has been focused on English language, a
+number corpora suited for the task have been made available in other
+languages as well. We present the first results for \ac{AES} on Norwegian
+learner language, using the ASK corpus. ASK has been the basis for a number
+of studies on Norwegian learner language. The corpus contains a rich
+selection of metadata, including CEFR levels for a subset of the corpus, and
+the \ac{L1} of participants. This makes it well suited for experiments with
+multi-task learning, where we utilize more than one label in training in
+order to improve a model's representations of the data.
+
+In this thesis we present first results for the task of \ac{AES} for
+Norwegian learner language. Furthermore, we present the first results for
+multi-task training of \iac{AES} system using \ac{NLI} as the auxiliary task.
+We answer a number of open research questions:
+
+\begin{itemize}
+    \item What is the best formulation of the task, regression or
+        classification?
+    \item Which combination of \ac{ML} architecture and input representation
+        performs best on the task?
+    \item Can performance on the task be improved by applying multi-task
+        learning, with joint prediction of essay scores and \ac{NLI}?
+\end{itemize}
+
+We will experiment with various linear and neural machine learning models. We
+will try using different input features and combinations of these, and
+explore a subset of the hyperparameter space of our models. Finally, we will
+train some of our models with multi-task learning, using \ac{NLI} as an
+auxiliary task. This is, as far as we know, the first time \ac{NLI} has been
+used as an auxiliary task for \ac{AES}.
+
+We find that a GRU-based attention model trained in a single-task setting
+performs best at the AES task.
+
 
 \section{Overview}
 
-Chapter \ref{ch:background} introduces basic machine learning theory and the
-tasks attempted in the thesis. Previous research on the main and auxiliary
-tasks is presented and discussed.
+\begin{description}[style=unboxed,leftmargin=0cm]
+\item [Chapter \ref{ch:background}]
+  introduces basic machine learning theory and the two tasks attempted in the
+  thesis. This includes several neural network architectures, such as
+  \acp{CNN} and \acp{RNN}, and an explanation of multi-task learning. We
+  introduce some key terms related to learner language. Previous research on
+  \ac{AES} and \ac{NLI}, our main and auxiliary tasks, is presented and
+  discussed.
 
-Chapter \ref{ch:dataset} describes the dataset we base our experiments on. It
-briefly discusses its role in previous research on Norwegian \ac{SLA}. We
-analyze a number of properties of the data and create a
-training/test/development split of the data.
+\item [Chapter \ref{ch:dataset}]
+  describes the dataset we base our experiments on. It briefly discusses its
+  role in previous research on Norwegian \ac{SLA}. We analyze a number of
+  properties of the data and create a training/test/development split of the
+  data.
 
-Chapter \ref{ch:baseline} contains the first experiments and discussion about
-the right evaluation metrics to use for the tasks.
+\item [Chapter \ref{ch:experiments}]
+  contains the first experiments and discussion about the right evaluation
+  metrics to use for the tasks. We present results for linear classifiers and
+  regressors, as well as simple neural networks, on different input
+  representations. We evaluate formulations of \ac{AES} as nominal
+  classification, regression, and ordinal regression.
 
-Chapter \ref{ch:sequencemodels} contains further experiments using more advanced
-neural architectures. It features visualization of the inner workings of a
-RNN.
+\item [Chapter \ref{ch:sequencemodels}]
+  contains further experiments using more advanced neural architectures,
+  namely \acp{CNN} and \acp{RNN}. It features visualization of the inner
+  workings of a RNN.
 
-Chapter \ref{ch:multitask} introduces \ac{NLI} as an auxiliary task. We
-perform additional experiments in multi-task setup and examine the effect on
-the prediction results. We also analyze the variance of results as a result
-of random initialization. We also revisit the question of evaluation metrics
-by evaluating their correlation with each other.
+\item [Chapter \ref{ch:multitask}]
+  introduces \ac{NLI} as an auxiliary task. We perform additional experiments
+  in multi-task setup and examine the effect on the prediction results.
+  Furthermore, we analyze the variance of results as a result of random
+  initialization. We also revisit the question of evaluation metrics by
+  evaluating the correlation between a subset of evaluation metrics.
 
-Chapter \ref{ch:heldout} contains evaluation of selected models on the
-held-out test set from chapter \ref{ch:dataset}.
+\item [Chapter \ref{ch:heldout}]
+  contains evaluation of selected models on the held-out test set from
+  chapter \ref{ch:dataset}.
 
-Chapter \ref{ch:conclusion} contains a brief summary of the thesis' results,
-as well as a limited discussion of ethical considerations related to the
-tasks in question. It also provides key questions for future work on the same
-data.
+\item [Chapter \ref{ch:conclusion}]
+  contains a brief summary of the thesis' results, as well as a limited
+  discussion of ethical considerations related to the \ac{AES} task. It
+  also provides key questions for future work on the same data.
+\end{description}
 
 \acresetall

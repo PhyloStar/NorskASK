@@ -479,5 +479,8 @@ initialization.
 
 \section{Conclusion}
 
-Multi-task with NLI does not hurt performance with small loss weights. 
-Different metrics have a non-linear relationship with each other.
+We added \ac{NLI} as an auxiliary task to our best models. We found that
+multi-task with NLI does not hurt performance with small loss weights, but we
+could not find any consistent improvement. We examined the correlation
+between different evaluation metrics, and discovered that some of them have a
+non-linear relationship with each other.

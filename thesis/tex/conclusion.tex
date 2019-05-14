@@ -11,6 +11,52 @@ We showed that different evaluation metrics commonly used have a complex
 relationship with each other, and that the most suitable metric to use may
 depend on the setting.
 
+In chapter \ref{ch:background} we gave a brief introduction to machine
+learning in general, and neural architectures in particular. We discussed
+unique properties of learner language data, and introduced \ac{AES} and
+\ac{NLI} as specific \ac{NLP} tasks relating to this kind of data. We gave an
+overview of previous work in the field, and different datasets that are
+available for the tasks.
+
+In chapter \ref{ch:dataset} we introduced the ASK corpus, which we used for
+the experiments in this thesis. We gave a short overview of previous studies
+that have used the corpus to investigate features of Norwegian learner
+language. We examined the distributions of metadata in the ASK corpus, and
+created a training/development/test data split.
+
+In chapter \ref{ch:experiments} we looked at a number of different evaluation
+metrics that have previously been used in the \ac{AES} literature, and
+decided on macro and micro \FI scores as the metrics to focus on in this
+project. We explored a selection of different classifier models, both linear
+and neural architectures. We compared three different prediction modes, and
+saw that regression and ordinal regression had better performance on the task
+than nominal classification. We tried out a selection of different input
+representations for our systems. We saw that the best input representation is
+dependent on the model in question.
+
+In chapter \ref{ch:sequencemodels} we did experiments with more advanced
+neural models, namely \acp{CNN} and \acp{RNN}. Our CNN experiments confirmed
+what we saw in the previous chapter regarding nominal classification versus
+regression, namely that regression gives the best results for the \ac{AES}
+task on this dataset. Our \ac{RNN} experiments gave results on the task which
+clearly improved on our baseline systems.
+
+We tested our systems on the NLI task, and examined the attention values. We
+did not seem to find clear connections between the parts of texts that our
+model focused on and traits of learner language that is known from \ac{SLA}
+literature. We plotted the representation vectors of documents in a 2-D
+projection, and saw that the length of a document seemed to be considered
+important in our system.
+
+In chapter \ref{ch:multitask} we added \ac{NLI} as an auxiliary task to our
+best models. We found that multi-task with NLI does not hurt performance with
+small loss weights, but we could not find any consistent improvement. We
+examined the correlation between different evaluation metrics, and discovered
+that some of them have a non-linear relationship with each other.
+
+In chapter \ref{ch:heldout} we evaluated our models on a held-out test set we
+created in chapter \ref{ch:dataset}.
+
 
 \section{Ethical considerations}
 
@@ -46,25 +92,26 @@ the required CEFR level varies between countries that use it for language
 testing for citizenship, arguing that the variation reveals the practice as
 arbitrary.
 
-Native language identification also raises ethical concerns. In some cases,
-authorities perform language testing of people in order to determine their
-place or country of origin, a practice called \ac{LADO}. Place of origin may
-in some cases be critical for the outcome of an application
-for asylum or similar. The assumptions that form the basis of this practice
-can be questioned. If automatic native language identification technologies
-are easily accessible they may increase the occurrence of this practice. This
-needs better references, but here's
-\href{https://en.wikipedia.org/wiki/Language_analysis_for_the_determination_of_origin}{Wikipedia
-on \ac{LADO}}.
-
 
 \section{Future work}
 
-\begin{enumerate}
-    \item Ordinal regression. In theory the most natural representation of the
-          problem, but architectures are not commonly available. May not be
-          appropriate for all datasets. For instance, some \ac{AES} datasets
-          have target scores that span a big interval.
-    \item Compare model errors with annotated errors
-    \item Hierarchical RNN sentence level -> document level
-\end{enumerate}
+There are more architectures to explore for the \ac{AES} task on the ASK corpus.
+For instance, the system in \textcite{alikaniotis2016automatic} gave strong
+results on the ASAP dataset, and could be adapted to work with documents from
+ASK.
+
+Because documents can be long, it could prove beneficial to use a
+hierarchical classifier. Each sentence in a document could be encoded by an
+RNN, and a second RNN would then perform classification over a sequence of
+sentence representations rather than a sequence of tokens.
+
+The formulation of \ac{AES} as ordinal classification should be explored
+further. It is a natural formulation of the task, at least with labels such
+as \ac{CEFR} levels, where we know their order, but not the distance between
+them. For alternative scoring systems, such as numeric scores over a large
+interval, regression may still be more appropriate.
+
+The ASK corpus contains detailed annotations of mistakes with respect to the
+target language. These could be compared to features discovered by \iac{ML}
+system, in order to see to what degree it corresponds to linguistically
+informed error features.
