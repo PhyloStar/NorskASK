@@ -1,16 +1,17 @@
 \chapter{Evaluation on the held-out test set} \label{ch:heldout}
 
-Up to now, we have performed all evaluation on our development set. Now this
-changes. Evaluation on a held-out test set is how we will get our final
-estimate on our models' performance on unseen data. Since we have used
-results on the development set to inform decisions about model selection and
-tuning of hyperparameters, we have arguably trained these properties on the
-development set. Moreover even if the development set has not been used by
-the gradient descent methods to tune the weights of a neural network, we have
-monitored our metrics on the development set and used them to stop training
-at a point where the performance on validation data is most favourable.
+Up to now, we have performed all evaluation on our development set. In this
+chapter, we will evaluate our best models on the held-out test set we created
+in section \ref{sec:datasplit} in order to get our final estimate on our
+models' performance on unseen data. Since we have used results on the
+development set to inform decisions about model selection and tuning of
+hyperparameters, we have arguably trained these properties on the development
+set. Moreover, even if the development set has not been used by the gradient
+descent methods to tune the weights of a neural network, we have monitored
+our metrics on the development set and used them to stop training at a point
+where the performance on validation data is most favourable.
 
-While the results on the development set are still informative, the final
+While the results on the development set are informative, the final
 evaluation on the test set is even more so, since the test data has not been
 used at all for training models, and thus is our best proxy for real-world
 data outside of our dataset.
@@ -25,15 +26,16 @@ It is however not as hard to compare micro \FI scores, as they are not
 influenced by the support of the classes.
 
 In the linear models, we have not previously used the development set as
-validation (e.g. early stopping). Therefore, when we evaluate on the test
-set, we have merged the training and development set to use as training data.
-This also means that the input features are not exactly the same, since the
-features are decided by the training data.
+validation data. Therefore, when we evaluate on the test set, we have merged
+the training and development set to use as training data. This also means
+that the input features are not exactly the same, since the features are
+decided by the training data.
 
 For the neural models, however, we train exactly like before. The training
 set is used for gradient descent, while we monitor the macro \FI score on the
-development set and remember the epoch that had the highest \FI score so that
-we can restore the network weights from this epoch at the end of training.
+development set and remember the epoch that had the highest \FI score, so
+that we can restore the network weights from this epoch at the end of
+training.
 
 \begin{table}
   \centering
@@ -75,25 +77,28 @@ we can restore the network weights from this epoch at the end of training.
 \end{table}
 
 The linear models have lower scores on the evaluation metrics when evaluated
-on the test set than they did previously. 
+on the test set than they did previously. SVR BOW and SVR POS had macro \FI
+scores of $0.444$ and $0.334$, respectively, on the development set. On the
+test set, the respective scores are $0.231$ and $0.271$. We still see that
+\ac{RNN} models produce higher scores.
 
 The best macro \FI score on the test set is $0.388$, noticeably less than the
-highest macro \FI score we saw when we evaluated on the test set. For
-instance, all the RNN1 and RNN2 models we trained with an auxiliary loss
-weight of 0 or $0.1$ in the previous chapter had macro \FI scores $>0.4$.
-However, the micro \FI scores are comparable. The highest micro \FI score
-among all the RNN models we trained in single-task mode in chapter
-\ref{ch:sequencemodels} was $0.463$. The RNN2 model with the highest micro
-\FI score in table \ref{tab:held-out-results} had a micro \FI of $0.447$ when
-evaluated on the development set, increasing to $0.480$ when evaluating on
-the test set instead.
+highest macro \FI score we saw when we evaluated on the development set,
+which was $0.460$ using the RNN1 system. However, the micro \FI scores are
+comparable. The highest micro \FI score among all the RNN models we trained
+in single-task mode in chapter \ref{ch:sequencemodels} was $0.463$. The RNN2
+model has the highest micro \FI score on the test set, as seen in table
+\ref{tab:held-out-results}. This model had a micro \FI of $0.447$ when
+evaluated on the development set, which increased to $0.480$ when evaluating
+on the test set.
 
-We assume that the differences in macro \FI are mostly caused by the
-different distribution of labels in the development and test sets, and not
-indicative of poor generalization. The micro \FI scores are a good indication
-of this. If the models turned out to not generalize beyond the development
-set, we would expect performance to drop on both metrics, not only the macro
-\FI score.
+We assume that the differences in macro \FI we observe when evaluating on
+different splits are mostly caused by the different distribution of labels in
+the development and test sets, and are not indicative of poor generalization.
+The micro \FI scores are similar on both splits, which supports our
+assumption. If the models turned out to not generalize beyond the development
+set, we would expect performance to drop on both metrics, not only on the
+macro \FI score.
 
 
 \section{Multi-task predictions}
