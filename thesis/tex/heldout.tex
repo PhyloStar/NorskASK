@@ -103,8 +103,12 @@ macro \FI score.
 
 \section{Multi-task predictions}
 
-We examine the confusion matrices for our best multi-task model, `RNN2 Multi',
-on the test set. The plot is given in figure \ref{fig:multi-test-cm}.
+We examine the confusion matrices for our best multi-task model, `RNN2
+Multi', on the test set. The plot is given in figure \ref{fig:multi-test-cm}.
+The confusion matrix on CEFR scores is similar to previous confusion
+matrices for the task. Predictions follow a fuzzy diagonal, and no predictions
+deviate from the target label by more than two classes. There are no system
+predictions for the class `C1', which has as support of 7.
 
 \begin{figure}
   \centering
@@ -116,9 +120,6 @@ on the test set. The plot is given in figure \ref{fig:multi-test-cm}.
   }
   \label{fig:multi-test-cm}
 \end{figure}
-
-The confusion matrix on CEFR scores looks a lot like previous confusion matrices
-for the task. Predictions follow a blurry diagonal.
 
 In the confusion matrix for \acp{L1}, we see that all languages are predicted
 to be Spanish at some point. German is predicted with 100\% precision,
@@ -133,28 +134,29 @@ mistaken for Spanish.
 
 As a sanity check, we also use our model to automatically assign CEFR labels
 to the texts in ASK's control corpus, which consists of texts written by
-native Norwegian speakers. These texts are written under similar conditions as
-the essays in the main corpus, at least with respect to essay prompts and time
-limits. However, the authors in the control corpus have not actually taken the
-test in order to prove their proficiency in their native language, unlike the
-authors in the main corpus, who have had a stake in their test results.
-
-There is no canonical CEFR score associated with
-these texts in the corpus, but we assume that native Norwegian speakers would
-generally be rated at a high level of proficiency in the CEFR framework.
+native Norwegian speakers. These texts are written under similar conditions
+as the essays in the main corpus, at least with respect to essay prompts and
+time limits. However, the authors in the control corpus have not actually
+taken the test in order to prove their proficiency in their native language,
+unlike the authors in the main corpus, who have had a stake in their test
+results. There is no canonical CEFR score associated with these texts in the
+corpus, but we assume that native Norwegian speakers would generally be rated
+at a high level of proficiency in the CEFR framework.
 
 \begin{figure}
   \centering
   \includegraphics{native-predictions}
   \caption[Predicted CEFR score for native Norwegian speakers]{
-    Counts of predicted labels for texts in the ASK control corpus, written by
-    native speakers of Norwegian. `Nynorsk' and `bokmål' are the two official
-    written variants of Norwegian.
+    Counts of predicted labels for texts in the ASK control corpus, written
+    by native speakers of Norwegian. `Nynorsk' and `bokmål' are the two
+    official written variants of Norwegian.
   }
   \label{native-predictions}
 \end{figure}
 
-We chose the single-task RNN2 model to perform the predictions and plotted the
-distribution of predictions in figure \ref{native-predictions}. The model predicts
-very few texts from the control corpus to have a proficiency of more than B2,
-which seems unlikely.
+We chose the single-task RNN2 model to perform the predictions and plotted
+the distribution of predictions in figure \ref{native-predictions}. The model
+predicts very few texts from the control corpus to have a proficiency of more
+than B2, which seems unlikely. This is a surprising result which we put down
+to the native texts being out of domain. The model has only been exposed to
+learner language.
