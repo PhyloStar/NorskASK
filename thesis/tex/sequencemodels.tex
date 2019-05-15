@@ -21,30 +21,30 @@ setting where the embeddings for the words `nice' and `good' are similar, the
 \ac{CNN}. The features produced by the network are not binary or integer
 counts, but real-valued vectors.
 
-The strength of \acp{RNN} is their theoretical ability to detect long range
-features. This should intuitively be useful for the tasks at hand. For
-instance, discourse features of a text, such as how different sections of a
-text are connected and referring to topics that have been mentioned before,
-can be considered a part of language proficiency. Learning to build complex
-sentences and producing longer discourse is a part of acquiring a second
-language.
+The strength of \acp{RNN}, on the other hand, is their theoretical ability to
+detect long range features. This should intuitively be useful for the tasks
+at hand. For instance, discourse features of a text, such as how different
+sections of a text are connected and whether a part of a text refers back to
+something that have been mentioned before, can be considered a part of
+language proficiency. Learning to build complex sentences and producing
+longer discourse is a part of acquiring a second language.
 
-In this chapter, we will first describe the parts of our experimental setup
-that is common for CNN and RNN experiments. We will also describe the
+In this chapter, we will first describe the aspects of our experimental setup
+which is common for CNN and RNN experiments. We will also describe the
 pre-trained word embeddings used in some experiments. CNN and RNN experiments
 and results for the \ac{AES} task will be discussed separately. We will also
 briefly see how the models perform on the \ac{NLI} task on its own, and
-visualize some of the system internals to see if it aids the interpretation
-of system performance.
+visualize some of the system internals to see if it can help us interpret
+how the system makes predictions.
 
 
 \section{Experimental setup}
 
-As in the last chapter, models are trained on the training set, and we use the
-development set as validation data to decide which weights to keep. We keep
-the weights that gave the highest macro \FI score over the validation set in
-the course of training. The reported metrics are also evaluated on the
-development set.
+As in the last chapter, models are trained on the training set, and we use
+the development set as validation data to help us stop training at a
+favourable time. We keep the weights that gave the highest macro \FI score
+over the validation set in the course of training. The reported metrics are
+also evaluated on the development set.
 
 Certain aspects of the experimental setup for the new models are different
 from the models in the previous chapter, but shared between \ac{CNN} and
@@ -72,18 +72,16 @@ the interquartile range:
 This gives 825 tokens. Finally, we computed the mean value plus two standard
 deviations, giving 707 tokens. We decided to settle on 700 tokens as our
 document length, since it is a round number close to two of three values we
-examined. We know that using this value, a great majority of documents will
-not be truncated at all.
+examined. Thus, documents longer than 700 tokens will be considered outliers
+and truncated to a length of 700.
 
 As a consequence of the unequal distributions of length between the two test
 levels, the documents that are truncated are mainly from the advanced level
 test. Thus, the presence of padding tokens at the end is a strong indicator
 of a text coming from the AL test. It is potentially problematic that this
 truncation only happens to documents from one test level, since the two test
-levels are seen to have different distributions of both CEFR scores and
-\acp{L1}. Nevertheless, even if truncation did not happen, a model might be
-able to discern the test levels just by document length, since we do not hide
-the document length from the model.
+levels are observed to have different distributions of both CEFR scores and
+\acp{L1}.
 
 
 \subsection{Pre-trained embeddings} \label{subseq:fasttext}
@@ -92,15 +90,15 @@ We experimented with randomly initialized word embedding vectors trained from
 scratch, as well as initializing the vectors with pre-trained embeddings. We
 know that our corpus contains tokens with spelling mistakes, which are likely
 to be absent in any pre-trained vector model. We therefore sought out
-pre-trained models using the FastText algorithm, which lets us compute
-vectors even for words that do not have separate entries in the model, in
-which case the model creates a vector based on the word's constituent
+pre-trained models using the FastText algorithm. This lets us compute
+vectors even for words that do not have separate entries in the model. In
+those cases, the model creates a vector based on the word's constituent
 character \ngrams.
 
 For our experiments, we used a model trained using the FastText algorithm on
-a large Norwegian corpus, the combination of Norsk aviskorpus (The Norwegian
-Newspaper Corpus) and NoWaC (Norwegian Web As Corpus)
-\autocite{stadsnes2018}. This model, contains vectors for more than 2,500,000
+a combination of two Norwegian corpora, namely Norsk aviskorpus (The
+Norwegian Newspaper Corpus) and NoWaC (Norwegian Web As Corpus)
+\autocite{stadsnes2018}. This model contains vectors for more than 2,500,000
 words. The model is stored in a repository that is available online and on
 the Abel supercomputer cluster \autocite{murhaf2017repository}\footnote{Model
 ID 120}. The model we are using has embedding dimension $100$, and is trained
@@ -108,11 +106,11 @@ using skipgram and window size 5, on an unlemmatized version of the corpus.
 
 We can superficially confirm the usefulness of FastText embeddings by looking
 at vector similarities. We use the Python library Gensim \autocite{gensim} to
-load vector models and look up word similarities. For instance, the token
-`kjokoladet' is a misspelt version of `sjokolade' (chocolate), and we find
-that its closest neighbour in the embedding space is `sjokolade'. Other close
-neighbours include `potetgul' and `potetgull' (potato crisps), where the
-former is also a misspelling.
+load vector models and look up word similarities. As an example, picked the
+token `kjokoladet', which is a misspelt version of `sjokolade' (chocolate).
+We find that its closest neighbour in the embedding space is `sjokolade'.
+Other close neighbours include `potetgul' and `potetgull' (potato crisps),
+where the former is also a misspelling.
 
 Pre-trained embeddings are only used when we have word tokens as inputs.
 Experiments using mixed UPOS tags as input will not use pre-trained
@@ -133,12 +131,12 @@ created a model of smaller size by loading the full model once and iterating
 through all of the word forms in our corpus, storing the resulting vectors in
 a new vector model containing only the words we need. In this way, we were
 still able to benefit from the FastText model's ability to compute vectors
-for unknown words, since the \ngram algorithm is being used when computing
-the reduced models. However, after the embedding layers of our neural models
-have been initialized with vectors from the FastText model, fine-tuning of
-vectors happens in the same way as if they had been initialized in any other
-way. This is because the FastText network is not incorporated into our
-models.
+for unknown words, since the character \ngram algorithm is being used for
+unknown words when computing the reduced models. However, after the embedding
+layers of our neural models have been initialized with vectors from the
+FastText model, the model treats them just like other initialization, and
+fine-tunes the embeddings during training. The FastText network is not
+incorporated into our models.
 
 
 \subsubsection{Dynamic or static embeddings}
@@ -160,7 +158,7 @@ pre-trained or randomly initialized.
 In some of our experiments we use both word tokens and their POS tags as
 input at the same time. To do this we include two separate embedding matrices
 in our network, one for words and one for POS tags. These embedding matrices
-do not have to be of the same dimensions, and since the number of different
+do not have to be of the same dimension, and since the number of different
 POS tags is very low compared to the number of different words, we use
 smaller vectors for POS tags.
 
@@ -229,10 +227,10 @@ representations.
 
 Table \ref{tab:cnn-results} presents the \FI scores on the \ac{AES} task from
 our \ac{CNN} experiments. The best macro \FI score on the full set of labels
-is a regressor using mixed UPOS input ($0.258$). The second best results
-comes from a regressor initialized with pre-trained embeddings ($0.242$).
-This is also the model with the highest macro \FI on the collapsed labels
-($0.463$). However, these scores are lower than the results we got
+comes from a regressor using mixed UPOS input ($0.258$). The second best
+results comes from a regressor initialized with pre-trained embeddings
+($0.242$). This is also the model with the highest macro \FI on the collapsed
+labels ($0.463$). However, these scores are lower than the results we got
 from SVR and MLP experiments in the previous chapter.
 
 \begin{table}
@@ -299,8 +297,9 @@ Comparing the different prediction methods, namely categorical
 classification, numeric regression and ordinal regression, we see that
 numeric regression overall has the highest macro \FI scores. This is similar
 to the observations we made in the previous chapter. Based on this, we
-decided to stick to neural regression models only in the next section, where
-we train \ac{RNN} models.
+decided to drop nominal classification and ordinal regression from subsequent
+experiments, and we stick to neural regression models only in the next
+section, where we train \ac{RNN} models.
 
 
 \subsection{Training behaviour}
@@ -416,12 +415,11 @@ function.
 We create several variations on the architecture. Some of our variations are
 also found in the reference article, and others are our own variations. The
 reference study also includes variations we do not attempt to use in our
-system, such as a combined \ac{RNN} and \ac{CNN} model.
-
-We explore some variations in hyperparameters, namely LSTM vs. GRU cells,
-unidirectional networks vs. BiRNN, different input representations, different
-pooling methods, and compare random initialization of the embedding layer
-with using pre-trained vectors.
+system, such as a combined \ac{RNN} and \ac{CNN} model. We explore some
+variations in hyperparameters, namely LSTM vs. GRU cells, unidirectional
+networks vs. BiRNN, different input representations, different pooling
+methods, and compare random initialization of the embedding layer with using
+pre-trained vectors.
 
 A couple of key parameters that differ between our system and the one in
 \textcite{taghipour16} are the embedding dimension and vocabulary size. The
@@ -499,9 +497,6 @@ the output from the forwards \ac{RNN} after processing the inputs $(x_1, x_2,
 processing the inputs $(x_m, x_{m-1}, \ldots, x_j)$, where $m$ is the total
 number of time steps. The BiRNN should therefore be able to extract context
 on both sides of a input time step.
-
-We test the combination of a BiRNN and attention mechanism, which was not
-attempted by \textcite{taghipour16}.
 
 
 \section{Results}
@@ -743,25 +738,23 @@ overshadowed by noise from other factors.
 \subsubsection{Pooling method}
 
 There are clear differences in the performance of the three pooling method we
-have used, mean-over-time, max-over-time and attention. The one that gives
-the worst results is max-over-time, which is the only method that ever gives
-a macro \FI score less than $0.2$ on the full set of labels, and even the
-best run using max pooling has a macro \FI of $0.235$, lower than several CNN
-and MLP models trained previously.
+have used, namely: mean-over-time, max-over-time and attention. The one that
+gives the worst results is max-over-time, which is the only method that ever
+gives a macro \FI score less than $0.2$ on the full set of labels. The best
+run using max pooling has a macro \FI of $0.235$, lower than several of the
+CNN and MLP models we trained previously. Intuitively, it seems reasonable
+that max pooling performs poorly on the task. A human evaluating \ac{L2}
+proficiency would likely not let a single mistake count more towards the
+result than an otherwise consistent level.
 
 Attention comes out as the clear winner of the three pooling methods. It is
-the only pooling method that gives macro \FI scores above 40\% in the full
-set of classes. At the other end of the scale, max pooling performs worse
-than the other two mechanisms in almost every case. Intuitively, it seems
-reasonable that max pooling performs poorly on the task. A couple of mistakes
-should not count more towards the result than an otherwise consistent level.
-
-The mean-over-time pooling method is somewhere in between, usually giving
-macro \FI scores higher than max-over-time and lower than attention.
-Interestingly, this is the opposite of what \textcite{taghipour16} found,
-even though we are using a very similar network architecture for the same
-kind of task. In their case, mean-over-time gave slightly better results than
-attention when they compared them (according to the QWK metric).
+the only pooling method that gives macro \FI scores above $0.4$ in the full
+set of classes. The mean-over-time pooling method is somewhere in between,
+usually giving macro \FI scores higher than max-over-time and lower than
+attention. Interestingly, this is the opposite of what \textcite{taghipour16}
+found, even though we are using a very similar network architecture for the
+same kind of task. In their case, mean-over-time gave slightly better results
+than attention when they compared them (according to the \ac{QWK} metric).
 
 It can seem promising that the attention mechanism performs well, since it by
 design might be able to give more interpretable results than other neural
@@ -788,9 +781,10 @@ CNN experiments ($0.258$ and $0.463$). It is possible that RNNs are better
 able to make use of the greater amount of information present in full lexical
 features.
 
-We conclude that mixed UPOS is not a suitable input to these architecture, at
-least not on its own. The effect of UPOS tags as a side input is inconclusive,
-and may be hidden by noise stemming from other factors.
+We conclude that mixed UPOS is not a suitable input to the \ac{RNN}
+systems, at least not on its own. The effect of UPOS tags as a side
+input is inconclusive, and may be hidden by noise stemming from other
+factors.
 
 
 \subsection{Training behaviour}
@@ -849,20 +843,19 @@ results of the RNN.
 \section{Native language identification} \label{sec:nli-experiments}
 
 \ac{NLI} is the task of taking a text and predicting the native language of
-the person who has written it. Refer back to section \ref{sec:nli} for more
-details.
+the person who has written it. The task is described in more detail in
+section \ref{sec:nli}. In comparison to proficiency labels in ASK, where the
+peripheral classes are very small, \acp{L1} are much more evenly distributed.
+There is also no natural ordering of different \acp{L1}, making regression or
+ordinal regression pointless. For experiments in \ac{NLI} we will therefore
+only use networks with a softmax classification layer.
 
-In comparison to proficiency labels in ASK, where the peripheral classes are
-very small, \acp{L1} are much more evenly distributed. There is also no
-natural ordering of different \acp{L1}, making regression or ordinal
-regression pointless. For experiments in \ac{NLI} we will therefore only use
-networks with a softmax classification layer.
-
-We train the same models to classify the documents by native language. The
-performance of \iac{CNN} model improved drastically when including \ac{POS}
-tags as input, as evident in table \ref{tab:cnn-nli-results}.
-A RNN was able to outperform the CNN only slightly, and here it was not the
-attention model that was best, but a bidirectional LSTM.
+The CNN models were trained using randomly initialized embeddings. We observe
+that the performance of \iac{CNN} model improved drastically when including
+\ac{POS} tags as input, as evident in table \ref{tab:cnn-nli-results}. The
+model with POS as side input gives a macro \FI of $0.467$ and a micro \FI
+$0.463$, both approximately $0.1$ better than the model using only word
+tokens. The mixed POS input has the lowest scores.
 
 \begin{table}
   \centering
@@ -884,7 +877,7 @@ attention model that was best, but a bidirectional LSTM.
   \begin{tabular}{lrr}
     \toprule
     Model     & Macro \FI      & Micro \FI \\
-    \midrule
+    \midrule \multicolumn{3}{c}{Random init, unidirectional GRU} \\ \midrule
     % $BEGIN autotable rnn-nli
     % $META models-per-row=1 columns-per-model=macrof1,microf1
     % $ROW Mean:  rnn-nli-26542571_1
@@ -948,22 +941,21 @@ attention model that was best, but a bidirectional LSTM.
   \label{tab:rnn-nli-results}
 \end{table}
 
-It is unfortunately not possible to compare our results to the previous work,
-for a number of reasons. First, our subset of ASK is the seven \acp{L1} which
-has been assigned CEFR scores, as compared to the full ten \acp{L1} used in
-\autocite{malmasi15,malmasi17,malmasi2018native}, and the subsets of four fixed
-and one varying \ac{L1} used in \autocite{pepper2012,ionescu2016string}. Second,
-some of the cited experiments used generated data sets and not the actual raw
-essays. Third, the cited studies have mostly evaluated their experiments using
-cross-validation ($k$-fold or \emph{leave one out}).
+The \ac{NLI} results from \acp{RNN} models are listed in table
+\ref{tab:rnn-nli-results}. The majority of the RNN models score higher on the
+\FI metrics than the \acp{CNN}. The highest macro \FI, $0.526$, comes from a
+unidirectional model initialized with pre-trained embeddings and using POS as
+side input. The highest micro \FI, $0.537$, comes from a bidirectional model
+using only word tokens as input. Both these models use mean-over-time as
+their pooling method.
 
-Our best accuracy is 53.7\%. We can not compare this value to the reports from
-previously reported \ac{NLI} results on the dataset, because of differences
-in experimental setup. For instance, \textcite{malmasi2018native} train and
-evaluate with ten different target \acp{L1}, whereas we use a set of seven.
-\textcite{pepper2012} uses various subsets of five \acp{L1}. Additionally, we
-are using the training/test split we created in section \ref{sec:datasplit},
-while \textcite{malmasi2018native} uses stratified cross-validation.
+We can not compare our best results to previously reported \ac{NLI} results
+on the dataset, because of differences in experimental setup. For instance,
+\textcite{malmasi2018native} train and evaluate with ten different target
+\acp{L1}, whereas we use a set of seven. \textcite{pepper2012} uses various
+subsets of five \acp{L1}. Additionally, we are using the training/test split
+we created in section \ref{sec:datasplit}, while \textcite{malmasi2018native}
+uses stratified cross-validation.
 
 
 \section{Visualization}
@@ -972,7 +964,7 @@ We attempt to use different visualization methods in order to extract
 insights about the workings of our models. First, we show excerpts from texts
 in the dataset, colourized according to the attention values. Then, we plot
 data points using a dimensionality reduction algorithm, and examine the plot
-for salient groupings.
+for informative features.
 
 
 \subsection{Attention} \label{subsec:attentionvis}
@@ -980,19 +972,19 @@ for salient groupings.
 The attention model allows us to visualize the weights the network gives to
 each token in a document. In figures
 \ref{fig:eng-attention}--\ref{fig:vie-attention} we see up to 300 tokens of
-texts from four different documents in the dev set for which the L1 was
-correctly predicted by an attention model. Red tokens indicate time steps
-that were given higher weight by the attention model, and blue tokens ones
+texts from four different documents in the development set for which the L1
+was correctly predicted by an attention model. Red colour indicate time steps
+that were given higher weight by the attention model, and blue time steps
 that were given low weights. Out of vocabulary tokens are replaced by the
-special token `UNK'. We will supplement the analysis of attention values
-with some qualitative remarks related to properties of learner language, and
-the findings from transfer research on the ASK corpus discussed in the
-background chapter.
+special token `UNK'. We will supplement the analysis of attention values with
+some qualitative remarks related to properties of learner language, and the
+findings from transfer research on the ASK corpus discussed in the dataset
+chapter (chapter \ref{ch:dataset}).
 
 In general, our attention values do not seem easily interpretable. There is
 no obvious pattern to what kind of segments get high and low attention, and
 the general patterns of high and low attention are also different between
-different examples. We see that lexical and grammatical errors that are
+different documents. We see that lexical and grammatical errors that are
 typical of learner language occur both in the high-attention and the
 low-attention regions. Even individual words that provide very strong hints
 to \ac{L1} seem to be ignored by the model, as we will see in the Vietnamese
@@ -1000,7 +992,7 @@ example below.
 
 The interpretability and explanation power of attention mechanisms has been
 questioned in literature, for instance in \textcite{attentionexplanation}.
-The authors suggest that the attention weights should correlate with other
+The authors suggest that the attention weights ought to correlate with other
 measures of feature importance, such as those computed with gradient-based
 methods, but find only low levels of correlation. Second, they demonstrate
 that they can construct `adversarial' attention weights which produce the
@@ -1083,8 +1075,8 @@ second-to-last line) has high attention.
 
 Within the high-attention segments, we find a couple of places were the V2
 word order in Norwegian shows up. V2 word order is a typological feature of
-Norwegian and several other Germanic languages that is challenging to acquire
-for many learners.
+Norwegian and several other Germanic languages which is challenging to
+acquire for many L2 learners.
 
 We focus on two cases in this excerpt where the attention values are high and
 V2 word order is involved. One example is `Da jeg var bare ti år` (\emph{Then
@@ -1107,12 +1099,14 @@ We can use dimensionality reduction methods such as $t$-SNE or \ac{PCA} in
 order to see if the intermediate representation of documents prior to the
 final classification layer positions documents that should be similar close
 to each other. In figure \ref{fig:pca-rnn-cefr} we have taken the documents
-in the dev set and computed these representations using a BiGRU, then run
-them through the PCA algorithm\footnote{We used the implementation in
-Scikit-learn \autocite{scikit-learn}.} in order to project them down to two
-dimensions. The resulting dimensions are the two axes that account for most
-of the variance in the data. Additionally, the components are uncorrelated
-with each other.
+in the development set and computed these representations using a
+BiGRU\footnote{The model which is referred to as RNN2 in chapter
+\ref{ch:multitask}.}, then run the representations through the PCA
+algorithm\footnote{We used the implementation in Scikit-learn
+\autocite{scikit-learn}.} in order to project them down to two dimensions.
+The resulting dimensions are the two axes that account for most of the
+variance in the data. Additionally, the components are uncorrelated with each
+other.
 
 \begin{figure}
   \centering
@@ -1148,12 +1142,10 @@ chapter regarding nominal classification versus regression, namely that
 regression gives the best results for the \ac{AES} task on this dataset.
 
 Our \ac{RNN} experiments gave results on the task which clearly improved on
-our baseline systems.
-
-We tested our systems on the NLI task, and examined the attention values.
-We did not seem to find clear connections between the parts of texts that our
-model focused on and traits of learner language that is known from \ac{SLA}
-literature.
+our baseline systems. We tested our systems on the NLI task, and examined the
+attention values. We did not seem to find clear connections between the parts
+of texts that our model focused on, and traits of learner language that are
+known from \ac{SLA} literature.
 
 We plotted the representation vectors of documents in a 2-D projection, and
 saw that the length of a document seemed to be considered important in our
