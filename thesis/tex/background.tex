@@ -238,7 +238,7 @@ words, for instance regarding gender or inflection, corresponds to defined
 directions in the embedding space \autocite{mikolov2013linguistic}. These
 relations can be found by subtracting word vectors. A famous example of an
 emergent analogy learned by the embeddings is: ``Man is to king as woman is
-to …''. In terms of arithmetic on embedding vectors, the embeddings modelled
+to ...''. In terms of arithmetic on embedding vectors, the embeddings modelled
 the analogy as $\vec{king}-\vec{man}+\vec{woman}\approx\vec{queen}$.
 \fussy
 
@@ -357,12 +357,12 @@ identification. We will present a selection of previous work for both tasks.
 \acf{AES}, in the literature also referred to as Assessment of proficiency or
 automated text scoring (ATS), considers the task of assigning a grade to a
 free form text, often responding to a specific prompt. The task can apply to
-texts written in either a first or a second language. In many settings, we
-can expect that documents may be written in either a first or a second
-language. This is the case for instance in tests given in schools, where some
-pupils may come from a minority language background. \ac{AES} can be framed
-as a supervised learning task, using a corpus of texts that have each been
-labelled with a score or a proficiency rating.
+texts written in either a first or a second language. In some cases, we can
+expect both native and learner texts to occur in the same setting. This is
+the case for instance in tests given in schools, where some pupils may come
+from a minority language background. \ac{AES} can be framed as a supervised
+learning task, using a corpus of texts that have each been labelled with a
+score or a proficiency rating.
 
 Automating the assessment task can benefit applications in language
 education. People learning a new second language will benefit from feedback
@@ -537,17 +537,18 @@ model for Norwegian having an accuracy of $0.542$. It was the same model, a
 \ac{LDA} meta-classifier, which had the best accuracy on both the generated
 and raw texts.
 
+A study by \textcite{pepper2012} examined transfer effects from various
+\acp{L1} to Norwegian using predictive models, following a similar
+methodology as \textcite{jarvis2012detecting}. In each experiment, the author
+used a subset of five \acp{L1}, of which four are the same in all
+experiments, and the fifth varied between experiments.
+
 Another study that performed NLI on the ASK corpus is
 \textcite{ionescu2016string}. They used a subset of the ASK corpus containing
 seven different native languages. They excluded Vietnamese, Somali and
 Albanian from their subset because the corpus contains fewer documents for
-these \acp{L1} (see table \ref{tab:l1-and-testlevel}). Moreover, in each
-experiment they only a subset of only five \acp{L1}, of which four are the
-same in all experiments, and the fifth varies between experiments.
-
-A study by \textcite{pepper2012} examined transfer effects from various
-\acp{L1} to Norwegian using predictive models, following a similar
-methodology as \textcite{jarvis2012detecting}.
+these \acp{L1} (see table \ref{tab:l1-and-testlevel}). Like
+\textcite{pepper2012}, they used different subset of five \acp{L1}.
 
 
 \subsection{Datasets}
