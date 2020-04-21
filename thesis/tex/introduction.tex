@@ -1,0 +1,111 @@
+\chapter{Introduction}
+
+\acresetall
+
+Learner language is the linguistic output produced by people in the process
+of learning a second language. It can be a challenge for \ac{NLP} pipelines,
+since it is likely to contain ungrammatical constructions and spelling
+mistakes. Widely used methods such as standard word embeddings are not
+necessarily suited to deal with the data. 
+
+\ac{AES} is the task of automatically assigning a grade to a written text,
+such as pass/fail, a proficiency score, or a numerical grade. \ac{AES}
+systems are useful for organizations which deliver tests, because they can
+simplify the otherwise manual work of grading student essays. Furthermore,
+they can also be useful for individuals, since they can get valuable feedback
+on their writing quickly and reliably.
+
+\ac{AES} can be formulated for many kinds of textual data, both learner
+language and non-learner language. An example of the former might be a
+language proficiency test, which is a requirement for foreign students to
+gain admission to higher education in many places. An example of the latter
+is grading tests in a national education system, where a majority of students
+may be writing in their first language.
+
+\ac{AES} is a well studied task, and applications are in use in the real
+world via models based on hand-engineered features and traditional
+classification methods. However, novel neural methods enables researchers to
+explore new systems to perform the task, as well as gain new insight into
+features of learner language.
+
+While most \ac{AES} research to date has been focused on English language, a
+number of corpora suited for the task have been made available in other
+languages as well. The Norwegian ASK corpus has been the basis for a number
+of studies on Norwegian learner language. For instance, it has been used for
+the \ac{NLI} task, where the objective is to predict the \ac{L1} of the
+author of a text. The ASK corpus contains a rich selection of metadata,
+including CEFR levels for a subset of the corpus, and the \ac{L1} of
+participants. This makes it well suited for experiments with multi-task
+learning, where we utilize more than one label in the training training in
+order to improve a model's representations of the data.
+
+In this thesis we present the first results for the \ac{AES} task on
+Norwegian learner language, using the ASK corpus. Furthermore, we present the
+first results for multi-task training of \iac{AES} system using \ac{NLI} as
+the auxiliary task. We answer a number of open research questions:
+
+\begin{itemize}
+    \item What is the best formulation of the task, regression or
+        classification?
+    \item Which combination of \ac{ML} architecture and input representation
+        performs best on the task?
+    \item Can performance on the task be improved by applying multi-task
+        learning, with joint prediction of essay scores and \ac{NLI}?
+\end{itemize}
+
+In this thesis, we will experiment with various linear and neural machine
+learning models. We investigate the effect of using different input features
+and combinations of these, and explore a subset of the hyperparameter space
+of our models. Finally, we will explore using multi-task learning to train
+our models, using \ac{NLI} as an auxiliary task. This is, as far as we know,
+the first time \ac{NLI} has been used as an auxiliary task for \ac{AES}.
+
+
+\section{Overview}
+
+\begin{description}[style=unboxed,leftmargin=0cm]
+\item [Chapter \ref{ch:background}]
+  introduces basic machine learning theory and the two tasks attempted in the
+  thesis. This includes several neural network architectures, such as
+  \acp{CNN} and \acp{RNN}, and an explanation of multi-task learning. We
+  introduce some key terms related to learner language. Previous research on
+  \ac{AES} and \ac{NLI}, our main and auxiliary tasks, is presented and
+  discussed.
+
+\item [Chapter \ref{ch:dataset}]
+  describes the dataset we use in our experiments, the Norwegian ASK corpus.
+  It briefly discusses its role in previous research on Norwegian \ac{SLA}.
+  We analyse a number of properties of the data and create a
+  training/test/development split of the data.
+
+\item [Chapter \ref{ch:experiments}]
+  contains the first experiments, and we discuss a number of different
+  evaluation metrics that can be used for the tasks. We present results for
+  linear classifiers and regressors, as well as simple neural networks, on
+  different input representations. We evaluate different formulations of the
+  \ac{AES} task, namely as nominal classification, regression, and ordinal
+  regression.
+
+\item [Chapter \ref{ch:sequencemodels}]
+  contains further experiments using more advanced neural architectures,
+  namely \acp{CNN} and \acp{RNN}. We use attention heat maps to visualize the
+  inner workings of a RNN.
+
+\item [Chapter \ref{ch:multitask}]
+  introduces \ac{NLI} as an auxiliary task. We perform additional experiments
+  in multi-task setup and examine the effect on the prediction results.
+  Furthermore, we analyse the variance of results as a result of random
+  initialization. We also revisit the question of evaluation metrics by
+  evaluating the correlation between a subset of evaluation metrics.
+
+\item [Chapter \ref{ch:heldout}]
+  contains evaluation of selected models on the held-out test set from
+  chapter \ref{ch:dataset}.
+
+\item [Chapter \ref{ch:conclusion}]
+  contains a brief summary of the thesis' results, as well as a limited
+  discussion of ethical considerations related to the \ac{AES} task. It
+  also provides key questions for future work on the same data.
+\end{description}
+
+\acresetall

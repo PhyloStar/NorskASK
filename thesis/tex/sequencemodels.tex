@@ -1,0 +1,1152 @@
+\chapter{Convolutional and recurrent neural networks} \label{ch:sequencemodels}
+
+In the previous chapter we established baseline results for the \ac{AES} task,
+and found that for the systems we implemented, regression gave better results
+than nominal classification.
+
+We now go on to investigate distributed representations of inputs and more
+advanced neural architectures, namely \acp{CNN} and \acp{RNN}. Both
+architectures are widely used in various \ac{NLP} tasks. Their advantage is
+the ability to automatically extract features that are more domain-specific
+than the simple representations we used in chapter \ref{ch:experiments}. For
+instance \acp{CNN} can be considered as \ngram detectors. Instead of having
+to find and count \ngrams to feed as inputs to the system, the \ac{CNN} can
+take a sequence of tokens and find the most informative \ngrams for the task
+at hand by end-to-end training \autocite[155]{goldbergNLP}.
+
+Coupled with distributed representations of words, i.e. word embeddings,
+similar \ngrams can also share representation. For instance, assuming a
+setting where the embeddings for the words `nice' and `good' are similar, the
+3-grams `nice to hear' and `good to hear' may be efficiently encoded in a
+\ac{CNN}. The features produced by the network are not binary or integer
+counts, but real-valued vectors.
+
+The strength of \acp{RNN}, on the other hand, is their theoretical ability to
+detect long range features. This should intuitively be useful for the tasks
+at hand. For instance, discourse features of a text, such as how different
+sections of a text are connected and whether a part of a text refers back to
+something that have been mentioned before, can be considered a part of
+language proficiency. Learning to build complex sentences and producing
+longer discourse is a part of acquiring a second language.
+
+In this chapter, we will first describe the aspects of our experimental setup
+which is common for CNN and RNN experiments. We will also describe the
+pre-trained word embeddings used in some experiments. CNN and RNN experiments
+and results for the \ac{AES} task will be discussed separately. We will also
+briefly see how the models perform on the \ac{NLI} task on its own, and
+visualize some of the system internals to see if it can help us interpret
+how the system makes predictions.
+
+
+\section{Experimental setup}
+
+As in the last chapter, models are trained on the training set, and we use
+the development set as validation data to help us stop training at a
+favourable time. We keep the weights that gave the highest macro \FI score
+over the validation set in the course of training. The reported metrics are
+also evaluated on the development set.
+
+Certain aspects of the experimental setup for the new models are different
+from the models in the previous chapter, but shared between \ac{CNN} and
+\ac{RNN} models. These aspects are described in this section. Like the
+\ac{MLP} models in chapter \ref{ch:experiments}, the neural networks are
+implemented in Keras \autocite{keras} and trained on the TensorFlow
+\autocite{tensorflow} backend.
+
+
+\subsection{Input length}
+
+The models in this chapter take as input a document of a predetermined
+length. We therefore need to set a fixed number of tokens that will be the
+length of each document. Documents shorter than this length were padded to
+this length by appending special padding tokens, and longer documents were
+truncated. In order to decide this fixed length, we examined the distribution
+of document lengths in the training set. All the subsequent values are
+rounded to the nearest integer. First, we found the 95th percentile of
+document lengths, which turned out to be 701 tokens. Then, we computed a
+common threshold for high outliers, namely the upper quartile plus 1.5 times
+the interquartile range:
+\[
+  Q_3 + 1.5 \cdot (Q_3 - Q_1)
+\]
+This gives 825 tokens. Finally, we computed the mean value plus two standard
+deviations, giving 707 tokens. We decided to settle on 700 tokens as our
+document length, since it is a round number close to two of three values we
+examined. Thus, documents longer than 700 tokens will be considered outliers
+and truncated to a length of 700.
+
+As a consequence of the unequal distributions of length between the two test
+levels, the documents that are truncated are mainly from the advanced level
+test. Thus, the presence of padding tokens at the end is a strong indicator
+of a text coming from the AL test. It is potentially problematic that this
+truncation only happens to documents from one test level, since the two test
+levels are observed to have different distributions of both CEFR scores and
+\acp{L1}.
+
+
+\subsection{Pre-trained embeddings} \label{subseq:fasttext}
+
+We experimented with randomly initialized word embedding vectors trained from
+scratch, as well as initializing the vectors with pre-trained embeddings. We
+know that our corpus contains tokens with spelling mistakes, which are likely
+to be absent in any pre-trained vector model. We therefore sought out
+pre-trained models using the FastText algorithm. This lets us compute
+vectors even for words that do not have separate entries in the model. In
+those cases, the model creates a vector based on the word's constituent
+character \ngrams.
+
+For our experiments, we used a model trained using the FastText algorithm on
+a combination of two Norwegian corpora, namely Norsk aviskorpus (The
+Norwegian Newspaper Corpus) and NoWaC (Norwegian Web As Corpus)
+\autocite{stadsnes2018}. This model contains vectors for more than 2,500,000
+words. The model is stored in a repository that is available online and on
+the Abel supercomputer cluster \autocite{murhaf2017repository}\footnote{Model
+ID 120}. The model we are using has embedding dimension $100$, and is trained
+using skipgram and window size 5, on an unlemmatized version of the corpus.
+
+We can superficially confirm the usefulness of FastText embeddings by looking
+at vector similarities. We use the Python library Gensim \autocite{gensim} to
+load vector models and look up word similarities. As an example, picked the
+token `kjokoladet', which is a misspelt version of `sjokolade' (chocolate).
+We find that its closest neighbour in the embedding space is `sjokolade'.
+Other close neighbours include `potetgul' and `potetgull' (potato crisps),
+where the former is also a misspelling.
+
+Pre-trained embeddings are only used when we have word tokens as inputs.
+Experiments using mixed UPOS tags as input will not use pre-trained
+embeddings. This is because of two reasons. First, we do not have any
+pre-trained embeddings for UPOS tags. Second, the pre-trained word embeddings
+for function words that occur in the mixed UPOS tag representation are
+trained in the context of content words, and we therefore do not expect them
+to have much utility in the context of UPOS tags.
+
+
+\subsubsection{Reducing model size}
+
+Our training data only contains 20,766 unique tokens, which is less than 1\%
+of the full vocabulary of the pre-trained FastText model. Because of its
+size, loading the full model takes a long time, and uses huge amounts of
+memory, most of which is word vectors we will never use. For that reason, we
+created a model of smaller size by loading the full model once and iterating
+through all of the word forms in our corpus, storing the resulting vectors in
+a new vector model containing only the words we need. In this way, we were
+still able to benefit from the FastText model's ability to compute vectors
+for unknown words, since the character \ngram algorithm is being used for
+unknown words when computing the reduced models. However, after the embedding
+layers of our neural models have been initialized with vectors from the
+FastText model, the model treats them just like other initialization, and
+fine-tunes the embeddings during training. The FastText network is not
+incorporated into our models.
+
+
+\subsubsection{Dynamic or static embeddings}
+
+Two common variations on training a neural model with pre-trained word
+embeddings are to dynamic or static embeddings. With dynamic embeddings, the
+embedding vectors are updated by gradient descent as part of training the
+entire network. With static embeddings, the embedding vectors are kept
+constant while other weights in the network are updated. Additional
+variations are also found in literature, for example the multi-channel
+approach seen in \textcite{kim2014convolutional} where two embedding layers,
+one static and one dynamic, are run in parallel. In this study we will not
+use static embeddings, but always fine-tune our embeddings, whether they are
+pre-trained or randomly initialized.
+
+
+\subsection{Multi-channel input}
+
+In some of our experiments we use both word tokens and their POS tags as
+input at the same time. To do this we include two separate embedding matrices
+in our network, one for words and one for POS tags. These embedding matrices
+do not have to be of the same dimension, and since the number of different
+POS tags is very low compared to the number of different words, we use
+smaller vectors for POS tags.
+
+To create the input to the core part of our network, we concatenate the word
+and POS embeddings into a single vector. For instance, if we use word
+embeddings of size 100 and POS embeddings of size 10, the next layer will
+receive vectors of size 110. To implement this, we create two separate
+embedding layers in Keras: One for words, which has embedding dimension 100,
+and one for UPOS tags, which has embedding dimension 10. Then, we use a
+concatenation layer to combine these two layers, and get a layer with vector
+size 110.
+
+
+\subsection{Vocabulary size} \label{subsec:vocabsize}
+
+We use all tokens in the training set as our lexicon, giving a vocabulary
+size of 20,768 (20,766 unique tokens occurring in the training set, plus two
+tokens for padding and unknown words).
+
+The inclusion of all tokens in the training set in the vocabulary entails
+that the unknown token will receive no training signal, and its embedding
+will remain whatever it was initialized as. Depending on whether the
+experiment uses pre-trained embeddings, this representation will either be a
+random vector, or the embedding computed by the FastText model for the token
+`\_\_UNK\_\_'. Though this might appear to be problematic, we will
+experimentally confirm later that this has no measurable effect on the
+evaluation results (section \ref{sec:sanitycheck}).
+
+
+\section{Convolutional neural networks}
+
+We create a system with a convolutional architecture based on the model
+described in \textcite{kim2014convolutional}. Documents are represented as
+sequences of token IDs, and fed into an embedding lookup layer. A separate
+token ID is used for padding if the document is shorter than 700 tokens.
+Another unique token ID is used for unknown tokens, i.e. tokens that either
+are not present in training data, or are not among the $n$ most frequent
+tokens, if we select a frequency cut-off.
+
+The central part of the architecture is a set of convolutional filter banks
+that are applied to sequences of embeddings. We may use several different
+window sizes for the filters. The default architecture from
+\textcite{kim2014convolutional} uses 300 convolutional filters: 100 each of
+window size 3, 4 and 5. After applying the convolutions, the output is max
+pooled along the time axis. This selects the highest output of each filter
+computed across all windows in the document. In practice, three pooling
+operations are included in the computational graph, one for each filter bank.
+This is a technical consideration, necessary because of the different window
+sizes.
+
+The pooled vectors for each of the filter banks are concatenated into a
+single vector, representing the document as a whole. The dimension of this
+vector is the number of filters in all the filter banks combined. This
+representation vector is fed to a final output layer. The output layer is
+either a softmax layer producing classification output, an ordinal regression
+layer as described in section \ref{subsec:ordreg}, or a single node with
+sigmoid output to produce regression. During training, we apply dropout to
+this final weight layer as a regularization method. The last dense layer uses
+dropout with $p=0.5$ and a constraint on maximum $L_2$ norm of 3. The only
+differences between our system and the architecture described in
+\textcite{kim2014convolutional} regard the different output layers and input
+representations.
+
+
+\subsection{Results}
+
+Table \ref{tab:cnn-results} presents the \FI scores on the \ac{AES} task from
+our \ac{CNN} experiments. The best macro \FI score on the full set of labels
+comes from a regressor using mixed UPOS input ($0.258$). The second best
+results comes from a regressor initialized with pre-trained embeddings
+($0.242$). This is also the model with the highest macro \FI on the collapsed
+labels ($0.463$). However, these scores are lower than the results we got
+from SVR and MLP experiments in the previous chapter.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrrr}
+    \toprule
+      & \multicolumn{2}{c}{All labels}   & \multicolumn{2}{c}{Collapsed labels} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    Model   & Macro \FI   & Micro \FI   & Macro \FI   & Micro \FI \\
+    \midrule
+    \multicolumn{5}{c}{Randomly initialized embeddings} \\
+    \midrule
+    % $BEGIN autotable cnn-results
+    % $META models-per-row=2 columns-per-model=macrof1,microf1
+    % $ROW CNN:             cnn-26515464_1    cnn-26518498_1
+    % $ROW CNN+POS:         cnn-26515464_2    cnn-26518498_2
+    % $ROW CNN Mix:         cnn-26515464_3    cnn-26518498_3
+    % $ROW CNN Reg:         cnn-26515464_4    cnn-26518498_4
+    % $ROW CNN Reg+POS:     cnn-26515464_5    cnn-26518498_5
+    % $ROW CNN Reg Mix:     cnn-26515464_6    cnn-26518498_6
+    % $ROW CNN Rank:        cnn-26515464_7    cnn-26518498_7
+    % $ROW CNN Rank+POS:    cnn-26515464_8    cnn-26518498_8
+    % $ROW CNN Rank Mix:    cnn-26515464_9    cnn-26518498_9
+    %\midrule \multicolumn{5}{c}{Pre-trained, fine tuned embeddings} \\ \midrule
+    % $ROW CNN:             cnn-26515464_10   cnn-26518498_10
+    % $ROW CNN+POS:         cnn-26515464_11   cnn-26518498_11
+    % $ROW CNN Reg:         cnn-26515464_13   cnn-26518498_12
+    % $ROW CNN Reg+POS:     cnn-26515464_14   cnn-26518498_13
+    % $ROW CNN Rank:        cnn-26515464_16   cnn-26518498_14
+    % $ROW CNN Rank+POS:    cnn-26515464_17   cnn-26518498_15
+    % $END autotable
+    CNN & $0.168$ & $\mathbf{0.398}$ & $0.388$ & $0.732$ \\
+    CNN+POS & $0.146$ & $0.374$ & $0.398$ & $0.748$ \\
+    CNN Mix & $0.201$ & $\mathbf{0.398}$ & $0.383$ & $0.724$ \\
+    CNN Reg & $0.230$ & $0.382$ & $0.439$ & $0.724$ \\
+    CNN Reg+POS & $0.236$ & $0.341$ & $0.383$ & $0.724$ \\
+    CNN Reg Mix & $\mathbf{0.258}$ & $\mathbf{0.398}$ & $0.412$ & $0.642$ \\
+    CNN Rank & $0.177$ & $0.374$ & $0.392$ & $0.740$ \\
+    CNN Rank+POS & $0.187$ & $0.382$ & $0.397$ & $0.748$ \\
+    CNN Rank Mix & $0.231$ & $0.382$ & $0.379$ & $0.715$ \\
+    \midrule
+    \multicolumn{5}{c}{Pre-trained, fine tuned embeddings} \\
+    \midrule
+    CNN & $0.208$ & $0.382$ & $0.384$ & $0.724$ \\
+    CNN+POS & $0.161$ & $0.366$ & $0.402$ & $\mathbf{0.756}$ \\
+    CNN Reg & $0.242$ & $0.341$ & $\mathbf{0.463}$ & $0.724$ \\
+    CNN Reg+POS & $0.232$ & $0.366$ & $0.411$ & $0.715$ \\
+    CNN Rank & $0.198$ & $0.350$ & $0.384$ & $0.724$ \\
+    CNN Rank+POS & $0.181$ & $0.325$ & $0.401$ & $\mathbf{0.756}$ \\
+    \bottomrule
+  \end{tabular}
+  \caption[\FI scores of CNN classifiers on AES.]{
+    \FI scores of CNN classifiers on AES. +POS: Multi-channel input with
+    both words and UPOS tags. Reg: Regression model. Rank: Ordinal regression.
+  }
+  \label{tab:cnn-results}
+\end{table}
+
+
+\subsubsection{Comparing classification, regression and ordinal regression}
+
+Comparing the different prediction methods, namely categorical
+classification, numeric regression and ordinal regression, we see that
+numeric regression overall has the highest macro \FI scores. This is similar
+to the observations we made in the previous chapter. Based on this, we
+decided to drop nominal classification and ordinal regression from subsequent
+experiments, and we stick to neural regression models only in the next
+section, where we train \ac{RNN} models.
+
+
+\subsection{Training behaviour}
+
+\begin{figure}
+  % cnn-26515464_6
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{cnn-training}
+    \caption{
+      Training and validation loss and validation F1 over 50 epochs of
+      training.
+    }
+  \end{subfigure}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{cnn-confusion}
+    \caption{
+      Confusion matrix on the validation set, raw counts and normalized.
+    }
+  \end{subfigure}
+  \caption[Training behaviour of CNN regression]{
+    CNN regressor with mixed UPOS tags as input.
+  }
+  \label{fig:cnn-training}
+\end{figure}
+
+Figure \ref{fig:cnn-training} shows how the training and validation metrics
+evolve in the course of training, as well as the confusion matrix of the
+final model's predictions. While the training loss quickly converges to a
+very low value, the validation loss fluctuates around a much higher loss,
+indicating overfitting. The plot of validation macro \FI also shows large
+fluctuations.
+
+The confusion matrix reveals that the final model did not assign any samples
+to the classes `A2', and `C1', the peripheral classes which are also the
+smallest in the validation set. As noted in the discussion about metrics in
+the previous chapter (\ref{sec:metrics}), classes with no predictions
+contribute to a low macro \FI score.
+
+Overall, the convolutional models were not able to improve on the macro or
+micro \FI scores the \ac{MLP} models in the previous chapter achieved.
+However, while the \ac{MLP} confusion matrix (fig. \ref{fig:mlp-char-rank})
+had several erroneous predictions scattered away from the diagonal, the
+confusion matrix for the \ac{CNN} looks like a fuzzy diagonal line, with
+gradual dropoff as the distance from the diagonal increases. It also looks
+like it has a steeper slope than the ideal diagonal running between the
+top-left and bottom-right corner. This is not ideal, but even if the slope
+is wrong, a diagonal indicates that relative ranks between essays are
+reasonable.
+
+
+\subsection{Non-\FI metrics}
+
+We wondered whether the difference we saw in the confusion matrices, which we
+intuitively described as \emph{scattered errors} and a \emph{fuzzy diagonal},
+could be explained using other metrics than macro or micro \FI, on which we
+have previously decided to base our model evaluations. We therefore collected
+additional metrics for the predictions of the best linear regressor and the
+best MLP model from the previous chapter, as well as the best CNN model in
+this chapter. The metrics we chose have all been reported in previous
+\ac{AES} literature, as discussed in section \ref{sec:metrics} The results
+are listed in table \ref{tab:mlp-cnn-metrics}.
+
+We observe that even though the \ac{CNN} scores last on the \FI metrics, it
+is competitive or better than the other models when we compare them by
+ranking and error metrics. We think this quantifies the intuition we had
+looking at the confusion matrices. The fuzziness stems from many
+mis-classifications of a small magnitude, which is captured by the error
+metric.
+
+It is worth noting that CNN Reg Mix has 149,101 trainable parameters,
+compared to the 2,032,206 of MLP Rank char, which is more than 13 times as
+many. In some situations, the size of the model may be important, and
+\acp{CNN} may be favourable in that case. Another factor that could favour
+\acp{CNN} is the choice of metric. As seen here, they give comparatively
+better results on error metrics than \FI scores.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrr}
+    \toprule
+    Metric           & SVR POS          & MLP Rank Char & CNN Reg Mix \\
+    \midrule
+    Macro \FI        & $\mathbf{0.444}$ &         $0.330$  &         $0.258$ \\
+    Micro \FI        &         $0.415$  & $\mathbf{0.480}$ &         $0.398$ \\
+    Spearman's r     & $\mathbf{0.650}$ &         $0.580$  &         $0.647$ \\
+    MAE              &         $0.789$  &         $0.805$  & $\mathbf{0.756}$ \\
+    RMSE             &         $1.123$  &         $1.24$   & $\mathbf{1.03}$ \\
+    \bottomrule
+  \end{tabular}
+  \caption[Comparison of metrics for SVR, MLP and CNN models]{
+    Metrics for a linear regressor, an ordinal regression MLP and a
+    convolutional regressor. For error metrics, lower values are better.
+    Spearman's r is the Spearman ranked correlation coefficient. MAE is the
+    mean absolute error. RMSE is the root mean squared error.
+  }
+  \label{tab:mlp-cnn-metrics}
+\end{table}
+
+
+\section{Recurrent neural networks}
+
+For the next architecture, \ac{RNN}, we decided to base our system on the
+model used by \textcite{taghipour16}. Their basic architecture consists of a
+layer mapping a sequence of tokens into their embeddings, which then is
+connected to \iac{RNN} layer. Then, the sequence of hidden states is pooled
+into a representation vector by a mean-over-time operation. A final layer
+combines the representation vector into a scalar value by a linear
+combination, which is then clamped to the interval $(0,1)$ by the sigmoid
+function.
+
+We create several variations on the architecture. Some of our variations are
+also found in the reference article, and others are our own variations. The
+reference study also includes variations we do not attempt to use in our
+system, such as a combined \ac{RNN} and \ac{CNN} model. We explore some
+variations in hyperparameters, namely LSTM vs. GRU cells, unidirectional
+networks vs. BiRNN, different input representations, different pooling
+methods, and compare random initialization of the embedding layer with using
+pre-trained vectors.
+
+A couple of key parameters that differ between our system and the one in
+\textcite{taghipour16} are the embedding dimension and vocabulary size. The
+reference study used randomly initialized embeddings of dimension 50. We
+increased the embedding dimension to 100, and experimented both with randomly
+initialized embeddings and with pre-trained ones. The vocabulary size in the
+reference study was set to 4000. We increased it to the total number of
+unique tokens in the training set, which is a little over 20,000 (see section
+\ref{subsec:vocabsize}).
+
+All of our models have a hidden state vector of size 300 in unidirectional
+\acp{RNN}, and 600 in BiRNNs (300 in each direction). BiRNNs are referred to
+in the following tables and discussion as either BiLSTM or BiGRU, depending
+on the RNN cell used.
+
+Based on our experience with nominal classification, ordinal regression and
+regression from experiments in the previous chapter and with \acp{CNN}, we
+decide to only use regression in the subsequent experiments. This is also the
+only prediction mode used in the reference paper.
+
+
+\subsection{Variations}
+
+We create \acp{RNN} with two different types of gated \ac{RNN} cell, the
+\ac{LSTM} and the \ac{GRU}. The concept of gated cells is explained in
+section \ref{seq:rnn}, along with the equations defining the gated cells. In
+Keras, the default activation function for the gates in gated RNNs is the
+\emph{Hard sigmoid} activation function (ref. eq. \ref{eq:hardsigmoid}),
+chosen because it is computationally more efficient than the sigmoid
+function.
+
+We attempted three different pooling methods, that is, ways of combining a
+sequence of hidden states from the \ac{RNN} into a feature vector. The first
+approach is \emph{mean over time}, where we apply element-wise, unweighted
+averaging to the RNN output across the time dimension. This means that the
+first element of the representation vector is the average of the first
+element of the RNN output across time, and similarly for the second element,
+etc., as in the following equation:
+
+\[
+  \mathrm{meanovertime}(x_i) = \frac{1}{T}\sum_{t=0}^T o_{t,i}
+\]
+
+where $T$ is the total number of time steps, and $o_{t,i}$ is the output of
+the RNN at time step $t$ and index $i$.
+
+The second method is similar to the first, except that the averaging
+operation is replaced by a max operation. Each dimension of the vector is the
+highest value the hidden state had at that dimension across the entire
+sequence. We refer to this as the \emph{max over time}, and it is defined by
+the following equation:
+
+\[
+  \mathrm{maxovertime}(x_i) = \max_{t=0}^T o_{t,i}
+\]
+
+The final method we used is an attention layer, which differs from the mean
+over time layer in that time steps are weighted by an attention mechanism: a
+single-layer neural network computes a value between -1 and 1 for each time
+step. These values are normalized across all time steps by a softmax layer,
+and then used to compute the weighted average.
+
+Since each time step contributes to the final representation in differing
+amounts, the mechanism should be able in theory to focus on crucial
+information by choosing weights such as to disregard uninformative time
+steps, improving performance. The attention mechanism is trained along with
+the rest of the network.
+
+The bidirectional models (BiRNN) are constructed by running two \acp{RNN}
+over the same input, but in opposite directions. The output from the BiRNN
+layer is a sequence of vectors where, for each time step $j$, the vector is
+the concatenation of two vectors $[s_f;s_b]$ where $s_f$ at time step $j$ is
+the output from the forwards \ac{RNN} after processing the inputs $(x_1, x_2,
+\ldots, x_j)$ and $s_b$ the output from the backwards \ac{RNN} after
+processing the inputs $(x_m, x_{m-1}, \ldots, x_j)$, where $m$ is the total
+number of time steps. The BiRNN should therefore be able to extract context
+on both sides of a input time step.
+
+
+\section{Results}
+
+The RNN results are split into two tables. Table \ref{tab:lstm-results}
+contains the results for models with \ac{LSTM} cells, while table
+\ref{tab:gru-results} contains the results for models with \ac{GRU} cells.
+The mixed input format is only listed in the sections with randomly
+initialized embeddings, as it is not applicable when using pre-trained
+embeddings.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrrr}
+    \toprule
+            & \multicolumn{2}{c}{All labels} & \multicolumn{2}{c}{Collapsed labels} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
+    \midrule
+              \multicolumn{5}{c}{Random init, unidirectional LSTM} \\
+    \midrule
+    % $BEGIN autotable lstm-results
+    % $META models-per-row=2 columns-per-model=macrof1,microf1
+    % $ROW Mean:        rnn-26519203_1       rnn-26519204_1
+    % $ROW Max:         rnn-26519203_2       rnn-26519204_2
+    % $ROW Attn.:        rnn-26519203_3       rnn-26519204_3
+    % $ROW +POS Mean:   rnn-26519203_4       rnn-26519204_4
+    % $ROW +POS Max:    rnn-26519203_5       rnn-26519204_5
+    % $ROW +POS Attn:   rnn-26519203_6       rnn-26519204_6
+    % $ROW Mix Mean:    rnn-26519203_7       rnn-26519204_7
+    % $ROW Mix Max:     rnn-26519203_8       rnn-26519204_8
+    % $ROW Mix Attn:    rnn-26519203_9       rnn-26519204_9
+    % \midrule \multicolumn{5}{c}{Random init, BiLSTM} \\ \midrule
+    % $ROW Mean:        rnn-26530015_10      rnn-26530016_10
+    % $ROW Max:         rnn-26530015_11      rnn-26530016_11
+    % $ROW Attn:        rnn-26530015_12      rnn-26530016_12
+    % $ROW +POS Mean:   rnn-26530015_13      rnn-26530016_13
+    % $ROW +POS Max:    rnn-26530015_14      rnn-26530016_14
+    % $ROW +POS Attn:   rnn-26530015_15      rnn-26530016_15
+    % $ROW Mix Mean:    rnn-26530015_16      rnn-26530016_16
+    % $ROW Mix Max:     rnn-26530015_17      rnn-26530016_17
+    % $ROW Mix Attn:    rnn-26530015_18      rnn-26530016_18
+    % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional LSTM} \\ \midrule
+    % $ROW Mean:        rnn-26519203_19      rnn-26519204_19
+    % $ROW Max:         rnn-26519203_20      rnn-26519204_20
+    % $ROW Attn:        rnn-26519203_21      rnn-26519204_21
+    % $ROW +POS Mean:   rnn-26519203_22      rnn-26519204_22
+    % $ROW +POS Max:    rnn-26519203_23      rnn-26519204_23
+    % $ROW +POS Attn:   rnn-26519203_24      rnn-26519204_24
+    % \midrule \multicolumn{5}{c}{Pre-trained, BiLSTM} \\ \midrule
+    % $ROW Mean:        rnn-26530015_25      rnn-26530016_25
+    % $ROW Max:         rnn-26530015_26      rnn-26530016_26
+    % $ROW Attn:        rnn-26530015_27      rnn-26530016_27
+    % $ROW +POS Mean:   rnn-26530015_28      rnn-26530016_28
+    % $ROW +POS Max:    rnn-26530015_29      rnn-26530016_29
+    % $ROW +POS Attn:   rnn-26530015_30      rnn-26530016_30
+    % $END autotable
+    Mean & $0.268$ & $0.398$ & $0.458$ & $0.675$ \\
+    Max & $0.235$ & $0.350$ & $0.475$ & $0.740$ \\
+    Attn. & $0.445$ & $0.431$ & $0.624$ & $0.780$ \\
+    +POS Mean & $0.251$ & $0.358$ & $0.454$ & $0.699$ \\
+    +POS Max & $0.187$ & $0.325$ & $0.435$ & $0.715$ \\
+    +POS Attn & $0.417$ & $0.390$ & $0.619$ & $0.772$ \\
+    Mix Mean & $0.230$ & $0.350$ & $0.396$ & $0.626$ \\
+    Mix Max & $0.210$ & $0.415$ & $0.398$ & $0.748$ \\
+    Mix Attn & $0.297$ & $0.431$ & $0.576$ & $0.772$ \\
+    \midrule \multicolumn{5}{c}{Random init, BiLSTM} \\ \midrule
+    Mean & $0.262$ & $0.366$ & $0.457$ & $0.699$ \\
+    Max & $0.182$ & $0.358$ & $0.485$ & $0.724$ \\
+    Attn & $\mathbf{0.448}$ & $0.447$ & $0.699$ & $0.805$ \\
+    +POS Mean & $0.337$ & $0.333$ & $0.441$ & $0.691$ \\
+    +POS Max & $0.176$ & $0.350$ & $0.460$ & $0.715$ \\
+    +POS Attn & $0.420$ & $0.407$ & $0.670$ & $0.789$ \\
+    Mix Mean & $0.220$ & $0.309$ & $0.402$ & $0.659$ \\
+    Mix Max & $0.190$ & $0.374$ & $0.400$ & $0.756$ \\
+    Mix Attn & $0.305$ & $0.447$ & $0.550$ & $0.724$ \\
+    \midrule \multicolumn{5}{c}{Pre-trained, unidirectional LSTM} \\ \midrule
+    Mean & $0.266$ & $0.374$ & $0.443$ & $0.675$ \\
+    Max & $0.181$ & $0.358$ & $0.433$ & $0.756$ \\
+    Attn & $0.410$ & $0.423$ & $0.626$ & $0.789$ \\
+    +POS Mean & $0.280$ & $0.390$ & $0.465$ & $0.691$ \\
+    +POS Max & $0.206$ & $0.415$ & $0.414$ & $0.780$ \\
+    +POS Attn & $0.370$ & $0.382$ & $0.680$ & $\mathbf{0.813}$ \\
+    \midrule \multicolumn{5}{c}{Pre-trained, BiLSTM} \\ \midrule
+    Mean & $0.263$ & $0.374$ & $0.470$ & $0.683$ \\
+    Max & $0.190$ & $0.325$ & $0.396$ & $0.748$ \\
+    Attn & $0.429$ & $\mathbf{0.463}$ & $0.638$ & $0.805$ \\
+    +POS Mean & $0.257$ & $0.350$ & $0.465$ & $0.691$ \\
+    +POS Max & $0.181$ & $0.358$ & $0.412$ & $0.715$ \\
+    +POS Attn & $0.427$ & $0.423$ & $\mathbf{0.704}$ & $0.780$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{\FI scores of LSTM classifiers on AES}
+  \label{tab:lstm-results}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrrrr}
+    \toprule
+            & \multicolumn{2}{c}{All labels} & \multicolumn{2}{c}{Collapsed labels} \\
+    \cmidrule(lr){2-3}
+    \cmidrule(lr){4-5}
+    Model     & Macro \FI      & Micro \FI      & Macro \FI      & Micro \FI \\
+    \midrule
+              \multicolumn{5}{c}{Random init, unidirectional GRU} \\
+    \midrule
+    % $BEGIN autotable gru-results
+    % $META models-per-row=2 columns-per-model=macrof1,microf1
+    % $ROW Mean:        rnn-26536430_1       rnn-26536431_1
+    % $ROW Max:         rnn-26536430_2       rnn-26536431_2
+    % $ROW Attn:        rnn-26536430_3       rnn-26536431_3
+    % $ROW +POS Mean:   rnn-26536430_4       rnn-26536431_4
+    % $ROW +POS Max:    rnn-26536430_5       rnn-26536431_5
+    % $ROW +POS Attn:   rnn-26536430_6       rnn-26536431_6
+    % $ROW Mix Mean:    rnn-26536430_7       rnn-26536431_7
+    % $ROW Mix Max:     rnn-26536430_8       rnn-26536431_8
+    % $ROW Mix Attn:    rnn-26536430_9       rnn-26536431_9
+    % \midrule \multicolumn{5}{c}{Random init, BiGRU} \\ \midrule
+    % $ROW Mean:        rnn-26536430_10      rnn-26536431_10
+    % $ROW Max:         rnn-26536430_11      rnn-26536431_11
+    % $ROW Attn:        rnn-26536430_12      rnn-26536431_12
+    % $ROW +POS Mean:   rnn-26536430_13      rnn-26536431_13
+    % $ROW +POS Max:    rnn-26536430_14      rnn-26536431_14
+    % $ROW +POS Attn:   rnn-26536430_15      rnn-26536431_15
+    % $ROW Mix Mean:    rnn-26536430_16      rnn-26536431_16
+    % $ROW Mix Max:     rnn-26536430_17      rnn-26536431_17
+    % $ROW Mix Attn:    rnn-26536430_18      rnn-26536431_18
+    % \midrule \multicolumn{5}{c}{Pre-trained, unidirectional GRU} \\ \midrule
+    % $ROW Mean:        rnn-26536430_19      rnn-26536431_19
+    % $ROW Max:         rnn-26536430_20      rnn-26536431_20
+    % $ROW Attn:        rnn-26536430_21      rnn-26536431_21
+    % $ROW +POS Mean:   rnn-26536430_22      rnn-26536431_22
+    % $ROW +POS Max:    rnn-26536430_23      rnn-26536431_23
+    % $ROW +POS Attn:   rnn-26536430_24      rnn-26536431_24
+    % \midrule \multicolumn{5}{c}{Pre-trained, BiGRU} \\ \midrule
+    % $ROW Mean:        rnn-26536430_25      rnn-26536431_25
+    % $ROW Max:         rnn-26536430_26      rnn-26536431_26
+    % $ROW Attn:        rnn-26536430_27      rnn-26536431_27
+    % $ROW +POS Mean:   rnn-26536430_28      rnn-26536431_28
+    % $ROW +POS Max:    rnn-26536430_29      rnn-26536431_29
+    % $ROW +POS Attn:   rnn-26536430_30      rnn-26536431_30
+    % $END autotable
+    Mean & $0.264$ & $0.374$ & $0.455$ & $0.675$ \\
+    Max & $0.219$ & $0.325$ & $0.487$ & $0.683$ \\
+    Attn & $0.434$ & $0.431$ & $\mathbf{0.806}$ & $0.805$ \\
+    +POS Mean & $0.348$ & $0.398$ & $0.450$ & $0.642$ \\
+    +POS Max & $0.230$ & $0.374$ & $0.500$ & $0.748$ \\
+    +POS Attn & $0.434$ & $0.423$ & $0.718$ & $0.813$ \\
+    Mix Mean & $0.225$ & $0.333$ & $0.388$ & $0.634$ \\
+    Mix Max & $0.200$ & $0.398$ & $0.398$ & $0.756$ \\
+    Mix Attn & $0.302$ & $\mathbf{0.455}$ & $0.509$ & $0.780$ \\
+    \midrule \multicolumn{5}{c}{Random init, BiGRU} \\ \midrule
+    Mean & $0.314$ & $0.333$ & $0.444$ & $0.667$ \\
+    Max & $0.160$ & $0.325$ & $0.460$ & $0.691$ \\
+    Attn & $0.459$ & $0.447$ & $0.805$ & $0.805$ \\
+    +POS Mean & $0.373$ & $0.333$ & $0.425$ & $0.683$ \\
+    +POS Max & $0.175$ & $0.309$ & $0.503$ & $0.748$ \\
+    +POS Attn & $\mathbf{0.460}$ & $0.447$ & $0.687$ & $\mathbf{0.821}$ \\
+    Mix Mean & $0.231$ & $0.350$ & $0.395$ & $0.642$ \\
+    Mix Max & $0.200$ & $0.382$ & $0.405$ & $0.764$ \\
+    Mix Attn & $0.275$ & $\mathbf{0.455}$ & $0.617$ & $0.707$ \\
+    \midrule \multicolumn{5}{c}{Pre-trained, unidirectional GRU} \\ \midrule
+    Mean & $0.274$ & $0.366$ & $0.463$ & $0.715$ \\
+    Max & $0.185$ & $0.350$ & $0.401$ & $0.756$ \\
+    Attn & $0.414$ & $0.431$ & $0.678$ & $0.797$ \\
+    +POS Mean & $0.282$ & $0.382$ & $0.477$ & $0.699$ \\
+    +POS Max & $0.193$ & $0.382$ & $0.405$ & $0.764$ \\
+    +POS Attn & $0.409$ & $0.423$ & $0.746$ & $0.789$ \\
+    \midrule \multicolumn{5}{c}{Pre-trained, BiGRU} \\ \midrule
+    Mean & $0.266$ & $0.390$ & $0.435$ & $0.707$ \\
+    Max & $0.187$ & $0.398$ & $0.393$ & $0.740$ \\
+    Attn & $0.454$ & $0.447$ & $0.773$ & $0.797$ \\
+    +POS Mean & $0.281$ & $0.382$ & $0.480$ & $0.724$ \\
+    +POS Max & $0.183$ & $0.341$ & $0.397$ & $0.748$ \\
+    +POS Attn & $0.433$ & $0.439$ & $0.758$ & $0.805$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{\FI scores of GRU classifiers on AES}
+  \label{tab:gru-results}
+\end{table}
+
+
+\subsection{The effect of hyperparameters}
+
+We choose five different hyperparameters and examine the effect each of them
+has on the predictions of the networks. When it is relevant, we will compare
+the effect we got with the effect found by \textcite{taghipour16}. However,
+our experiments are not comparable for many reasons, including: We use a
+different dataset from a different domain, which has different labels. Our
+evaluation metric is not the same, and our evaluation method, testing on a
+separate held-out subset, is different from 5-fold cross validation used by
+the reference study. Comparisons are therefore only meant to highlight that
+the effect of hyperparameters can vary between different experimental setups.
+
+
+\subsubsection{LSTM versus GRU}
+
+GRU comes out on top with somewhat higher macro \FI scores. When ranking all
+models by macro \FI score on the full set of labels, the top three places are
+taken by GRU models ($0.460$, $0.459$, $0.454$), and the fourth and fifth
+places by LSTM models ($0.448$, $0.445$). A GRU model also has the highest
+macro \FI on the collapsed labels ($0.805$). The best LSTM macro \FI on
+collapsed labels is $0.704$, ranking seventh among all GRU and LSTM
+experiments.
+
+We conclude that GRU performs best on the task on our dataset. In contrast,
+\textcite{taghipour16} compared both RNN cells and got better predictions
+from the \ac{LSTM}. In our case, another benefit of GRU is that it has fewer
+parameters and is a little faster in training.
+
+
+\subsubsection{Bidirectional RNN}
+
+Our top performing models are BiRNNs, and the unidirectional model with the
+highest macro \FI on the full set of labels only ranks fifth among all RNN
+experiments (macro \FI $0.445$). When comparing models that differ only in
+whether they are bidirectional or not, we do not always see that the macro
+\FI is higher in the bidirectional model. However, if we only look at the
+models which use an attention mechanism, the bidirectional models win in all
+but one case. The GRU attention model with mixed UPOS input drops from
+$0.320$ to $0.275$. It seems that BiRNNs may be most effective in conjunction
+with an attention mechanism, at least on this dataset. The combination of
+BiRNN and attention was not used in \textcite{taghipour16}.
+
+
+\subsubsection{Initialization of embeddings}
+
+The effects of randomly initialized vs. pre-trained embeddings is not very
+clear, and results seem to go in both directions. The best LSTM models used
+pre-trained embeddings, and the best GRU models used randomly initialized
+embeddings. However, the best GRU model with pre-trained embeddings has a
+higher macro \FI score than the overall best LSTM model, $0.454$ and $0.448$
+respectively. We think the effect of initialization, if it exists, may be
+overshadowed by noise from other factors.
+
+
+\subsubsection{Pooling method}
+
+There are clear differences in the performance of the three pooling method we
+have used, namely: mean-over-time, max-over-time and attention. The one that
+gives the worst results is max-over-time, which is the only method that ever
+gives a macro \FI score less than $0.2$ on the full set of labels. The best
+run using max pooling has a macro \FI of $0.235$, lower than several of the
+CNN and MLP models we trained previously. Intuitively, it seems reasonable
+that max pooling performs poorly on the task. A human evaluating \ac{L2}
+proficiency would likely not let a single mistake count more towards the
+result than an otherwise consistent level.
+
+Attention comes out as the clear winner of the three pooling methods. It is
+the only pooling method that gives macro \FI scores above $0.4$ in the full
+set of classes. The mean-over-time pooling method is somewhere in between,
+usually giving macro \FI scores higher than max-over-time and lower than
+attention. Interestingly, this is the opposite of what \textcite{taghipour16}
+found, even though we are using a very similar network architecture for the
+same kind of task. In their case, mean-over-time gave slightly better results
+than attention when they compared them (according to the \ac{QWK} metric).
+
+It can seem promising that the attention mechanism performs well, since it by
+design might be able to give more interpretable results than other neural
+methods. However, as we will see below (section \ref{subsec:attentionvis}),
+it is not apparent that the attention mechanism aids model interpretation in
+our case.
+
+
+\subsubsection{UPOS tags}
+
+The addition of UPOS tags as a side input seems to have variable effect on
+the performance. In the LSTM experiments, all the models with an attention
+mechanism had a drop in performance when adding the UPOS side input. However,
+in the GRU experiments, some models increased their macro \FI when they used
+the UPOS side input, including the overall best model, which had a macro \FI
+of $0.459$ without UPOS tags and $0.460$ with them. We also see inconsistent
+effects when looking at the results on the collapsed labels.
+
+The mixed UPOS input does not measure up in the RNN context, even though it
+had the best results in the CNN experiments. The highest macro \FI from an
+RNN with mixed UPOS input is $0.305$ on the full set of labels, and $0.617$
+on the collapsed set of labels. This is higher than the best results in the
+CNN experiments ($0.258$ and $0.463$). It is possible that RNNs are better
+able to make use of the greater amount of information present in full lexical
+features.
+
+We conclude that mixed UPOS is not a suitable input to the \ac{RNN}
+systems, at least not on its own. The effect of UPOS tags as a side
+input is inconclusive, and may be hidden by noise stemming from other
+factors.
+
+
+\subsection{Training behaviour}
+
+\begin{figure}
+  % rnn-26536430_15
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{rnn-training}
+    \caption{
+      Training and validation loss and validation \FI over 50 epochs of
+      training.
+    }
+  \end{subfigure}
+  \begin{subfigure}{\linewidth}
+    \centering
+    \includegraphics{rnn-confusion}
+    \caption{
+      Confusion matrix on the validation set, raw counts and normalized.
+    }
+  \end{subfigure}
+  \caption[Training behaviour of BiGRU with attention]{
+    BiRNN with GRU cells, attention mechanism, and pre-trained
+    embeddings of dimension 100, fine-tuned.
+  }
+  \label{fig:rnn-training}
+\end{figure}
+
+We see the training and classification of one of the best RNN model in figure
+\ref{fig:rnn-training}, a BiGRU model with randomly initialized embeddings
+using and an attention mechanism. The plot of the loss shows that the
+training loss drops quickly at the beginning and then asymptotically
+approaches zero. At the same time, the validation loss quickly converges
+around a stable value, but fluctuates somewhat. The plot of macro \FI is more
+noisy, with values fluctuating between approximately $0.2$ and $0.4$ for the
+entire training duration.
+
+We see in the confusion matrix that we can identify a diagonal running from
+the top-left to the bottom-right, with zeros in the top-right and bottom-left
+corners. We see that mis-classifications are mostly close to the true value,
+with only a single prediction being more than two classes away from the gold
+label (an instance of `C1' classified as `B1/B2').
+
+When we compare the training plots of the CNN (fig \ref{fig:cnn-training})
+and RNN models, we see that the training loss initially drops much quicker in
+the RNN model than in the CNN model. We think some of the reason for this is
+the much larger number of parameters in the RNN compared to the CNN
+(2,817,992 vs. 149,101). However, the most notable difference is the
+magnitude of fluctuations in the validation macro \FI score. The fluctuations
+in the CNN span only an interval of approximately $0.05$ in size, and the RNN
+fluctuates over an interval approximately $0.2$ in size. This indicates that
+monitoring \FI and stopping at the right epoch may be more important for the
+results of the RNN.
+
+
+\section{Native language identification} \label{sec:nli-experiments}
+
+\ac{NLI} is the task of taking a text and predicting the native language of
+the person who has written it. The task is described in more detail in
+section \ref{sec:nli}. In comparison to proficiency labels in ASK, where the
+peripheral classes are very small, \acp{L1} are much more evenly distributed.
+There is also no natural ordering of different \acp{L1}, making regression or
+ordinal regression pointless. For experiments in \ac{NLI} we will therefore
+only use networks with a softmax classification layer.
+
+The CNN models were trained using randomly initialized embeddings. We observe
+that the performance of \iac{CNN} model improved drastically when including
+\ac{POS} tags as input, as evident in table \ref{tab:cnn-nli-results}. The
+model with POS as side input gives a macro \FI of $0.467$ and a micro \FI
+$0.463$, both approximately $0.1$ better than the model using only word
+tokens. The mixed POS input has the lowest scores.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Model     & Macro \FI      & Micro \FI \\
+    \midrule
+    Tokens    &         $0.367$  &         $0.366$  \\ % cnn-nli-2019-02-05_12-54-51
+    +POS      & $\mathbf{0.467}$ & $\mathbf{0.463}$ \\ % cnn-nli-2019-01-30_15-32-28
+    Mixed POS &         $0.336$  &         $0.333$  \\ % cnn-nli-02-11_16-15-54
+    \bottomrule
+  \end{tabular}
+  \caption{\FI scores of CNN classifiers on NLI}
+  \label{tab:cnn-nli-results}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Model     & Macro \FI      & Micro \FI \\
+    \midrule \multicolumn{3}{c}{Random init, unidirectional GRU} \\ \midrule
+    % $BEGIN autotable rnn-nli
+    % $META models-per-row=1 columns-per-model=macrof1,microf1
+    % $ROW Mean:  rnn-nli-26542571_1
+    % $ROW Max:  rnn-nli-26542571_2
+    % $ROW Attn:  rnn-nli-26542571_3
+    % $ROW +POS Mean:  rnn-nli-26542571_4
+    % $ROW +POS Max:  rnn-nli-26542571_5
+    % $ROW +POS Attn:  rnn-nli-26542571_6
+    % \midrule \multicolumn{3}{c}{Random init, BiGRU} \\ \midrule
+    % $ROW Mean:  rnn-nli-26542571_7
+    % $ROW Max:  rnn-nli-26542571_8
+    % $ROW Attn:  rnn-nli-26542571_9
+    % $ROW +POS Mean:  rnn-nli-26542571_10
+    % $ROW +POS Max:  rnn-nli-26542571_11
+    % $ROW +POS Attn:  rnn-nli-26542571_12
+    % \midrule \multicolumn{3}{c}{Pre-trained, unidirectional GRU} \\ \midrule
+    % $ROW Mean:  rnn-nli-26542571_13
+    % $ROW Max:  rnn-nli-26542571_14
+    % $ROW Attn:  rnn-nli-26542571_15
+    % $ROW +POS Mean:  rnn-nli-26542571_16
+    % $ROW +POS Max:  rnn-nli-26542571_17
+    % $ROW +POS Attn:  rnn-nli-26542571_18
+    % \midrule \multicolumn{3}{c}{Pre-trained, BiGRU} \\ \midrule
+    % $ROW Mean:  rnn-nli-26542571_19
+    % $ROW Max:  rnn-nli-26542571_20
+    % $ROW Attn:  rnn-nli-26542571_21
+    % $ROW +POS Mean:  rnn-nli-26542571_22
+    % $ROW +POS Max:  rnn-nli-26542571_23
+    % $ROW +POS Attn:  rnn-nli-26542571_24
+    % $END autotable
+    Mean & $0.466$ & $0.480$ \\
+    Max & $0.376$ & $0.374$ \\
+    Attn & $0.450$ & $0.472$ \\
+    +POS Mean & $0.395$ & $0.398$ \\
+    +POS Max & $0.346$ & $0.350$ \\
+    +POS Attn & $0.412$ & $0.439$ \\
+    \midrule \multicolumn{3}{c}{Random init, BiGRU} \\ \midrule
+    Mean & $0.471$ & $0.496$ \\
+    Max & $0.359$ & $0.382$ \\
+    Attn & $0.487$ & $0.463$ \\
+    +POS Mean & $0.410$ & $0.423$ \\
+    +POS Max & $0.396$ & $0.415$ \\
+    +POS Attn & $0.480$ & $0.504$ \\
+    \midrule \multicolumn{3}{c}{Pre-trained, unidirectional GRU} \\ \midrule
+    Mean & $0.460$ & $0.463$ \\
+    Max & $0.397$ & $0.398$ \\
+    Attn & $0.469$ & $0.504$ \\
+    +POS Mean & $\mathbf{0.526}$ & $0.528$ \\
+    +POS Max & $0.440$ & $0.480$ \\
+    +POS Attn & $0.444$ & $0.480$ \\
+    \midrule \multicolumn{3}{c}{Pre-trained, BiGRU} \\ \midrule
+    Mean & $0.520$ & $\mathbf{0.537}$ \\
+    Max & $0.401$ & $0.390$ \\
+    Attn & $0.447$ & $0.480$ \\
+    +POS Mean & $0.467$ & $0.480$ \\
+    +POS Max & $0.406$ & $0.431$ \\
+    +POS Attn & $0.454$ & $0.463$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{\FI scores of RNN classifiers on NLI}
+  \label{tab:rnn-nli-results}
+\end{table}
+
+The \ac{NLI} results from \acp{RNN} models are listed in table
+\ref{tab:rnn-nli-results}. The majority of the RNN models score higher on the
+\FI metrics than the \acp{CNN}. The highest macro \FI, $0.526$, comes from a
+unidirectional model initialized with pre-trained embeddings and using POS as
+side input. The highest micro \FI, $0.537$, comes from a bidirectional model
+using only word tokens as input. Both these models use mean-over-time as
+their pooling method.
+
+We can not compare our best results to previously reported \ac{NLI} results
+on the dataset, because of differences in experimental setup. For instance,
+\textcite{malmasi2018native} train and evaluate with ten different target
+\acp{L1}, whereas we use a set of seven. \textcite{pepper2012} uses various
+subsets of five \acp{L1}. Additionally, we are using the training/test split
+we created in section \ref{sec:datasplit}, while \textcite{malmasi2018native}
+uses stratified cross-validation.
+
+
+\section{Visualization}
+
+We attempt to use different visualization methods in order to extract
+insights about the workings of our models. First, we show excerpts from texts
+in the dataset, colourized according to the attention values. Then, we plot
+data points using a dimensionality reduction algorithm, and examine the plot
+for informative features.
+
+
+\subsection{Attention} \label{subsec:attentionvis}
+
+The attention model allows us to visualize the weights the network gives to
+each token in a document. In figures
+\ref{fig:eng-attention}--\ref{fig:vie-attention} we see up to 300 tokens of
+texts from four different documents in the development set for which the L1
+was correctly predicted by an attention model. Red colour indicate time steps
+that were given higher weight by the attention model, and blue time steps
+that were given low weights. Out of vocabulary tokens are replaced by the
+special token `UNK'. We will supplement the analysis of attention values with
+some qualitative remarks related to properties of learner language, and the
+findings from transfer research on the ASK corpus discussed in the dataset
+chapter (chapter \ref{ch:dataset}).
+
+In general, our attention values do not seem easily interpretable. There is
+no obvious pattern to what kind of segments get high and low attention, and
+the general patterns of high and low attention are also different between
+different documents. We see that lexical and grammatical errors that are
+typical of learner language occur both in the high-attention and the
+low-attention regions. Even individual words that provide very strong hints
+to \ac{L1} seem to be ignored by the model, as we will see in the Vietnamese
+example below.
+
+The interpretability and explanation power of attention mechanisms has been
+questioned in literature, for instance in \textcite{attentionexplanation}.
+The authors suggest that the attention weights ought to correlate with other
+measures of feature importance, such as those computed with gradient-based
+methods, but find only low levels of correlation. Second, they demonstrate
+that they can construct `adversarial' attention weights which produce the
+same predictions, even with all other parameters kept constant.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{h0169-eng}
+  \caption[Attention heat map in a text by an English speaker]{
+    Attention values of NLI classifier on excerpt from ASK text h0189. L1 is
+    English, CEFR score B2.
+  }
+  \label{fig:eng-attention}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{h0185-rus}
+  \caption[Attention heat map in a text by a Russian speaker]{
+    Attention values of NLI classifier on excerpt from ASK text h0186. L1 is
+    Russian, CEFR score B1/B2.
+  }
+  \label{fig:rus-attention}
+\end{figure}
+
+The Russian speaker's text (fig. \ref{fig:rus-attention}) is almost entirely
+high-attention in this excerpt. There is a section of low-attention, around
+three sentences long, in the middle of the excerpt. We can therefore not pick
+out specific features that the model seems to focus on.
+
+One of the findings in \textcite{pepper2012} was that speakers of Slavic
+languages tend to use fewer indefinite articles. In this excerpt we see an
+example of the opposite, for instance in the twice occurring `*en god helse'
+(\emph{*a good health}). `Helse' (\emph{{health}}) is an uncountable noun,
+and should therefore not have an indefinite article, neither in Norwegian nor
+English. While this runs counter to the general trend for learners with
+Slavic \acp{L1}, it could perhaps be interpreted as a case of
+hypercorrection, i.e. a conscious effort to use articles that results in
+false positives.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{s0546-som}
+  \caption[Attention heat map in a text by a Somali speaker]{
+    Attention values of NLI classifier on full ASK text s0621. L1 is Somali,
+    CEFR score A2.
+  }
+  \label{fig:som-attention}
+\end{figure}
+
+In the Somali speaker's text (fig. \ref{fig:som-attention}), most of the text
+has low attention, except for shorter segments with high attention. However,
+the attention is not highest on the most obvious mistakes.
+
+In \textcite{pepper2012}, Somali speakers were found to use the auxiliary
+`skal' (\emph{shall/will}) and the pronoun `jeg' (\emph{I}) more frequently
+than native Norwegian speakers and several other L1 groups.
+\citeauthor{pepper2012} suggested that the frequency of `skal' partly might
+be explained by topic bias, since some essay prompts were about the future,
+and `skal' is often involved with the future tense. This excerpt is not one of
+these texts, and concerns a past experience. Thus, it is not surprising that
+it contains no occurrences of `skal'. On the other hand, `jeg' is indeed a
+frequent word, occurring five times in the course of a rather short text.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{s0628-vie}
+  \caption[Attention heat map in a text by a Vietnamese speaker]{
+    Attention values of NLI classifier on excerpt from ASK text s0180. L1 is
+    Vietnamese, CEFR score B1/B2
+  }
+  \label{fig:vie-attention}
+\end{figure}
+
+In the Vietnamese speaker's text (fig. \ref{fig:vie-attention}), the word
+Vietnam appears three times. This should be a very informative word, as it is
+likely that when someone mentions a country in this context, it is their
+country of origin. Two of the occurrences have low attention, and one (on the
+second-to-last line) has high attention.
+
+Within the high-attention segments, we find a couple of places were the V2
+word order in Norwegian shows up. V2 word order is a typological feature of
+Norwegian and several other Germanic languages which is challenging to
+acquire for many L2 learners.
+
+We focus on two cases in this excerpt where the attention values are high and
+V2 word order is involved. One example is `Da jeg var bare ti år` (\emph{Then
+I was only ten}), where the learner gets the word order wrong. In this case,
+`jeg' and `var' should switch places in order to have the verb `var' in the
+second position. In another case, `I Vietnam må du ta en [...] prøve'
+(\emph{In Vietnam you have to take a test}), they correctly apply V2 word
+order.
+
+There are also a couple of places in the excerpt that have V2 word order, but
+low attention values. For instance `Så måtte to [...] søsken slutte'
+(\emph{Then two [...] siblings had to quit}). Based on these observations, we
+do not think that the model has learnt to identify mistakes and correct
+applications related to V2 word order.
+
+
+\subsection{Latent space}
+
+We can use dimensionality reduction methods such as $t$-SNE or \ac{PCA} in
+order to see if the intermediate representation of documents prior to the
+final classification layer positions documents that should be similar close
+to each other. In figure \ref{fig:pca-rnn-cefr} we have taken the documents
+in the development set and computed these representations using a
+BiGRU\footnote{The model which is referred to as RNN2 in chapter
+\ref{ch:multitask}.}, then run the representations through the PCA
+algorithm\footnote{We used the implementation in Scikit-learn
+\autocite{scikit-learn}.} in order to project them down to two dimensions.
+The resulting dimensions are the two axes that account for most of the
+variance in the data. Additionally, the components are uncorrelated with each
+other.
+
+\begin{figure}
+  \centering
+  \includegraphics{pca-rnn-cefr}
+  \caption[PCA plot of the vector representations of documents]{
+    Each document in the dev set is plotted according to its two principal
+    components after PCA dimensionality reduction. Marker size and shape
+    corresponds to document length and test level, respectively.
+  }
+  \label{fig:pca-rnn-cefr}
+\end{figure}
+
+We see that the first component, which corresponds to the horizontal axis in
+the plot, maps closely to the length of the document. The long essays,
+indicated by the size of the markers, are on the left hand side of the plot.
+These are overwhelmingly from the AL test. The right hand side of the plot is
+dominated by texts from the IL test, plotted with crosses, and the size of
+the markers indicate that these texts are small. The second component of the
+plot, on the other hand, does not seem to be interpretable in terms of CEFR
+score, essay length or test level.
+
+As previously discussed, there is a correlation between the length of essays
+and the proficiency score, as well as the test level (IL level or AL level).
+The system learns to see the length of the essay, likely by the presence of
+padding tokens in short essays. Therefore, it learns a feature which is
+strongly correlated with the proficiency scores.
+
+
+\section{Conclusion}
+
+Our experiments with \ac{CNN} models confirmed what we saw in the previous
+chapter regarding nominal classification versus regression, namely that
+regression gives the best results for the \ac{AES} task on this dataset.
+
+Our \ac{RNN} experiments gave results on the task which clearly improved on
+our baseline systems. We tested our systems on the NLI task, and examined the
+attention values. We did not seem to find clear connections between the parts
+of texts that our model focused on, and traits of learner language that are
+known from \ac{SLA} literature.
+
+We plotted the representation vectors of documents in a 2-D projection, and
+saw that the length of a document seemed to be considered important in our
+system.

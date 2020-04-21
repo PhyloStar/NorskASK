@@ -1,0 +1,37 @@
+{'penalty': 0.05386429068904737, 'test_topics': {'geografi norge folk ', 'innvandring ', 'innvandring politikk valg ', 'idrett/sport ', 'bolig geografi ', 'arbeid yrke ', 'økonomi holdning ', 'humor kultur ', 'politikk norge holdning ', 'litteratur bok ', 'familie befolkning norge ', 'litteratur dikt idrett ', 'folk utdannelse ', 'politikk holdning ', 'media tv ', 'religion ', 'helse organ ', 'folk følelser '}, 'sample_sizes': (123, 123), 'dev_topics': {'idrett/sport kultur ', 'organisasjon ', 'opplevelse ', 'økonomi ', 'holdning ', 'barn idrett/sport ', 'familie flytting ', 'eldre familie ', 'helse røyking ', 'litteratur dikt språk ', 'helse arbeid innvandring ', 'barn familie ', 'helse ', 'utdannelse språk ', 'arbeid innvandring ', 'litteratur dikt venner '}, 'entropies': array([ 0.05037984,  0.0560907 ,  0.06373353,  0.1051674 ])}
+
+== DEV SET ==
+A2        1
+A2/B1    22
+B1       20
+B1/B2    30
+B2       37
+B2/C1    10
+C1        3
+Name: cefr, dtype: int64
+russisk         17
+polsk           30
+tysk            10
+vietnamesisk    17
+engelsk         18
+spansk          23
+somali           8
+Name: lang, dtype: int64
+== TEST SET ==
+A2        3
+A2/B1    19
+B1       23
+B1/B2    22
+B2       40
+B2/C1     9
+C1        7
+Name: cefr, dtype: int64
+russisk         16
+polsk           22
+tysk            22
+vietnamesisk    25
+engelsk          8
+spansk          17
+somali          13
+Name: lang, dtype: int64
+

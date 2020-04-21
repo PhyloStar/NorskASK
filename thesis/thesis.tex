@@ -1,0 +1,99 @@
+\documentclass[UKenglish,final]{ifimaster}
+
+\usepackage{thesisstyle}
+
+\DeclareBibliographyCategory{software}
+\addtocategory{software}{
+  matplotlib,keras,scikit-learn,tensorflow,gensim,seaborn,scipy,
+}
+
+\addbibresource{references.bib}
+\addbibresource{proceedings.bib}
+
+\title{Automated Assessment of Norwegian L2 Essays}
+\subtitle{Using Multi-task Learning}
+\author{Stig Johan Berggren}
+
+% \renewcommand*\rmdefault{ptm}
+
+\begin{document}
+
+\duoforside[
+  dept={Department of Informatics},
+  program={Informatics: Language and Communication},
+  long
+]
+
+\frenchspacing
+
+\frontmatter{}
+
+\chapter*{Acknowledgements}
+
+I want to thank my supervisors, Taraka Rama Kasicheyanula and Lilja Øvrelid
+in the Department of Informatics at the University of Oslo.
+
+\tableofcontents{}
+\listoffigures{}
+\listoftables{}
+
+% \chapter*{Preface}
+
+\mainmatter{}
+
+\input{./tex/introduction}
+\input{./tex/background}
+\input{./tex/dataset}
+\input{./tex/experiments}
+\input{./tex/sequencemodels}
+\input{./tex/multitask}
+\input{./tex/heldout}
+\input{./tex/conclusion}
+
+\chapter*{Acronyms}
+
+\begin{acronym}[CBOW]
+  \acro{AES}{Automated essay scoring}
+  \acro{API}{Application programming interface}
+  \acro{CEFR}{Common European Framework of Reference for Languages}
+  \acro{CBOW}{Continuous bag of words}
+  \acro{CNN}{Convolutional neural network}
+  \acro{GRU}{Gated recurrent unit}
+  \acro{L1}{First language}
+  \acro{L2}{Second language}
+  \acro{LADO}{Language analysis for the determination of origin}
+  \acro{LDA}{Linear discriminant analysis}
+  \acro{LSTM}{Long short-term memory}
+  \acro{MAE}{Mean absolute error}
+  \acro{ML}{Machine learning}
+  \acro{MLP}{Multi-layer perceptron}
+  \acro{NLI}{Native language identification}
+  \acro{NLP}{Natural language processing}
+  \acro{POS}{Part of speech}
+  \acro{PCA}{Principal component analysis}
+  \acro{REST}{Representational state transfer}
+  \acro{RMSE}{Root mean squared error}
+  \acro{QWK}{Quadratic weighted Kappa}
+  \acro{ReLU}{Rectified linear unit}
+  \acro{RNN}{Recurrent neural network}
+  \acro{SLA}{Second language acquisition}
+  \acro{SVM}{Support vector machine}
+  \acro{XML}{Extensible markup language}
+
+  \acroindefinite{CNN}{an}{a}
+  \acroindefinite{LDA}{an}{a}
+  \acroindefinite{LSTM}{an}{a}
+  \acroindefinite{ML}{an}{a}
+  \acroindefinite{SVM}{an}{a}
+\end{acronym}
+% \chapter*{Abstract}
+
+\backmatter{}
+
+\begingroup
+\setlength{\emergencystretch}{2em}
+\printbibliography[notcategory=software]
+\endgroup
+\printbibliography[title={Software}, category=software]
+
+\end{document}

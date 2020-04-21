@@ -1,0 +1,37 @@
+\ProvidesPackage{thesisstyle}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc,url}
+\urlstyle{sf}
+\usepackage{
+  babel,
+  csquotes,
+  duomasterforside,
+  varioref,
+  booktabs,
+  xspace,
+  hyperref,
+  acronym,
+  amsmath,
+  covington,
+  subcaption,
+  enumitem,
+  graphicx
+}
+\graphicspath{ {./img/} }
+
+\usepackage[obeyFinal]{todonotes}
+
+\usepackage[
+  backend=biber,
+  dashed=false,
+  style=authoryear,
+  citestyle=authoryear-comp,
+  sorting=nyt % name, year, title
+]{biblatex}
+
+
+\newcommand{\ngram}[0]{\textit{n}-gram\xspace}
+\newcommand{\ngrams}[0]{\textit{n}-grams\xspace}
+\newcommand{\FI}[0]{$F_1$\xspace}
+%\frenchspacing
